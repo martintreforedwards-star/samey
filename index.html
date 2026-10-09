@@ -73,6 +73,7 @@ input:focus{outline:none;border-color:var(--teal)}
 .msg.close{color:var(--ink);background:color-mix(in srgb,var(--amber) 22%,transparent);border-left:4px solid var(--amber);padding:8px 12px;border-radius:4px}
 .result{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;gap:10px}
 .result h2{font-family:var(--display);font-size:1.5rem;margin:0}
+.next{margin:0;color:var(--muted);font-variant-numeric:tabular-nums}
 .share{font-family:var(--mono);white-space:pre;background:var(--slot);border-radius:6px;padding:10px;overflow-x:auto;user-select:all}
 details{font-size:.92rem;color:var(--muted)}
 summary{cursor:pointer;font-weight:700;color:var(--ink)}
@@ -88,7 +89,7 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
       <svg class="logo" viewBox="0 0 40 28" aria-hidden="true"><circle cx="14" cy="14" r="11" fill="var(--teal)" opacity=".85"/><circle cx="26" cy="14" r="11" fill="var(--amber)" opacity=".85"/></svg>
       <h1>Samey</h1>
     </div>
-    <label class="pick" for="puzzle">Puzzle <select id="puzzle"></select></label>
+    <label class="pick" id="pickWrap" for="puzzle" hidden>Puzzle <select id="puzzle"></select></label>
   </header>
 
   <section class="clue" aria-live="polite">
@@ -127,6 +128,7 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
     <h2 id="resultTitle"></h2>
     <div id="resultText"></div>
     <div class="share" id="shareText"></div>
+    <p class="next" id="nextNote" hidden></p>
     <div class="actions">
       <button class="btn" id="copyBtn" type="button">Copy result</button>
       <button class="btn ghost" id="nextBtn" type="button">Next puzzle</button>
@@ -138,7 +140,7 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
     <ul>
       <li>You get a word. Find the hidden word that means the same thing.</li>
       <li>Puzzles start gentle on Monday and get tougher through to Friday. Weekends are medium.</li>
-      <li>You have 5 goes. Your guess can be any length.</li>
+      <li>You have 5 goes. Your guess can be any length, but it has to be a real word.</li>
       <li>Every letter in your guess that's also in the answer lights up in all its spots, and stays lit.</li>
       <li>Letters you've tried that aren't in the answer are crossed out below the board.</li>
       <li>Guess a word that means the same but isn't the one we're after? We'll tell you it's close, and it won't cost a go.</li>
@@ -212,6 +214,9 @@ const PUZZLES = [
    close:"roam stroll ramble amble drift rove saunter mosey stray trek"},
 ].map(p=>({...p, close:new Set(p.close.split(" "))}));
 const MAX = 5;
+// Word list: guesses must be real words. If the list fails to load, every guess is accepted.
+let WORDS = null;
+fetch("words.txt").then(r=> r.ok ? r.text() : Promise.reject()).then(t=>{ WORDS = new Set(t.split("\n")); }).catch(()=>{});
 const $ = id => document.getElementById(id);
 let state;
 
@@ -234,7 +239,7 @@ function dayIndex(){
 
 function start(i){
   const p = PUZZLES[i];
-  state = {i, p, known:Array(p.answer.length).fill(null), hinted:Array(p.answer.length).fill(false), rows:[], closeTried:new Set(), missed:new Set(), used:0, hintUsed:false, done:false, won:false};
+  state = {i, p, daily:false, actions:[], known:Array(p.answer.length).fill(null), hinted:Array(p.answer.length).fill(false), rows:[], closeTried:new Set(), missed:new Set(), used:0, hintUsed:false, done:false, won:false};
   $("puzzle").value = i;
   $("clueWord").textContent = p.clue;
   $("clueKind").textContent = "It's a " + p.kind + ".";
@@ -288,14 +293,17 @@ function guess(raw){
   const g = raw.trim().toLowerCase();
   const msg = $("msg"); msg.className="msg"; msg.textContent="";
   if(!/^[a-z]+$/.test(g)){ msg.className="msg err"; msg.textContent="Letters only, one word please."; return; }
+  if(WORDS && !WORDS.has(g) && g !== state.p.answer && !state.p.close.has(g)){
+    msg.className="msg err"; msg.textContent=`"${g}" isn't in our word list. Try a real word. That didn't cost a go.`; return;
+  }
   if(g === state.p.clue.toLowerCase()){ msg.className="msg err"; msg.textContent="That's the starting word. Try one that means the same."; return; }
   if(state.rows.some(r=>r.guess===g) || state.closeTried.has(g)){ msg.className="msg err"; msg.textContent="You've already tried that one."; return; }
   if(state.p.close.has(g)){
-    state.closeTried.add(g); $("guess").value = "";
+    state.closeTried.add(g); $("guess").value = ""; log({c:g});
     msg.className="msg close"; msg.textContent=`Close! "${g}" fits, but it's not the one. That didn't cost you a go.`;
     return;
   }
-  state.used++;
+  state.used++; log({g});
   for(const ch of g) if(!state.p.answer.includes(ch)) state.missed.add(ch);
   const win = g === state.p.answer;
   const fresh = apply(win ? state.p.answer.split("") : reveal(state.p.answer, g, state.known), false);
@@ -310,7 +318,7 @@ function guess(raw){
 
 function useHint(){
   if(state.hintUsed || MAX-state.used<2) return;
-  state.hintUsed = true; state.used++;
+  state.hintUsed = true; state.used++; log({h:1});
   const next = state.known.map((c,i)=> c || (state.p.hint[i] !== "_" ? state.p.hint[i] : null));
   const fresh = apply(next, true);
   state.rows.push({guess:"", hint:true, board:mask(state.known)});
@@ -326,9 +334,12 @@ function finish(){
   $("resultText").textContent = `${p.clue} → ${p.answer}.` + (state.won ? "" : " Better luck with the next one.");
   const marks = state.rows.map(r=> r.win ? "🟩" : r.hint ? "💡" : "🟨").join("");
   const score = state.won ? `${state.used}/${MAX}` : `X/${MAX}`;
-  $("shareText").textContent = `Samey #${state.i+1} (${TIERS[p.tier]})  ${score}\n${marks}`;
+  $("shareText").textContent = `Samey ${state.daily ? dayNumber() : '#'+(state.i+1)} (${TIERS[p.tier]})  ${score}\n${marks}`;
   $("result").hidden = false;
   $("copyBtn").textContent = "Copy result";
+  $("nextBtn").hidden = state.daily;
+  $("nextNote").hidden = !state.daily;
+  if(state.daily) tick();
 }
 
 $("guessForm").addEventListener("submit", e=>{ e.preventDefault(); if(!state.done) guess($("guess").value); });
@@ -344,7 +355,44 @@ $("copyBtn").addEventListener("click", ()=>{
 function selectShare(){ const r=document.createRange(); r.selectNodeContents($("shareText")); const s=getSelection(); s.removeAllRanges(); s.addRange(r); $("copyBtn").textContent="Selected, press copy"; }
 
 PUZZLES.forEach((p,i)=>{ const o=document.createElement("option"); o.value=i; o.textContent=`#${i+1} · ${TIERS[p.tier]}`; $("puzzle").appendChild(o); });
-start(dayIndex());
+// ---- one puzzle a day ----
+const TEST = location.hash === "#test";      // samey.uk/#test shows the puzzle picker for play-testing
+const LAUNCH = Date.UTC(2026,9,9);           // 9 Oct 2026 = Samey No. 1
+function todayKey(){ const d=new Date(); return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`; }
+function dayNumber(){ const d=new Date(); return "No. " + (Math.round((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())-LAUNCH)/864e5)+1); }
+const SAVE_KEY = "samey-today";
+function log(a){
+  state.actions.push(a);
+  if(!state.daily || state.replaying) return;
+  try{ localStorage.setItem(SAVE_KEY, JSON.stringify({day:todayKey(), i:state.i, actions:state.actions})); }catch(e){}
+}
+function tick(){
+  if($("nextNote").hidden) return;
+  const now=new Date(), mid=new Date(now); mid.setHours(24,0,0,0);
+  const m=Math.max(0,Math.ceil((mid-now)/6e4)), h=Math.floor(m/60);
+  $("nextNote").textContent = `Next Samey in ${h}h ${m%60}m.`;
+  if(m===0) location.reload();
+}
+setInterval(tick, 30000);
+
+if(TEST){
+  $("pickWrap").hidden = false;
+  start(dayIndex());
+}else{
+  start(dayIndex());
+  state.daily = true;
+  let saved=null;
+  try{ saved = JSON.parse(localStorage.getItem(SAVE_KEY)); }catch(e){}
+  if(saved && saved.day===todayKey() && saved.i===state.i){
+    state.replaying = true;
+    for(const a of saved.actions){
+      if(state.done) break;
+      if(a.h) useHint(); else if(a.c) guess(a.c); else if(a.g) guess(a.g);
+    }
+    state.replaying = false;
+    $("msg").textContent=""; $("msg").className="msg";
+  }
+}
 </script>
 
 </body>
