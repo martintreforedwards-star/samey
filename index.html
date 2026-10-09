@@ -73,6 +73,10 @@ input:focus{outline:none;border-color:var(--teal)}
 .msg.close{color:var(--ink);background:color-mix(in srgb,var(--amber) 22%,transparent);border-left:4px solid var(--amber);padding:8px 12px;border-radius:4px}
 .result{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;gap:10px}
 .result h2{font-family:var(--display);font-size:1.5rem;margin:0}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:4px 0}
+.stats div{display:flex;flex-direction:column-reverse;align-items:center;text-align:center}
+.stats dt{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.stats dd{margin:0;font-family:var(--display);font-weight:800;font-size:1.7rem;font-variant-numeric:tabular-nums;line-height:1.1}
 .next{margin:0;color:var(--muted);font-variant-numeric:tabular-nums}
 .share{font-family:var(--mono);white-space:pre;background:var(--slot);border-radius:6px;padding:10px;overflow-x:auto;user-select:all}
 details{font-size:.92rem;color:var(--muted)}
@@ -127,6 +131,12 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
   <section class="result" id="result" hidden>
     <h2 id="resultTitle"></h2>
     <div id="resultText"></div>
+    <dl class="stats" id="stats" hidden>
+      <div><dt>Played</dt><dd id="stPlayed">0</dd></div>
+      <div><dt>Win %</dt><dd id="stWin">0</dd></div>
+      <div><dt>Streak</dt><dd id="stStreak">0</dd></div>
+      <div><dt>Best</dt><dd id="stBest">0</dd></div>
+    </dl>
     <div class="share" id="shareText"></div>
     <p class="next" id="nextNote" hidden></p>
     <div class="actions">
@@ -212,8 +222,129 @@ const PUZZLES = [
    close:"short quick succinct terse fleeting momentary compact pithy"},
   {clue:"Wander", tier:5, kind:"doing word", answer:"meander", hint:"___nder",
    close:"roam stroll ramble amble drift rove saunter mosey stray trek"},
+  {clue:"Fast", tier:1, kind:"describing word", answer:"speedy", hint:"___edy",
+   close:"quick rapid swift hasty brisk nippy fleet zippy"},
+  {clue:"Large", tier:1, kind:"describing word", answer:"huge", hint:"_uge",
+   close:"big vast giant massive enormous immense great hefty bulky"},
+  {clue:"Smile", tier:1, kind:"doing word", answer:"grin", hint:"_rin",
+   close:"beam smirk simper laugh"},
+  {clue:"Shut", tier:1, kind:"doing word", answer:"close", hint:"__ose",
+   close:"lock seal fasten bolt latch slam"},
+  {clue:"Pal", tier:1, kind:"thing word", answer:"mate", hint:"_ate",
+   close:"friend buddy chum companion mucker crony comrade"},
+  {clue:"Wet", tier:1, kind:"describing word", answer:"damp", hint:"_amp",
+   close:"soggy soaked moist drenched sodden sopping soaking dewy"},
+  {clue:"Kid", tier:1, kind:"thing word", answer:"child", hint:"__ild",
+   close:"youngster tot nipper youth infant toddler minor sprog"},
+  {clue:"Look", tier:1, kind:"doing word", answer:"gaze", hint:"_aze",
+   close:"stare glance peek peer watch view see glimpse observe gawp eye"},
+  {clue:"Pretty", tier:1, kind:"describing word", answer:"lovely", hint:"___ely",
+   close:"beautiful attractive cute bonny gorgeous fair handsome stunning nice charming"},
+  {clue:"Stone", tier:1, kind:"thing word", answer:"rock", hint:"_ock",
+   close:"pebble boulder cobble"},
+  {clue:"Hop", tier:1, kind:"doing word", answer:"jump", hint:"_ump",
+   close:"leap skip bound spring bounce vault"},
+  {clue:"Shop", tier:1, kind:"thing word", answer:"store", hint:"__ore",
+   close:"boutique outlet market emporium retailer"},
+  {clue:"Scared", tier:2, kind:"describing word", answer:"afraid", hint:"___aid",
+   close:"frightened fearful terrified nervous anxious petrified spooked timid alarmed"},
+  {clue:"Cash", tier:2, kind:"thing word", answer:"money", hint:"__ney",
+   close:"dosh funds notes coins currency dough bread lolly brass wonga"},
+  {clue:"Pick", tier:2, kind:"doing word", answer:"choose", hint:"___ose",
+   close:"select opt elect decide prefer"},
+  {clue:"Odd", tier:2, kind:"describing word", answer:"unusual", hint:"___sual",
+   close:"strange weird peculiar bizarre curious funny rum quirky"},
+  {clue:"Dirty", tier:2, kind:"describing word", answer:"filthy", hint:"___thy",
+   close:"grubby mucky grimy muddy soiled messy unclean manky dusty"},
+  {clue:"Funny", tier:2, kind:"describing word", answer:"comical", hint:"___ical",
+   close:"hilarious amusing witty humorous droll silly hysterical"},
+  {clue:"Tidy", tier:2, kind:"describing word", answer:"neat", hint:"_eat",
+   close:"orderly trim spruce smart organised organized shipshape clean"},
+  {clue:"End", tier:2, kind:"doing word", answer:"finish", hint:"___ish",
+   close:"stop complete conclude close cease halt terminate"},
+  {clue:"Hit", tier:2, kind:"doing word", answer:"strike", hint:"___ike",
+   close:"punch smack thump whack slap bash belt clout knock wallop"},
+  {clue:"Mistake", tier:2, kind:"thing word", answer:"error", hint:"__ror",
+   close:"blunder slip gaffe howler boob fault oversight lapse"},
+  {clue:"Fair", tier:2, kind:"describing word", answer:"just", hint:"_ust",
+   close:"equal even impartial reasonable unbiased balanced honest square blond blonde pale light"},
+  {clue:"Seat", tier:2, kind:"thing word", answer:"chair", hint:"__air",
+   close:"stool bench sofa couch pew throne settee armchair"},
+  {clue:"Danger", tier:3, kind:"thing word", answer:"peril", hint:"___il",
+   close:"risk hazard threat menace jeopardy"},
+  {clue:"Gather", tier:3, kind:"doing word", answer:"collect", hint:"____ect",
+   close:"assemble amass accumulate harvest congregate"},
+  {clue:"Shy", tier:3, kind:"describing word", answer:"timid", hint:"___id",
+   close:"bashful reserved quiet retiring nervous coy diffident sheepish"},
+  {clue:"Dull", tier:3, kind:"describing word", answer:"tedious", hint:"____ous",
+   close:"boring dreary monotonous bland flat humdrum drab uninteresting mundane"},
+  {clue:"Crowd", tier:3, kind:"thing word", answer:"throng", hint:"___ong",
+   close:"mob horde crush swarm multitude mass pack flock herd gathering"},
+  {clue:"Ask", tier:3, kind:"doing word", answer:"enquire", hint:"____ire",
+   close:"inquire question query quiz request"},
+  {clue:"Blend", tier:3, kind:"doing word", answer:"combine", hint:"___bine",
+   close:"mix merge mingle fuse stir unite join amalgamate"},
+  {clue:"Hungry", tier:3, kind:"describing word", answer:"peckish", hint:"____ish",
+   close:"starving famished ravenous starved empty"},
+  {clue:"Clumsy", tier:3, kind:"describing word", answer:"awkward", hint:"___ward",
+   close:"gawky ungainly bumbling inept klutzy"},
+  {clue:"Plenty", tier:3, kind:"thing word", answer:"heaps", hint:"___ps",
+   close:"loads lots masses tons stacks oodles piles abundance plethora"},
+  {clue:"Trick", tier:3, kind:"thing word", answer:"ruse", hint:"_use",
+   close:"scam con hoax prank ploy scheme stunt wheeze dodge swindle"},
+  {clue:"Bend", tier:3, kind:"doing word", answer:"curve", hint:"__rve",
+   close:"flex bow twist crook arc buckle fold warp"},
+  {clue:"Shining", tier:4, kind:"describing word", answer:"gleaming", hint:"____ming",
+   close:"glowing shiny sparkling glistening bright radiant polished lustrous glittering"},
+  {clue:"Vanish", tier:4, kind:"doing word", answer:"disappear", hint:"_____pear",
+   close:"fade evaporate dissolve go leave depart"},
+  {clue:"Annoy", tier:4, kind:"doing word", answer:"irritate", hint:"____tate",
+   close:"bother bug irk vex nettle rile pester needle aggravate exasperate"},
+  {clue:"Old", tier:4, kind:"describing word", answer:"ancient", hint:"___ient",
+   close:"aged elderly antique vintage antiquated archaic olden decrepit"},
+  {clue:"Grumpy", tier:4, kind:"describing word", answer:"tetchy", hint:"___chy",
+   close:"grouchy irritable cranky crotchety crabby sulky moody narky ratty cross surly"},
+  {clue:"Chance", tier:4, kind:"thing word", answer:"opportunity", hint:"_______nity",
+   close:"opening break shot occasion window possibility prospect"},
+  {clue:"Silly", tier:4, kind:"describing word", answer:"daft", hint:"_aft",
+   close:"foolish stupid dumb ridiculous absurd idiotic barmy dotty potty inane"},
+  {clue:"Cheap", tier:4, kind:"describing word", answer:"budget", hint:"___get",
+   close:"inexpensive economical affordable bargain discount reasonable"},
+  {clue:"Fall", tier:4, kind:"doing word", answer:"tumble", hint:"___ble",
+   close:"drop topple plunge collapse trip slip plummet sink"},
+  {clue:"Sticky", tier:4, kind:"describing word", answer:"tacky", hint:"___ky",
+   close:"gluey gummy adhesive gooey clammy humid muggy"},
+  {clue:"Praise", tier:4, kind:"doing word", answer:"commend", hint:"____end",
+   close:"compliment applaud laud acclaim admire hail congratulate extol"},
+  {clue:"Sneaky", tier:4, kind:"describing word", answer:"crafty", hint:"___fty",
+   close:"sly cunning devious shifty wily underhand furtive scheming artful"},
+  {clue:"Talkative", tier:5, kind:"describing word", answer:"garrulous", hint:"____ulous",
+   close:"chatty gabby loquacious verbose wordy gossipy voluble"},
+  {clue:"Stubborn", tier:5, kind:"describing word", answer:"obstinate", hint:"____inate",
+   close:"headstrong wilful pigheaded mulish inflexible obdurate"},
+  {clue:"Hard", tier:5, kind:"describing word", answer:"arduous", hint:"___uous",
+   close:"difficult tough tricky taxing gruelling demanding strenuous laborious tiring solid firm rigid"},
+  {clue:"Fake", tier:5, kind:"describing word", answer:"bogus", hint:"___us",
+   close:"false phoney phony counterfeit sham forged imitation fraudulent fictitious pseudo"},
+  {clue:"Kind", tier:5, kind:"describing word", answer:"benevolent", hint:"______lent",
+   close:"caring gentle nice generous kindly compassionate thoughtful considerate friendly charitable"},
+  {clue:"Scold", tier:5, kind:"doing word", answer:"reprimand", hint:"_____mand",
+   close:"tell rebuke chide berate admonish reprove lecture castigate upbraid"},
+  {clue:"Lucky", tier:5, kind:"describing word", answer:"fortunate", hint:"_____nate",
+   close:"blessed jammy charmed favoured happy prosperous"},
+  {clue:"Easy", tier:5, kind:"describing word", answer:"effortless", hint:"______less",
+   close:"simple straightforward painless smooth undemanding facile elementary cushy"},
+  {clue:"Worried", tier:5, kind:"describing word", answer:"apprehensive", hint:"________sive",
+   close:"anxious nervous uneasy fearful concerned troubled fretful jittery tense edgy"},
+  {clue:"Secret", tier:5, kind:"describing word", answer:"clandestine", hint:"_______tine",
+   close:"hidden covert private confidential undercover concealed furtive stealthy"},
+  {clue:"Nonsense", tier:5, kind:"thing word", answer:"drivel", hint:"___vel",
+   close:"rubbish twaddle gibberish balderdash claptrap tosh piffle codswallop poppycock rot garbage bunk hogwash"},
+  {clue:"Cheerful", tier:5, kind:"describing word", answer:"buoyant", hint:"___yant",
+   close:"happy jolly sunny bright upbeat merry chirpy jovial perky optimistic"},
 ].map(p=>({...p, close:new Set(p.close.split(" "))}));
 const MAX = 5;
+const LAUNCH = Date.UTC(2026,9,9);   // Fri 9 Oct 2026 = Samey No. 1
 // Word list: guesses must be real words. If the list fails to load, every guess is accepted.
 let WORDS = null;
 fetch("words.txt").then(r=> r.ok ? r.text() : Promise.reject()).then(t=>{ WORDS = new Set(t.split("\n")); }).catch(()=>{});
@@ -232,7 +363,8 @@ const TIERS = ["","Gentle","Easy","Medium","Tricky","Toughest"];
 function todayTier(){ const w=new Date().getDay(); return (w===0||w===6) ? 3 : w; }
 function dayIndex(){
   const d=new Date(), tier=todayTier();
-  const week=Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/(864e5*7));
+  const days=Math.round((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())-LAUNCH)/864e5);
+  const week=Math.max(0,Math.floor((days+4)/7));   // weeks since launch, rolling over on Mondays (launch was a Friday)
   const pool=PUZZLES.map((p,i)=>p.tier===tier?i:-1).filter(i=>i>=0);
   return pool[week % pool.length];
 }
@@ -336,6 +468,7 @@ function finish(){
   const score = state.won ? `${state.used}/${MAX}` : `X/${MAX}`;
   $("shareText").textContent = `Samey ${state.daily ? dayNumber() : '#'+(state.i+1)} (${TIERS[p.tier]})  ${score}\n${marks}`;
   $("result").hidden = false;
+  if(state.daily){ recordResult(state.won); showStats(); }
   $("copyBtn").textContent = "Copy result";
   $("nextBtn").hidden = state.daily;
   $("nextNote").hidden = !state.daily;
@@ -357,7 +490,31 @@ function selectShare(){ const r=document.createRange(); r.selectNodeContents($("
 PUZZLES.forEach((p,i)=>{ const o=document.createElement("option"); o.value=i; o.textContent=`#${i+1} · ${TIERS[p.tier]}`; $("puzzle").appendChild(o); });
 // ---- one puzzle a day ----
 const TEST = location.hash === "#test";      // samey.uk/#test shows the puzzle picker for play-testing
-const LAUNCH = Date.UTC(2026,9,9);           // 9 Oct 2026 = Samey No. 1
+function dayKey(d){ return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`; }
+function yesterdayKey(){ const d=new Date(); d.setDate(d.getDate()-1); return dayKey(d); }
+const STATS_KEY = "samey-stats";
+function loadStats(){
+  let st=null; try{ st=JSON.parse(localStorage.getItem(STATS_KEY)); }catch(e){}
+  return Object.assign({played:0, won:0, streak:0, best:0, lastPlayed:null, lastWon:null}, st||{});
+}
+// Counts each day once, so reloading a finished game never double-counts.
+function recordResult(won){
+  const st=loadStats(), today=todayKey();
+  if(st.lastPlayed===today) return;
+  st.played++; st.lastPlayed=today;
+  if(won){ st.won++; st.streak = (st.lastWon===yesterdayKey()) ? st.streak+1 : 1; st.lastWon=today; st.best=Math.max(st.best, st.streak); }
+  else st.streak = 0;
+  try{ localStorage.setItem(STATS_KEY, JSON.stringify(st)); }catch(e){}
+}
+function showStats(){
+  const st=loadStats();
+  const live = (st.lastWon===todayKey() || st.lastWon===yesterdayKey()) ? st.streak : 0;
+  $("stPlayed").textContent=st.played;
+  $("stWin").textContent= st.played ? Math.round(100*st.won/st.played) : 0;
+  $("stStreak").textContent=live;
+  $("stBest").textContent=st.best;
+  $("stats").hidden=false;
+}
 function todayKey(){ const d=new Date(); return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`; }
 function dayNumber(){ const d=new Date(); return "No. " + (Math.round((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())-LAUNCH)/864e5)+1); }
 const SAVE_KEY = "samey-today";
@@ -395,5 +552,10 @@ if(TEST){
 }
 </script>
 
+<!-- Cloudflare Web Analytics: replace PASTE_TOKEN_HERE with the token Cloudflare gives you for samey.uk,
+     then delete the two comment lines around the script tag so it runs. -->
+<!--
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "PASTE_TOKEN_HERE"}'></script>
+-->
 </body>
 </html>
