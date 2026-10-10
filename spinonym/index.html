@@ -121,7 +121,7 @@ select{flex:1;min-width:0;background:var(--surface);color:var(--ink);border:1px 
 .log .f{font-family:var(--mono);letter-spacing:.12em;color:var(--muted);white-space:nowrap}
 .log li.win .f{color:var(--g)}
 .log li.hintrow .g{color:var(--amber)}
-.log li.closerow .g{color:var(--muted);font-weight:400}
+.log li.closerow .g{color:var(--ink)}
 form{display:flex;gap:8px}
 input{flex:1;min-width:0;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:8px;padding:10px 12px;font-size:1.05rem}
 input:focus{outline:none;border-color:var(--g)}
@@ -321,7 +321,7 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
       <li>You have 4 goes. Your guess can be any length, but it has to be a real word. Name days (pseudonyms and exonyms) take any guess.</li>
       <li>Every letter in your guess that's also in the answer lights up in all its spots, and stays lit.</li>
       <li>Anagram days are different: use exactly the letters you're given, in any order (it doesn't have to be a real word). Any letter in the right place locks in.</li>
-      <li>Guess another fair answer and we'll tell you it's close. It won't cost a go, and it doesn't check any letters.</li>
+      <li>Guess another fair answer and we'll tell you it's close, but it's not the one we're after. It uses a go like any other guess, and its letters still light up.</li>
       <li>Stuck? A hint fills in part of the word, but uses up a go.</li>
       <li>Solve it to unlock the bonus round. Get all three right to find an Easter egg in the <a href="glossary.html">glossary</a>.</li>
       <li>Win 7 days in a row and a golden bonus puzzle unlocks, with a rarer kind of word. It comes round again every 7th day of your streak.</li>
@@ -502,9 +502,9 @@ function render(fresh){
   });
   const log=$("log"); log.innerHTML="";
   state.rows.forEach((r,k)=>{
-    const li=document.createElement("li"); li.className = r.win?"win":(r.hint?"hintrow":"");
+    const li=document.createElement("li"); li.className = r.win?"win":(r.hint?"hintrow":(r.close?"closerow":""));
     li.innerHTML=`<span class="n">${k+1}</span><span class="g"></span><span class="f"></span>`;
-    li.querySelector(".g").textContent = r.hint?"Hint":r.guess; li.querySelector(".f").textContent = r.board; log.appendChild(li);
+    li.querySelector(".g").textContent = r.hint?"Hint":(r.close?`${r.guess} · close`:r.guess); li.querySelector(".f").textContent = r.board; log.appendChild(li);
   });
   $("hintBtn").disabled = state.done || state.hintUsed || MAX-state.used < 2;
 }
@@ -517,21 +517,22 @@ function guess(raw){
   if(g===p.clue.toLowerCase()){ msg.className="msg err"; msg.textContent="That's the starting word. Try another."; return; }
   if(anagram && sorted(g)!==sorted(p.answer)){ msg.className="msg err"; msg.textContent=`Use exactly the letters in ${p.clue.toUpperCase()}. That didn't cost a go.`; return; }
   if(!p.free && !anagram && WORDS && !WORDS.has(g) && g!==p.answer && !p.close.has(g)){ msg.className="msg err"; msg.textContent=`"${g}" isn't in our word list. Try a real word. That didn't cost a go.`; return; }
-  if(state.rows.some(r=>r.guess===g) || state.closeTried.has(g)){ msg.className="msg err"; msg.textContent="You've already tried that one."; return; }
-  if(p.close.has(g)){
-    state.closeTried.add(g); $("guess").value=""; act({c:g});
-    msg.className="msg close"; msg.textContent=`Close! "${g}" works, but it's not the one we're after. That one's free: no go used, and no letters checked.`; return;
-  }
+  if(state.rows.some(r=>r.guess===g)){ msg.className="msg err"; msg.textContent="You've already tried that one."; return; }
+  const isClose = p.close.has(g) && g!==p.answer;   // a fair answer, but not today's: it counts as a normal go
   state.used++; act({g});
   if(!anagram) for(const ch of g) if(!p.answer.includes(ch)) state.missed.add(ch);
   const exact = g===p.answer;
   const fresh = apply(exact ? p.answer.split("") : reveal(p.answer, g, state.known, anagram), false);
   const win = exact || state.known.every(Boolean);
-  state.rows.push({guess:g, board:mask(state.known), win});
+  state.rows.push({guess:g, board:mask(state.known), win, close:isClose});
   $("guess").value="";
   if(win){ state.done=true; state.won=true; }
   else if(state.used>=MAX){ state.done=true; }
-  else { const f=fresh.size; msg.textContent = f ? `${f} new letter${f>1?"s":""} found.` : (anagram ? "No letters in the right place yet." : "No new letters that time."); }
+  else {
+    const f=fresh.size, found = f ? `${f} new letter${f>1?"s":""} found.` : (anagram ? "No letters in the right place yet." : "No new letters that time.");
+    if(isClose){ msg.className="msg close"; msg.textContent=`Close! "${g}" works, but it's not the one we're after. ${found}`; }
+    else msg.textContent = found;
+  }
   render(fresh);
   if(state.done) finish();
 }
