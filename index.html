@@ -106,6 +106,20 @@ input:focus{outline:none;border-color:var(--teal)}
 details{font-size:.92rem;color:var(--muted)}
 summary{cursor:pointer;font-weight:700;color:var(--ink)}
 details ul{padding-left:1.2rem;margin:.5rem 0 0}
+/* Link to Spinonym: a dark card on the result (it flips with dark mode), plus a quiet line at the foot of the page */
+.spn-card{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:12px;background:var(--ink);color:var(--bg);text-decoration:none;min-height:44px}
+.spn-card:hover .spn-arrow{transform:translateX(3px)}
+.spn-card:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.spn-wheel{flex:none;width:48px;height:48px}
+.spn-text{display:flex;flex-direction:column;gap:1px;min-width:0}
+.spn-new{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--amber)}
+.spn-title{font-family:var(--display);font-weight:800;font-size:1.3rem;line-height:1.1}
+.spn-sub{font-size:.9rem;opacity:.85}
+.spn-arrow{margin-left:auto;font-size:1.4rem;font-weight:700;flex:none;transition:transform .15s}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .spn-new{color:#8a5a00}}
+:root[data-theme="dark"] .spn-new{color:#8a5a00}
+.spn-foot{text-align:center;font-size:.92rem;color:var(--muted);margin:0}
+.spn-foot a{color:var(--ink);font-weight:700}
 @media (prefers-reduced-motion: reduce){.tile{transition:none}.tile.pop{transform:none}}
 </style>
 
@@ -164,6 +178,15 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
       <button class="btn" id="copyBtn" type="button">Copy result</button>
       <button class="btn ghost" id="nextBtn" type="button">Next puzzle</button>
     </div>
+    <a class="spn-card" href="/spinonym/">
+      <svg class="spn-wheel" viewBox="-32 -32 64 64" aria-hidden="true"><path d="M0 -30A30 30 0 0 1 25.98 15L0 0Z" fill="#2B5597"/><path d="M25.98 15A30 30 0 0 1 -25.98 15L0 0Z" fill="#A84F0C"/><path d="M-25.98 15A30 30 0 0 1 -25.98 -15L0 0Z" fill="#17796B"/><path d="M-25.98 -15A30 30 0 0 1 0 -30L0 0Z" fill="#6B3F99"/><circle r="10" fill="#16181D" stroke="#ffffff" stroke-width="2.5"/></svg>
+      <span class="spn-text">
+        <span class="spn-new">New from Samey</span>
+        <span class="spn-title">Play Spinonym</span>
+        <span class="spn-sub">Spin the wheel for today's kind of word</span>
+      </span>
+      <span class="spn-arrow" aria-hidden="true">→</span>
+    </a>
   </section>
 
   <details>
@@ -179,6 +202,8 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
       <li>Stuck? A hint fills in part of the word, but uses up a go.</li>
     </ul>
   </details>
+
+  <p class="spn-foot">New: <a href="/spinonym/">Spinonym</a>, our daily wheel of words. Spin the nym.</p>
 </main>
 
 <script>
