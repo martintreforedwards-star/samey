@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spinonym · Word glossary</title>
+<meta name="description" content="Plain-English definitions of every word type in Spinonym, from acronym to toponym.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EEF0F4;
+    --card: #FFFFFF;
+    --ink: #16181D;
+    --muted: #4A4F5C;
+    --line: #D9DCE3;
+    --meaning: #2B5597;
+    --sound: #A84F0C;
+    --names: #17796B;
+    --word: #6B3F99;
+    --bonus: #8A6A00;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121418;
+      --card: #1C1F25;
+      --ink: #F1F2F5;
+      --muted: #AAB0BD;
+      --line: #2E333C;
+      --meaning: #8FAEE3;
+      --sound: #F0A866;
+      --names: #6FCFBE;
+      --word: #C3A3EA;
+      --bonus: #E8C55A;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 24px 16px 64px; }
+  .back {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--muted); text-decoration: none; font-weight: 500;
+    min-height: 44px;
+  }
+  .back:hover { color: var(--ink); }
+  h1 {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 800; font-size: clamp(32px, 8vw, 44px);
+    letter-spacing: -1px; line-height: 1.05; margin: 8px 0 8px;
+  }
+  .intro { color: var(--muted); margin: 0 0 20px; max-width: 54ch; }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .filters button {
+    font: inherit; font-weight: 700; font-size: 14px;
+    min-height: 40px; padding: 0 16px; border-radius: 999px;
+    border: 2px solid var(--ink); background: transparent; color: var(--ink);
+    cursor: pointer;
+  }
+  .filters button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+  .jump { display: flex; flex-wrap: wrap; gap: 4px; margin: 0 0 24px; padding: 0; list-style: none; }
+  .jump a {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 36px; height: 36px; border-radius: 8px;
+    text-decoration: none; font-weight: 700; color: var(--ink);
+    background: var(--card); border: 1px solid var(--line);
+  }
+  .jump a:hover { border-color: var(--ink); }
+  .list { display: flex; flex-direction: column; gap: 12px; margin: 0; padding: 0; list-style: none; }
+  .term {
+    background: var(--card); border-radius: 16px; padding: 18px 20px;
+    border: 1px solid var(--line);
+    scroll-margin-top: 16px;
+  }
+  .term:target { outline: 3px solid var(--ink); outline-offset: 2px; }
+  .term h2 {
+    font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800;
+    font-size: 24px; margin: 0; line-height: 1.15;
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+  .dot { width: 12px; height: 12px; border-radius: 50%; flex: none; }
+  .tag {
+    font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.6px; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 6px; border: 1.5px solid currentColor;
+  }
+  .def { margin: 6px 0 4px; font-size: 17px; }
+  .eg { margin: 0; color: var(--muted); }
+  .eg strong { color: var(--ink); font-weight: 700; }
+  .meaning .dot { background: var(--meaning); } .meaning .tag.group { color: var(--meaning); }
+  .sound .dot { background: var(--sound); } .sound .tag.group { color: var(--sound); }
+  .names .dot { background: var(--names); } .names .tag.group { color: var(--names); }
+  .word .dot { background: var(--word); } .word .tag.group { color: var(--word); }
+  .tag.bonus { color: var(--bonus); }
+  .tag.extra { color: var(--muted); }
+  .tag.figure { color: var(--muted); }
+  .tag.egg { color: var(--bonus); }
+  .eggs-head {
+    font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800;
+    font-size: 28px; margin: 40px 0 4px; letter-spacing: -0.5px;
+  }
+  .eggs-intro { color: var(--muted); margin: 0 0 16px; }
+  .lock { display: none; margin: 6px 0 0; color: var(--muted); }
+  .term.locked .name { filter: blur(7px); user-select: none; }
+  .term.locked .def, .term.locked .eg { display: none; }
+  .term.locked .lock { display: block; }
+  .term.locked { border-style: dashed; }
+  [hidden] { display: none !important; }
+  footer { margin-top: 32px; color: var(--muted); font-size: 14px; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <a class="back" href="./">&larr; Back to Spinonym</a>
+  <h1>Word glossary</h1>
+  <p class="intro">A friendly tour of how English works, from A to Z. You'll find every kind of word you might land on in Spinonym, plus plenty of other quirks worth knowing. The colour shows which part of the wheel each one belongs to.</p>
+
+  <div class="filters" role="group" aria-label="Filter terms">
+    <button type="button" data-filter="all" aria-pressed="true">All</button>
+    <button type="button" data-filter="wheel" aria-pressed="false">On the wheel</button>
+    <button type="button" data-filter="bonus" aria-pressed="false">Bonus</button>
+    <button type="button" data-filter="extra" aria-pressed="false">More wordplay</button>
+    <button type="button" data-filter="figure" aria-pressed="false">Figures of speech</button>
+    <button type="button" data-filter="egg" aria-pressed="false">Easter eggs</button>
+  </div>
+
+  <ul class="jump" aria-label="Jump to a letter">
+    <li><a href="#acronym">A</a></li>
+    <li><a href="#backronym">B</a></li>
+    <li><a href="#capitonym">C</a></li>
+    <li><a href="#demonym">D</a></li>
+    <li><a href="#eggcorn">E</a></li>
+    <li><a href="#heteronym">H</a></li>
+    <li><a href="#initialism">I</a></li>
+    <li><a href="#kangaroo-word">K</a></li>
+    <li><a href="#loanword">L</a></li>
+    <li><a href="#malapropism">M</a></li>
+    <li><a href="#neologism">N</a></li>
+    <li><a href="#onomatopoeia">O</a></li>
+    <li><a href="#palindrome">P</a></li>
+    <li><a href="#retronym">R</a></li>
+    <li><a href="#semordnilap">S</a></li>
+    <li><a href="#tautonym">T</a></li>
+    <li><a href="#unpaired-word">U</a></li>
+    <li><a href="#zeugma">Z</a></li>
+  </ul>
+
+  <ul class="list">
+    <li class="term word" id="acronym" data-kind="wheel">
+      <h2><span class="dot" aria-hidden="true"></span>Acronym <span class="tag group">Word-building</span></h2>
+      <p class="def">A word made from the first letters of a phrase, said as a word.</p>
+      <p class="eg">e.g. <strong>scuba</strong>: self-contained underwater breathing apparatus</p>
+    </li>
+    <li class="term word" id="acrostic" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Acrostic <span class="tag group">Word-building</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A poem or puzzle where the first letter of each line spells out a word.</p>
+      <p class="eg">e.g. lines starting <strong>C</strong>, <strong>A</strong>, <strong>T</strong> spell cat</p>
+    </li>
+    <li class="term sound" id="alliteration" data-kind="figure">
+      <h2><span class="dot" aria-hidden="true"></span>Alliteration <span class="tag group">Sound &amp; spelling</span> <span class="tag figure">Figure of speech</span></h2>
+      <p class="def">Several words close together that start with the same sound.</p>
+      <p class="eg">e.g. <strong>Peter Piper picked a peck of pickled peppers</strong></p>
+    </li>
+    <li class="term sound" id="anagram" data-kind="wheel">
+      <h2><span class="dot" aria-hidden="true"></span>Anagram <span class="tag group">Sound &amp; spelling</span></h2>
+      <p class="def">The same letters rearranged to make a new word.</p>
+      <p class="eg">e.g. <strong>listen</strong> becomes <strong>silent</strong></p>
+    </li>
+    <li class="term meaning" id="antonym" data-kind="wheel">
+      <h2><span class="dot" aria-hidden="true"></span>Antonym <span class="tag group">Meaning</span></h2>
+      <p class="def">A word with the opposite meaning.</p>
+      <p class="eg">e.g. <strong>hot</strong> and <strong>cold</strong></p>
+    </li>
+    <li class="term sound" id="aptagram" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Aptagram <span class="tag group">Sound &amp; spelling</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">An anagram whose new words suit the original’s meaning.</p>
+      <p class="eg">e.g. <strong>astronomer</strong> → moon starer, <strong>dormitory</strong> → dirty room, <strong>the eyes</strong> → they see</p>
+    </li>
+    <li class="term names" id="aptronym" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Aptronym <span class="tag group">Names</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A person’s name that suits their job or what they’re known for.</p>
+      <p class="eg">e.g. sprinter <strong>Usain Bolt</strong></p>
+    </li>
+    <li class="term sound" id="assonance" data-kind="figure">
+      <h2><span class="dot" aria-hidden="true"></span>Assonance <span class="tag group">Sound &amp; spelling</span> <span class="tag figure">Figure of speech</span></h2>
+      <p class="def">Words that share the same vowel sound, but end differently. A kind of half rhyme.</p>
+      <p class="eg">e.g. <strong>tangerine</strong> and <strong>dream</strong></p>
+    </li>
+    <li class="term meaning" id="autological-word" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Autological word <span class="tag group">Meaning</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A word that describes itself.</p>
+      <p class="eg">e.g. <strong>short</strong> is short, and <strong>English</strong> is English</p>
+    </li>
+    <li class="term word" id="backronym" data-kind="bonus">
+      <h2><span class="dot" aria-hidden="true"></span>Backronym <span class="tag group">Word-building</span> <span class="tag bonus">Bonus</span></h2>
+      <p class="def">A phrase invented afterwards to fit a word that already existed.</p>
+      <p class="eg">e.g. <strong>SOS</strong> as “Save Our Souls”</p>
+    </li>
+    <li class="term word" id="calque" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Calque <span class="tag group">Word-building</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A phrase translated word for word from another language.</p>
+      <p class="eg">e.g. <strong>flea market</strong>, from the French marché aux puces</p>
+    </li>
+    <li class="term sound" id="capitonym" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Capitonym <span class="tag group">Sound &amp; spelling</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A word that changes meaning when it gets a capital letter.</p>
+      <p class="eg">e.g. <strong>polish</strong> your shoes, <strong>Polish</strong> food</p>
+    </li>
+    <li class="term word" id="clipping" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Clipping <span class="tag group">Word-building</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A longer word cut short, which then becomes a word in its own right.</p>
+      <p class="eg">e.g. <strong>flu</strong>, from influenza</p>
+    </li>
+    <li class="term meaning" id="collective-noun" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Collective noun <span class="tag group">Meaning</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">The word for a group of things, especially animals.</p>
+      <p class="eg">e.g. a <strong>murder</strong> of crows</p>
+    </li>
+    <li class="term sound" id="consonance" data-kind="figure">
+      <h2><span class="dot" aria-hidden="true"></span>Consonance <span class="tag group">Sound &amp; spelling</span> <span class="tag figure">Figure of speech</span></h2>
+      <p class="def">Words that share the same consonant sounds, but have different vowels. The flip side of assonance.</p>
+      <p class="eg">e.g. <strong>blank</strong> and <strong>think</strong></p>
+    </li>
+    <li class="term meaning" id="contronym" data-kind="bonus">
+      <h2><span class="dot" aria-hidden="true"></span>Contronym <span class="tag group">Meaning</span> <span class="tag bonus">Bonus</span></h2>
+      <p class="def">One word with two opposite meanings.</p>
+      <p class="eg">e.g. <strong>dust</strong>: to sprinkle it on, or to wipe it off</p>
+    </li>
+    <li class="term names" id="cryptonym" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Cryptonym <span class="tag group">Names</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A code name used to keep something secret.</p>
+      <p class="eg">e.g. <strong>Operation Overlord</strong>, the D-Day landings</p>
+    </li>
+    <li class="term names" id="demonym" data-kind="bonus">
+      <h2><span class="dot" aria-hidden="true"></span>Demonym <span class="tag group">Names</span> <span class="tag bonus">Bonus</span></h2>
+      <p class="def">The name for people from a particular place.</p>
+      <p class="eg">e.g. someone from Glasgow is a <strong>Glaswegian</strong></p>
+    </li>
+    <li class="term sound" id="eggcorn" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Eggcorn <span class="tag group">Sound &amp; spelling</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A misheard word or phrase that still sort of makes sense. Named after “eggcorn” for acorn.</p>
+      <p class="eg">e.g. “for all <strong>intensive</strong> purposes” instead of intents and purposes</p>
+    </li>
+    <li class="term names" id="endonym" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Endonym <span class="tag group">Names</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">The name a place or people use for themselves.</p>
+      <p class="eg">e.g. <strong>Deutschland</strong> for Germany, <strong>Cymru</strong> for Wales</p>
+    </li>
+    <li class="term names" id="eponym" data-kind="wheel">
+      <h2><span class="dot" aria-hidden="true"></span>Eponym <span class="tag group">Names</span></h2>
+      <p class="def">A word named after a real person.</p>
+      <p class="eg">e.g. <strong>wellington</strong> boots, after the Duke of Wellington</p>
+    </li>
+    <li class="term meaning" id="euphemism" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Euphemism <span class="tag group">Meaning</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A gentler way of saying something blunt or awkward.</p>
+      <p class="eg">e.g. <strong>passed away</strong> instead of died</p>
+    </li>
+    <li class="term names" id="exonym" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Exonym <span class="tag group">Names</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">The name outsiders use for a place or people. The opposite of an endonym.</p>
+      <p class="eg">e.g. <strong>Germany</strong> for Deutschland</p>
+    </li>
+    <li class="term sound" id="half-rhyme" data-kind="figure">
+      <h2><span class="dot" aria-hidden="true"></span>Half rhyme <span class="tag group">Sound &amp; spelling</span> <span class="tag figure">Figure of speech</span></h2>
+      <p class="def">Words that nearly rhyme but not quite. Also called slant rhyme or near rhyme. Assonance and consonance are both kinds.</p>
+      <p class="eg">e.g. <strong>tangerine</strong> and <strong>dream</strong>, <strong>worm</strong> and <strong>swarm</strong></p>
+    </li>
+    <li class="term sound" id="heteronym" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Heteronym <span class="tag group">Sound &amp; spelling</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">Spelt the same, but said differently and with a different meaning. A type of homograph.</p>
+      <p class="eg">e.g. take a <strong>bow</strong>, tie a <strong>bow</strong></p>
+    </li>
+    <li class="term meaning" id="holonym" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Holonym <span class="tag group">Meaning</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">The whole thing that a part belongs to. The opposite of a meronym.</p>
+      <p class="eg">e.g. <strong>car</strong> is the holonym of wheel</p>
+    </li>
+    <li class="term sound" id="homograph" data-kind="wheel">
+      <h2><span class="dot" aria-hidden="true"></span>Homograph <span class="tag group">Sound &amp; spelling</span></h2>
+      <p class="def">Spelt the same, but with a different meaning, and sometimes a different sound.</p>
+      <p class="eg">e.g. a <strong>tear</strong> in your eye, a <strong>tear</strong> in your shirt</p>
+    </li>
+    <li class="term sound" id="homonym" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Homonym <span class="tag group">Sound &amp; spelling</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">Spelt and said the same, but with a different meaning.</p>
+      <p class="eg">e.g. a <strong>bat</strong> that flies, a cricket <strong>bat</strong></p>
+    </li>
+    <li class="term sound" id="homophone" data-kind="wheel">
+      <h2><span class="dot" aria-hidden="true"></span>Homophone <span class="tag group">Sound &amp; spelling</span></h2>
+      <p class="def">Sounds the same, but is spelt differently and means something else.</p>
+      <p class="eg">e.g. <strong>night</strong> and <strong>knight</strong></p>
+    </li>
+    <li class="term meaning" id="hyperbole" data-kind="figure">
+      <h2><span class="dot" aria-hidden="true"></span>Hyperbole <span class="tag group">Meaning</span> <span class="tag figure">Figure of speech</span></h2>
+      <p class="def">Deliberate exaggeration, not meant to be taken literally.</p>
+      <p class="eg">e.g. <strong>I’ve told you a million times</strong></p>
+    </li>
+    <li class="term meaning" id="hypernym" data-kind="wheel">
+      <h2><span class="dot" aria-hidden="true"></span>Hypernym <span class="tag group">Meaning</span></h2>
+      <p class="def">The umbrella word for a whole group of things.</p>
+      <p class="eg">e.g. rose, tulip and daisy are all <strong>flowers</strong></p>
+    </li>
+    <li class="term names" id="hypocorism" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Hypocorism <span class="tag group">Names</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A pet name or shortened, friendly form of a name.</p>
+      <p class="eg">e.g. <strong>Bob</strong> for Robert</p>
+    </li>
+    <li class="term meaning" id="hyponym" data-kind="wheel">
+      <h2><span class="dot" aria-hidden="true"></span>Hyponym <span class="tag group">Meaning</span></h2>
+      <p class="def">One specific example from a group. The opposite of a hypernym.</p>
+      <p class="eg">e.g. a <strong>poodle</strong> is a type of dog</p>
+    </li>
+    <li class="term meaning" id="idiom" data-kind="figure">
+      <h2><span class="dot" aria-hidden="true"></span>Idiom <span class="tag group">Meaning</span> <span class="tag figure">Figure of speech</span></h2>
+      <p class="def">A phrase that means something different from its individual words.</p>
+      <p class="eg">e.g. <strong>a piece of cake</strong>, meaning easy</p>
+    </li>
+    <li class="term word" id="initialism" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Initialism <span class="tag group">Word-building</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">Like an acronym, but you say each letter separately.</p>
+      <p class="eg">e.g. <strong>BBC</strong></p>
+    </li>
+    <li class="term sound" id="isogram" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Isogram <span class="tag group">Sound &amp; spelling</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A word where no letter appears more than once.</p>
+      <p class="eg">e.g. <strong>lumberjacks</strong></p>
+    </li>
+    <li class="term meaning" id="kangaroo-word" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Kangaroo word <span class="tag group">Meaning</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A word that hides a word with the same meaning inside it, letters in order, like a joey in a pouch.</p>
+      <p class="eg">e.g. <strong>rapscallion</strong> hides rascal</p>
+    </li>
+    <li class="term word" id="kenning" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Kenning <span class="tag group">Word-building</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A poetic two-word name for something, loved by Old English and Norse poets.</p>
+      <p class="eg">e.g. <strong>whale-road</strong> for the sea</p>
+    </li>
+    <li class="term sound" id="lipogram" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Lipogram <span class="tag group">Sound &amp; spelling</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">Writing that avoids one letter completely.</p>
+      <p class="eg">e.g. <strong>Gadsby</strong>, a whole novel without the letter e</p>
+    </li>
+    <li class="term meaning" id="litotes" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Litotes <span class="tag group">Meaning</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">Saying something by denying its opposite. A very British habit.</p>
+      <p class="eg">e.g. <strong>not bad</strong>, meaning good</p>
+    </li>
+    <li class="term word" id="loanword" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Loanword <span class="tag group">Word-building</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A word borrowed from another language and used as it is.</p>
+      <p class="eg">e.g. <strong>café</strong>, from French</p>
+    </li>
+    <li class="term sound" id="malapropism" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Malapropism <span class="tag group">Sound &amp; spelling</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">Using the wrong word by mistake because it sounds like the right one, often with funny results.</p>
+      <p class="eg">e.g. “she danced the <strong>flamingo</strong>” instead of flamenco</p>
+    </li>
+    <li class="term meaning" id="meronym" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Meronym <span class="tag group">Meaning</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A word for a part of something bigger.</p>
+      <p class="eg">e.g. <strong>wheel</strong> is a meronym of car</p>
+    </li>
+    <li class="term meaning" id="metaphor" data-kind="figure">
+      <h2><span class="dot" aria-hidden="true"></span>Metaphor <span class="tag group">Meaning</span> <span class="tag figure">Figure of speech</span></h2>
+      <p class="def">Saying one thing <em>is</em> another, to describe it.</p>
+      <p class="eg">e.g. <strong>time is money</strong></p>
+    </li>
+    <li class="term meaning" id="metonym" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Metonym <span class="tag group">Meaning</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">Something closely linked to a thing, used to stand in for it.</p>
+      <p class="eg">e.g. <strong>the Crown</strong> for the monarchy</p>
+    </li>
+    <li class="term sound" id="mondegreen" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Mondegreen <span class="tag group">Sound &amp; spelling</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A misheard line, usually from a song, poem or prayer.</p>
+      <p class="eg">e.g. “<strong>Gladly the cross-eyed bear</strong>” for “Gladly the cross I’d bear”</p>
+    </li>
+    <li class="term names" id="mononym" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Mononym <span class="tag group">Names</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">Someone known by just one name.</p>
+      <p class="eg">e.g. <strong>Adele</strong></p>
+    </li>
+    <li class="term word" id="neologism" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Neologism <span class="tag group">Word-building</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A newly invented word or phrase.</p>
+      <p class="eg">e.g. <strong>staycation</strong></p>
+    </li>
+    <li class="term sound" id="onomatopoeia" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Onomatopoeia <span class="tag group">Sound &amp; spelling</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A word that sounds like the noise it describes.</p>
+      <p class="eg">e.g. <strong>buzz</strong>, <strong>sizzle</strong>, <strong>splash</strong></p>
+    </li>
+    <li class="term sound" id="oronym" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Oronym <span class="tag group">Sound &amp; spelling</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A phrase that sounds exactly like a different phrase.</p>
+      <p class="eg">e.g. <strong>ice cream</strong> and <strong>I scream</strong></p>
+    </li>
+    <li class="term meaning" id="oxymoron" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Oxymoron <span class="tag group">Meaning</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">Two words with opposite meanings used together.</p>
+      <p class="eg">e.g. <strong>deafening silence</strong></p>
+    </li>
+    <li class="term sound" id="palindrome" data-kind="wheel">
+      <h2><span class="dot" aria-hidden="true"></span>Palindrome <span class="tag group">Sound &amp; spelling</span></h2>
+      <p class="def">Reads the same forwards and backwards.</p>
+      <p class="eg">e.g. <strong>level</strong></p>
+    </li>
+    <li class="term sound" id="pangram" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Pangram <span class="tag group">Sound &amp; spelling</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A sentence that uses every letter of the alphabet at least once.</p>
+      <p class="eg">e.g. <strong>The quick brown fox jumps over the lazy dog</strong></p>
+    </li>
+    <li class="term word" id="portmanteau" data-kind="wheel">
+      <h2><span class="dot" aria-hidden="true"></span>Portmanteau <span class="tag group">Word-building</span></h2>
+      <p class="def">Two words squashed together to make a new one.</p>
+      <p class="eg">e.g. smoke + fog = <strong>smog</strong></p>
+    </li>
+    <li class="term names" id="pseudonym" data-kind="wheel">
+      <h2><span class="dot" aria-hidden="true"></span>Pseudonym <span class="tag group">Names</span></h2>
+      <p class="def">A made-up name someone uses instead of their real one.</p>
+      <p class="eg">e.g. Samuel Clemens wrote as <strong>Mark Twain</strong></p>
+    </li>
+    <li class="term word" id="retronym" data-kind="bonus">
+      <h2><span class="dot" aria-hidden="true"></span>Retronym <span class="tag group">Word-building</span> <span class="tag bonus">Bonus</span></h2>
+      <p class="def">A new name for an old thing, needed because something newer came along.</p>
+      <p class="eg">e.g. <strong>landline</strong>, once mobile phones arrived</p>
+    </li>
+    <li class="term sound" id="rhyming-slang" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Rhyming slang <span class="tag group">Sound &amp; spelling</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A phrase that stands in for a word it rhymes with, often shortened. Famously Cockney.</p>
+      <p class="eg">e.g. <strong>apples and pears</strong> means stairs</p>
+    </li>
+    <li class="term sound" id="semordnilap" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Semordnilap <span class="tag group">Sound &amp; spelling</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A word that spells a different word backwards. The name is “palindromes” spelt backwards.</p>
+      <p class="eg">e.g. <strong>stressed</strong> becomes <strong>desserts</strong></p>
+    </li>
+    <li class="term meaning" id="simile" data-kind="figure">
+      <h2><span class="dot" aria-hidden="true"></span>Simile <span class="tag group">Meaning</span> <span class="tag figure">Figure of speech</span></h2>
+      <p class="def">Comparing two things using “like” or “as”.</p>
+      <p class="eg">e.g. <strong>as brave as a lion</strong></p>
+    </li>
+    <li class="term sound" id="spoonerism" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Spoonerism <span class="tag group">Sound &amp; spelling</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">Swapping the first sounds of two words, usually by accident.</p>
+      <p class="eg">e.g. “fighting a liar” instead of <strong>lighting a fire</strong></p>
+    </li>
+    <li class="term meaning" id="synonym" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Synonym <span class="tag group">Meaning</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A word with the same or a very similar meaning.</p>
+      <p class="eg">e.g. <strong>big</strong> and <strong>large</strong></p>
+    </li>
+    <li class="term sound" id="tautonym" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Tautonym <span class="tag group">Sound &amp; spelling</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A word made of the same part said twice.</p>
+      <p class="eg">e.g. <strong>couscous</strong>, <strong>bonbon</strong></p>
+    </li>
+    <li class="term word" id="tmesis" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Tmesis <span class="tag group">Word-building</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">Splitting a word in two by dropping another word into the middle, usually for emphasis.</p>
+      <p class="eg">e.g. <strong>abso-bloody-lutely</strong></p>
+    </li>
+    <li class="term names" id="toponym" data-kind="bonus">
+      <h2><span class="dot" aria-hidden="true"></span>Toponym <span class="tag group">Names</span> <span class="tag bonus">Bonus</span></h2>
+      <p class="def">A word that comes from a place name.</p>
+      <p class="eg">e.g. <strong>cheddar</strong>, from the village in Somerset</p>
+    </li>
+    <li class="term word" id="unpaired-word" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Unpaired word <span class="tag group">Word-building</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">A word with a prefix like un- or dis-, whose plain partner has fallen out of use.</p>
+      <p class="eg">e.g. <strong>unkempt</strong>, but nobody is ever kempt</p>
+    </li>
+    <li class="term meaning" id="zeugma" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Zeugma <span class="tag group">Meaning</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">One word doing two jobs at once, often in two different senses.</p>
+      <p class="eg">e.g. she <strong>lost</strong> her keys and her temper</p>
+    </li>
+  </ul>
+
+  <section id="easter-eggs" aria-labelledby="eggs-title">
+    <h2 class="eggs-head" id="eggs-title">Easter eggs</h2>
+    <p class="eggs-intro" id="eggs-count">Get all three right in a Spinonym bonus round to reveal one of these.</p>
+    <ul class="list">
+      <li class="term sound egg locked" id="ambigram" data-kind="egg">
+        <h2><span class="dot" aria-hidden="true"></span><span class="name">Ambigram</span> <span class="tag group">Sound &amp; spelling</span> <span class="tag egg">Easter egg</span></h2>
+        <p class="def">A word that still reads correctly when you turn it upside down.</p>
+        <p class="eg">e.g. <strong>SWIMS</strong>, in capitals</p>
+        <p class="lock">Locked. Get all three right in a bonus round to reveal it.</p>
+      </li>
+      <li class="term word egg locked" id="anacronym" data-kind="egg">
+        <h2><span class="dot" aria-hidden="true"></span><span class="name">Anacronym</span> <span class="tag group">Word-building</span> <span class="tag egg">Easter egg</span></h2>
+        <p class="def">An acronym so familiar that people forget it ever was one.</p>
+        <p class="eg">e.g. <strong>laser</strong>: light amplification by stimulated emission of radiation</p>
+        <p class="lock">Locked. Get all three right in a bonus round to reveal it.</p>
+      </li>
+      <li class="term word egg locked" id="back-formation" data-kind="egg">
+        <h2><span class="dot" aria-hidden="true"></span><span class="name">Back-formation</span> <span class="tag group">Word-building</span> <span class="tag egg">Easter egg</span></h2>
+        <p class="def">A new word made by trimming a bit off a longer one.</p>
+        <p class="eg">e.g. <strong>edit</strong>, made from editor</p>
+        <p class="lock">Locked. Get all three right in a bonus round to reveal it.</p>
+      </li>
+      <li class="term meaning egg locked" id="chiasmus" data-kind="egg">
+        <h2><span class="dot" aria-hidden="true"></span><span class="name">Chiasmus</span> <span class="tag group">Meaning</span> <span class="tag egg">Easter egg</span></h2>
+        <p class="def">A phrase that repeats itself in reverse order.</p>
+        <p class="eg">e.g. <strong>eat to live, not live to eat</strong></p>
+        <p class="lock">Locked. Get all three right in a bonus round to reveal it.</p>
+      </li>
+      <li class="term word egg locked" id="compound-word" data-kind="egg">
+        <h2><span class="dot" aria-hidden="true"></span><span class="name">Compound word</span> <span class="tag group">Word-building</span> <span class="tag egg">Easter egg</span></h2>
+        <p class="def">Two whole words joined to make a new one.</p>
+        <p class="eg">e.g. sun + flower = <strong>sunflower</strong></p>
+        <p class="lock">Locked. Get all three right in a bonus round to reveal it.</p>
+      </li>
+      <li class="term meaning egg locked" id="dysphemism" data-kind="egg">
+        <h2><span class="dot" aria-hidden="true"></span><span class="name">Dysphemism</span> <span class="tag group">Meaning</span> <span class="tag egg">Easter egg</span></h2>
+        <p class="def">A deliberately harsh or rude word for something. The opposite of a euphemism.</p>
+        <p class="eg">e.g. <strong>rust bucket</strong> for an old car</p>
+        <p class="lock">Locked. Get all three right in a bonus round to reveal it.</p>
+      </li>
+      <li class="term sound egg locked" id="eye-rhyme" data-kind="egg">
+        <h2><span class="dot" aria-hidden="true"></span><span class="name">Eye rhyme</span> <span class="tag group">Sound &amp; spelling</span> <span class="tag egg">Easter egg</span></h2>
+        <p class="def">Words that look as if they rhyme, but don’t when you say them.</p>
+        <p class="eg">e.g. <strong>love</strong> and <strong>move</strong></p>
+        <p class="lock">Locked. Get all three right in a bonus round to reveal it.</p>
+      </li>
+      <li class="term meaning egg locked" id="false-friend" data-kind="egg">
+        <h2><span class="dot" aria-hidden="true"></span><span class="name">False friend</span> <span class="tag group">Meaning</span> <span class="tag egg">Easter egg</span></h2>
+        <p class="def">A word that looks the same in another language but means something different.</p>
+        <p class="eg">e.g. French <strong>sensible</strong> means sensitive</p>
+        <p class="lock">Locked. Get all three right in a bonus round to reveal it.</p>
+      </li>
+      <li class="term word egg locked" id="ghost-word" data-kind="egg">
+        <h2><span class="dot" aria-hidden="true"></span><span class="name">Ghost word</span> <span class="tag group">Word-building</span> <span class="tag egg">Easter egg</span></h2>
+        <p class="def">A word that only exists because of a mistake.</p>
+        <p class="eg">e.g. <strong>dord</strong>, printed in a 1934 dictionary after “D or d” was misread</p>
+        <p class="lock">Locked. Get all three right in a bonus round to reveal it.</p>
+      </li>
+      <li class="term word egg locked" id="hapax-legomenon" data-kind="egg">
+        <h2><span class="dot" aria-hidden="true"></span><span class="name">Hapax legomenon</span> <span class="tag group">Word-building</span> <span class="tag egg">Easter egg</span></h2>
+        <p class="def">A word that appears only once in a whole body of writing.</p>
+        <p class="eg">e.g. <strong>honorificabilitudinitatibus</strong>, used just once in all of Shakespeare</p>
+        <p class="lock">Locked. Get all three right in a bonus round to reveal it.</p>
+      </li>
+      <li class="term meaning egg locked" id="malaphor" data-kind="egg">
+        <h2><span class="dot" aria-hidden="true"></span><span class="name">Malaphor</span> <span class="tag group">Meaning</span> <span class="tag egg">Easter egg</span></h2>
+        <p class="def">Two sayings accidentally mashed into one.</p>
+        <p class="eg">e.g. <strong>we’ll burn that bridge when we come to it</strong></p>
+        <p class="lock">Locked. Get all three right in a bonus round to reveal it.</p>
+      </li>
+      <li class="term meaning egg locked" id="pleonasm" data-kind="egg">
+        <h2><span class="dot" aria-hidden="true"></span><span class="name">Pleonasm</span> <span class="tag group">Meaning</span> <span class="tag egg">Easter egg</span></h2>
+        <p class="def">Using more words than you need to say something.</p>
+        <p class="eg">e.g. a <strong>free gift</strong></p>
+        <p class="lock">Locked. Get all three right in a bonus round to reveal it.</p>
+      </li>
+      <li class="term sound egg locked" id="pun" data-kind="egg">
+        <h2><span class="dot" aria-hidden="true"></span><span class="name">Pun</span> <span class="tag group">Sound &amp; spelling</span> <span class="tag egg">Easter egg</span></h2>
+        <p class="def">A joke that plays on a word with two meanings, or two words that sound alike.</p>
+        <p class="eg">e.g. I used to be a banker, but I lost <strong>interest</strong></p>
+        <p class="lock">Locked. Get all three right in a bonus round to reveal it.</p>
+      </li>
+      <li class="term word egg locked" id="rebus" data-kind="egg">
+        <h2><span class="dot" aria-hidden="true"></span><span class="name">Rebus</span> <span class="tag group">Word-building</span> <span class="tag egg">Easter egg</span></h2>
+        <p class="def">A puzzle where pictures or symbols stand in for words or sounds.</p>
+        <p class="eg">e.g. <strong>I ♥ NY</strong>. A cousin is the symbol swap, where a symbol stands in for a letter and adds a joke, like <strong>Micro$oft</strong>.</p>
+        <p class="lock">Locked. Get all three right in a bonus round to reveal it.</p>
+      </li>
+      <li class="term sound egg locked" id="reduplication" data-kind="egg">
+        <h2><span class="dot" aria-hidden="true"></span><span class="name">Reduplication</span> <span class="tag group">Sound &amp; spelling</span> <span class="tag egg">Easter egg</span></h2>
+        <p class="def">A word built from a sound repeated with a small change.</p>
+        <p class="eg">e.g. <strong>zigzag</strong>, <strong>chit-chat</strong>, <strong>hanky-panky</strong></p>
+        <p class="lock">Locked. Get all three right in a bonus round to reveal it.</p>
+      </li>
+      <li class="term meaning egg locked" id="snowclone" data-kind="egg">
+        <h2><span class="dot" aria-hidden="true"></span><span class="name">Snowclone</span> <span class="tag group">Meaning</span> <span class="tag egg">Easter egg</span></h2>
+        <p class="def">A well-worn phrase template you can fill with new words.</p>
+        <p class="eg">e.g. <strong>grey is the new black</strong></p>
+        <p class="lock">Locked. Get all three right in a bonus round to reveal it.</p>
+      </li>
+      <li class="term meaning egg locked" id="synecdoche" data-kind="egg">
+        <h2><span class="dot" aria-hidden="true"></span><span class="name">Synecdoche</span> <span class="tag group">Meaning</span> <span class="tag egg">Easter egg</span></h2>
+        <p class="def">A part of something used to mean the whole thing.</p>
+        <p class="eg">e.g. all <strong>hands</strong> on deck</p>
+        <p class="lock">Locked. Get all three right in a bonus round to reveal it.</p>
+      </li>
+      <li class="term sound egg locked" id="tom-swifty" data-kind="egg">
+        <h2><span class="dot" aria-hidden="true"></span><span class="name">Tom Swifty</span> <span class="tag group">Sound &amp; spelling</span> <span class="tag egg">Easter egg</span></h2>
+        <p class="def">A pun hidden in the word describing how something was said.</p>
+        <p class="eg">e.g. “I’ve lost my crayons,” said Tom <strong>colourlessly</strong></p>
+        <p class="lock">Locked. Get all three right in a bonus round to reveal it.</p>
+      </li>
+      <li class="term word egg locked" id="verbing" data-kind="egg">
+        <h2><span class="dot" aria-hidden="true"></span><span class="name">Verbing</span> <span class="tag group">Word-building</span> <span class="tag egg">Easter egg</span></h2>
+        <p class="def">Turning a noun into a verb.</p>
+        <p class="eg">e.g. to <strong>google</strong> something</p>
+        <p class="lock">Locked. Get all three right in a bonus round to reveal it.</p>
+      </li>
+    </ul>
+  </section>
+
+  <footer>Spinonym · Spin the nym</footer>
+</main>
+<script>
+  (function () {
+    // Easter eggs: the game unlocks them by storing found ids in
+    // localStorage 'spinonym-eggs' as a JSON array, e.g. ["pun","verbing"].
+    // ["*"] unlocks them all.
+    var found = [];
+    try { found = JSON.parse(localStorage.getItem('spinonym-eggs') || '[]') || []; } catch (e) { found = []; }
+    var eggs = document.querySelectorAll('.term.egg');
+    var count = 0;
+    eggs.forEach(function (egg) {
+      var open = found.indexOf('*') !== -1 || found.indexOf(egg.id) !== -1;
+      egg.classList.toggle('locked', !open);
+      var name = egg.querySelector('.name');
+      if (open) { count++; name.removeAttribute('aria-hidden'); }
+      else { name.setAttribute('aria-hidden', 'true'); }
+    });
+    var label = document.getElementById('eggs-count');
+    if (label) {
+      label.textContent = count === 0
+        ? 'Get all three right in a Spinonym bonus round to reveal one of these.'
+        : count + ' of ' + eggs.length + ' found. Get another bonus round right to reveal the next.';
+      if (count === eggs.length) label.textContent = 'All ' + eggs.length + ' found. Well played.';
+    }
+    var section = document.getElementById('easter-eggs');
+
+    var buttons = document.querySelectorAll('.filters button');
+    var terms = document.querySelectorAll('.term');
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var f = btn.getAttribute('data-filter');
+        buttons.forEach(function (b) { b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+        terms.forEach(function (t) {
+          t.hidden = f !== 'all' && t.getAttribute('data-kind') !== f;
+        });
+        if (section) section.hidden = f !== 'all' && f !== 'egg';
+      });
+    });
+  })();
+</script>
+</body>
+</html>
