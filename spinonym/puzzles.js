@@ -12,7 +12,7 @@
 const PUZZLES = [
   // ---- Meaning ----
   {type:"antonym", clue:"Generous", sub:"It's a describing word.", answer:"stingy",
-   close:"mean miserly tight cheap selfish greedy ungenerous parsimonious tightfisted mingy"},
+   close:"mean miserly tight cheap selfish greedy ungenerous parsimonious tightfisted mingy meagre scant sparing"},
   {type:"antonym", clue:"Ancient", sub:"It's a describing word.", answer:"modern",
    close:"new recent current contemporary young fresh novel latest"},
   {type:"antonym", clue:"Expand", sub:"It's a doing word.", answer:"shrink",

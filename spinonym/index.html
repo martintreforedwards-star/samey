@@ -361,7 +361,8 @@ const LAUNCH = Date.UTC(2026,9,10);   // Sat 10 Oct 2026 = Spinonym No. 1. Chang
 let WORDS = null;   // Samey's word list, at the site root. If it fails to load, every guess is accepted.
 fetch("../words.txt").then(r=> r.ok ? r.text() : Promise.reject()).then(t=>{ WORDS = new Set(t.split("\n")); }).catch(()=>{});
 const $ = id => document.getElementById(id);
-const TEST = location.hash === "#test";   // samey.uk/spinonym/#test lets you pick any puzzle; nothing is saved
+const TEST = location.hash === "#test";
+addEventListener("hashchange", ()=>location.reload());   // typing #test onto an open page switches mode straight away   // samey.uk/spinonym/#test lets you pick any puzzle; nothing is saved
 let state, main, gold = null, bonus;   // state = whichever puzzle is on screen: main (today's) or gold (golden bonus)
 
 // ---- Daily schedule: same for everyone, fixed by date ----
