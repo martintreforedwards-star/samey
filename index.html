@@ -476,8 +476,9 @@ function guess(raw){
   }
   state.used++; log({g});
   for(const ch of g) if(!state.p.answer.includes(ch)) state.missed.add(ch);
-  const win = g === state.p.answer;
-  const fresh = apply(win ? state.p.answer.split("") : reveal(state.p.answer, g, state.known), false);
+  const exact = g === state.p.answer;
+  const fresh = apply(exact ? state.p.answer.split("") : reveal(state.p.answer, g, state.known), false);
+  const win = exact || state.known.every(Boolean);   // board complete = solved, even if the guess was a different word
   state.rows.push({guess:g, board:mask(state.known), win});
   $("guess").value = "";
   if(win){ state.done=true; state.won=true; }
@@ -492,7 +493,9 @@ function useHint(){
   state.hintUsed = true; state.used++; log({h:1});
   const next = state.known.map((c,i)=> c || (state.p.hint[i] !== "_" ? state.p.hint[i] : null));
   const fresh = apply(next, true);
-  state.rows.push({guess:"", hint:true, board:mask(state.known)});
+  const complete = state.known.every(Boolean);
+  state.rows.push({guess:"", hint:true, win:complete, board:mask(state.known)});
+  if(complete){ state.done=true; state.won=true; render(fresh); finish(); return; }
   $("msg").className="msg"; $("msg").textContent = "Hint used. " + (MAX-state.used) + (MAX-state.used===1?" go":" goes") + " left.";
   render(fresh);
   $("guess").focus();
@@ -503,7 +506,7 @@ function finish(){
   const p = state.p;
   $("resultTitle").textContent = state.won ? (state.used===1 ? "First go!" : `Got it in ${state.used}`) : "Out of goes";
   $("resultText").textContent = `${p.clue} → ${p.answer}.` + (state.won ? "" : " Better luck with the next one.");
-  const marks = state.rows.map(r=> r.win ? "🟩" : r.hint ? "💡" : "🟨").join("");
+  const marks = state.rows.map(r=> r.hint ? "💡" : r.win ? "🟩" : "🟨").join("");
   const score = state.won ? `${state.used}/${MAX}` : `X/${MAX}`;
   $("shareText").textContent = `Samey ${state.daily ? dayNumber() : '#'+(state.i+1)} (${TIERS[state.tier]})  ${score}\n${marks}`;
   $("result").hidden = false;
