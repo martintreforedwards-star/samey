@@ -27,7 +27,7 @@
 /* Layout: one centred column. Three views share it: the wheel, the puzzle, and the bonus round. */
 :root{
   --bg:#eef0f4; --surface:#ffffff; --ink:#16181d; --muted:#4a4f5c; --line:#d9dce3; --slot:#e3e6ec;
-  --amber:#d99a1e; --amber-ink:#2a1d00; --gold-bg:#fbefc6; --gold:#8a6a00; --gold-ink:#5c4600;
+  --amber:#d99a1e; --amber-ink:#2a1d00; --gold-bg:#fbefc6; --gold:#8a6a00; --gold-ink:#5c4600; --gold-on:#ffffff;
   --good:#17796b; --good-bg:#cfede6; --bad:#b4442f; --bad-bg:#f6dadb;
   --g:#2b5597; --g-ink:#ffffff;
   --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
@@ -42,7 +42,7 @@ body[data-group="gold"]{--g:#8a6a00}
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --bg:#121418; --surface:#1c1f25; --ink:#f1f2f5; --muted:#aab0bd; --line:#2e333c; --slot:#272b33;
-    --amber:#e8b04a; --gold-bg:#3a3010; --gold:#e8c55a; --gold-ink:#f3dd95;
+    --amber:#e8b04a; --gold-bg:#3a3010; --gold:#e8c55a; --gold-ink:#f3dd95; --gold-on:#1c1f25;
     --good:#6fcfbe; --good-bg:#16352f; --bad:#e07a62; --bad-bg:#3d1f1c; --g-ink:#101216; color-scheme:dark}
   :root:not([data-theme="light"]) body[data-group="meaning"]{--g:#8faee3}
   :root:not([data-theme="light"]) body[data-group="sound"]{--g:#f0a866}
@@ -130,6 +130,10 @@ input:focus{outline:none;border-color:var(--g)}
 .btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
 .btn.hintbtn{background:transparent;color:var(--ink);border:2px solid var(--amber)}
 .btn.gold{background:var(--gold-bg);color:var(--gold-ink);border:2px solid var(--gold)}
+/* The bonus buttons lead the result: full width, deep gold, bigger. Once played they calm down to the light gold style. */
+.btn.play{width:100%;min-height:58px;border-radius:14px;background:var(--gold);color:var(--gold-on);border:0;font-family:var(--display);font-weight:800;font-size:1.25rem;letter-spacing:-.01em}
+.btn.play.done{background:var(--gold-bg);color:var(--gold-ink);border:2px solid var(--gold);font-size:1.05rem;min-height:50px}
+.btn.small{min-height:44px;padding:6px 14px;font-size:.88rem;background:transparent;color:var(--ink);border:2px solid var(--line)}
 .btn:disabled{opacity:.4;cursor:not-allowed}
 .btn:focus-visible,select:focus-visible,.qbtn:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 .actions{display:flex;gap:8px;flex-wrap:wrap}
@@ -260,9 +264,9 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
       </dl>
       <div class="share" id="shareText"></div>
       <div class="actions">
-        <button class="btn" id="copyBtn" type="button">Copy result</button>
-        <button class="btn gold" id="bonusBtn" type="button">Bonus round →</button>
-        <button class="btn gold" id="goldBtn" type="button" hidden>★ Golden bonus</button>
+        <button class="btn play" id="bonusBtn" type="button">Play the bonus round →</button>
+        <button class="btn play" id="goldBtn" type="button" hidden>★ Play the golden bonus →</button>
+        <button class="btn small" id="copyBtn" type="button">Copy result</button>
         <button class="btn" id="mainBtn" type="button" hidden>Back to today's result</button>
       </div>
       <p class="next" id="goldNote" hidden></p>
@@ -576,7 +580,8 @@ function finish(){
   if(isGold) return;
   $("shareText").textContent = shareText();
   $("bonusBtn").hidden = !state.won;
-  $("bonusBtn").textContent = bonus.done ? `Bonus round: ${bonusScore()}/3` : "Bonus round →";
+  $("bonusBtn").textContent = bonus.done ? `Bonus round: ${bonusScore()}/3` : "Play the bonus round →";
+  $("bonusBtn").classList.toggle("done", bonus.done);
   if(state.daily && !state.replaying){ recordResult(state.won); }
   if(state.daily) showStats(); else $("stats").hidden = true;
   goldOffer();
@@ -590,7 +595,8 @@ function goldEligible(){ if(!main.won) return false; if(TEST) return true; const
 function goldOffer(){
   const ok = goldEligible(), k = TEST ? 0 : liveStreak();
   $("goldBtn").hidden = !ok;
-  $("goldBtn").textContent = gold && gold.done ? (gold.won ? `★ Golden bonus: ${gold.used}/${MAX}` : "★ Golden bonus: missed") : "★ Golden bonus";
+  $("goldBtn").textContent = gold && gold.done ? (gold.won ? `★ Golden bonus: ${gold.used}/${MAX}` : "★ Golden bonus: missed") : "★ Play the golden bonus →";
+  $("goldBtn").classList.toggle("done", !!(gold && gold.done));
   const left = 7 - (k % 7);
   $("goldNote").hidden = ok || !main.won || !main.daily;
   $("goldNote").textContent = `${left} more win${left===1?"":"s"} in a row to unlock a golden bonus puzzle.`;
@@ -646,7 +652,7 @@ function nextQuestion(){
   if(bonusScore()===3) bonus.egg = unlockEgg();
   saveBonus(); renderBonus();
   $("shareText").textContent = shareText();
-  $("bonusBtn").textContent = `Bonus round: ${bonusScore()}/3`;
+  $("bonusBtn").textContent = `Bonus round: ${bonusScore()}/3`; $("bonusBtn").classList.add("done");
 }
 function unlockEgg(){
   if(TEST) return EGGS[0].id;
