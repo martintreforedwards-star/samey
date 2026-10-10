@@ -107,15 +107,17 @@ details{font-size:.92rem;color:var(--muted)}
 summary{cursor:pointer;font-weight:700;color:var(--ink)}
 details ul{padding-left:1.2rem;margin:.5rem 0 0}
 /* Link to Spinonym: a dark card on the result (it flips with dark mode), plus a quiet line at the foot of the page */
-.spn-card{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:10px;background:color-mix(in srgb,var(--teal) 9%,var(--surface));border:2px solid var(--teal);color:var(--ink);text-decoration:none;min-height:44px}
+.spn-card{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:10px;background:color-mix(in srgb,#ffd447 30%,var(--surface));border:2px solid var(--amber);color:var(--ink);text-decoration:none;min-height:44px}
 .spn-card:hover .spn-arrow{transform:translateX(3px)}
 .spn-card:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 .spn-wheel{flex:none;width:48px;height:48px}
 .spn-text{display:flex;flex-direction:column;gap:1px;min-width:0}
-.spn-new{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal)}
+.spn-new{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:color-mix(in srgb,var(--amber) 50%,var(--ink))}
 .spn-title{font-family:var(--display);font-weight:800;font-size:1.3rem;line-height:1.1}
 .spn-sub{font-size:.9rem;color:var(--muted)}
-.spn-arrow{margin-left:auto;font-size:1.4rem;font-weight:700;flex:none;color:var(--teal);transition:transform .15s}
+.spn-arrow{margin-left:auto;font-size:1.4rem;font-weight:700;flex:none;color:color-mix(in srgb,var(--amber) 50%,var(--ink));transition:transform .15s}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .spn-card{background:color-mix(in srgb,#ffd447 12%,var(--surface))}}
+:root[data-theme="dark"] .spn-card{background:color-mix(in srgb,#ffd447 12%,var(--surface))}
 .spn-foot{text-align:center;font-size:.92rem;color:var(--muted);margin:0}
 .spn-foot a{color:var(--ink);font-weight:700}
 @media (prefers-reduced-motion: reduce){.tile{transition:none}.tile.pop{transform:none}}
