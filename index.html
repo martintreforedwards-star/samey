@@ -3,7 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Samey: a daily word game. Find the word that means the same.">
+<meta name="description" content="A daily word game. You get a word, then you have 5 goes to find the hidden word that means the same.">
+<meta name="theme-color" content="#1f7a6d">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://samey.uk/">
+<meta property="og:site_name" content="Samey">
+<meta property="og:title" content="Samey: find the word that means the same">
+<meta property="og:description" content="A daily word game. You get a word, then you have 5 goes to find the hidden word that means the same.">
+<meta property="og:image" content="https://samey.uk/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Samey logo with letter tiles: Enormous becomes G _ A N T">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Samey: find the word that means the same">
+<meta name="twitter:description" content="A daily word game. You get a word, then you have 5 goes to find the hidden word that means the same.">
+<meta name="twitter:image" content="https://samey.uk/og-image.png">
 <title>Samey</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=DM+Mono:wght@500&display=swap">
@@ -49,7 +65,14 @@ select{background:var(--surface);color:var(--ink);border:1px solid var(--line);b
 .pip{width:12px;height:12px;border-radius:50%;border:2px solid var(--teal)}
 .pip.used{background:var(--teal)}
 .pip.hinted{background:var(--amber);border-color:var(--amber)}
-.missedRow{display:flex;flex-direction:column;gap:6px;margin-top:-8px}
+.keys{display:flex;flex-direction:column;gap:6px;align-items:center;margin-top:-6px}
+.krow{display:flex;gap:5px;justify-content:center}
+.key{width:clamp(26px,8.2vw,38px);height:40px;border-radius:6px;border:0;background:var(--slot);color:var(--ink);font-family:var(--mono);font-size:1rem;text-transform:uppercase;cursor:pointer;padding:0}
+.key.found{background:var(--teal);color:var(--teal-ink)}
+.key.hint{background:var(--amber);color:var(--amber-ink)}
+.key.out{background:transparent;color:var(--muted);opacity:.55;text-decoration:line-through;text-decoration-color:var(--bad);box-shadow:inset 0 0 0 1px var(--line)}
+.key:disabled{cursor:default}
+.key:focus-visible{outline:3px solid var(--amber);outline-offset:1px}
 .missed{display:flex;flex-wrap:wrap;gap:5px}
 .ml{font-family:var(--mono);text-transform:uppercase;font-size:.95rem;width:28px;height:28px;display:grid;place-items:center;border-radius:5px;color:var(--muted);border:1px dashed var(--line);text-decoration:line-through;text-decoration-color:var(--bad)}
 .log{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
@@ -110,10 +133,7 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
     <span class="pips" id="pips" aria-label="Goes used"></span>
   </div>
 
-  <div class="missedRow" id="missedRow" hidden>
-    <span class="eyebrow">Not in the word</span>
-    <div class="missed" id="missed"></div>
-  </div>
+  <div class="keys" id="keys" aria-label="Letter board"></div>
 
   <ul class="log" id="log" aria-label="Your goes"></ul>
 
@@ -153,7 +173,7 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
       <li>Puzzles start gentle on Monday and get tougher through to Friday. Weekends are medium.</li>
       <li>You have 5 goes. Your guess can be any length, but it has to be a real word.</li>
       <li>Every letter in your guess that's also in the answer lights up in all its spots, and stays lit.</li>
-      <li>Letters you've tried that aren't in the answer are crossed out below the board.</li>
+      <li>The letter board shows what you know so far: green letters are in the word, crossed-out letters aren't, and plain ones you haven't tried yet.</li>
       <li>Guess a word that means the same but isn't the one we're after? We'll tell you it's close, and it won't cost a go.</li>
       <li>Stuck? A hint fills in part of the word, but uses up a go.</li>
     </ul>
@@ -179,8 +199,6 @@ const PUZZLES = [
    close:"yell scream holler roar cry shriek bawl call howl screech bark"},
   {clue:"Brave", tier:2,   kind:"describing word", answer:"daring",   hint:"___ing",
    close:"bold courageous fearless heroic valiant gallant plucky gutsy intrepid game"},
-  {clue:"Present", tier:5, kind:"thing word",      answer:"offering", hint:"_____ing",
-   close:"gift donation bonus prize treat contribution handout reward tip souvenir token"},
   {clue:"Quick", tier:5,   kind:"describing word", answer:"nippy",    hint:"___py",
    close:"fast rapid speedy swift brisk hasty prompt fleet nimble snappy zippy sharp"},
   {clue:"Rubbish", tier:1, kind:"thing word", answer:"junk", hint:"_unk",
@@ -285,7 +303,7 @@ const PUZZLES = [
    close:"inquire question query quiz request"},
   {clue:"Blend", tier:3, kind:"doing word", answer:"combine", hint:"___bine",
    close:"mix merge mingle fuse stir unite join amalgamate"},
-  {clue:"Hungry", tier:3, kind:"describing word", answer:"peckish", hint:"____ish",
+  {clue:"Hungry", tier:5, kind:"describing word", answer:"peckish", hint:"____ish",
    close:"starving famished ravenous starved empty"},
   {clue:"Clumsy", tier:3, kind:"describing word", answer:"awkward", hint:"___ward",
    close:"gawky ungainly bumbling inept klutzy"},
@@ -343,6 +361,8 @@ const PUZZLES = [
    close:"rubbish twaddle gibberish balderdash claptrap tosh piffle codswallop poppycock rot garbage bunk hogwash"},
   {clue:"Cheerful", tier:5, kind:"describing word", answer:"buoyant", hint:"___yant",
    close:"happy jolly sunny bright upbeat merry chirpy jovial perky optimistic"},
+  {clue:"Present", tier:3, kind:"thing word",      answer:"offering", hint:"_____ing",
+   close:"gift donation bonus prize treat contribution handout reward tip souvenir token"},
 ].map(p=>({...p, close:new Set(p.close.split(" "))}));
 const MAX = 5;
 const LAUNCH = Date.UTC(2026,9,9);   // Fri 9 Oct 2026 = Samey No. 1
@@ -362,23 +382,27 @@ const mask = arr => arr.map(c=>c||"_").join(" ");
 const TIERS = ["","Gentle","Easy","Medium","Tricky","Toughest"];
 // Mon=1 ... Fri=5; weekends sit in the middle.
 function todayTier(){ const w=new Date().getDay(); return (w===0||w===6) ? 3 : w; }
+let LAUNCH_OVERRIDE=null;
 function dayIndex(){
   const d=new Date(), tier=todayTier();
   const days=Math.round((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())-LAUNCH)/864e5);
   const week=Math.max(0,Math.floor((days+4)/7));   // weeks since launch, rolling over on Mondays (launch was a Friday)
+  // Launch day (Fri 9 Oct 2026) keeps the puzzle it went out with, at its original Toughest level.
+  if(days===0){ const li=PUZZLES.findIndex(p=>p.clue==="Present"); if(li>=0){ LAUNCH_OVERRIDE={i:li, tier:5}; return li; } }
   const pool=PUZZLES.map((p,i)=>p.tier===tier?i:-1).filter(i=>i>=0);
   return pool[week % pool.length];
 }
 
 function start(i){
   const p = PUZZLES[i];
-  state = {i, p, daily:false, actions:[], known:Array(p.answer.length).fill(null), hinted:Array(p.answer.length).fill(false), rows:[], closeTried:new Set(), missed:new Set(), used:0, hintUsed:false, done:false, won:false};
+  const tier = (LAUNCH_OVERRIDE && LAUNCH_OVERRIDE.i===i) ? LAUNCH_OVERRIDE.tier : p.tier;
+  state = {i, p, tier, daily:false, actions:[], known:Array(p.answer.length).fill(null), hinted:Array(p.answer.length).fill(false), rows:[], closeTried:new Set(), missed:new Set(), used:0, hintUsed:false, done:false, won:false};
   $("puzzle").value = i;
   $("clueWord").textContent = p.clue;
   $("clueKind").textContent = "It's a " + p.kind + ".";
   $("lenNote").textContent = p.answer.length + " letters";
-  $("clueTier").innerHTML = ""; $("clueTier").append(TIERS[p.tier]);
-  const dots=document.createElement("span"); dots.className="dots"; dots.textContent="●".repeat(p.tier)+"○".repeat(5-p.tier); dots.setAttribute("aria-label",`difficulty ${p.tier} of 5`); $("clueTier").append(dots);
+  $("clueTier").innerHTML = ""; $("clueTier").append(TIERS[tier]);
+  const dots=document.createElement("span"); dots.className="dots"; dots.textContent="●".repeat(tier)+"○".repeat(5-tier); dots.setAttribute("aria-label",`difficulty ${tier} of 5`); $("clueTier").append(dots);
   $("guess").value = ""; $("msg").textContent=""; $("msg").className="msg";
   $("result").hidden = true; $("playArea").hidden = false;
   render(new Set());
@@ -399,9 +423,23 @@ function render(fresh){
     const d=document.createElement("span"); const r=state.rows[k];
     d.className="pip"+(r?(r.hint?" hinted":" used"):""); pips.appendChild(d);
   }
-  const miss = $("missed"); miss.innerHTML = "";
-  [...state.missed].sort().forEach(ch=>{ const s=document.createElement("span"); s.className="ml"; s.textContent=ch; miss.appendChild(s); });
-  $("missedRow").hidden = state.missed.size===0;
+  // Letter board: found letters lit, ruled-out letters crossed, untried letters plain. Tapping one types it.
+  const keys = $("keys"); keys.innerHTML = "";
+  const hintOnly = new Set(state.known.filter((c,i)=>c && state.hinted[i]));
+  const found = new Set(state.known.filter((c,i)=>c && !state.hinted[i]));
+  ["qwertyuiop","asdfghjkl","zxcvbnm"].forEach(row=>{
+    const r=document.createElement("div"); r.className="krow";
+    for(const ch of row){
+      const b=document.createElement("button"); b.type="button"; b.textContent=ch;
+      const st = found.has(ch) ? "found" : hintOnly.has(ch) ? "hint" : state.missed.has(ch) ? "out" : "";
+      b.className="key"+(st?" "+st:"");
+      b.setAttribute("aria-label", ch + (st==="out" ? ", not in the word" : st ? ", in the word" : ", not tried yet"));
+      b.disabled = state.done;
+      b.addEventListener("click",()=>{ $("guess").value += ch; });
+      r.appendChild(b);
+    }
+    keys.appendChild(r);
+  });
   const log = $("log"); log.innerHTML = "";
   state.rows.forEach((r,k)=>{
     const li=document.createElement("li");
@@ -467,7 +505,7 @@ function finish(){
   $("resultText").textContent = `${p.clue} → ${p.answer}.` + (state.won ? "" : " Better luck with the next one.");
   const marks = state.rows.map(r=> r.win ? "🟩" : r.hint ? "💡" : "🟨").join("");
   const score = state.won ? `${state.used}/${MAX}` : `X/${MAX}`;
-  $("shareText").textContent = `Samey ${state.daily ? dayNumber() : '#'+(state.i+1)} (${TIERS[p.tier]})  ${score}\n${marks}`;
+  $("shareText").textContent = `Samey ${state.daily ? dayNumber() : '#'+(state.i+1)} (${TIERS[state.tier]})  ${score}\n${marks}`;
   $("result").hidden = false;
   if(state.daily){ recordResult(state.won); showStats(); }
   $("copyBtn").textContent = "Copy result";
@@ -529,9 +567,10 @@ function tick(){
   const now=new Date(), mid=new Date(now); mid.setHours(24,0,0,0);
   const m=Math.max(0,Math.ceil((mid-now)/6e4)), h=Math.floor(m/60);
   $("nextNote").textContent = `Next Samey in ${h}h ${m%60}m.`;
-  if(m===0) location.reload();
+  if(todayKey()!==LOADED_DAY) location.reload();
 }
-setInterval(tick, 30000);
+const LOADED_DAY = todayKey();
+setInterval(()=>{ if(todayKey()!==LOADED_DAY) location.reload(); else tick(); }, 30000);
 
 if(TEST){
   $("pickWrap").hidden = false;
