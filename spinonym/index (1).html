@@ -1,0 +1,761 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Spin the nym. A daily word game: the wheel picks today's kind of word, then you have 4 goes to find it.">
+<meta name="theme-color" content="#16181D">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://samey.uk/spinonym/">
+<meta property="og:site_name" content="Spinonym">
+<meta property="og:title" content="Spinonym: spin the nym">
+<meta property="og:description" content="A daily word game. The wheel picks today's kind of word: antonym, anagram, eponym and more. You have 4 goes.">
+<title>Spinonym</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=DM+Mono:wght@500&display=swap">
+<style>
+/* Layout: one centred column. Three views share it: the wheel, the puzzle, and the bonus round. */
+:root{
+  --bg:#eef0f4; --surface:#ffffff; --ink:#16181d; --muted:#4a4f5c; --line:#d9dce3; --slot:#e3e6ec;
+  --amber:#d99a1e; --amber-ink:#2a1d00; --gold-bg:#fbefc6; --gold:#8a6a00; --gold-ink:#5c4600;
+  --good:#17796b; --good-bg:#cfede6; --bad:#b4442f; --bad-bg:#f6dadb;
+  --g:#2b5597; --g-ink:#ffffff;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible",ui-sans-serif,system-ui,sans-serif;
+  --mono:"DM Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+body[data-group="meaning"]{--g:#2b5597}
+body[data-group="sound"]{--g:#a84f0c}
+body[data-group="names"]{--g:#17796b}
+body[data-group="word"]{--g:#6b3f99}
+body[data-group="gold"]{--g:#8a6a00}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121418; --surface:#1c1f25; --ink:#f1f2f5; --muted:#aab0bd; --line:#2e333c; --slot:#272b33;
+    --amber:#e8b04a; --gold-bg:#3a3010; --gold:#e8c55a; --gold-ink:#f3dd95;
+    --good:#6fcfbe; --good-bg:#16352f; --bad:#e07a62; --bad-bg:#3d1f1c; --g-ink:#101216; color-scheme:dark}
+  :root:not([data-theme="light"]) body[data-group="meaning"]{--g:#8faee3}
+  :root:not([data-theme="light"]) body[data-group="sound"]{--g:#f0a866}
+  :root:not([data-theme="light"]) body[data-group="names"]{--g:#6fcfbe}
+  :root:not([data-theme="light"]) body[data-group="word"]{--g:#c3a3ea}
+  :root:not([data-theme="light"]) body[data-group="gold"]{--g:#e8c55a}
+}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;padding-inline:16px;padding-block:20px 40px}
+main{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+a{color:var(--ink)}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+.brand h1{font-family:var(--display);font-weight:800;font-size:2rem;letter-spacing:-.02em;margin:0;line-height:1}
+.brand small{display:block;font-size:.85rem;color:var(--muted);font-weight:700;letter-spacing:.01em}
+.logo{width:34px;height:34px;flex:none}
+.navlink{font-weight:700;font-size:.95rem;min-height:44px;display:inline-flex;align-items:center;padding:0 4px}
+.pick{font-size:.85rem;color:var(--muted);display:flex;gap:8px;align-items:center;width:100%}
+select,button,input{font:inherit}
+select{flex:1;min-width:0;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:6px 8px}
+.view{display:flex;flex-direction:column;gap:18px}
+.dayline{margin:0;text-align:center;color:var(--muted);font-size:.95rem}
+
+/* Wheel */
+.wheelwrap{position:relative;width:min(100%,360px);margin:0 auto;aspect-ratio:1/1.06}
+.pointer{position:absolute;top:0;left:50%;width:30px;height:26px;transform:translateX(-50%);z-index:2}
+.spinner{position:absolute;left:0;right:0;bottom:0;aspect-ratio:1;transition:transform 3.4s cubic-bezier(.12,.72,.18,1)}
+.spinner svg{width:100%;height:100%;display:block}
+.hub{position:absolute;left:50%;bottom:50%;width:22%;aspect-ratio:1;transform:translate(-50%,50%);border-radius:50%;background:#16181d;border:3px solid var(--bg);display:grid;place-items:center;color:#fff;font-family:var(--display);font-weight:800;font-size:clamp(1rem,5vw,1.3rem);letter-spacing:-.02em;margin-bottom:0}
+.wheel-slice{transition:opacity .4s}
+.wheel-dim .wheel-slice:not(.on){opacity:.3}
+
+.reveal{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:4px}
+.eyebrow{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0}
+.reveal .eyebrow{color:var(--g)}
+.reveal h2{font-family:var(--display);font-weight:800;font-size:2.2rem;line-height:1.05;margin:0;letter-spacing:-.02em}
+.reveal p{margin:0}
+.reveal .eg{color:var(--muted)}
+.reveal .btn{margin-top:12px;align-self:flex-start}
+
+/* Puzzle */
+.typebar{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.chip{font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;border-radius:999px;border:2px solid var(--g);color:var(--g)}
+.qbtn{width:44px;height:44px;flex:none;border-radius:50%;border:2px solid var(--ink);background:transparent;color:var(--ink);font-family:var(--display);font-weight:800;font-size:1.1rem;cursor:pointer}
+.defbox{background:var(--ink);color:var(--bg);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.defbox p{margin:0}
+.defbox a{color:var(--bg);font-weight:700}
+.clue{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;gap:4px}
+.clue .word{font-family:var(--display);font-weight:800;font-size:2.4rem;line-height:1.08;letter-spacing:-.02em;text-wrap:balance}
+.clue .word.long{font-size:1.75rem}
+.clue .kind{color:var(--muted)}
+.board{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.tile{width:clamp(30px,10.5vw,48px);aspect-ratio:1;border-radius:6px;background:var(--slot);display:grid;place-items:center;font-family:var(--mono);font-size:clamp(1.05rem,5vw,1.5rem);text-transform:uppercase;color:var(--ink);transition:background .25s,transform .25s}
+.tile.hit{background:var(--g);color:var(--g-ink)}
+.tile.hint{background:var(--amber);color:var(--amber-ink)}
+.tile.pop{transform:scale(1.12)}
+.meta{display:flex;justify-content:space-between;align-items:center;font-size:.9rem;color:var(--muted);gap:12px;flex-wrap:wrap}
+.pips{display:flex;gap:6px}
+.pip{width:12px;height:12px;border-radius:50%;border:2px solid var(--g)}
+.pip.used{background:var(--g)}
+.pip.hinted{background:var(--amber);border-color:var(--amber)}
+.keys{display:flex;flex-direction:column;gap:6px;align-items:center;margin-top:-6px}
+.krow{display:flex;gap:4px;justify-content:center}
+.key{--kw:min(38px, calc((100vw - 32px - 36px) / 10));width:var(--kw);height:42px;border-radius:6px;border:0;background:var(--slot);color:var(--ink);font-family:var(--mono);font-size:1rem;text-transform:uppercase;cursor:pointer;padding:0}
+.key.found{background:var(--g);color:var(--g-ink)}
+.key.hint{background:var(--amber);color:var(--amber-ink)}
+.key.out{background:transparent;color:var(--muted);opacity:.55;text-decoration:line-through;text-decoration-color:var(--bad);box-shadow:inset 0 0 0 1px var(--line)}
+.key.wide{width:calc(var(--kw) * 1.5);font-family:var(--body);font-weight:700;font-size:.78rem;text-transform:none}
+.key:disabled{cursor:default}
+.key:focus-visible{outline:3px solid var(--amber);outline-offset:1px}
+.log{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.log li{display:grid;grid-template-columns:2.2rem minmax(0,1fr) auto;gap:10px;align-items:baseline;padding:8px 12px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.log .n{color:var(--muted);font-size:.85rem}
+.log .g{font-weight:700;overflow-wrap:anywhere}
+.log .f{font-family:var(--mono);letter-spacing:.12em;color:var(--muted);white-space:nowrap}
+.log li.win .f{color:var(--g)}
+.log li.hintrow .g{color:var(--amber)}
+.log li.closerow .g{color:var(--muted);font-weight:400}
+form{display:flex;gap:8px}
+input{flex:1;min-width:0;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:8px;padding:10px 12px;font-size:1.05rem}
+input:focus{outline:none;border-color:var(--g)}
+.btn{border:0;border-radius:10px;padding:10px 18px;min-height:44px;font-weight:700;cursor:pointer;background:var(--ink);color:var(--bg);text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.btn.big{font-family:var(--display);font-weight:800;font-size:1.3rem;min-height:56px;border-radius:14px}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.btn.hintbtn{background:transparent;color:var(--ink);border:2px solid var(--amber)}
+.btn.gold{background:var(--gold-bg);color:var(--gold-ink);border:2px solid var(--gold)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn:focus-visible,select:focus-visible,.qbtn:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.msg{min-height:1.5em;font-size:.95rem}
+.msg.err{color:var(--bad)}
+.msg.close{color:var(--ink);background:color-mix(in srgb,var(--amber) 22%,transparent);border-left:4px solid var(--amber);padding:8px 12px;border-radius:4px}
+.result{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.result h2{font-family:var(--display);font-size:1.5rem;margin:0}
+.result p{margin:0}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:4px 0}
+.stats div{display:flex;flex-direction:column-reverse;align-items:center;text-align:center}
+.stats dt{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.stats dd{margin:0;font-family:var(--display);font-weight:800;font-size:1.7rem;font-variant-numeric:tabular-nums;line-height:1.1}
+.next{margin:0;color:var(--muted);font-variant-numeric:tabular-nums}
+.share{font-family:var(--mono);white-space:pre;background:var(--slot);border-radius:6px;padding:10px;overflow-x:auto;user-select:all}
+.also{font-size:.92rem;color:var(--muted)}
+details{font-size:.92rem;color:var(--muted)}
+summary{cursor:pointer;font-weight:700;color:var(--ink);min-height:32px}
+details ul{padding-left:1.2rem;margin:.5rem 0 0}
+
+/* Bonus round */
+.bonushead{background:var(--gold-bg);border:2px solid var(--gold);border-radius:14px;padding:12px 16px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.bonushead p{margin:0}
+.bonushead .title{font-family:var(--display);font-weight:800;font-size:1.6rem;line-height:1.1;color:var(--ink)}
+.bonushead .eyebrow,.bonushead .sub{color:var(--gold-ink)}
+.bonushead .sub{font-size:.9rem}
+.bdots{display:flex;gap:6px;padding-top:4px}
+.bdot{width:12px;height:12px;border-radius:50%;border:2px solid var(--ink)}
+.bdot.right{background:var(--good);border-color:var(--good)}
+.bdot.wrong{background:var(--bad);border-color:var(--bad)}
+.excard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:6px}
+.excard p{margin:0}
+.excard .ex{font-family:var(--display);font-weight:800;font-size:1.55rem;line-height:1.2}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{min-height:54px;border-radius:12px;border:2px solid var(--ink);background:var(--surface);color:var(--ink);font-weight:700;font-size:1.05rem;text-align:left;padding:0 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--good-bg);border-color:var(--good)}
+.opt.wrong{background:var(--bad-bg);border-color:var(--bad)}
+.opt.dim{opacity:.5;border-color:var(--line)}
+.opt .mark{font-size:.85rem;font-weight:700}
+.why{background:var(--ink);color:var(--bg);border-radius:12px;padding:12px 14px}
+.why p{margin:0}
+.why a{color:var(--bg);font-weight:700}
+.eggcard{background:var(--gold-bg);border:2px solid var(--gold);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:4px}
+.eggcard.locked{background:transparent;border-style:dashed}
+.eggcard p{margin:0}
+.eggcard .eyebrow{color:var(--gold-ink)}
+.eggcard .name{font-family:var(--display);font-weight:800;font-size:1.8rem;line-height:1.1}
+.eggcard a{color:var(--gold-ink);font-weight:700}
+@media (prefers-reduced-motion: reduce){.tile{transition:none}.tile.pop{transform:none}.spinner{transition-duration:.6s}}
+</style>
+</head>
+<body data-group="meaning">
+<main>
+  <header>
+    <a class="brand" href="./">
+      <svg class="logo" viewBox="-32 -32 64 64" aria-hidden="true"><path d="M0 -30A30 30 0 0 1 25.98 15L0 0Z" fill="#2B5597"/><path d="M25.98 15A30 30 0 0 1 -25.98 15L0 0Z" fill="#A84F0C"/><path d="M-25.98 15A30 30 0 0 1 -25.98 -15L0 0Z" fill="#17796B"/><path d="M-25.98 -15A30 30 0 0 1 0 -30L0 0Z" fill="#6B3F99"/><circle r="10" fill="#16181D" stroke="var(--bg)" stroke-width="3"/></svg>
+      <span><h1>Spinonym</h1><small>Spin the nym</small></span>
+    </a>
+    <a class="navlink" href="glossary.html">Glossary</a>
+    <label class="pick" id="pickWrap" for="puzzle" hidden>Test puzzle <select id="puzzle"></select></label>
+  </header>
+
+  <!-- 1. The wheel -->
+  <section class="view" id="wheelView">
+    <p class="dayline" id="dayLine"></p>
+    <div class="wheelwrap">
+      <svg class="pointer" viewBox="0 0 30 26" aria-hidden="true"><path d="M2 2 H28 L15 24 Z" fill="var(--ink)" stroke="var(--bg)" stroke-width="2.5" stroke-linejoin="round"/></svg>
+      <div class="spinner" id="spinner"><svg id="wheel" viewBox="-170 -170 340 340" role="img" aria-label="The Spinonym wheel: four groups and eighteen kinds of word"></svg></div>
+      <div class="hub" aria-hidden="true">nym</div>
+    </div>
+    <div class="reveal" id="reveal" hidden aria-live="polite">
+      <p class="eyebrow" id="revGroup"></p>
+      <h2 id="revName"></h2>
+      <p id="revDef"></p>
+      <p class="eg" id="revEg"></p>
+      <button class="btn big" id="playBtn" type="button">Play today's puzzle</button>
+    </div>
+    <button class="btn big" id="spinBtn" type="button">Spin</button>
+  </section>
+
+  <!-- 2. The puzzle -->
+  <section class="view" id="gameView" hidden>
+    <div class="typebar">
+      <span class="chip" id="typeChip"></span>
+      <button class="qbtn" id="defBtn" type="button" aria-expanded="false" aria-controls="defBox" aria-label="What does this word type mean?">?</button>
+    </div>
+    <div class="defbox" id="defBox" hidden>
+      <p><b id="defName"></b>: <span id="defText"></span></p>
+      <p>e.g. <span id="defEg"></span></p>
+      <p><a id="defLink" href="glossary.html">More in the glossary</a></p>
+    </div>
+
+    <section class="clue" aria-live="polite">
+      <span class="eyebrow" id="clueAsk"></span>
+      <span class="word" id="clueWord"></span>
+      <span class="kind" id="clueSub"></span>
+    </section>
+
+    <div class="board" id="board" aria-label="Answer board"></div>
+    <div class="meta">
+      <span id="lenNote"></span>
+      <span class="pips" id="pips" aria-label="Goes used"></span>
+    </div>
+    <div class="keys" id="keys" aria-label="Letter board"></div>
+    <ul class="log" id="log" aria-label="Your goes"></ul>
+
+    <div id="playArea" style="display:flex;flex-direction:column;gap:10px">
+      <form id="guessForm" autocomplete="off">
+        <input id="guess" type="text" placeholder="Type your guess" aria-label="Your guess" autocapitalize="off" spellcheck="false">
+        <button class="btn" type="submit">Guess</button>
+      </form>
+      <div class="actions">
+        <button class="btn hintbtn" id="hintBtn" type="button">Hint (costs a go)</button>
+      </div>
+      <div class="msg" id="msg" role="status"></div>
+    </div>
+
+    <section class="result" id="result" hidden>
+      <h2 id="resultTitle"></h2>
+      <p id="resultText"></p>
+      <p id="resultNote" class="next" hidden></p>
+      <dl class="stats" id="stats" hidden>
+        <div><dt>Played</dt><dd id="stPlayed">0</dd></div>
+        <div><dt>Win %</dt><dd id="stWin">0</dd></div>
+        <div><dt>Streak</dt><dd id="stStreak">0</dd></div>
+        <div><dt>Best</dt><dd id="stBest">0</dd></div>
+      </dl>
+      <div class="share" id="shareText"></div>
+      <div class="actions">
+        <button class="btn" id="copyBtn" type="button">Copy result</button>
+        <button class="btn gold" id="bonusBtn" type="button">Bonus round →</button>
+        <button class="btn gold" id="goldBtn" type="button" hidden>★ Golden bonus</button>
+        <button class="btn" id="mainBtn" type="button" hidden>Back to today's result</button>
+      </div>
+      <p class="next" id="goldNote" hidden></p>
+      <p class="next" id="nextNote" hidden></p>
+      <p class="also" id="alsoNote">Fancy another? <a href="/">Play today's Samey</a>.</p>
+    </section>
+  </section>
+
+  <!-- 3. Bonus round: Name that nym -->
+  <section class="view" id="bonusView" hidden>
+    <div class="bonushead">
+      <div>
+        <p class="eyebrow">Bonus round</p>
+        <p class="title">Name that nym</p>
+        <p class="sub">Three quick ones. Get all three to find an Easter egg.</p>
+      </div>
+      <div class="bdots" id="bdots" aria-label="Bonus score"></div>
+    </div>
+
+    <div id="qArea" class="view">
+      <p class="eyebrow" id="qProgress"></p>
+      <div class="excard">
+        <p class="next">What kind of wordplay is this?</p>
+        <p class="ex" id="qEx"></p>
+      </div>
+      <div class="opts" id="opts"></div>
+      <div id="qAfter" hidden class="view" style="gap:10px">
+        <div class="why" aria-live="polite"><p><b id="qVerdict"></b></p><p id="qWhy"></p><p><a id="qLink" href="glossary.html">Read more in the glossary</a></p></div>
+        <button class="btn big" id="qNext" type="button">Next</button>
+      </div>
+    </div>
+
+    <div id="bEnd" class="view" hidden>
+      <div class="result">
+        <h2 id="bTitle"></h2>
+        <p id="bText"></p>
+      </div>
+      <div class="eggcard" id="eggCard">
+        <p class="eyebrow" id="eggEyebrow"></p>
+        <p class="name" id="eggName"></p>
+        <p id="eggDef"></p>
+        <p id="eggEg"></p>
+        <p><a id="eggLink" href="glossary.html#easter-eggs">See it in your glossary</a></p>
+      </div>
+      <div class="actions">
+        <button class="btn big" id="backBtn" type="button">Back to my result</button>
+      </div>
+    </div>
+  </section>
+
+  <details>
+    <summary>How to play</summary>
+    <ul>
+      <li>Spin the wheel to find out today's kind of word. Everyone gets the same spin, so you can compare notes.</li>
+      <li>New to a word type? The reveal tells you what it means, and the <b>?</b> button brings it back mid-puzzle.</li>
+      <li>You have 4 goes. Your guess can be any length, but it has to be a real word. Name days (pseudonyms and exonyms) take any guess.</li>
+      <li>Every letter in your guess that's also in the answer lights up in all its spots, and stays lit.</li>
+      <li>Anagram days are different: use exactly the letters you're given, in any order (it doesn't have to be a real word). Any letter in the right place locks in.</li>
+      <li>Guess another fair answer and we'll tell you it's close. It won't cost a go, and it doesn't check any letters.</li>
+      <li>Stuck? A hint fills in part of the word, but uses up a go.</li>
+      <li>Solve it to unlock the bonus round. Get all three right to find an Easter egg in the <a href="glossary.html">glossary</a>.</li>
+      <li>Win 7 days in a row and a golden bonus puzzle unlocks, with a rarer kind of word. It comes round again every 7th day of your streak.</li>
+    </ul>
+  </details>
+</main>
+
+<script src="puzzles.js"></script>
+<script>
+// ---- Wheel types, in wheel order (each group's types sit together). w = how often it comes up. ----
+const TYPES = [
+  {id:"antonym", name:"Antonym", g:"meaning", w:15, ask:"Find the opposite of", def:"A word with the opposite meaning.", eg:"hot and cold"},
+  {id:"hypernym", name:"Hypernym", g:"meaning", w:6, ask:"Find the umbrella word for", def:"The umbrella word for a whole group of things.", eg:"rose, tulip and daisy are all flowers"},
+  {id:"hyponym", name:"Hyponym", g:"meaning", w:6, ask:"Find a kind of", def:"One specific example from a group.", eg:"a robin is a kind of bird"},
+  {id:"meronym", name:"Meronym", g:"meaning", w:4, ask:"Find a part of a", def:"A word for a part of something bigger.", eg:"wheel is a meronym of car"},
+  {id:"kangaroo-word", name:"Kangaroo word", g:"meaning", w:4, ask:"Find the word hiding inside", def:"A word that hides a word with the same meaning inside it, letters in order, like a joey in a pouch.", eg:"masculine hides male"},
+  {id:"collective-noun", name:"Collective noun", g:"meaning", w:5, ask:"What do you call a group of", def:"The word for a group of things, especially animals.", eg:"a pod of dolphins"},
+  {id:"anagram", name:"Anagram", g:"sound", w:15, ask:"Rearrange the letters of", def:"The same letters rearranged to make a new word.", eg:"night becomes thing"},
+  {id:"homophone", name:"Homophone", g:"sound", w:12, ask:"Find a word that sounds like", def:"Sounds the same, but is spelt differently and means something else.", eg:"sea and see"},
+  {id:"homograph", name:"Homograph", g:"sound", w:5, ask:"One spelling, two meanings", def:"Spelt the same, but with a different meaning.", eg:"a tear in your eye, a tear in your shirt"},
+  {id:"palindrome", name:"Palindrome", g:"sound", w:3, ask:"Find a palindrome meaning", def:"Reads the same forwards and backwards.", eg:"refer"},
+  {id:"semordnilap", name:"Semordnilap", g:"sound", w:4, ask:"Find a word meaning", def:"A word that spells a different word backwards. The name is “palindromes” backwards.", eg:"stressed becomes desserts"},
+  {id:"rhyming-slang", name:"Rhyming slang", g:"sound", w:5, ask:"What does this rhyming slang mean?", def:"A phrase that stands in for a word it rhymes with. Famously Cockney.", eg:"Barnet Fair means hair"},
+  {id:"eponym", name:"Eponym", g:"names", w:10, ask:"Which word is named after", def:"A word named after a real person.", eg:"leotard, after the acrobat Jules Léotard"},
+  {id:"pseudonym", name:"Pseudonym", g:"names", w:6, ask:"What name did they use?", def:"A made-up name someone uses instead of their real one.", eg:"Stefani Germanotta performs as Lady Gaga"},
+  {id:"exonym", name:"Exonym", g:"names", w:4, ask:"What do English speakers call", def:"The name outsiders use for a place or people.", eg:"Italia is Italy in English"},
+  {id:"acronym", name:"Acronym", g:"word", w:10, ask:"Which acronym means", def:"A word made from the first letters of a phrase, said as a word.", eg:"Nato"},
+  {id:"portmanteau", name:"Portmanteau", g:"word", w:12, ask:"Squash these into one word", def:"Two words squashed together to make a new one.", eg:"spoon + fork = spork"},
+  {id:"clipping", name:"Clipping", g:"word", w:5, ask:"What's the everyday short form of", def:"A longer word cut short, which becomes a word in its own right.", eg:"exam, from examination"},
+];
+const GROUPS = {
+  meaning:{name:"Meaning", c:"#2B5597", t:["#D6E1F3","#BFD0EC"]},
+  sound:{name:"Sound & spelling", c:"#A84F0C", t:["#F8DEC8","#F1C9A6"]},
+  names:{name:"Names", c:"#17796B", t:["#CDEBE5","#AEDDD3"]},
+  word:{name:"Word-building", c:"#6B3F99", t:["#E4D8F1","#D2BFE9"]},
+  gold:{name:"Golden bonus"},
+};
+const TYPE = Object.fromEntries(TYPES.map((t,i)=>[t.id,{...t,i}]));
+PUZZLES.forEach((p,i)=>{ p.id=i; p.close=new Set((p.close||"").split(" ").filter(Boolean)); });
+GOLD.forEach((p,i)=>{ p.id=i; p.close=new Set((p.close||"").split(" ").filter(Boolean)); });
+const POOLS = Object.fromEntries(TYPES.map(t=>[t.id, PUZZLES.filter(p=>p.type===t.id).map(p=>p.id)]));
+
+const MAX = 4;
+const LAUNCH = Date.UTC(2026,9,10);   // Sat 10 Oct 2026 = Spinonym No. 1. Change this to your launch day.
+let WORDS = null;   // Samey's word list, at the site root. If it fails to load, every guess is accepted.
+fetch("../words.txt").then(r=> r.ok ? r.text() : Promise.reject()).then(t=>{ WORDS = new Set(t.split("\n")); }).catch(()=>{});
+const $ = id => document.getElementById(id);
+const TEST = location.hash === "#test";   // samey.uk/spinonym/#test lets you pick any puzzle; nothing is saved
+let state, main, gold = null, bonus;   // state = whichever puzzle is on screen: main (today's) or gold (golden bonus)
+
+// ---- Daily schedule: same for everyone, fixed by date ----
+function todayKey(d=new Date()){ return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`; }
+function yesterdayKey(){ const d=new Date(); d.setDate(d.getDate()-1); return todayKey(d); }
+function dayNum(){ const d=new Date(); return Math.max(0, Math.round((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())-LAUNCH)/864e5)); }
+function hash(n){ let x=Math.imul((n|0)^0x5bd1e995, 2654435761); x^=x>>>15; x=Math.imul(x,2246822519); x^=x>>>13; return x>>>0; }
+const TOTAL = TYPES.reduce((s,t)=>s+t.w,0);
+function pickType(d,salt){ let r=hash(d*31+salt*7919+17)%TOTAL; for(const t of TYPES){ if(r<t.w) return t.id; r-=t.w; } return TYPES[0].id; }
+// Weighted pick per day, never the same type two days running. Each type works through its own puzzles in order.
+function puzzleForDay(n){
+  const counts={}; let prev=null, pid=0;
+  for(let d=0; d<=n; d++){
+    let t = d===0 ? "antonym" : pickType(d,0), s=1;
+    while(t===prev && s<6) t=pickType(d,s++);
+    const pool=POOLS[t], c=counts[t]||0; counts[t]=c+1; pid=pool[c%pool.length]; prev=t;
+  }
+  return pid;
+}
+function spinAngle(pid, n){ const i=TYPE[PUZZLES[pid].type].i; return i*20 + 10 + ((hash(n+555)%100)/100 - .5)*12; }
+
+// ---- The wheel (drawn once) ----
+function drawWheel(){
+  const pt=(r,a)=>{ const t=a*Math.PI/180; return [ (r*Math.sin(t)).toFixed(2), (-r*Math.cos(t)).toFixed(2) ]; };
+  const sec=(r1,r2,a1,a2)=>{ const l=a2-a1>180?1:0, [x1,y1]=pt(r2,a1),[x2,y2]=pt(r2,a2),[x3,y3]=pt(r1,a2),[x4,y4]=pt(r1,a1);
+    return `M${x1} ${y1}A${r2} ${r2} 0 ${l} 1 ${x2} ${y2}L${x3} ${y3}A${r1} ${r1} 0 ${l} 0 ${x4} ${y4}Z`; };
+  let s = `<circle r="169" fill="var(--bg)"/>`;
+  const spans={}; TYPES.forEach((t,i)=>{ const sp=spans[t.g]||(spans[t.g]={a:i*20,b:0}); sp.b=i*20+20; });
+  for(const [g,sp] of Object.entries(spans)){
+    s += `<path class="wheel-slice" data-g="${g}" d="${sec(141,168,sp.a,sp.b)}" fill="${GROUPS[g].c}" stroke="#16181D" stroke-width="1.6"/>`;
+    const mid=(sp.a+sp.b)/2, flip = mid>90 && mid<270;
+    const tf = flip ? `rotate(${mid-180}) translate(0,154.5)` : `rotate(${mid}) translate(0,-154.5)`;
+    s += `<text class="wheel-slice" data-g="${g}" transform="${tf}" fill="#fff" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="10.5" letter-spacing="0.6" text-anchor="middle" dominant-baseline="central">${GROUPS[g].name.toUpperCase().replace("&","&amp;")}</text>`;
+  }
+  let k={};
+  TYPES.forEach((t,i)=>{
+    const n=(k[t.g]=(k[t.g]||0)+1);
+    s += `<path class="wheel-slice" data-t="${t.id}" d="${sec(40,139,i*20,i*20+20)}" fill="${GROUPS[t.g].t[n%2]}" stroke="#16181D" stroke-width="1.6"/>`;
+    const mid=i*20+10, r = mid<180 ? -90 : 90;
+    s += `<text class="wheel-slice" data-t="${t.id}" transform="rotate(${mid}) translate(0,-91) rotate(${r})" fill="#16181D" font-family="Atkinson Hyperlegible, sans-serif" font-weight="700" font-size="10.5" text-anchor="middle" dominant-baseline="central">${t.name}</text>`;
+  });
+  s += `<circle r="168.6" fill="none" stroke="#16181D" stroke-width="2.6"/><circle r="140" fill="none" stroke="#16181D" stroke-width="3.2"/>`;
+  $("wheel").innerHTML = s;
+}
+let rotation = 0;
+function spinTo(angle, instant){
+  const sp=$("spinner");
+  rotation = instant ? (360-angle)%360 : Math.ceil(rotation/360)*360 + 5*360 + (360-angle)%360;
+  if(instant){ sp.style.transition="none"; sp.style.transform=`rotate(${rotation}deg)`; sp.offsetHeight; sp.style.transition=""; }
+  else sp.style.transform=`rotate(${rotation}deg)`;
+}
+function highlight(type){
+  const w=$("wheel"); w.classList.toggle("wheel-dim", !!type);
+  w.querySelectorAll(".wheel-slice").forEach(el=> el.classList.toggle("on", !!type && (el.dataset.t===type.id || el.dataset.g===type.g)));
+}
+
+// ---- Puzzle play (Samey's rules) ----
+function reveal(answer, guess, known, anagram){
+  if(anagram) return answer.split("").map((ch,i)=> known[i] || (guess[i]===ch ? ch : null));
+  const letters = new Set(guess);
+  return answer.split("").map((ch,i)=> known[i] || (letters.has(ch) ? ch : null));
+}
+const mask = arr => arr.map(c=>c||"_").join(" ");
+const sorted = w => w.split("").sort().join("");
+const hintMask = p => p.hint || ("_".repeat(Math.ceil(p.answer.length/2)) + p.answer.slice(Math.ceil(p.answer.length/2)));
+
+function newState(p, t, extra){
+  return Object.assign({p, t, actions:[], known:Array(p.answer.length).fill(null), hinted:Array(p.answer.length).fill(false),
+    rows:[], closeTried:new Set(), missed:new Set(), used:0, hintUsed:false, done:false, won:false}, extra);
+}
+function setup(pid, n){
+  const p = PUZZLES[pid], t = TYPE[p.type];
+  main = state = newState(p, t, {kind:"main", pid, n, daily:false, spun:false});
+  gold = null;
+  bonus = {i:0, picks:[], done:false, egg:null};
+  $("dayLine").textContent = `No. ${n+1} · ` + new Date().toLocaleDateString("en-GB",{weekday:"long", day:"numeric", month:"long"});
+  $("revGroup").textContent = GROUPS[t.g].name; $("revName").textContent = t.name; $("revDef").textContent = t.def; $("revEg").textContent = "e.g. " + t.eg;
+  $("reveal").hidden = true; $("spinBtn").hidden = false; $("spinBtn").disabled = false; highlight(null);
+  fillPuzzle();
+  show("wheelView");
+  render(new Set());
+}
+// Puts whichever puzzle `state` points at into the puzzle view.
+function fillPuzzle(){
+  const p=state.p, t=state.t;
+  document.body.dataset.group = t.g;
+  $("typeChip").textContent = `${GROUPS[t.g].name} · ${t.name}`;
+  $("defName").textContent = t.name; $("defText").textContent = t.def; $("defEg").textContent = t.eg; $("defLink").href = "glossary.html#" + t.id;
+  $("clueAsk").textContent = t.ask; $("clueWord").textContent = p.clue; $("clueWord").classList.toggle("long", p.clue.length > 14); $("clueSub").textContent = p.sub;
+  $("lenNote").textContent = p.answer.length + " letters";
+  $("guess").value=""; $("msg").textContent=""; $("msg").className="msg";
+  $("result").hidden = true; $("playArea").hidden = false; $("defBox").hidden = true; $("defBtn").setAttribute("aria-expanded","false");
+}
+function openPuzzle(st){
+  state = st; fillPuzzle(); render(new Set());
+  if(st.done) finish();
+  show("gameView");
+}
+function show(id){ ["wheelView","gameView","bonusView"].forEach(v=>$(v).hidden = v!==id); window.scrollTo(0,0); }
+
+function render(fresh){
+  const b=$("board"); b.innerHTML="";
+  state.known.forEach((c,i)=>{
+    const t=document.createElement("div");
+    t.className="tile"+(c?(state.hinted[i]?" hint":" hit"):"")+(fresh.has(i)?" pop":"");
+    t.textContent=c||""; t.setAttribute("aria-label", c?c:"blank"); b.appendChild(t);
+  });
+  setTimeout(()=>b.querySelectorAll(".pop").forEach(t=>t.classList.remove("pop")),260);
+  const pips=$("pips"); pips.innerHTML="";
+  for(let k=0;k<MAX;k++){ const d=document.createElement("span"), r=state.rows[k]; d.className="pip"+(r?(r.hint?" hinted":" used"):""); pips.appendChild(d); }
+  const keys=$("keys"); keys.innerHTML="";
+  const hintOnly=new Set(state.known.filter((c,i)=>c&&state.hinted[i])), found=new Set(state.known.filter((c,i)=>c&&!state.hinted[i]));
+  ["qwertyuiop","asdfghjkl","zxcvbnm"].forEach(row=>{
+    const r=document.createElement("div"); r.className="krow";
+    for(const ch of row){
+      const b=document.createElement("button"); b.type="button"; b.textContent=ch;
+      const st = found.has(ch) ? "found" : hintOnly.has(ch) ? "hint" : state.missed.has(ch) ? "out" : "";
+      b.className="key"+(st?" "+st:"");
+      b.setAttribute("aria-label", ch+(st==="out"?", not in the word":st?", in the word":", not tried yet"));
+      b.disabled=state.done; b.addEventListener("click",()=>{ $("guess").value+=ch; });
+      r.appendChild(b);
+    }
+    if(row==="zxcvbnm"){
+      const mk=(label,aria,fn,first)=>{ const b=document.createElement("button"); b.type="button"; b.className="key wide"; b.textContent=label; b.setAttribute("aria-label",aria); b.disabled=state.done; b.addEventListener("click",fn); first?r.prepend(b):r.append(b); };
+      mk("Enter","Submit guess",()=>{ if(!state.done) guess($("guess").value); },true);
+      mk("⌫","Delete last letter",()=>{ const g=$("guess"); g.value=g.value.slice(0,-1); },false);
+    }
+    keys.appendChild(r);
+  });
+  const log=$("log"); log.innerHTML="";
+  state.rows.forEach((r,k)=>{
+    const li=document.createElement("li"); li.className = r.win?"win":(r.hint?"hintrow":"");
+    li.innerHTML=`<span class="n">${k+1}</span><span class="g"></span><span class="f"></span>`;
+    li.querySelector(".g").textContent = r.hint?"Hint":r.guess; li.querySelector(".f").textContent = r.board; log.appendChild(li);
+  });
+  $("hintBtn").disabled = state.done || state.hintUsed || MAX-state.used < 2;
+}
+function apply(next,isHint){ const fresh=new Set(); next.forEach((c,i)=>{ if(c&&!state.known[i]){ fresh.add(i); if(isHint) state.hinted[i]=true; } }); state.known=next; return fresh; }
+
+function guess(raw){
+  const g=raw.trim().toLowerCase(), p=state.p, msg=$("msg"), anagram=p.type==="anagram";
+  msg.className="msg"; msg.textContent="";
+  if(!/^[a-z]+$/.test(g)){ msg.className="msg err"; msg.textContent="Letters only, one word please."; return; }
+  if(g===p.clue.toLowerCase()){ msg.className="msg err"; msg.textContent="That's the starting word. Try another."; return; }
+  if(anagram && sorted(g)!==sorted(p.answer)){ msg.className="msg err"; msg.textContent=`Use exactly the letters in ${p.clue.toUpperCase()}. That didn't cost a go.`; return; }
+  if(!p.free && !anagram && WORDS && !WORDS.has(g) && g!==p.answer && !p.close.has(g)){ msg.className="msg err"; msg.textContent=`"${g}" isn't in our word list. Try a real word. That didn't cost a go.`; return; }
+  if(state.rows.some(r=>r.guess===g) || state.closeTried.has(g)){ msg.className="msg err"; msg.textContent="You've already tried that one."; return; }
+  if(p.close.has(g)){
+    state.closeTried.add(g); $("guess").value=""; act({c:g});
+    msg.className="msg close"; msg.textContent=`Close! "${g}" works, but it's not the one we're after. That one's free: no go used, and no letters checked.`; return;
+  }
+  state.used++; act({g});
+  if(!anagram) for(const ch of g) if(!p.answer.includes(ch)) state.missed.add(ch);
+  const exact = g===p.answer;
+  const fresh = apply(exact ? p.answer.split("") : reveal(p.answer, g, state.known, anagram), false);
+  const win = exact || state.known.every(Boolean);
+  state.rows.push({guess:g, board:mask(state.known), win});
+  $("guess").value="";
+  if(win){ state.done=true; state.won=true; }
+  else if(state.used>=MAX){ state.done=true; }
+  else { const f=fresh.size; msg.textContent = f ? `${f} new letter${f>1?"s":""} found.` : (anagram ? "No letters in the right place yet." : "No new letters that time."); }
+  render(fresh);
+  if(state.done) finish();
+}
+function useHint(){
+  if(state.hintUsed || MAX-state.used<2 || state.done) return;
+  state.hintUsed=true; state.used++; act({h:1});
+  const hm=hintMask(state.p);
+  let next=state.known.map((c,i)=> c || (hm[i]!=="_" ? hm[i] : null));
+  if(next.every((c,i)=> c===state.known[i])){   // the hint's letters are already showing: give the first missing letter instead
+    const i=state.known.findIndex(c=>!c); next=state.known.slice(); next[i]=state.p.answer[i];
+  }
+  const fresh=apply(next,true), complete=state.known.every(Boolean);
+  state.rows.push({guess:"", hint:true, win:complete, board:mask(state.known)});
+  if(complete){ state.done=true; state.won=true; render(fresh); finish(); return; }
+  $("msg").className="msg"; $("msg").textContent="Hint used. "+(MAX-state.used)+(MAX-state.used===1?" go":" goes")+" left.";
+  render(fresh);
+}
+
+function shareText(){
+  const marks=main.rows.map(r=> r.hint?"💡":r.win?"🟩":"🟨").join("");
+  const score=main.won?`${main.used}/${MAX}`:`X/${MAX}`;
+  let s=`Spinonym No. ${main.n+1} · ${main.t.name} ${score}\n${marks}`;
+  if(bonus.done){ const k=bonusScore(); s+=`\nBonus ${k}/3${k===3?" 🥚":""}`; }
+  if(gold && gold.done) s+=`\n★ Golden ${gold.won?gold.used+"/"+MAX:"X/"+MAX}`;
+  return s;
+}
+function finish(){
+  $("playArea").hidden=true;
+  const p=state.p, isGold = state.kind==="gold";
+  if(isGold && state.won && !state.egg) state.egg = goldEgg();
+  $("resultTitle").textContent = isGold
+    ? (state.won ? "Golden bonus solved!" : "The golden one got away")
+    : (state.won ? (state.used===1?"First go!":`Got it in ${state.used}`) : "Out of goes");
+  $("resultText").textContent = `${p.clue} → ${p.answer.toUpperCase()}.` + (state.won ? "" : isGold ? " Keep the streak going for another shot." : " Better luck with tomorrow's spin.");
+  let note = p.note || "";
+  if(isGold && state.won && state.egg){ const e=EGGS.find(x=>x.id===state.egg); if(e) note = `You've also found the ${e.name} Easter egg. It's in your glossary now.`; }
+  $("resultNote").hidden = !note; $("resultNote").textContent = note;
+  ["stats","shareText","copyBtn","bonusBtn","goldBtn","nextNote","alsoNote","goldNote"].forEach(id=>$(id).hidden = isGold);
+  $("mainBtn").hidden = !isGold;
+  $("result").hidden=false;
+  if(isGold) return;
+  $("shareText").textContent = shareText();
+  $("bonusBtn").hidden = !state.won;
+  $("bonusBtn").textContent = bonus.done ? `Bonus round: ${bonusScore()}/3` : "Bonus round →";
+  if(state.daily && !state.replaying){ recordResult(state.won); }
+  if(state.daily) showStats(); else $("stats").hidden = true;
+  goldOffer();
+  $("copyBtn").textContent="Copy result";
+  $("nextNote").hidden = !state.daily; if(state.daily) tick();
+}
+
+// ---- Golden bonus: every 7th day of a winning streak ----
+function liveStreak(){ const st=loadStats(); return (st.lastWon===todayKey()||st.lastWon===yesterdayKey()) ? st.streak : 0; }
+function goldEligible(){ if(!main.won) return false; if(TEST) return true; const k=liveStreak(); return k>=7 && k%7===0; }
+function goldOffer(){
+  const ok = goldEligible(), k = TEST ? 0 : liveStreak();
+  $("goldBtn").hidden = !ok;
+  $("goldBtn").textContent = gold && gold.done ? (gold.won ? `★ Golden bonus: ${gold.used}/${MAX}` : "★ Golden bonus: missed") : "★ Golden bonus";
+  const left = 7 - (k % 7);
+  $("goldNote").hidden = ok || !main.won || !main.daily;
+  $("goldNote").textContent = `${left} more win${left===1?"":"s"} in a row to unlock a golden bonus puzzle.`;
+}
+function makeGold(){
+  const p = GOLD[main.n % GOLD.length], gt = GOLD_TYPES[p.type];
+  return newState(p, {id:p.type, g:"gold", ...gt}, {kind:"gold", egg:null});
+}
+function goldEgg(){
+  // Solving a golden puzzle whose type is also an Easter egg reveals that egg.
+  if(!EGGS.some(e=>e.id===gold.p.type)) return null;
+  if(TEST || gold.replaying) return gold.p.type;
+  let found=[]; try{ found=JSON.parse(localStorage.getItem("spinonym-eggs"))||[]; }catch(e){}
+  if(!found.includes(gold.p.type)){ found.push(gold.p.type); try{ localStorage.setItem("spinonym-eggs", JSON.stringify(found)); }catch(e){} }
+  return gold.p.type;
+}
+
+// ---- Bonus round ----
+function bonusSet(){ return [0,1,2].map(k=>QUIZ[(main.n*3+k)%QUIZ.length]); }
+function bonusScore(){ const qs=bonusSet(); return bonus.picks.filter((p,i)=>p===qs[i].a).length; }
+function renderBonus(){
+  const qs=bonusSet(), dots=$("bdots"); dots.innerHTML="";
+  qs.forEach((q,i)=>{ const d=document.createElement("span"); const p=bonus.picks[i]; d.className="bdot"+(p===undefined?"":p===q.a?" right":" wrong"); dots.appendChild(d); });
+  dots.setAttribute("aria-label", `${bonusScore()} of 3 right so far`);
+  $("qArea").hidden = bonus.done; $("bEnd").hidden = !bonus.done;
+  if(bonus.done){ renderBonusEnd(); return; }
+  const q=qs[bonus.i], picked=bonus.picks[bonus.i];
+  $("qProgress").textContent=`Question ${bonus.i+1} of 3`; $("qEx").textContent=q.ex;
+  const opts=$("opts"); opts.innerHTML="";
+  const order = q.o.map((o,j)=>[hash(main.n*1000+bonus.i*10+j), o]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+  order.forEach(label=>{
+    const b=document.createElement("button"); b.type="button"; b.className="opt";
+    const name=document.createElement("span"); name.textContent=label; b.appendChild(name);
+    if(picked!==undefined){
+      b.disabled=true; const m=document.createElement("span"); m.className="mark";
+      if(label===q.a){ b.classList.add("right"); m.textContent="Correct"; }
+      else if(label===picked){ b.classList.add("wrong"); m.textContent="Your pick"; }
+      else b.classList.add("dim");
+      b.appendChild(m);
+    } else b.addEventListener("click",()=>{ bonus.picks[bonus.i]=label; saveBonus(); renderBonus(); $("qNext").focus(); });
+    opts.appendChild(b);
+  });
+  $("qAfter").hidden = picked===undefined;
+  if(picked!==undefined){
+    $("qVerdict").textContent = picked===q.a ? "Spot on." : `Not quite: it's ${q.a.toLowerCase()}.`;
+    $("qWhy").textContent=q.why; $("qLink").href="glossary.html#"+q.id;
+    $("qNext").textContent = bonus.i<2 ? "Next" : "See how you did";
+  }
+}
+function nextQuestion(){
+  if(bonus.i<2){ bonus.i++; renderBonus(); return; }
+  bonus.done=true;
+  if(bonusScore()===3) bonus.egg = unlockEgg();
+  saveBonus(); renderBonus();
+  $("shareText").textContent = shareText();
+  $("bonusBtn").textContent = `Bonus round: ${bonusScore()}/3`;
+}
+function unlockEgg(){
+  if(TEST) return EGGS[0].id;
+  let found=[]; try{ found=JSON.parse(localStorage.getItem("spinonym-eggs"))||[]; }catch(e){}
+  let day=null; try{ day=localStorage.getItem("spinonym-eggday"); }catch(e){}
+  if(day===todayKey()) return null;
+  const next=EGGS.find(e=>!found.includes(e.id)); if(!next) return "all";
+  found.push(next.id);
+  try{ localStorage.setItem("spinonym-eggs", JSON.stringify(found)); localStorage.setItem("spinonym-eggday", todayKey()); }catch(e){}
+  return next.id;
+}
+function renderBonusEnd(){
+  const k=bonusScore();
+  $("bTitle").textContent = `${k} out of 3`;
+  $("bText").textContent = k===3 ? "A clean sweep." : k===2 ? "So close. One more and the egg was yours." : "Tricky ones today. A new set tomorrow.";
+  const egg = EGGS.find(e=>e.id===bonus.egg), card=$("eggCard");
+  card.classList.toggle("locked", !egg);
+  $("eggName").hidden=$("eggDef").hidden=$("eggEg").hidden=!egg;
+  if(egg){
+    $("eggEyebrow").textContent="Easter egg found"; $("eggName").textContent=egg.name; $("eggDef").textContent=egg.def; $("eggEg").textContent="e.g. "+egg.eg;
+    $("eggLink").textContent="See it in your glossary"; $("eggLink").href="glossary.html#"+egg.id;
+  } else if(bonus.egg==="all"){
+    $("eggEyebrow").textContent="You've found every Easter egg"; $("eggLink").textContent="Admire your glossary"; $("eggLink").href="glossary.html#easter-eggs";
+  } else {
+    $("eggEyebrow").textContent = k===3 ? "Easter egg already found today" : "Easter egg still hidden";
+    $("eggLink").textContent = k===3 ? "See your glossary" : "Get all three right to find one";
+    $("eggLink").href="glossary.html#easter-eggs";
+  }
+}
+
+// ---- Saving: one puzzle a day, stored in this browser ----
+const SAVE_KEY="spinonym-today", STATS_KEY="spinonym-stats";
+function persist(){
+  if(!main.daily || main.replaying || (gold && gold.replaying)) return;
+  try{ localStorage.setItem(SAVE_KEY, JSON.stringify({day:todayKey(), pid:main.pid, spun:main.spun, actions:main.actions,
+    bonus:{picks:bonus.picks, done:bonus.done, egg:bonus.egg}, gold: gold ? {actions:gold.actions, egg:gold.egg} : null})); }catch(e){}
+}
+function act(a){ state.actions.push(a); persist(); }
+function saveBonus(){ persist(); }
+function loadStats(){ let st=null; try{ st=JSON.parse(localStorage.getItem(STATS_KEY)); }catch(e){} return Object.assign({played:0,won:0,streak:0,best:0,lastPlayed:null,lastWon:null}, st||{}); }
+function recordResult(won){
+  const st=loadStats(), today=todayKey(); if(st.lastPlayed===today) return;
+  st.played++; st.lastPlayed=today;
+  if(won){ st.won++; st.streak=(st.lastWon===yesterdayKey())?st.streak+1:1; st.lastWon=today; st.best=Math.max(st.best,st.streak); } else st.streak=0;
+  try{ localStorage.setItem(STATS_KEY, JSON.stringify(st)); }catch(e){}
+}
+function showStats(){
+  const st=loadStats(), live=(st.lastWon===todayKey()||st.lastWon===yesterdayKey())?st.streak:0;
+  $("stPlayed").textContent=st.played; $("stWin").textContent=st.played?Math.round(100*st.won/st.played):0;
+  $("stStreak").textContent=live; $("stBest").textContent=st.best; $("stats").hidden=false;
+}
+const LOADED_DAY=todayKey();
+function tick(){
+  if($("nextNote").hidden) return;
+  const now=new Date(), mid=new Date(now); mid.setHours(24,0,0,0);
+  const m=Math.max(0,Math.ceil((mid-now)/6e4)), h=Math.floor(m/60);
+  $("nextNote").textContent=`Next spin in ${h}h ${m%60}m.`;
+}
+setInterval(()=>{ if(todayKey()!==LOADED_DAY) location.reload(); else tick(); }, 30000);
+
+// ---- Wiring ----
+$("spinBtn").addEventListener("click",()=>{
+  $("spinBtn").disabled=true; highlight(null);
+  spinTo(spinAngle(main.pid, main.n), false);
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  setTimeout(()=>{
+    highlight(main.t); $("spinBtn").hidden=true; $("reveal").hidden=false;
+    main.spun=true; persist(); $("playBtn").focus();
+  }, reduce ? 700 : 3500);
+});
+$("playBtn").addEventListener("click",()=>{ openPuzzle(main); });
+$("defBtn").addEventListener("click",()=>{ const open=$("defBox").hidden; $("defBox").hidden=!open; $("defBtn").setAttribute("aria-expanded", String(open)); });
+$("guessForm").addEventListener("submit", e=>{ e.preventDefault(); if(!state.done) guess($("guess").value); });
+$("hintBtn").addEventListener("click", useHint);
+$("bonusBtn").addEventListener("click",()=>{ document.body.dataset.group = main.t.g; show("bonusView"); renderBonus(); });
+$("qNext").addEventListener("click", nextQuestion);
+$("backBtn").addEventListener("click",()=>{ openPuzzle(main); });
+$("goldBtn").addEventListener("click",()=>{ if(!gold){ gold=makeGold(); persist(); } openPuzzle(gold); });
+$("mainBtn").addEventListener("click",()=>{ openPuzzle(main); });
+$("copyBtn").addEventListener("click",()=>{
+  const text=$("shareText").textContent;
+  try{ navigator.clipboard.writeText(text).then(()=>{$("copyBtn").textContent="Copied";}, selectShare); }catch(e){ selectShare(); }
+});
+function selectShare(){ const r=document.createRange(); r.selectNodeContents($("shareText")); const s=getSelection(); s.removeAllRanges(); s.addRange(r); $("copyBtn").textContent="Selected, press copy"; }
+
+drawWheel();
+if(TEST){
+  $("pickWrap").hidden=false;
+  PUZZLES.forEach(p=>{ const o=document.createElement("option"); o.value=p.id; o.textContent=`${TYPE[p.type].name}: ${p.clue}`; $("puzzle").appendChild(o); });
+  GOLD.forEach(p=>{ const o=document.createElement("option"); o.value="g"+p.id; o.textContent=`★ ${GOLD_TYPES[p.type].name}: ${p.clue}`; $("puzzle").appendChild(o); });
+  $("puzzle").addEventListener("change", e=>{
+    const v=e.target.value;
+    if(v[0]==="g"){ setup(puzzleForDay(dayNum()), dayNum()); const p=GOLD[+v.slice(1)]; gold=newState(p,{id:p.type,g:"gold",...GOLD_TYPES[p.type]},{kind:"gold",egg:null}); openPuzzle(gold); }
+    else { setup(+v, dayNum()); spinTo(0,true); }
+  });
+  const pid=puzzleForDay(dayNum()); $("puzzle").value=pid; setup(pid, dayNum());
+} else {
+  const n=dayNum(), pid=puzzleForDay(n);
+  setup(pid, n); main.daily=true;
+  let saved=null; try{ saved=JSON.parse(localStorage.getItem(SAVE_KEY)); }catch(e){}
+  if(saved && saved.day===todayKey() && saved.pid===pid){
+    main.replaying=true;
+    if(saved.bonus){ bonus.picks=saved.bonus.picks||[]; bonus.done=!!saved.bonus.done; bonus.egg=saved.bonus.egg||null; bonus.i=Math.min(2, Math.max(0,bonus.picks.length-1)); }
+    for(const a of saved.actions||[]){ if(state.done) break; if(a.h) useHint(); else if(a.c) guess(a.c); else if(a.g) guess(a.g); }
+    main.replaying=false; $("msg").textContent=""; $("msg").className="msg";
+    if(saved.gold){
+      gold=makeGold(); gold.egg=saved.gold.egg||null; state=gold; gold.replaying=true; fillPuzzle();
+      for(const a of saved.gold.actions||[]){ if(gold.done) break; if(a.h) useHint(); else if(a.c) guess(a.c); else if(a.g) guess(a.g); }
+      gold.replaying=false; state=main; fillPuzzle(); render(new Set()); if(main.done) finish();
+    }
+    if(saved.spun){
+      main.spun=true; spinTo(spinAngle(pid,n), true); highlight(main.t);
+      $("spinBtn").hidden=true; $("reveal").hidden=false;
+      openPuzzle(main);
+    }
+  }
+}
+</script>
+
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "210d8562172a4416bc59877612814183"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
