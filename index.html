@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A daily word game. You get a word, then you have 4 goes to find the hidden word that means the same.">
+<meta name="theme-color" content="#1f7a6d">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://samey.uk/">
+<meta property="og:site_name" content="Samey">
+<meta property="og:title" content="Samey: find the word that means the same">
+<meta property="og:description" content="A daily word game. You get a word, then you have 4 goes to find the hidden word that means the same.">
+<meta property="og:image" content="https://samey.uk/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Samey logo with letter tiles: Enormous becomes G _ A N T">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Samey: find the word that means the same">
+<meta name="twitter:description" content="A daily word game. You get a word, then you have 4 goes to find the hidden word that means the same.">
+<meta name="twitter:image" content="https://samey.uk/og-image.png">
+<title>Samey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=DM+Mono:wght@500&display=swap">
+<style>
+/* Layout: single centred play column; clue card on top, live board, guess log, input + actions pinned below */
+:root{
+  --bg:#f3f5f1; --surface:#ffffff; --ink:#1b2422; --muted:#5e6b67; --line:#d5ddd8;
+  --teal:#1f7a6d; --teal-ink:#ffffff; --amber:#d99a1e; --amber-ink:#2a1d00; --slot:#e6ebe7; --bad:#b4442f;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible",ui-sans-serif,system-ui,sans-serif;
+  --mono:"DM Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121816; --surface:#1a2220; --ink:#e7eeea; --muted:#9aa8a3; --line:#2c3633;
+  --teal:#3fae9d; --teal-ink:#06201b; --amber:#e8b04a; --amber-ink:#2a1d00; --slot:#24302d; --bad:#e07a62; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121816; --surface:#1a2220; --ink:#e7eeea; --muted:#9aa8a3; --line:#2c3633;
+  --teal:#3fae9d; --teal-ink:#06201b; --amber:#e8b04a; --amber-ink:#2a1d00; --slot:#24302d; --bad:#e07a62; color-scheme:dark}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;padding-inline:16px;padding-block:24px 40px}
+main{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px}
+.brand h1{font-family:var(--display);font-weight:800;font-size:2rem;letter-spacing:-.02em;margin:0;line-height:1}
+.logo{width:40px;height:28px;flex:none}
+.pick{font-size:.85rem;color:var(--muted);display:flex;gap:8px;align-items:center}
+select,button,input{font:inherit}
+select{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:4px 8px}
+.clue{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;gap:4px}
+.eyebrow{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.clue .word{font-family:var(--display);font-weight:800;font-size:2.6rem;line-height:1.05;letter-spacing:-.02em;text-wrap:balance}
+.clue .kind{color:var(--muted)}
+.tier{align-self:flex-start;margin-top:8px;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:999px;border:2px solid var(--teal);color:var(--teal)}
+.tier .dots{letter-spacing:.15em;margin-left:6px}
+.board{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.tile{width:clamp(34px,11vw,48px);aspect-ratio:1;max-width:100%;border-radius:6px;background:var(--slot);display:grid;place-items:center;font-family:var(--mono);font-size:clamp(1.1rem,5vw,1.5rem);text-transform:uppercase;color:var(--ink);transition:background .25s,transform .25s}
+.tile.hit{background:var(--teal);color:var(--teal-ink)}
+.tile.hint{background:var(--amber);color:var(--amber-ink)}
+.tile.pop{transform:scale(1.12)}
+.meta{display:flex;justify-content:space-between;align-items:center;font-size:.9rem;color:var(--muted);gap:12px;flex-wrap:wrap}
+.pips{display:flex;gap:6px}
+.pip{width:12px;height:12px;border-radius:50%;border:2px solid var(--teal)}
+.pip.used{background:var(--teal)}
+.pip.hinted{background:var(--amber);border-color:var(--amber)}
+.keys{display:flex;flex-direction:column;gap:6px;align-items:center;margin-top:-6px}
+.krow{display:flex;gap:4px;justify-content:center}
+.key{--kw:min(38px, calc((100vw - 32px - 36px) / 10));width:var(--kw);height:40px;border-radius:6px;border:0;background:var(--slot);color:var(--ink);font-family:var(--mono);font-size:1rem;text-transform:uppercase;cursor:pointer;padding:0}
+.key.found{background:var(--teal);color:var(--teal-ink)}
+.key.hint{background:var(--amber);color:var(--amber-ink)}
+.key.out{background:transparent;color:var(--muted);opacity:.55;text-decoration:line-through;text-decoration-color:var(--bad);box-shadow:inset 0 0 0 1px var(--line)}
+.key.wide{width:calc(var(--kw) * 1.5);font-family:var(--body);font-weight:700;font-size:.78rem;text-transform:none}
+.key:disabled{cursor:default}
+.key:focus-visible{outline:3px solid var(--amber);outline-offset:1px}
+.missed{display:flex;flex-wrap:wrap;gap:5px}
+.ml{font-family:var(--mono);text-transform:uppercase;font-size:.95rem;width:28px;height:28px;display:grid;place-items:center;border-radius:5px;color:var(--muted);border:1px dashed var(--line);text-decoration:line-through;text-decoration-color:var(--bad)}
+.log{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.log li{display:grid;grid-template-columns:2.2rem minmax(0,1fr) auto;gap:10px;align-items:baseline;padding:8px 12px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.log .n{color:var(--muted);font-size:.85rem}
+.log .g{font-weight:700;overflow-wrap:anywhere}
+.log .f{font-family:var(--mono);letter-spacing:.12em;color:var(--muted);white-space:nowrap}
+.log li.win .f{color:var(--teal)}
+.log li.hintrow .g{color:var(--amber)}
+form{display:flex;gap:8px}
+input{flex:1;min-width:0;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:8px;padding:10px 12px;font-size:1.05rem}
+input:focus{outline:none;border-color:var(--teal)}
+.btn{border:0;border-radius:8px;padding:10px 16px;font-weight:700;cursor:pointer;background:var(--teal);color:var(--teal-ink)}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.btn.hintbtn{background:transparent;color:var(--ink);border:2px solid var(--amber)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn:focus-visible,select:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.msg{min-height:1.5em;font-size:.95rem}
+.msg.err{color:var(--bad)}
+.msg.close{color:var(--ink);background:color-mix(in srgb,var(--amber) 22%,transparent);border-left:4px solid var(--amber);padding:8px 12px;border-radius:4px}
+.result{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.result h2{font-family:var(--display);font-size:1.5rem;margin:0}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:4px 0}
+.stats div{display:flex;flex-direction:column-reverse;align-items:center;text-align:center}
+.stats dt{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.stats dd{margin:0;font-family:var(--display);font-weight:800;font-size:1.7rem;font-variant-numeric:tabular-nums;line-height:1.1}
+.next{margin:0;color:var(--muted);font-variant-numeric:tabular-nums}
+.share{font-family:var(--mono);white-space:pre;background:var(--slot);border-radius:6px;padding:10px;overflow-x:auto;user-select:all}
+details{font-size:.92rem;color:var(--muted)}
+summary{cursor:pointer;font-weight:700;color:var(--ink)}
+details ul{padding-left:1.2rem;margin:.5rem 0 0}
+@media (prefers-reduced-motion: reduce){.tile{transition:none}.tile.pop{transform:none}}
+</style>
+
+</head>
+<body>
+<main>
+  <header>
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 40 28" aria-hidden="true"><circle cx="14" cy="14" r="11" fill="var(--teal)" opacity=".85"/><circle cx="26" cy="14" r="11" fill="var(--amber)" opacity=".85"/></svg>
+      <h1>Samey</h1>
+    </div>
+    <label class="pick" id="pickWrap" for="puzzle" hidden>Puzzle <select id="puzzle"></select></label>
+  </header>
+
+  <section class="clue" aria-live="polite">
+    <span class="eyebrow">Find a word that means the same as</span>
+    <span class="word" id="clueWord"></span>
+    <span class="kind" id="clueKind"></span>
+    <span class="tier" id="clueTier"></span>
+  </section>
+
+  <div class="board" id="board" aria-label="Answer board"></div>
+
+  <div class="meta">
+    <span id="lenNote"></span>
+    <span class="pips" id="pips" aria-label="Goes used"></span>
+  </div>
+
+  <div class="keys" id="keys" aria-label="Letter board"></div>
+
+  <ul class="log" id="log" aria-label="Your goes"></ul>
+
+  <div id="playArea" style="display:flex;flex-direction:column;gap:10px">
+    <form id="guessForm" autocomplete="off">
+      <input id="guess" type="text" placeholder="Type your guess" aria-label="Your guess" autocapitalize="off" spellcheck="false">
+      <button class="btn" type="submit">Guess</button>
+    </form>
+    <div class="actions">
+      <button class="btn hintbtn" id="hintBtn" type="button">Hint (costs a go)</button>
+    </div>
+    <div class="msg" id="msg" role="status"></div>
+  </div>
+
+  <section class="result" id="result" hidden>
+    <h2 id="resultTitle"></h2>
+    <div id="resultText"></div>
+    <dl class="stats" id="stats" hidden>
+      <div><dt>Played</dt><dd id="stPlayed">0</dd></div>
+      <div><dt>Win %</dt><dd id="stWin">0</dd></div>
+      <div><dt>Streak</dt><dd id="stStreak">0</dd></div>
+      <div><dt>Best</dt><dd id="stBest">0</dd></div>
+    </dl>
+    <div class="share" id="shareText"></div>
+    <p class="next" id="nextNote" hidden></p>
+    <div class="actions">
+      <button class="btn" id="copyBtn" type="button">Copy result</button>
+      <button class="btn ghost" id="nextBtn" type="button">Next puzzle</button>
+    </div>
+  </section>
+
+  <details>
+    <summary>How to play</summary>
+    <ul>
+      <li>You get a word. Find the hidden word that means the same thing.</li>
+      <li>Each clue tells you what kind of word you're after: a <b>thing word</b> (like <i>chair</i>), a <b>doing word</b> (like <i>run</i>) or a <b>describing word</b> (like <i>happy</i>). The answer is the same kind of word, which helps when a clue could mean two things.</li>
+      <li>Puzzles start gentle on Monday and get tougher through to Friday. Weekends are medium.</li>
+      <li>You have 4 goes. Your guess can be any length, but it has to be a real word.</li>
+      <li>Every letter in your guess that's also in the answer lights up in all its spots, and stays lit.</li>
+      <li>The letter board shows what you know so far: green letters are in the word, crossed-out letters aren't, and plain ones you haven't tried yet.</li>
+      <li>Guess a word that means the same but isn't the one we're after? We'll tell you it's close. It won't cost a go, and it doesn't check any letters either.</li>
+      <li>Stuck? A hint fills in part of the word, but uses up a go.</li>
+    </ul>
+  </details>
+</main>
+
+<script>
+// close: other fair synonyms. Guessing one costs no go and reveals nothing.
+const PUZZLES = [
+  {clue:"Happy", tier:2,   kind:"describing word", answer:"content",  hint:"____ent",
+   close:"joyful glad cheerful merry jolly pleased delighted elated jubilant chirpy upbeat sunny blissful ecstatic thrilled"},
+  {clue:"Begin", tier:4,   kind:"doing word",      answer:"launch",   hint:"___nch",
+   close:"start commence initiate open kickoff establish embark found institute"},
+  {clue:"Journey", tier:1, kind:"thing word",      answer:"trek",     hint:"t__k",
+   close:"trip voyage travel tour expedition odyssey excursion outing passage hike ride drive crossing"},
+  {clue:"Angry", tier:3,   kind:"describing word", answer:"livid",    hint:"___id",
+   close:"furious cross mad irate annoyed fuming enraged irritated raging seething heated outraged incensed"},
+  {clue:"Mend", tier:1,    kind:"doing word",      answer:"patch",    hint:"___ch",
+   close:"fix repair restore darn sew heal remedy correct renovate rectify"},
+  {clue:"Sleepy", tier:4,  kind:"describing word", answer:"weary",    hint:"___ry",
+   close:"drowsy tired dozy lethargic sluggish exhausted fatigued knackered shattered somnolent yawning"},
+  {clue:"Shout", tier:3,   kind:"doing word",      answer:"bellow",   hint:"___low",
+   close:"yell scream holler roar cry shriek bawl call howl screech bark"},
+  {clue:"Brave", tier:2,   kind:"describing word", answer:"daring",   hint:"___ing",
+   close:"bold courageous fearless heroic valiant gallant plucky gutsy intrepid game"},
+  {clue:"Quick", tier:5,   kind:"describing word", answer:"nippy",    hint:"___py",
+   close:"fast rapid speedy swift brisk hasty prompt fleet nimble snappy zippy sharp"},
+  {clue:"Rubbish", tier:1, kind:"thing word", answer:"junk", hint:"_unk",
+   close:"rubbish trash litter garbage refuse waste debris clutter scrap"},
+  {clue:"Tiny", tier:1, kind:"describing word", answer:"little", hint:"___tle",
+   close:"small wee minute miniature petite teeny mini minuscule"},
+  {clue:"Chat", tier:1, kind:"doing word", answer:"talk", hint:"_alk",
+   close:"natter gossip chatter converse speak gab jabber"},
+  {clue:"Cold", tier:1, kind:"describing word", answer:"chilly", hint:"___lly",
+   close:"freezing icy frosty cool nippy wintry bitter raw arctic"},
+  {clue:"Sad", tier:2, kind:"describing word", answer:"gloomy", hint:"____my",
+   close:"unhappy down miserable blue glum low upset sorrowful dejected melancholy tearful"},
+  {clue:"Rich", tier:2, kind:"describing word", answer:"wealthy", hint:"____thy",
+   close:"loaded affluent prosperous minted moneyed flush opulent"},
+  {clue:"Clever", tier:2, kind:"describing word", answer:"bright", hint:"___ght",
+   close:"smart intelligent brainy wise sharp gifted able brilliant canny astute quick"},
+  {clue:"Hurry", tier:2, kind:"doing word", answer:"dash", hint:"_ash",
+   close:"rush hasten race speed hurtle scurry run bolt zoom sprint"},
+  {clue:"Hide", tier:3, kind:"doing word", answer:"conceal", hint:"___ceal",
+   close:"cover mask stash bury disguise secrete cloak veil shroud"},
+  {clue:"Rude", tier:3, kind:"describing word", answer:"cheeky", hint:"____ky",
+   close:"impolite insolent impudent disrespectful offensive crude vulgar coarse insulting brash"},
+  {clue:"Noise", tier:3, kind:"thing word", answer:"racket", hint:"___ket",
+   close:"din sound clamour clamor uproar row commotion hubbub tumult"},
+  {clue:"Throw", tier:3, kind:"doing word", answer:"hurl", hint:"h__l",
+   close:"toss chuck fling lob pitch cast sling heave launch bung"},
+  {clue:"Strange", tier:4, kind:"describing word", answer:"peculiar", hint:"____liar",
+   close:"odd weird bizarre unusual curious funny eerie unfamiliar outlandish quirky"},
+  {clue:"Steal", tier:4, kind:"doing word", answer:"pinch", hint:"___ch",
+   close:"nick rob swipe pocket lift nab take thieve pilfer snatch filch loot"},
+  {clue:"Mess", tier:4, kind:"thing word", answer:"shambles", hint:"____bles",
+   close:"chaos clutter muddle jumble disorder tip pigsty disarray hash"},
+  {clue:"Calm", tier:4, kind:"describing word", answer:"serene", hint:"___ene",
+   close:"peaceful tranquil placid relaxed still quiet composed restful untroubled unruffled"},
+  {clue:"Argument", tier:5, kind:"thing word", answer:"quarrel", hint:"____rel",
+   close:"row fight dispute disagreement spat squabble tiff clash feud debate barney"},
+  {clue:"Lazy", tier:5, kind:"describing word", answer:"indolent", hint:"____lent",
+   close:"idle slothful sluggish workshy lethargic slack inactive languid"},
+  {clue:"Brief", tier:5, kind:"describing word", answer:"concise", hint:"____ise",
+   close:"short quick succinct terse fleeting momentary compact pithy"},
+  {clue:"Wander", tier:5, kind:"doing word", answer:"meander", hint:"___nder",
+   close:"roam stroll ramble amble drift rove saunter mosey stray trek"},
+  {clue:"Fast", tier:1, kind:"describing word", answer:"speedy", hint:"___edy",
+   close:"quick rapid swift hasty brisk nippy fleet zippy"},
+  {clue:"Large", tier:1, kind:"describing word", answer:"huge", hint:"_uge",
+   close:"big vast giant massive enormous immense great hefty bulky"},
+  {clue:"Smile", tier:1, kind:"doing word", answer:"grin", hint:"_rin",
+   close:"beam smirk simper laugh"},
+  {clue:"Shut", tier:1, kind:"doing word", answer:"close", hint:"__ose",
+   close:"lock seal fasten bolt latch slam"},
+  {clue:"Pal", tier:1, kind:"thing word", answer:"mate", hint:"_ate",
+   close:"friend buddy chum companion mucker crony comrade"},
+  {clue:"Wet", tier:1, kind:"describing word", answer:"damp", hint:"_amp",
+   close:"soggy soaked moist drenched sodden sopping soaking dewy"},
+  {clue:"Kid", tier:1, kind:"thing word", answer:"child", hint:"__ild",
+   close:"youngster tot nipper youth infant toddler minor sprog"},
+  {clue:"Look", tier:1, kind:"doing word", answer:"gaze", hint:"_aze",
+   close:"stare glance peek peer watch view see glimpse observe gawp eye"},
+  {clue:"Pretty", tier:1, kind:"describing word", answer:"lovely", hint:"___ely",
+   close:"beautiful attractive cute bonny gorgeous fair handsome stunning nice charming"},
+  {clue:"Stone", tier:1, kind:"thing word", answer:"rock", hint:"_ock",
+   close:"pebble boulder cobble"},
+  {clue:"Hop", tier:1, kind:"doing word", answer:"jump", hint:"_ump",
+   close:"leap skip bound spring bounce vault"},
+  {clue:"Shop", tier:1, kind:"thing word", answer:"store", hint:"__ore",
+   close:"boutique outlet market emporium retailer"},
+  {clue:"Scared", tier:2, kind:"describing word", answer:"afraid", hint:"___aid",
+   close:"frightened fearful terrified nervous anxious petrified spooked timid alarmed"},
+  {clue:"Cash", tier:2, kind:"thing word", answer:"money", hint:"__ney",
+   close:"dosh funds notes coins currency dough bread lolly brass wonga"},
+  {clue:"Pick", tier:2, kind:"doing word", answer:"choose", hint:"___ose",
+   close:"select opt elect decide prefer"},
+  {clue:"Odd", tier:2, kind:"describing word", answer:"unusual", hint:"___sual",
+   close:"strange weird peculiar bizarre curious funny rum quirky"},
+  {clue:"Dirty", tier:2, kind:"describing word", answer:"filthy", hint:"___thy",
+   close:"grubby mucky grimy muddy soiled messy unclean manky dusty"},
+  {clue:"Funny", tier:2, kind:"describing word", answer:"comical", hint:"___ical",
+   close:"hilarious amusing witty humorous droll silly hysterical"},
+  {clue:"Tidy", tier:2, kind:"describing word", answer:"neat", hint:"_eat",
+   close:"orderly trim spruce smart organised organized shipshape clean"},
+  {clue:"End", tier:2, kind:"doing word", answer:"finish", hint:"___ish",
+   close:"stop complete conclude close cease halt terminate"},
+  {clue:"Hit", tier:2, kind:"doing word", answer:"strike", hint:"___ike",
+   close:"punch smack thump whack slap bash belt clout knock wallop"},
+  {clue:"Mistake", tier:2, kind:"thing word", answer:"error", hint:"__ror",
+   close:"blunder slip gaffe howler boob fault oversight lapse"},
+  {clue:"Fair", tier:2, kind:"describing word", answer:"just", hint:"_ust",
+   close:"equal even impartial reasonable unbiased balanced honest square blond blonde pale light"},
+  {clue:"Seat", tier:2, kind:"thing word", answer:"chair", hint:"__air",
+   close:"stool bench sofa couch pew throne settee armchair"},
+  {clue:"Danger", tier:3, kind:"thing word", answer:"peril", hint:"___il",
+   close:"risk hazard threat menace jeopardy"},
+  {clue:"Gather", tier:3, kind:"doing word", answer:"collect", hint:"____ect",
+   close:"assemble amass accumulate harvest congregate"},
+  {clue:"Shy", tier:3, kind:"describing word", answer:"timid", hint:"___id",
+   close:"bashful reserved quiet retiring nervous coy diffident sheepish"},
+  {clue:"Dull", tier:3, kind:"describing word", answer:"tedious", hint:"____ous",
+   close:"boring dreary monotonous bland flat humdrum drab uninteresting mundane"},
+  {clue:"Crowd", tier:3, kind:"thing word", answer:"throng", hint:"___ong",
+   close:"mob horde crush swarm multitude mass pack flock herd gathering"},
+  {clue:"Ask", tier:3, kind:"doing word", answer:"enquire", hint:"____ire",
+   close:"inquire question query quiz request"},
+  {clue:"Blend", tier:3, kind:"doing word", answer:"combine", hint:"___bine",
+   close:"mix merge mingle fuse stir unite join amalgamate"},
+  {clue:"Hungry", tier:5, kind:"describing word", answer:"peckish", hint:"____ish",
+   close:"starving famished ravenous starved empty"},
+  {clue:"Clumsy", tier:3, kind:"describing word", answer:"awkward", hint:"___ward",
+   close:"gawky ungainly bumbling inept klutzy"},
+  {clue:"Plenty", tier:3, kind:"thing word", answer:"heaps", hint:"___ps",
+   close:"loads lots masses tons stacks oodles piles abundance plethora"},
+  {clue:"Trick", tier:3, kind:"thing word", answer:"ruse", hint:"_use",
+   close:"scam con hoax prank ploy scheme stunt wheeze dodge swindle"},
+  {clue:"Bend", tier:3, kind:"doing word", answer:"curve", hint:"__rve",
+   close:"flex bow twist crook arc buckle fold warp"},
+  {clue:"Shining", tier:4, kind:"describing word", answer:"gleaming", hint:"____ming",
+   close:"glowing shiny sparkling glistening bright radiant polished lustrous glittering"},
+  {clue:"Vanish", tier:4, kind:"doing word", answer:"disappear", hint:"_____pear",
+   close:"fade evaporate dissolve go leave depart"},
+  {clue:"Annoy", tier:4, kind:"doing word", answer:"irritate", hint:"____tate",
+   close:"bother bug irk vex nettle rile pester needle aggravate exasperate"},
+  {clue:"Old", tier:4, kind:"describing word", answer:"ancient", hint:"___ient",
+   close:"aged elderly antique vintage antiquated archaic olden decrepit"},
+  {clue:"Grumpy", tier:4, kind:"describing word", answer:"tetchy", hint:"___chy",
+   close:"grouchy irritable cranky crotchety crabby sulky moody narky ratty cross surly"},
+  {clue:"Chance", tier:4, kind:"thing word", answer:"opportunity", hint:"_______nity",
+   close:"opening break shot occasion window possibility prospect"},
+  {clue:"Silly", tier:4, kind:"describing word", answer:"daft", hint:"_aft",
+   close:"foolish stupid dumb ridiculous absurd idiotic barmy dotty potty inane"},
+  {clue:"Cheap", tier:4, kind:"describing word", answer:"budget", hint:"___get",
+   close:"inexpensive economical affordable bargain discount reasonable"},
+  {clue:"Fall", tier:4, kind:"doing word", answer:"tumble", hint:"___ble",
+   close:"drop topple plunge collapse trip slip plummet sink"},
+  {clue:"Sticky", tier:4, kind:"describing word", answer:"tacky", hint:"___ky",
+   close:"gluey gummy adhesive gooey clammy humid muggy"},
+  {clue:"Praise", tier:4, kind:"doing word", answer:"commend", hint:"____end",
+   close:"compliment applaud laud acclaim admire hail congratulate extol"},
+  {clue:"Sneaky", tier:4, kind:"describing word", answer:"crafty", hint:"___fty",
+   close:"sly cunning devious shifty wily underhand furtive scheming artful"},
+  {clue:"Talkative", tier:5, kind:"describing word", answer:"garrulous", hint:"____ulous",
+   close:"chatty gabby loquacious verbose wordy gossipy voluble"},
+  {clue:"Stubborn", tier:5, kind:"describing word", answer:"obstinate", hint:"____inate",
+   close:"headstrong wilful pigheaded mulish inflexible obdurate"},
+  {clue:"Hard", tier:5, kind:"describing word", answer:"arduous", hint:"___uous",
+   close:"difficult tough tricky taxing gruelling demanding strenuous laborious tiring solid firm rigid"},
+  {clue:"Fake", tier:5, kind:"describing word", answer:"bogus", hint:"___us",
+   close:"false phoney phony counterfeit sham forged imitation fraudulent fictitious pseudo"},
+  {clue:"Kind", tier:5, kind:"describing word", answer:"benevolent", hint:"______lent",
+   close:"caring gentle nice generous kindly compassionate thoughtful considerate friendly charitable"},
+  {clue:"Scold", tier:5, kind:"doing word", answer:"reprimand", hint:"_____mand",
+   close:"tell rebuke chide berate admonish reprove lecture castigate upbraid"},
+  {clue:"Lucky", tier:5, kind:"describing word", answer:"fortunate", hint:"_____nate",
+   close:"blessed jammy charmed favoured happy prosperous"},
+  {clue:"Easy", tier:5, kind:"describing word", answer:"effortless", hint:"______less",
+   close:"simple straightforward painless smooth undemanding facile elementary cushy"},
+  {clue:"Worried", tier:5, kind:"describing word", answer:"apprehensive", hint:"________sive",
+   close:"anxious nervous uneasy fearful concerned troubled fretful jittery tense edgy"},
+  {clue:"Secret", tier:5, kind:"describing word", answer:"clandestine", hint:"_______tine",
+   close:"hidden covert private confidential undercover concealed furtive stealthy"},
+  {clue:"Nonsense", tier:5, kind:"thing word", answer:"drivel", hint:"___vel",
+   close:"rubbish twaddle gibberish balderdash claptrap tosh piffle codswallop poppycock rot garbage bunk hogwash"},
+  {clue:"Cheerful", tier:5, kind:"describing word", answer:"buoyant", hint:"___yant",
+   close:"happy jolly sunny bright upbeat merry chirpy jovial perky optimistic"},
+  {clue:"Present", tier:3, kind:"thing word",      answer:"offering", hint:"_____ing",
+   close:"gift donation bonus prize treat contribution handout reward tip souvenir token"},
+].map(p=>({...p, close:new Set(p.close.split(" "))}));
+const MAX = 4;
+const LAUNCH = Date.UTC(2026,9,9);   // Fri 9 Oct 2026 = Samey No. 1
+// Word list: guesses must be real words. If the list fails to load, every guess is accepted.
+let WORDS = null;
+fetch("words.txt").then(r=> r.ok ? r.text() : Promise.reject()).then(t=>{ WORDS = new Set(t.split("\n")); }).catch(()=>{});
+const $ = id => document.getElementById(id);
+let state;
+
+// Pure scoring: reveal every position whose letter appears in the guess.
+function reveal(answer, guess, known){
+  const letters = new Set(guess.toLowerCase());
+  return answer.split("").map((ch,i)=> known[i] || (letters.has(ch) ? ch : null));
+}
+const mask = arr => arr.map(c=>c||"_").join(" ");
+
+const TIERS = ["","Gentle","Easy","Medium","Tricky","Toughest"];
+// Mon=1 ... Fri=5; weekends sit in the middle.
+function todayTier(){ const w=new Date().getDay(); return (w===0||w===6) ? 3 : w; }
+let LAUNCH_OVERRIDE=null;
+function dayIndex(){
+  const d=new Date(), tier=todayTier();
+  const days=Math.round((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())-LAUNCH)/864e5);
+  const week=Math.max(0,Math.floor((days+4)/7));   // weeks since launch, rolling over on Mondays (launch was a Friday)
+  // Launch day (Fri 9 Oct 2026) keeps the puzzle it went out with, at its original Toughest level.
+  if(days===0){ const li=PUZZLES.findIndex(p=>p.clue==="Present"); if(li>=0){ LAUNCH_OVERRIDE={i:li, tier:5}; return li; } }
+  const pool=PUZZLES.map((p,i)=>p.tier===tier?i:-1).filter(i=>i>=0);
+  return pool[week % pool.length];
+}
+
+function start(i){
+  const p = PUZZLES[i];
+  const tier = (LAUNCH_OVERRIDE && LAUNCH_OVERRIDE.i===i) ? LAUNCH_OVERRIDE.tier : p.tier;
+  state = {i, p, tier, daily:false, actions:[], known:Array(p.answer.length).fill(null), hinted:Array(p.answer.length).fill(false), rows:[], closeTried:new Set(), missed:new Set(), used:0, hintUsed:false, done:false, won:false};
+  $("puzzle").value = i;
+  $("clueWord").textContent = p.clue;
+  $("clueKind").textContent = "It's a " + p.kind + ".";
+  $("lenNote").textContent = p.answer.length + " letters";
+  $("clueTier").innerHTML = ""; $("clueTier").append(TIERS[tier]);
+  const dots=document.createElement("span"); dots.className="dots"; dots.textContent="●".repeat(tier)+"○".repeat(5-tier); dots.setAttribute("aria-label",`difficulty ${tier} of 5`); $("clueTier").append(dots);
+  $("guess").value = ""; $("msg").textContent=""; $("msg").className="msg";
+  $("result").hidden = true; $("playArea").hidden = false;
+  render(new Set());
+}
+
+function render(fresh){
+  const b = $("board"); b.innerHTML = "";
+  state.known.forEach((c,i)=>{
+    const t = document.createElement("div");
+    t.className = "tile" + (c ? (state.hinted[i] ? " hint" : " hit") : "") + (fresh.has(i) ? " pop" : "");
+    t.textContent = c || "";
+    t.setAttribute("aria-label", c ? c : "blank");
+    b.appendChild(t);
+  });
+  setTimeout(()=>b.querySelectorAll(".pop").forEach(t=>t.classList.remove("pop")),260);
+  const pips = $("pips"); pips.innerHTML = "";
+  for(let k=0;k<MAX;k++){
+    const d=document.createElement("span"); const r=state.rows[k];
+    d.className="pip"+(r?(r.hint?" hinted":" used"):""); pips.appendChild(d);
+  }
+  // Letter board: found letters lit, ruled-out letters crossed, untried letters plain. Tapping one types it.
+  const keys = $("keys"); keys.innerHTML = "";
+  const hintOnly = new Set(state.known.filter((c,i)=>c && state.hinted[i]));
+  const found = new Set(state.known.filter((c,i)=>c && !state.hinted[i]));
+  ["qwertyuiop","asdfghjkl","zxcvbnm"].forEach(row=>{
+    const r=document.createElement("div"); r.className="krow";
+    for(const ch of row){
+      const b=document.createElement("button"); b.type="button"; b.textContent=ch;
+      const st = found.has(ch) ? "found" : hintOnly.has(ch) ? "hint" : state.missed.has(ch) ? "out" : "";
+      b.className="key"+(st?" "+st:"");
+      b.setAttribute("aria-label", ch + (st==="out" ? ", not in the word" : st ? ", in the word" : ", not tried yet"));
+      b.disabled = state.done;
+      b.addEventListener("click",()=>{ $("guess").value += ch; });
+      r.appendChild(b);
+    }
+    if(row==="zxcvbnm"){
+      const mk=(label,aria,fn,first)=>{ const b=document.createElement("button"); b.type="button"; b.className="key wide"; b.textContent=label; b.setAttribute("aria-label",aria); b.disabled=state.done; b.addEventListener("click",fn); first ? r.prepend(b) : r.append(b); };
+      mk("Enter","Submit guess",()=>{ if(!state.done) guess($("guess").value); },true);
+      mk("⌫","Delete last letter",()=>{ const g=$("guess"); g.value=g.value.slice(0,-1); },false);
+    }
+    keys.appendChild(r);
+  });
+  const log = $("log"); log.innerHTML = "";
+  state.rows.forEach((r,k)=>{
+    const li=document.createElement("li");
+    li.className = r.win ? "win" : (r.hint ? "hintrow" : "");
+    li.innerHTML = `<span class="n">${k+1}</span><span class="g"></span><span class="f"></span>`;
+    li.querySelector(".g").textContent = r.hint ? "Hint" : r.guess;
+    li.querySelector(".f").textContent = r.board;
+    log.appendChild(li);
+  });
+  const left = MAX - state.used;
+  $("hintBtn").disabled = state.done || state.hintUsed || left < 2;
+}
+
+function apply(next, isHint){
+  const fresh = new Set();
+  next.forEach((c,i)=>{ if(c && !state.known[i]){ fresh.add(i); if(isHint) state.hinted[i]=true; } });
+  state.known = next;
+  return fresh;
+}
+
+function guess(raw){
+  const g = raw.trim().toLowerCase();
+  const msg = $("msg"); msg.className="msg"; msg.textContent="";
+  if(!/^[a-z]+$/.test(g)){ msg.className="msg err"; msg.textContent="Letters only, one word please."; return; }
+  if(WORDS && !WORDS.has(g) && g !== state.p.answer && !state.p.close.has(g)){
+    msg.className="msg err"; msg.textContent=`"${g}" isn't in our word list. Try a real word. That didn't cost a go.`; return;
+  }
+  if(g === state.p.clue.toLowerCase()){ msg.className="msg err"; msg.textContent="That's the starting word. Try one that means the same."; return; }
+  if(state.rows.some(r=>r.guess===g) || state.closeTried.has(g)){ msg.className="msg err"; msg.textContent="You've already tried that one."; return; }
+  if(state.p.close.has(g)){
+    state.closeTried.add(g); $("guess").value = ""; log({c:g});
+    msg.className="msg close"; msg.textContent=`Close! "${g}" means the same, but it's not the one we're after. That one's free: no go used, and no letters checked.`;
+    return;
+  }
+  state.used++; log({g});
+  for(const ch of g) if(!state.p.answer.includes(ch)) state.missed.add(ch);
+  const exact = g === state.p.answer;
+  const fresh = apply(exact ? state.p.answer.split("") : reveal(state.p.answer, g, state.known), false);
+  const win = exact || state.known.every(Boolean);   // board complete = solved, even if the guess was a different word
+  state.rows.push({guess:g, board:mask(state.known), win});
+  $("guess").value = "";
+  if(win){ state.done=true; state.won=true; }
+  else if(state.used>=MAX){ state.done=true; }
+  else { const found = fresh.size; msg.textContent = found ? `${found} new letter${found>1?"s":""} found.` : "No new letters that time."; }
+  render(fresh);
+  if(state.done) finish();
+}
+
+function useHint(){
+  if(state.hintUsed || MAX-state.used<2) return;
+  state.hintUsed = true; state.used++; log({h:1});
+  const next = state.known.map((c,i)=> c || (state.p.hint[i] !== "_" ? state.p.hint[i] : null));
+  const fresh = apply(next, true);
+  const complete = state.known.every(Boolean);
+  state.rows.push({guess:"", hint:true, win:complete, board:mask(state.known)});
+  if(complete){ state.done=true; state.won=true; render(fresh); finish(); return; }
+  $("msg").className="msg"; $("msg").textContent = "Hint used. " + (MAX-state.used) + (MAX-state.used===1?" go":" goes") + " left.";
+  render(fresh);
+  $("guess").focus();
+}
+
+function finish(){
+  $("playArea").hidden = true;
+  const p = state.p;
+  $("resultTitle").textContent = state.won ? (state.used===1 ? "First go!" : `Got it in ${state.used}`) : "Out of goes";
+  $("resultText").textContent = `${p.clue} → ${p.answer}.` + (state.won ? "" : " Better luck with the next one.");
+  const marks = state.rows.map(r=> r.hint ? "💡" : r.win ? "🟩" : "🟨").join("");
+  const score = state.won ? `${state.used}/${MAX}` : `X/${MAX}`;
+  $("shareText").textContent = `Samey ${state.daily ? dayNumber() : '#'+(state.i+1)} (${TIERS[state.tier]})  ${score}\n${marks}`;
+  $("result").hidden = false;
+  if(state.daily){ recordResult(state.won); showStats(); }
+  $("copyBtn").textContent = "Copy result";
+  $("nextBtn").hidden = state.daily;
+  $("nextNote").hidden = !state.daily;
+  if(state.daily) tick();
+}
+
+$("guessForm").addEventListener("submit", e=>{ e.preventDefault(); if(!state.done) guess($("guess").value); });
+$("hintBtn").addEventListener("click", useHint);
+$("nextBtn").addEventListener("click", ()=> start((state.i+1)%PUZZLES.length));
+$("puzzle").addEventListener("change", e=> start(+e.target.value));
+$("copyBtn").addEventListener("click", ()=>{
+  const text = $("shareText").textContent;
+  try{
+    navigator.clipboard.writeText(text).then(()=>{$("copyBtn").textContent="Copied";},selectShare);
+  }catch(e){ selectShare(); }
+});
+function selectShare(){ const r=document.createRange(); r.selectNodeContents($("shareText")); const s=getSelection(); s.removeAllRanges(); s.addRange(r); $("copyBtn").textContent="Selected, press copy"; }
+
+PUZZLES.forEach((p,i)=>{ const o=document.createElement("option"); o.value=i; o.textContent=`#${i+1} · ${TIERS[p.tier]}`; $("puzzle").appendChild(o); });
+// ---- one puzzle a day ----
+const TEST = location.hash === "#test";      // samey.uk/#test shows the puzzle picker for play-testing
+function dayKey(d){ return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`; }
+function yesterdayKey(){ const d=new Date(); d.setDate(d.getDate()-1); return dayKey(d); }
+const STATS_KEY = "samey-stats";
+function loadStats(){
+  let st=null; try{ st=JSON.parse(localStorage.getItem(STATS_KEY)); }catch(e){}
+  return Object.assign({played:0, won:0, streak:0, best:0, lastPlayed:null, lastWon:null}, st||{});
+}
+// Counts each day once, so reloading a finished game never double-counts.
+function recordResult(won){
+  const st=loadStats(), today=todayKey();
+  if(st.lastPlayed===today) return;
+  st.played++; st.lastPlayed=today;
+  if(won){ st.won++; st.streak = (st.lastWon===yesterdayKey()) ? st.streak+1 : 1; st.lastWon=today; st.best=Math.max(st.best, st.streak); }
+  else st.streak = 0;
+  try{ localStorage.setItem(STATS_KEY, JSON.stringify(st)); }catch(e){}
+}
+function showStats(){
+  const st=loadStats();
+  const live = (st.lastWon===todayKey() || st.lastWon===yesterdayKey()) ? st.streak : 0;
+  $("stPlayed").textContent=st.played;
+  $("stWin").textContent= st.played ? Math.round(100*st.won/st.played) : 0;
+  $("stStreak").textContent=live;
+  $("stBest").textContent=st.best;
+  $("stats").hidden=false;
+}
+function todayKey(){ const d=new Date(); return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`; }
+function dayNumber(){ const d=new Date(); return "No. " + (Math.round((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())-LAUNCH)/864e5)+1); }
+const SAVE_KEY = "samey-today";
+function log(a){
+  state.actions.push(a);
+  if(!state.daily || state.replaying) return;
+  try{ localStorage.setItem(SAVE_KEY, JSON.stringify({day:todayKey(), i:state.i, actions:state.actions})); }catch(e){}
+}
+function tick(){
+  if($("nextNote").hidden) return;
+  const now=new Date(), mid=new Date(now); mid.setHours(24,0,0,0);
+  const m=Math.max(0,Math.ceil((mid-now)/6e4)), h=Math.floor(m/60);
+  $("nextNote").textContent = `Next Samey in ${h}h ${m%60}m.`;
+  if(todayKey()!==LOADED_DAY) location.reload();
+}
+const LOADED_DAY = todayKey();
+setInterval(()=>{ if(todayKey()!==LOADED_DAY) location.reload(); else tick(); }, 30000);
+
+if(TEST){
+  $("pickWrap").hidden = false;
+  start(dayIndex());
+}else{
+  start(dayIndex());
+  state.daily = true;
+  let saved=null;
+  try{ saved = JSON.parse(localStorage.getItem(SAVE_KEY)); }catch(e){}
+  if(saved && saved.day===todayKey() && saved.i===state.i){
+    state.replaying = true;
+    for(const a of saved.actions){
+      if(state.done) break;
+      if(a.h) useHint(); else if(a.c) guess(a.c); else if(a.g) guess(a.g);
+    }
+    state.replaying = false;
+    $("msg").textContent=""; $("msg").className="msg";
+  }
+}
+</script>
+
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "210d8562172a4416bc59877612814183"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
