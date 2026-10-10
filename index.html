@@ -66,11 +66,12 @@ select{background:var(--surface);color:var(--ink);border:1px solid var(--line);b
 .pip.used{background:var(--teal)}
 .pip.hinted{background:var(--amber);border-color:var(--amber)}
 .keys{display:flex;flex-direction:column;gap:6px;align-items:center;margin-top:-6px}
-.krow{display:flex;gap:5px;justify-content:center}
-.key{width:clamp(26px,8.2vw,38px);height:40px;border-radius:6px;border:0;background:var(--slot);color:var(--ink);font-family:var(--mono);font-size:1rem;text-transform:uppercase;cursor:pointer;padding:0}
+.krow{display:flex;gap:4px;justify-content:center}
+.key{--kw:min(38px, calc((100vw - 32px - 36px) / 10));width:var(--kw);height:40px;border-radius:6px;border:0;background:var(--slot);color:var(--ink);font-family:var(--mono);font-size:1rem;text-transform:uppercase;cursor:pointer;padding:0}
 .key.found{background:var(--teal);color:var(--teal-ink)}
 .key.hint{background:var(--amber);color:var(--amber-ink)}
 .key.out{background:transparent;color:var(--muted);opacity:.55;text-decoration:line-through;text-decoration-color:var(--bad);box-shadow:inset 0 0 0 1px var(--line)}
+.key.wide{width:calc(var(--kw) * 1.5);font-family:var(--body);font-weight:700;font-size:.78rem;text-transform:none}
 .key:disabled{cursor:default}
 .key:focus-visible{outline:3px solid var(--amber);outline-offset:1px}
 .missed{display:flex;flex-wrap:wrap;gap:5px}
@@ -174,7 +175,7 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
       <li>You have 5 goes. Your guess can be any length, but it has to be a real word.</li>
       <li>Every letter in your guess that's also in the answer lights up in all its spots, and stays lit.</li>
       <li>The letter board shows what you know so far: green letters are in the word, crossed-out letters aren't, and plain ones you haven't tried yet.</li>
-      <li>Guess a word that means the same but isn't the one we're after? We'll tell you it's close, and it won't cost a go.</li>
+      <li>Guess a word that means the same but isn't the one we're after? We'll tell you it's close. It won't cost a go, and it doesn't check any letters either.</li>
       <li>Stuck? A hint fills in part of the word, but uses up a go.</li>
     </ul>
   </details>
@@ -438,6 +439,11 @@ function render(fresh){
       b.addEventListener("click",()=>{ $("guess").value += ch; });
       r.appendChild(b);
     }
+    if(row==="zxcvbnm"){
+      const mk=(label,aria,fn,first)=>{ const b=document.createElement("button"); b.type="button"; b.className="key wide"; b.textContent=label; b.setAttribute("aria-label",aria); b.disabled=state.done; b.addEventListener("click",fn); first ? r.prepend(b) : r.append(b); };
+      mk("Enter","Submit guess",()=>{ if(!state.done) guess($("guess").value); },true);
+      mk("⌫","Delete last letter",()=>{ const g=$("guess"); g.value=g.value.slice(0,-1); },false);
+    }
     keys.appendChild(r);
   });
   const log = $("log"); log.innerHTML = "";
@@ -471,7 +477,7 @@ function guess(raw){
   if(state.rows.some(r=>r.guess===g) || state.closeTried.has(g)){ msg.className="msg err"; msg.textContent="You've already tried that one."; return; }
   if(state.p.close.has(g)){
     state.closeTried.add(g); $("guess").value = ""; log({c:g});
-    msg.className="msg close"; msg.textContent=`Close! "${g}" fits, but it's not the one. That didn't cost you a go.`;
+    msg.className="msg close"; msg.textContent=`Close! "${g}" means the same, but it's not the one we're after. That one's free: no go used, and no letters checked.`;
     return;
   }
   state.used++; log({g});
