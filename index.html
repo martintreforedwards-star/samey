@@ -412,11 +412,14 @@ let LAUNCH_OVERRIDE=null;
 function dayIndex(){
   const d=new Date(), tier=todayTier();
   const days=Math.round((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())-LAUNCH)/864e5);
-  const week=Math.max(0,Math.floor((days+4)/7));   // weeks since launch, rolling over on Mondays (launch was a Friday)
   // Launch day (Fri 9 Oct 2026) keeps the puzzle it went out with, at its original Toughest level.
   if(days===0){ const li=PUZZLES.findIndex(p=>p.clue==="Present"); if(li>=0){ LAUNCH_OVERRIDE={i:li, tier:5}; return li; } }
   const pool=PUZZLES.map((p,i)=>p.tier===tier?i:-1).filter(i=>i>=0);
-  return pool[week % pool.length];
+  // Each level works through its own list: count how many earlier days (after launch day) used this level.
+  // Medium is used Wed, Sat and Sun, so it moves on three times a week rather than once.
+  let n=0;
+  for(let k=1;k<days;k++){ const w=new Date(2026,9,9+k).getDay(); if(((w===0||w===6)?3:w)===tier) n++; }
+  return pool[n % pool.length];
 }
 
 function start(i){
