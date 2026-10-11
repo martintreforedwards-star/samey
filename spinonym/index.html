@@ -463,7 +463,7 @@ function fillPuzzle(){
   document.body.dataset.group = t.g;
   $("typeChip").textContent = `${GROUPS[t.g].name} · ${t.name}`;
   $("defName").textContent = t.name; $("defText").textContent = t.def; $("defEg").textContent = t.eg; $("defLink").href = "glossary.html#" + t.id;
-  $("clueAsk").textContent = t.ask; $("clueWord").textContent = p.clue; $("clueWord").classList.toggle("long", p.clue.length > 14); $("clueSub").textContent = p.sub;
+  $("clueAsk").textContent = t.ask; $("clueWord").textContent = p.clue; $("clueWord").classList.toggle("long", p.clue.length > 14); showSub();
   $("lenNote").textContent = p.answer.length + " letters";
   $("guess").value=""; $("msg").textContent=""; $("msg").className="msg";
   $("result").hidden = true; $("playArea").hidden = false; $("defBox").hidden = true; $("defBtn").setAttribute("aria-expanded","false");
@@ -540,9 +540,12 @@ function guess(raw){
   render(fresh);
   if(state.done) finish();
 }
+// The line under the clue. A puzzle's clueHint (if any) joins it once the hint is used.
+function showSub(){ const p=state.p; $("clueSub").textContent = [p.sub, state.hintUsed && p.clueHint ? "💡 "+p.clueHint : ""].filter(Boolean).join(" "); }
 function useHint(){
   if(state.hintUsed || MAX-state.used<2 || state.done) return;
   state.hintUsed=true; state.used++; act({h:1});
+  showSub();
   const hm=hintMask(state.p);
   let next=state.known.map((c,i)=> c || (hm[i]!=="_" ? hm[i] : null));
   if(next.every((c,i)=> c===state.known[i])){   // the hint's letters are already showing: give the first missing letter instead

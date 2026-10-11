@@ -5,6 +5,7 @@
 //   sub    : the line under it (a nudge, not the answer)
 //   answer : one word, lower case
 //   close  : other fair answers, space-separated. Guessing one is free and checks no letters.
+//   clueHint: optional words shown under the clue when the hint is used (as well as the letters)
 //   hint   : optional mask, e.g. "___ngy". Without one, the hint shows the last half of the word.
 //   note   : optional line shown on the result (e.g. what an acronym stands for)
 // Each type cycles through its own puzzles, so a type with few puzzles repeats sooner.
@@ -97,12 +98,12 @@ const PUZZLES = [
   {type:"rhyming-slang", clue:"Pork pies", sub:"Cockney rhyming slang. Don't tell them.", answer:"lies", close:"fibs"},
 
   // ---- Names ----
-  {type:"eponym", clue:"An earl who ate at the card table", sub:"It's named after him. Lunch for millions.", answer:"sandwich"},
-  {type:"eponym", clue:"A duke's tall boots", sub:"It's named after him. Good in puddles.", answer:"wellington", close:"welly wellie"},
-  {type:"eponym", clue:"An earl's knitted jacket", sub:"It's named after him. Buttons up the front.", answer:"cardigan"},
-  {type:"eponym", clue:"A Russian ballerina", sub:"It's named after her. Meringue, cream and fruit.", answer:"pavlova"},
-  {type:"eponym", clue:"A land agent everyone shunned", sub:"It's named after him. Refusing to deal with someone.", answer:"boycott"},
-  {type:"eponym", clue:"Sir Robert Peel's police", sub:"It's named after him. A friendly word for a copper.", answer:"bobby"},
+  {type:"eponym", clue:"An earl who ate at the card table", sub:"", clueHint:"Lunch for millions.", answer:"sandwich"},
+  {type:"eponym", clue:"A duke's tall boots", sub:"", clueHint:"Good in puddles.", answer:"wellington", close:"welly wellie"},
+  {type:"eponym", clue:"An earl's knitted jacket", sub:"", clueHint:"Buttons up the front.", answer:"cardigan"},
+  {type:"eponym", clue:"A Russian ballerina", sub:"", clueHint:"Meringue, cream and fruit.", answer:"pavlova"},
+  {type:"eponym", clue:"A land agent everyone shunned", sub:"", clueHint:"Refusing to deal with someone.", answer:"boycott"},
+  {type:"eponym", clue:"Sir Robert Peel's police", sub:"", clueHint:"A friendly word for a copper.", answer:"bobby"},
 
   {type:"pseudonym", clue:"Eric Arthur Blair", sub:"An English writer's pen name.", answer:"orwell", free:true},
   {type:"pseudonym", clue:"Samuel Clemens", sub:"An American writer's pen name.", answer:"twain", free:true},
