@@ -104,10 +104,10 @@ const PUZZLES = [
   {type:"eponym", clue:"A land agent everyone shunned", sub:"It's named after him. Refusing to deal with someone.", answer:"boycott"},
   {type:"eponym", clue:"Sir Robert Peel's police", sub:"It's named after him. A friendly word for a copper.", answer:"bobby"},
 
-  {type:"pseudonym", clue:"Eric Arthur Blair", sub:"He wrote Animal Farm as George ____.", answer:"orwell", free:true},
-  {type:"pseudonym", clue:"Samuel Clemens", sub:"He wrote Tom Sawyer as Mark ____.", answer:"twain", free:true},
-  {type:"pseudonym", clue:"Mary Ann Evans", sub:"She wrote Middlemarch as George ____.", answer:"eliot", free:true},
-  {type:"pseudonym", clue:"Norma Jeane Mortenson", sub:"She became Marilyn ____.", answer:"monroe", free:true},
+  {type:"pseudonym", clue:"Eric Arthur Blair", sub:"An English writer's pen name.", answer:"orwell", free:true},
+  {type:"pseudonym", clue:"Samuel Clemens", sub:"An American writer's pen name.", answer:"twain", free:true},
+  {type:"pseudonym", clue:"Mary Ann Evans", sub:"A Victorian novelist's pen name.", answer:"eliot", free:true},
+  {type:"pseudonym", clue:"Norma Jeane Mortenson", sub:"A Hollywood star's screen name.", answer:"monroe", free:true},
 
   {type:"exonym", clue:"Deutschland", sub:"A country in Europe.", answer:"germany", free:true},
   {type:"exonym", clue:"Cymru", sub:"A country much closer to home.", answer:"wales", free:true},
