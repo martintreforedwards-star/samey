@@ -603,7 +603,7 @@ function tick(){
   if($("nextNote").hidden) return;
   const now=new Date(), mid=new Date(now); mid.setHours(24,0,0,0);
   const m=Math.max(0,Math.ceil((mid-now)/6e4)), h=Math.floor(m/60);
-  $("nextNote").textContent = `Next Samey in ${h}h ${m%60}m.`;
+  $("nextNote").textContent = `Next Samey in ${h}h ${m%60}m. Same link every day, so bookmark this page or add it to your home screen.`;
   if(todayKey()!==LOADED_DAY) location.reload();
 }
 const LOADED_DAY = todayKey();
