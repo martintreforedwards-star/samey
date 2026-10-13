@@ -370,6 +370,7 @@ const QUIZ = [
 // The ids match glossary.html, which reads the same saved list.
 const EGGS = [
   {id:"pun", name:"Pun", def:"A joke that plays on a word with two meanings, or two words that sound alike.", eg:"I used to be a banker, but I lost interest."},
+  {id:"logic-of-nyms", name:"Logic of nyms", def:"Some nyms work like the logic switches inside a computer. Antonym is NOT, synonym is EQUALS, homonym is AND, and contronym is XOR: one or the other, never both.", eg:"Dust: add it or remove it, never both at once."},
   {id:"verbing", name:"Verbing", def:"Turning a noun into a verb.", eg:"To google something."},
   {id:"compound-word", name:"Compound word", def:"Two whole words joined to make a new one.", eg:"Sun + flower = sunflower."},
   {id:"reduplication", name:"Reduplication", def:"A word built from a sound repeated with a small change.", eg:"Zigzag, chit-chat, hanky-panky."},
