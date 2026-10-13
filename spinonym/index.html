@@ -15,7 +15,7 @@
 <meta property="og:image" content="https://samey.uk/spinonym/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="The Spinonym wheel, with eighteen kinds of word in four coloured groups">
+<meta property="og:image:alt" content="The Spinonym wheel, with nineteen kinds of word in four coloured groups">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Spinonym: spin the nym">
 <meta name="twitter:description" content="A daily word game. The wheel picks today's kind of word: antonym, anagram, eponym and more. You have 4 goes.">
@@ -342,6 +342,7 @@ const TYPES = [
   {id:"hyponym", name:"Hyponym", g:"meaning", w:6, ask:"Find a kind of", def:"One specific example from a group.", eg:"a robin is a kind of bird"},
   {id:"meronym", name:"Meronym", g:"meaning", w:4, ask:"Find a part of a", def:"A word for a part of something bigger.", eg:"wheel is a meronym of car"},
   {id:"kangaroo-word", name:"Kangaroo word", g:"meaning", w:4, ask:"Find the word hiding inside", def:"A word that hides a word with the same meaning inside it, letters in order, like a joey in a pouch.", eg:"masculine hides male"},
+  {id:"contronym", name:"Contronym", g:"meaning", w:5, ask:"Find the one word that means both", def:"One word with two opposite meanings.", eg:"dust: to sprinkle it on, or to wipe it off"},
   {id:"collective-noun", name:"Collective noun", g:"meaning", w:5, ask:"What do you call a group of", def:"The word for a group of things, especially animals.", eg:"a pod of dolphins"},
   {id:"anagram", name:"Anagram", g:"sound", w:15, ask:"Rearrange the letters of", def:"The same letters rearranged to make a new word.", eg:"night becomes thing"},
   {id:"homophone", name:"Homophone", g:"sound", w:12, ask:"Find a word that sounds like", def:"Sounds the same, but is spelt differently and means something else.", eg:"sea and see"},
@@ -382,19 +383,26 @@ function todayKey(d=new Date()){ return `${d.getFullYear()}-${d.getMonth()+1}-${
 function yesterdayKey(){ const d=new Date(); d.setDate(d.getDate()-1); return todayKey(d); }
 function dayNum(){ const d=new Date(); return Math.max(0, Math.round((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())-LAUNCH)/864e5)); }
 function hash(n){ let x=Math.imul((n|0)^0x5bd1e995, 2654435761); x^=x>>>15; x=Math.imul(x,2246822519); x^=x>>>13; return x>>>0; }
-const TOTAL = TYPES.reduce((s,t)=>s+t.w,0);
-function pickType(d,salt){ let r=hash(d*31+salt*7919+17)%TOTAL; for(const t of TYPES){ if(r<t.w) return t.id; r-=t.w; } return TYPES[0].id; }
+// Contronym joined the wheel on Wed 14 Oct 2026 (day 4). Earlier days use the original 18 types,
+// so every day up to then keeps exactly the puzzle it had.
+const CONTRONYM_FROM = 4;
+const TYPES_BEFORE = TYPES.filter(t=>t.id!=="contronym");
+function pickType(d,salt){
+  const list = d<CONTRONYM_FROM ? TYPES_BEFORE : TYPES, total = list.reduce((a,t)=>a+t.w,0);
+  let r=hash(d*31+salt*7919+17)%total; for(const t of list){ if(r<t.w) return t.id; r-=t.w; } return list[0].id;
+}
 // Weighted pick per day, never the same type two days running. Each type works through its own puzzles in order.
 function puzzleForDay(n){
   const counts={}; let prev=null, pid=0;
   for(let d=0; d<=n; d++){
-    let t = d===0 ? "antonym" : pickType(d,0), s=1;
+    let t = d===0 ? "antonym" : d===CONTRONYM_FROM ? "contronym" : pickType(d,0), s=1;   // contronym debuts on its first day
     while(t===prev && s<6) t=pickType(d,s++);
     const pool=POOLS[t], c=counts[t]||0; counts[t]=c+1; pid=pool[c%pool.length]; prev=t;
   }
   return pid;
 }
-function spinAngle(pid, n){ const i=TYPE[PUZZLES[pid].type].i; return i*20 + 10 + ((hash(n+555)%100)/100 - .5)*12; }
+const SL = 360/TYPES.length;   // degrees per slice
+function spinAngle(pid, n){ const i=TYPE[PUZZLES[pid].type].i; return i*SL + SL/2 + ((hash(n+555)%100)/100 - .5)*SL*0.6; }
 
 // ---- The wheel (drawn once) ----
 function drawWheel(){
@@ -402,7 +410,7 @@ function drawWheel(){
   const sec=(r1,r2,a1,a2)=>{ const l=a2-a1>180?1:0, [x1,y1]=pt(r2,a1),[x2,y2]=pt(r2,a2),[x3,y3]=pt(r1,a2),[x4,y4]=pt(r1,a1);
     return `M${x1} ${y1}A${r2} ${r2} 0 ${l} 1 ${x2} ${y2}L${x3} ${y3}A${r1} ${r1} 0 ${l} 0 ${x4} ${y4}Z`; };
   let s = `<circle r="169" fill="var(--bg)"/>`;
-  const spans={}; TYPES.forEach((t,i)=>{ const sp=spans[t.g]||(spans[t.g]={a:i*20,b:0}); sp.b=i*20+20; });
+  const spans={}; TYPES.forEach((t,i)=>{ const sp=spans[t.g]||(spans[t.g]={a:i*SL,b:0}); sp.b=i*SL+SL; });
   for(const [g,sp] of Object.entries(spans)){
     s += `<path class="wheel-slice" data-g="${g}" d="${sec(141,168,sp.a,sp.b)}" fill="${GROUPS[g].c}" stroke="#16181D" stroke-width="1.6"/>`;
     const mid=(sp.a+sp.b)/2, flip = mid>90 && mid<270;
@@ -412,8 +420,8 @@ function drawWheel(){
   let k={};
   TYPES.forEach((t,i)=>{
     const n=(k[t.g]=(k[t.g]||0)+1);
-    s += `<path class="wheel-slice" data-t="${t.id}" d="${sec(40,139,i*20,i*20+20)}" fill="${GROUPS[t.g].t[n%2]}" stroke="#16181D" stroke-width="1.6"/>`;
-    const mid=i*20+10, r = mid<180 ? -90 : 90;
+    s += `<path class="wheel-slice" data-t="${t.id}" d="${sec(40,139,i*SL,i*SL+SL)}" fill="${GROUPS[t.g].t[n%2]}" stroke="#16181D" stroke-width="1.6"/>`;
+    const mid=i*SL+SL/2, r = mid<180 ? -90 : 90;
     s += `<text class="wheel-slice" data-t="${t.id}" transform="rotate(${mid}) translate(0,-91) rotate(${r})" fill="#16181D" font-family="Atkinson Hyperlegible, sans-serif" font-weight="700" font-size="10.5" text-anchor="middle" dominant-baseline="central">${t.name}</text>`;
   });
   s += `<circle r="168.6" fill="none" stroke="#16181D" stroke-width="2.6"/><circle r="140" fill="none" stroke="#16181D" stroke-width="3.2"/>`;

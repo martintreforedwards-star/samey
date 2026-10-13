@@ -1,6 +1,6 @@
 // Spinonym puzzle bank.
 // Add puzzles here without touching the game code. Each puzzle needs:
-//   type   : one of the 18 wheel types (see TYPES in index.html)
+//   type   : one of the 19 wheel types (see TYPES in index.html)
 //   clue   : the big word or phrase on the card
 //   sub    : the line under it (a nudge, not the answer)
 //   answer : one word, lower case
@@ -54,6 +54,22 @@ const PUZZLES = [
   {type:"kangaroo-word", clue:"Instructor", sub:"A word meaning the same hides inside it, letters in order.", answer:"tutor"},
   {type:"kangaroo-word", clue:"Destruction", sub:"A word meaning the same hides inside it, letters in order.", answer:"ruin"},
   {type:"kangaroo-word", clue:"Encourage", sub:"A word meaning the same hides inside it, letters in order.", answer:"urge"},
+
+  // ---- Contronym: one word, two opposite meanings (added 14 Oct 2026) ----
+  {type:"contronym", clue:"Speeding along · Stuck firmly in place", sub:"One word means both.", answer:"fast"},
+  {type:"contronym", clue:"Show a film · Hide something from view", sub:"One word means both.", answer:"screen"},
+  {type:"contronym", clue:"Lock the door · Run off suddenly", sub:"One word means both.", answer:"bolt"},
+  {type:"contronym", clue:"Fasten together · Cut off", sub:"One word means both.", answer:"clip"},
+  {type:"contronym", clue:"Split apart · Cling tightly", sub:"One word means both.", answer:"cleave"},
+  {type:"contronym", clue:"Officially allow · Officially punish", sub:"One word means both.", answer:"sanction"},
+  {type:"contronym", clue:"Careful supervision · Failure to notice", sub:"One word means both.", answer:"oversight"},
+  {type:"contronym", clue:"Withstand a storm · Be worn away by it", sub:"One word means both.", answer:"weather"},
+  {type:"contronym", clue:"Fasten a belt · Give way under pressure", sub:"One word means both.", answer:"buckle"},
+  {type:"contronym", clue:"Strengthen steel · Soften a harsh judgement", sub:"One word means both.", answer:"temper"},
+  {type:"contronym", clue:"Decorate a dish · Take money from wages", sub:"One word means both.", answer:"garnish"},
+  {type:"contronym", clue:"Plant seeds in a lawn · Take seeds out of fruit", sub:"One word means both.", answer:"seed"},
+  {type:"contronym", clue:"Heading somewhere · Tied up, going nowhere", sub:"One word means both.", answer:"bound"},
+  {type:"contronym", clue:"Cut bits off a hedge · Add decorations to a tree", sub:"One word means both.", answer:"trim"},
 
   {type:"collective-noun", clue:"Crows", sub:"A ____ of crows. It sounds sinister.", answer:"murder", close:"flock"},
   {type:"collective-noun", clue:"Owls", sub:"A ____ of owls. Sounds like they make the laws.", answer:"parliament", close:"flock"},
