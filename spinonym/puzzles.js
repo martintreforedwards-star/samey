@@ -70,6 +70,8 @@ const PUZZLES = [
   {type:"contronym", clue:"Plant seeds in a lawn · Take seeds out of fruit", sub:"One word means both.", answer:"seed"},
   {type:"contronym", clue:"Heading somewhere · Tied up, going nowhere", sub:"One word means both.", answer:"bound"},
   {type:"contronym", clue:"Cut bits off a hedge · Add decorations to a tree", sub:"One word means both.", answer:"trim"},
+  {type:"contronym", clue:"Prolong something (the old sense) · End a session of Parliament", sub:"One word means both.", answer:"prorogue",
+   note:"From Latin prorogare, “to prolong”. Suggested on r/logophilia."},
 
   {type:"collective-noun", clue:"Crows", sub:"A ____ of crows. It sounds sinister.", answer:"murder", close:"flock"},
   {type:"collective-noun", clue:"Owls", sub:"A ____ of owls. Sounds like they make the laws.", answer:"parliament", close:"flock"},
