@@ -15,7 +15,7 @@
 <meta property="og:image" content="https://samey.uk/spinonym/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="The Spinonym wheel, with nineteen kinds of word in four coloured groups">
+<meta property="og:image:alt" content="The Spinonym wheel, with twenty kinds of word in four coloured groups">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Spinonym: spin the nym">
 <meta name="twitter:description" content="A daily word game. The wheel picks today's kind of word: antonym, anagram, eponym and more. You have 4 goes.">
@@ -202,7 +202,7 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
     <p class="dayline" id="dayLine"></p>
     <div class="wheelwrap">
       <svg class="pointer" viewBox="0 0 30 26" aria-hidden="true"><path d="M2 2 H28 L15 24 Z" fill="var(--ink)" stroke="var(--bg)" stroke-width="2.5" stroke-linejoin="round"/></svg>
-      <div class="spinner" id="spinner"><svg id="wheel" viewBox="-170 -170 340 340" role="img" aria-label="The Spinonym wheel: four groups and eighteen kinds of word"></svg></div>
+      <div class="spinner" id="spinner"><svg id="wheel" viewBox="-170 -170 340 340" role="img" aria-label="The Spinonym wheel: four groups and twenty kinds of word"></svg></div>
       <div class="hub" aria-hidden="true">nym</div>
     </div>
     <div class="reveal" id="reveal" hidden aria-live="polite">
@@ -353,6 +353,7 @@ const TYPES = [
   {id:"eponym", name:"Eponym", g:"names", w:10, ask:"Which word is named after", def:"A word named after a real person.", eg:"leotard, after the acrobat Jules Léotard"},
   {id:"pseudonym", name:"Pseudonym", g:"names", w:6, ask:"What name did they use?", def:"A made-up name someone uses instead of their real one.", eg:"Stefani Germanotta performs as Lady Gaga"},
   {id:"exonym", name:"Exonym", g:"names", w:4, ask:"What do English speakers call", def:"The name outsiders use for a place or people.", eg:"Italia is Italy in English"},
+  {id:"literary-eponym", name:"Literary eponym", g:"names", w:5, ask:"Which word, from fiction, means", def:"A word that comes from a book, play or film: its title, a character or a place in it.", eg:"yahoo, from Gulliver's Travels"},
   {id:"acronym", name:"Acronym", g:"word", w:10, ask:"Which acronym means", def:"A word made from the first letters of a phrase, said as a word.", eg:"Nato"},
   {id:"portmanteau", name:"Portmanteau", g:"word", w:12, ask:"Squash these into one word", def:"Two words squashed together to make a new one.", eg:"spoon + fork = spork"},
   {id:"clipping", name:"Clipping", g:"word", w:5, ask:"What's the everyday short form of", def:"A longer word cut short, which becomes a word in its own right.", eg:"exam, from examination"},
@@ -383,19 +384,21 @@ function todayKey(d=new Date()){ return `${d.getFullYear()}-${d.getMonth()+1}-${
 function yesterdayKey(){ const d=new Date(); d.setDate(d.getDate()-1); return todayKey(d); }
 function dayNum(){ const d=new Date(); return Math.max(0, Math.round((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())-LAUNCH)/864e5)); }
 function hash(n){ let x=Math.imul((n|0)^0x5bd1e995, 2654435761); x^=x>>>15; x=Math.imul(x,2246822519); x^=x>>>13; return x>>>0; }
-// Contronym joined the wheel on Wed 14 Oct 2026 (day 4). Earlier days use the original 18 types,
-// so every day up to then keeps exactly the puzzle it had.
-const CONTRONYM_FROM = 4;
-const TYPES_BEFORE = TYPES.filter(t=>t.id!=="contronym");
+// Types added after launch, and the day each joined the wheel (day 0 = Sat 10 Oct 2026).
+// Before its day a type doesn't exist, so every earlier day keeps exactly the puzzle it had.
+// It also debuts on its first day. To add another type: add it to TYPES and list it here with tomorrow's day number.
+const JOINED = {"contronym":4, "literary-eponym":5};   // Wed 14 Oct, Thu 15 Oct
+const typesOn = d => TYPES.filter(t => !(t.id in JOINED) || JOINED[t.id] <= d);
+const DEBUT = Object.fromEntries(Object.entries(JOINED).map(([id,d])=>[d,id]));
 function pickType(d,salt){
-  const list = d<CONTRONYM_FROM ? TYPES_BEFORE : TYPES, total = list.reduce((a,t)=>a+t.w,0);
+  const list = typesOn(d), total = list.reduce((a,t)=>a+t.w,0);
   let r=hash(d*31+salt*7919+17)%total; for(const t of list){ if(r<t.w) return t.id; r-=t.w; } return list[0].id;
 }
 // Weighted pick per day, never the same type two days running. Each type works through its own puzzles in order.
 function puzzleForDay(n){
   const counts={}; let prev=null, pid=0;
   for(let d=0; d<=n; d++){
-    let t = d===0 ? "antonym" : d===CONTRONYM_FROM ? "contronym" : pickType(d,0), s=1;   // contronym debuts on its first day
+    let t = d===0 ? "antonym" : DEBUT[d] || pickType(d,0), s=1;   // a new type debuts on its first day
     while(t===prev && s<6) t=pickType(d,s++);
     const pool=POOLS[t], c=counts[t]||0; counts[t]=c+1; pid=pool[c%pool.length]; prev=t;
   }

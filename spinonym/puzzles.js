@@ -131,6 +131,27 @@ const PUZZLES = [
   {type:"exonym", clue:"Nihon", sub:"An island country in Asia.", answer:"japan", free:true},
   {type:"exonym", clue:"Suomi", sub:"A country in the far north of Europe.", answer:"finland", free:true},
 
+  // Literary eponyms: words from books, plays and films (titles, characters, places). Joined the wheel Thu 15 Oct 2026.
+  {type:"literary-eponym", clue:"A mean, miserable miser", sub:"From a Dickens character.", clueHint:"Bah, humbug!", answer:"scrooge", close:"miser grinch"},
+  {type:"literary-eponym", clue:"A killjoy who spoils the festivities", sub:"From a Dr Seuss character.", clueHint:"He stole Christmas.", answer:"grinch", close:"scrooge killjoy spoilsport"},
+  {type:"literary-eponym", clue:"Wildly idealistic and impractical", sub:"From the hero of a Spanish novel.", clueHint:"He tilted at windmills.", answer:"quixotic"},
+  {type:"literary-eponym", clue:"Tiny", sub:"From a land in Gulliver's Travels.", clueHint:"Its people were six inches tall.", answer:"lilliputian", close:"tiny small"},
+  {type:"literary-eponym", clue:"A perfect society", sub:"From the title of Thomas More's book of 1516.", clueHint:"Its opposite is a dystopia.", answer:"utopia", close:"paradise"},
+  {type:"literary-eponym", clue:"Someone relentlessly cheerful", sub:"From the girl in a 1913 American novel.", clueHint:"She played the “glad game”.", answer:"pollyanna", close:"optimist"},
+  {type:"literary-eponym", clue:"A smooth seducer", sub:"From a rake in an 18th-century play.", clueHint:"See also: Casanova.", answer:"lothario", close:"romeo casanova womaniser"},
+  {type:"literary-eponym", clue:"A romantic lover", sub:"From Shakespeare.", clueHint:"Wherefore art thou…?", answer:"romeo", close:"lothario casanova"},
+  {type:"literary-eponym", clue:"A trusted adviser", sub:"From a character in Homer's Odyssey.", clueHint:"He guided Odysseus's son.", answer:"mentor", close:"adviser advisor tutor coach"},
+  {type:"literary-eponym", clue:"A long, eventful journey", sub:"From the title of Homer's epic.", clueHint:"It took ten years to get home.", answer:"odyssey", close:"voyage journey trek"},
+  {type:"literary-eponym", clue:"A machine that works like a person", sub:"From a 1920 Czech play.", clueHint:"From the Czech for forced labour.", answer:"robot", close:"android machine"},
+  {type:"literary-eponym", clue:"A happy accident", sub:"From a Persian fairy tale, via Horace Walpole.", clueHint:"The Three Princes of Serendip.", answer:"serendipity", close:"luck chance fluke"},
+  {type:"literary-eponym", clue:"To make someone doubt their own mind", sub:"From the title of a 1938 play and 1944 film.", clueHint:"The husband dimmed the lamps.", answer:"gaslight"},
+  {type:"literary-eponym", clue:"A sharp detective", sub:"From Arthur Conan Doyle.", clueHint:"“No ____!”", answer:"sherlock", close:"detective sleuth"},
+  {type:"literary-eponym", clue:"A brainy, uncool person", sub:"First seen in a 1950 Dr Seuss book.", clueHint:"See also: geek.", answer:"nerd", close:"geek swot boffin dork"},
+  {type:"literary-eponym", clue:"Using the wrong word because it sounds like the right one", sub:"From a character in a 1775 comedy.", clueHint:"Mrs Mala…", answer:"malapropism"},
+  {type:"literary-eponym", clue:"To indulge someone's weaker wishes", sub:"From a go-between in Chaucer and Shakespeare.", clueHint:"Pandarus of Troy.", answer:"pander", close:"indulge cater"},
+  {type:"literary-eponym", clue:"The online world", sub:"Coined in a 1982 science-fiction story.", clueHint:"William Gibson's word.", answer:"cyberspace", close:"internet web online"},
+  {type:"literary-eponym", clue:"A controlling, manipulative mentor", sub:"From a sinister hypnotist in an 1894 novel.", clueHint:"He controlled the singer Trilby.", answer:"svengali", close:"manipulator puppeteer"},
+
   // ---- Word-building ----
   {type:"acronym", clue:"Breathing gear for diving", sub:"Each letter stands for a word.", answer:"scuba",
    note:"Self-contained underwater breathing apparatus."},
