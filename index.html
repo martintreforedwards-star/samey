@@ -569,7 +569,8 @@ function finish(){
   $("resultText").textContent = `${p.clue} → ${p.answer}.` + (state.won ? "" : " Better luck with the next one.");
   const marks = state.rows.map(r=> r.hint ? "💡" : r.win ? "🟩" : "🟨").join("");
   const score = state.won ? `${state.used}/${MAX}` : `X/${MAX}`;
-  $("shareText").textContent = `Samey ${state.daily ? dayNumber() : '#'+(state.i+1)} (${TIERS[state.tier]})  ${score}\n${marks}\n${SITE}`;
+  const rank = railRank(state.won, state.used);
+  $("shareText").textContent = `Samey ${state.daily ? dayNumber() : '#'+(state.i+1)} (${TIERS[state.tier]})  ${score}\n${marks}\n${rank.title}\n${SITE}`;
   $("result").hidden = false;
   if(state.daily){ recordResult(state.won); showStats(); }
   $("copyBtn").textContent = "Share result";
@@ -582,12 +583,22 @@ function finish(){
 
 // ---- share modal ----
 const SITE = "https://samey.uk";
+// Rail-themed ranks, matching playtheroute.uk: one per number of goes, plus a miss
+const RANKS = [
+  {title:"👑 First Class Passenger", desc:"Complimentary coffee and a guaranteed seat."},
+  {title:"🥂 Season Ticket Holder",  desc:"Knows exactly which carriage stops by the exit."},
+  {title:"💼 Daily Commuter",        desc:"Delayed, but still arrived on time."},
+  {title:"🚉 Regular Traveller",     desc:"A reliable journey with a few unexpected stops."}
+];
+const MISS = {title:"🚧 Rail Replacement Service", desc:"Buses have been requested."};
+function railRank(won, used){ return won ? (RANKS[used-1] || RANKS[RANKS.length-1]) : MISS; }
 function openShare(){
   const m=$("shareModal"), text=$("shareText").textContent;
   if(!m.showModal){ copyResult($("copyBtn")); return; }   // very old browsers: just copy
-  $("shTitle").textContent = $("resultTitle").textContent;
-  let sub = state.won ? "Nice one. Challenge your friends to beat it." : "Tricky one! See how your friends get on.";
-  if(state.daily){ const s=$("stStreak").textContent; if(+s>1) sub = `${s} days in a row. ` + sub; }
+  const rank = railRank(state.won, state.used);
+  $("shTitle").textContent = rank.title;
+  let sub = rank.desc + (state.won ? " Challenge your friends to beat it." : " See how your friends get on.");
+  if(state.daily && state.won){ const s=$("stStreak").textContent; if(+s>1) sub = `${s} days in a row. ` + sub; }
   $("shSub").textContent = sub;
   $("shPreview").textContent = text;
   $("shWa").href = "https://wa.me/?text=" + encodeURIComponent(text);

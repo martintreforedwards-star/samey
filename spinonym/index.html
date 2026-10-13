@@ -183,7 +183,21 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
 .eggcard .eyebrow{color:var(--gold-ink)}
 .eggcard .name{font-family:var(--display);font-weight:800;font-size:1.8rem;line-height:1.1}
 .eggcard a{color:var(--gold-ink);font-weight:700}
-@media (prefers-reduced-motion: reduce){.tile{transition:none}.tile.pop{transform:none}.spinner{transition-duration:.6s}}
+/* Share modal: opens once today's puzzle ends, and again from the Share result button */
+.modal{border:0;border-radius:14px;padding:22px 20px 20px;width:min(380px,calc(100vw - 32px));background:var(--surface);color:var(--ink);box-shadow:0 18px 50px rgba(0,0,0,.28)}
+.modal::backdrop{background:rgba(12,14,18,.55)}
+.modal[open]{display:flex;flex-direction:column;gap:12px;animation:pop .18s ease-out}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+.modal h2{font-family:var(--display);font-size:1.5rem;margin:0;padding-right:36px}
+.modal .sub{margin:0;color:var(--muted)}
+.modal .x{position:absolute;top:10px;right:10px;width:40px;height:40px;border:0;border-radius:50%;background:transparent;color:var(--muted);font-size:1.5rem;line-height:1;cursor:pointer}
+.modal .x:focus-visible{outline:3px solid var(--amber)}
+.modal .share{font-size:1rem}
+.modal .btns{display:flex;flex-direction:column;gap:8px}
+.modal .btns .btn{gap:8px;min-height:46px;font-size:1rem}
+.btn.wa{background:#1f8f4e;color:#fff}
+.modal .next{text-align:center;font-size:.9rem;margin:0}
+@media (prefers-reduced-motion: reduce){.tile{transition:none}.tile.pop{transform:none}.spinner{transition-duration:.6s}.modal[open]{animation:none}}
 </style>
 </head>
 <body data-group="meaning">
@@ -266,7 +280,7 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
       <div class="actions">
         <button class="btn play" id="bonusBtn" type="button">Play the bonus round →</button>
         <button class="btn play" id="goldBtn" type="button" hidden>★ Play the golden bonus →</button>
-        <button class="btn small" id="copyBtn" type="button">Copy result</button>
+        <button class="btn small" id="copyBtn" type="button">Share result</button>
         <button class="btn" id="mainBtn" type="button" hidden>Back to today's result</button>
       </div>
       <p class="next" id="goldNote" hidden></p>
@@ -332,6 +346,19 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
     </ul>
   </details>
 </main>
+
+<dialog class="modal" id="shareModal" aria-labelledby="shTitle">
+  <button class="x" id="shClose" type="button" aria-label="Close">×</button>
+  <h2 id="shTitle"></h2>
+  <p class="sub" id="shSub"></p>
+  <div class="share" id="shPreview"></div>
+  <div class="btns">
+    <a class="btn wa" id="shWa" target="_blank" rel="noopener">Send on WhatsApp</a>
+    <button class="btn" id="shMore" type="button" hidden>More ways to share</button>
+    <button class="btn ghost" id="shCopy" type="button">Copy result</button>
+  </div>
+  <p class="next" id="shNext"></p>
+</dialog>
 
 <script src="puzzles.js"></script>
 <script>
@@ -549,7 +576,7 @@ function guess(raw){
     else msg.textContent = found;
   }
   render(fresh);
-  if(state.done) finish();
+  if(state.done) finish(true);
 }
 // The line under the clue. A puzzle's clueHint (if any) joins it once the hint is used.
 function showSub(){ const p=state.p; $("clueSub").textContent = [p.sub, state.hintUsed && p.clueHint ? "💡 "+p.clueHint : ""].filter(Boolean).join(" "); }
@@ -564,7 +591,7 @@ function useHint(){
   }
   const fresh=apply(next,true), complete=state.known.every(Boolean);
   state.rows.push({guess:"", hint:true, win:complete, board:mask(state.known)});
-  if(complete){ state.done=true; state.won=true; render(fresh); finish(); return; }
+  if(complete){ state.done=true; state.won=true; render(fresh); finish(true); return; }
   $("msg").className="msg"; $("msg").textContent="Hint used. "+(MAX-state.used)+(MAX-state.used===1?" go":" goes")+" left.";
   render(fresh);
 }
@@ -575,9 +602,9 @@ function shareText(){
   let s=`Spinonym No. ${main.n+1} · ${main.t.name} ${score}\n${marks}`;
   if(bonus.done){ const k=bonusScore(); s+=`\nBonus ${k}/3${k===3?" 🥚":""}`; }
   if(gold && gold.done) s+=`\n★ Golden ${gold.won?gold.used+"/"+MAX:"X/"+MAX}`;
-  return s;
+  return s + `\n${railRank(main.won, main.used).title}\n${SITE}`;
 }
-function finish(){
+function finish(fresh){
   $("playArea").hidden=true;
   const p=state.p, isGold = state.kind==="gold";
   if(isGold && state.won && !state.egg) state.egg = goldEgg();
@@ -599,9 +626,47 @@ function finish(){
   if(state.daily && !state.replaying){ recordResult(state.won); }
   if(state.daily) showStats(); else $("stats").hidden = true;
   goldOffer();
-  $("copyBtn").textContent="Copy result";
+  $("copyBtn").textContent="Share result";
   $("nextNote").hidden = !state.daily; if(state.daily) tick();
+  if(fresh && !state.replaying) setTimeout(openShare, 900);   // not on reload, or when coming back from the bonus round
 }
+
+// ---- share modal ----
+const SITE = "https://samey.uk/spinonym/";
+// Rail-themed ranks, matching playtheroute.uk and Samey: one per number of goes, plus a miss
+const RANKS = [
+  {title:"👑 First Class Passenger", desc:"Complimentary coffee and a guaranteed seat."},
+  {title:"🥂 Season Ticket Holder",  desc:"Knows exactly which carriage stops by the exit."},
+  {title:"💼 Daily Commuter",        desc:"Delayed, but still arrived on time."},
+  {title:"🚉 Regular Traveller",     desc:"A reliable journey with a few unexpected stops."}
+];
+const MISS = {title:"🚧 Rail Replacement Service", desc:"Buses have been requested."};
+function railRank(won, used){ return won ? (RANKS[used-1] || RANKS[RANKS.length-1]) : MISS; }
+function openShare(){
+  const m=$("shareModal"), text=shareText();
+  $("shareText").textContent = text;
+  if(!m.showModal){ copyResult($("copyBtn")); return; }
+  const rank = railRank(main.won, main.used);
+  $("shTitle").textContent = rank.title;
+  let sub = rank.desc + (main.won ? " Challenge your friends to beat it." : " See how your friends get on.");
+  if(main.daily && main.won){ const k=liveStreak(); if(k>1) sub = `${k} days in a row. ` + sub; }
+  $("shSub").textContent = sub;
+  $("shPreview").textContent = text;
+  $("shWa").href = "https://wa.me/?text=" + encodeURIComponent(text);
+  $("shMore").hidden = !navigator.share;
+  $("shCopy").textContent = "Copy result";
+  $("shNext").textContent = main.daily ? $("nextNote").textContent.split(".")[0] + "." : "";
+  if(!m.open) m.showModal();
+}
+function copyResult(btn){
+  const text=shareText();
+  try{ navigator.clipboard.writeText(text).then(()=>{btn.textContent="Copied";}, ()=>selectShare(btn)); }
+  catch(e){ selectShare(btn); }
+}
+$("shClose").addEventListener("click", ()=>$("shareModal").close());
+$("shareModal").addEventListener("click", e=>{ if(e.target===e.currentTarget) e.currentTarget.close(); });
+$("shCopy").addEventListener("click", e=>copyResult(e.currentTarget));
+$("shMore").addEventListener("click", ()=>{ navigator.share({text:shareText()}).catch(()=>{}); });
 
 // ---- Golden bonus: every 7th day of a winning streak ----
 function liveStreak(){ const st=loadStats(); return (st.lastWon===todayKey()||st.lastWon===yesterdayKey()) ? st.streak : 0; }
@@ -746,11 +811,12 @@ $("qNext").addEventListener("click", nextQuestion);
 $("backBtn").addEventListener("click",()=>{ openPuzzle(main); });
 $("goldBtn").addEventListener("click",()=>{ if(!gold){ gold=makeGold(); persist(); } openPuzzle(gold); });
 $("mainBtn").addEventListener("click",()=>{ openPuzzle(main); });
-$("copyBtn").addEventListener("click",()=>{
-  const text=$("shareText").textContent;
-  try{ navigator.clipboard.writeText(text).then(()=>{$("copyBtn").textContent="Copied";}, selectShare); }catch(e){ selectShare(); }
-});
-function selectShare(){ const r=document.createRange(); r.selectNodeContents($("shareText")); const s=getSelection(); s.removeAllRanges(); s.addRange(r); $("copyBtn").textContent="Selected, press copy"; }
+$("copyBtn").addEventListener("click", openShare);
+function selectShare(btn){
+  const box = $("shareModal").open ? $("shPreview") : $("shareText");
+  const r=document.createRange(); r.selectNodeContents(box); const s=getSelection(); s.removeAllRanges(); s.addRange(r);
+  if(btn) btn.textContent="Selected, press copy";
+}
 
 drawWheel();
 if(TEST){
