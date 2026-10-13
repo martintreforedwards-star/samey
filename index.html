@@ -120,7 +120,21 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
 :root[data-theme="dark"] .spn-card{background:color-mix(in srgb,#ffd447 12%,var(--surface))}
 .spn-foot{text-align:center;font-size:.92rem;color:var(--muted);margin:0}
 .spn-foot a{color:var(--ink);font-weight:700}
-@media (prefers-reduced-motion: reduce){.tile{transition:none}.tile.pop{transform:none}}
+/* Share modal: opens once a game ends, and again from the Share result button */
+.modal{border:0;border-radius:14px;padding:22px 20px 20px;width:min(380px,calc(100vw - 32px));background:var(--surface);color:var(--ink);box-shadow:0 18px 50px rgba(0,0,0,.28)}
+.modal::backdrop{background:rgba(10,16,14,.55)}
+.modal[open]{display:flex;flex-direction:column;gap:12px;animation:pop .18s ease-out}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+.modal h2{font-family:var(--display);font-size:1.5rem;margin:0;padding-right:36px}
+.modal .sub{margin:0;color:var(--muted)}
+.modal .x{position:absolute;top:10px;right:10px;width:40px;height:40px;border:0;border-radius:50%;background:transparent;color:var(--muted);font-size:1.5rem;line-height:1;cursor:pointer}
+.modal .x:focus-visible{outline:3px solid var(--amber)}
+.modal .share{font-size:1rem}
+.modal .btns{display:flex;flex-direction:column;gap:8px}
+.modal .btns .btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;text-decoration:none;font-size:1rem}
+.btn.wa{background:#1f8f4e;color:#fff}
+.modal .next{text-align:center;font-size:.9rem}
+@media (prefers-reduced-motion: reduce){.tile{transition:none}.tile.pop{transform:none}.modal[open]{animation:none}}
 </style>
 
 </head>
@@ -184,7 +198,7 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
       <span class="spn-arrow" aria-hidden="true">→</span>
     </a>
     <div class="actions">
-      <button class="btn" id="copyBtn" type="button">Copy result</button>
+      <button class="btn" id="copyBtn" type="button">Share result</button>
       <button class="btn ghost" id="nextBtn" type="button">Next puzzle</button>
     </div>
   </section>
@@ -205,6 +219,19 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
 
   <p class="spn-foot">New: <a href="/spinonym/">Spinonym</a>, our daily wheel of words. Spin the nym.</p>
 </main>
+
+<dialog class="modal" id="shareModal" aria-labelledby="shTitle">
+  <button class="x" id="shClose" type="button" aria-label="Close">×</button>
+  <h2 id="shTitle"></h2>
+  <p class="sub" id="shSub"></p>
+  <div class="share" id="shPreview"></div>
+  <div class="btns">
+    <a class="btn wa" id="shWa" target="_blank" rel="noopener">Send on WhatsApp</a>
+    <button class="btn" id="shMore" type="button" hidden>More ways to share</button>
+    <button class="btn ghost" id="shCopy" type="button">Copy result</button>
+  </div>
+  <p class="next" id="shNext"></p>
+</dialog>
 
 <script>
 // close: other fair synonyms. Guessing one costs no go and reveals nothing.
@@ -542,26 +569,53 @@ function finish(){
   $("resultText").textContent = `${p.clue} → ${p.answer}.` + (state.won ? "" : " Better luck with the next one.");
   const marks = state.rows.map(r=> r.hint ? "💡" : r.win ? "🟩" : "🟨").join("");
   const score = state.won ? `${state.used}/${MAX}` : `X/${MAX}`;
-  $("shareText").textContent = `Samey ${state.daily ? dayNumber() : '#'+(state.i+1)} (${TIERS[state.tier]})  ${score}\n${marks}`;
+  $("shareText").textContent = `Samey ${state.daily ? dayNumber() : '#'+(state.i+1)} (${TIERS[state.tier]})  ${score}\n${marks}\n${SITE}`;
   $("result").hidden = false;
   if(state.daily){ recordResult(state.won); showStats(); }
-  $("copyBtn").textContent = "Copy result";
+  $("copyBtn").textContent = "Share result";
   $("nextBtn").hidden = state.daily;
   $("nextNote").hidden = !state.daily;
   if(state.daily) tick();
+  // Pop the share modal on a fresh finish, not when a finished game is restored on reload
+  if(!state.replaying) setTimeout(openShare, 900);
 }
+
+// ---- share modal ----
+const SITE = "https://samey.uk";
+function openShare(){
+  const m=$("shareModal"), text=$("shareText").textContent;
+  if(!m.showModal){ copyResult($("copyBtn")); return; }   // very old browsers: just copy
+  $("shTitle").textContent = $("resultTitle").textContent;
+  let sub = state.won ? "Nice one. Challenge your friends to beat it." : "Tricky one! See how your friends get on.";
+  if(state.daily){ const s=$("stStreak").textContent; if(+s>1) sub = `${s} days in a row. ` + sub; }
+  $("shSub").textContent = sub;
+  $("shPreview").textContent = text;
+  $("shWa").href = "https://wa.me/?text=" + encodeURIComponent(text);
+  $("shMore").hidden = !navigator.share;
+  $("shCopy").textContent = "Copy result";
+  $("shNext").textContent = state.daily ? $("nextNote").textContent.split(".")[0] + "." : "";
+  if(!m.open) m.showModal();
+}
+function copyResult(btn){
+  const text=$("shareText").textContent;
+  try{ navigator.clipboard.writeText(text).then(()=>{btn.textContent="Copied";}, ()=>selectShare(btn)); }
+  catch(e){ selectShare(btn); }
+}
+$("shClose").addEventListener("click", ()=>$("shareModal").close());
+$("shareModal").addEventListener("click", e=>{ if(e.target===e.currentTarget) e.currentTarget.close(); });  // tap the backdrop to close
+$("shCopy").addEventListener("click", e=>copyResult(e.currentTarget));
+$("shMore").addEventListener("click", ()=>{ navigator.share({text:$("shareText").textContent}).catch(()=>{}); });
 
 $("guessForm").addEventListener("submit", e=>{ e.preventDefault(); if(!state.done) guess($("guess").value); });
 $("hintBtn").addEventListener("click", useHint);
 $("nextBtn").addEventListener("click", ()=> start((state.i+1)%PUZZLES.length));
 $("puzzle").addEventListener("change", e=> start(+e.target.value));
-$("copyBtn").addEventListener("click", ()=>{
-  const text = $("shareText").textContent;
-  try{
-    navigator.clipboard.writeText(text).then(()=>{$("copyBtn").textContent="Copied";},selectShare);
-  }catch(e){ selectShare(); }
-});
-function selectShare(){ const r=document.createRange(); r.selectNodeContents($("shareText")); const s=getSelection(); s.removeAllRanges(); s.addRange(r); $("copyBtn").textContent="Selected, press copy"; }
+$("copyBtn").addEventListener("click", openShare);
+function selectShare(btn){
+  const box = $("shareModal").open ? $("shPreview") : $("shareText");
+  const r=document.createRange(); r.selectNodeContents(box); const s=getSelection(); s.removeAllRanges(); s.addRange(r);
+  if(btn) btn.textContent="Selected, press copy";
+}
 
 PUZZLES.forEach((p,i)=>{ const o=document.createElement("option"); o.value=i; o.textContent=`#${i+1} · ${TIERS[p.tier]}`; $("puzzle").appendChild(o); });
 // ---- one puzzle a day ----
