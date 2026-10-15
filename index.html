@@ -569,7 +569,7 @@ function finish(){
   $("resultText").textContent = `${p.clue} → ${p.answer}.` + (state.won ? "" : " Better luck with the next one.");
   const marks = state.rows.map(r=> r.hint ? "💡" : r.win ? "🟩" : "🟨").join("");
   const score = state.won ? `${state.used}/${MAX}` : `X/${MAX}`;
-  const rank = railRank(state.won, state.used);
+  const rank = gameRank(state.won, state.used);
   $("shareText").textContent = `Samey ${state.daily ? dayNumber() : '#'+(state.i+1)} (${TIERS[state.tier]})  ${score}\n${marks}\n${rank.title}\n${SITE}`;
   $("result").hidden = false;
   if(state.daily){ recordResult(state.won); showStats(); }
@@ -583,19 +583,19 @@ function finish(){
 
 // ---- share modal ----
 const SITE = "https://samey.uk";
-// Rail-themed ranks, matching playtheroute.uk: one per number of goes, plus a miss
+// Word-themed ranks: one per number of goes, plus a miss
 const RANKS = [
-  {title:"👑 First Class Passenger", desc:"Complimentary coffee and a guaranteed seat."},
-  {title:"🥂 Season Ticket Holder",  desc:"Knows exactly which carriage stops by the exit."},
-  {title:"💼 Daily Commuter",        desc:"Delayed, but still arrived on time."},
-  {title:"🚉 Regular Traveller",     desc:"A reliable journey with a few unexpected stops."}
+  {title:"👑 Walking Thesaurus",  desc:"Found it first go. Synonyms on tap."},
+  {title:"📚 Dictionary Corner",  desc:"A word expert with a quick second opinion."},
+  {title:"✏️ Crossword Regular",  desc:"Pencil out, a few crossings, solved."},
+  {title:"🔤 Scrabble Bluffer",   desc:"Got there in the end, with a bit of front."}
 ];
-const MISS = {title:"🚧 Rail Replacement Service", desc:"Buses have been requested."};
-function railRank(won, used){ return won ? (RANKS[used-1] || RANKS[RANKS.length-1]) : MISS; }
+const MISS = {title:"🤐 Lost for Words", desc:"It happens to the best of us."};
+function gameRank(won, used){ return won ? (RANKS[used-1] || RANKS[RANKS.length-1]) : MISS; }
 function openShare(){
   const m=$("shareModal"), text=$("shareText").textContent;
   if(!m.showModal){ copyResult($("copyBtn")); return; }   // very old browsers: just copy
-  const rank = railRank(state.won, state.used);
+  const rank = gameRank(state.won, state.used);
   $("shTitle").textContent = rank.title;
   let sub = rank.desc + (state.won ? " Challenge your friends to beat it." : " See how your friends get on.");
   if(state.daily && state.won){ const s=$("stStreak").textContent; if(+s>1) sub = `${s} days in a row. ` + sub; }

@@ -602,7 +602,7 @@ function shareText(){
   let s=`Spinonym No. ${main.n+1} · ${main.t.name} ${score}\n${marks}`;
   if(bonus.done){ const k=bonusScore(); s+=`\nBonus ${k}/3${k===3?" 🥚":""}`; }
   if(gold && gold.done) s+=`\n★ Golden ${gold.won?gold.used+"/"+MAX:"X/"+MAX}`;
-  return s + `\n${railRank(main.won, main.used).title}\n${SITE}`;
+  return s + `\n${gameRank(main.won, main.used).title}\n${SITE}`;
 }
 function finish(fresh){
   $("playArea").hidden=true;
@@ -633,20 +633,20 @@ function finish(fresh){
 
 // ---- share modal ----
 const SITE = "https://samey.uk/spinonym/";
-// Rail-themed ranks, matching playtheroute.uk and Samey: one per number of goes, plus a miss
+// Nym-themed ranks: one per number of goes, plus a miss
 const RANKS = [
-  {title:"👑 First Class Passenger", desc:"Complimentary coffee and a guaranteed seat."},
-  {title:"🥂 Season Ticket Holder",  desc:"Knows exactly which carriage stops by the exit."},
-  {title:"💼 Daily Commuter",        desc:"Delayed, but still arrived on time."},
-  {title:"🚉 Regular Traveller",     desc:"A reliable journey with a few unexpected stops."}
+  {title:"👑 Nym Lord",      desc:"One spin, one guess, total command of the nyms."},
+  {title:"🎡 Wheel Master",  desc:"Read the wheel and landed it in two."},
+  {title:"🌀 Good Spin",     desc:"A steady hand on the wheel."},
+  {title:"🎲 Lucky Spin",    desc:"The wheel was kind on the final go."}
 ];
-const MISS = {title:"🚧 Rail Replacement Service", desc:"Buses have been requested."};
-function railRank(won, used){ return won ? (RANKS[used-1] || RANKS[RANKS.length-1]) : MISS; }
+const MISS = {title:"💫 Spun Out", desc:"The wheel won this round."};
+function gameRank(won, used){ return won ? (RANKS[used-1] || RANKS[RANKS.length-1]) : MISS; }
 function openShare(){
   const m=$("shareModal"), text=shareText();
   $("shareText").textContent = text;
   if(!m.showModal){ copyResult($("copyBtn")); return; }
-  const rank = railRank(main.won, main.used);
+  const rank = gameRank(main.won, main.used);
   $("shTitle").textContent = rank.title;
   let sub = rank.desc + (main.won ? " Challenge your friends to beat it." : " See how your friends get on.");
   if(main.daily && main.won){ const k=liveStreak(); if(k>1) sub = `${k} days in a row. ` + sub; }
