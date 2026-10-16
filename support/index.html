@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support us · Samey &amp; Spinonym</title>
+<meta name="description" content="Samey and Spinonym are free, independent daily word games with no ads. Here's how you can help keep them going.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root{
+  --bg:#f3f5f1; --surface:#ffffff; --ink:#1b2422; --muted:#5e6b67; --line:#d5ddd8;
+  --teal:#1f7a6d; --teal-ink:#ffffff;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible",ui-sans-serif,system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121816; --surface:#1a2220; --ink:#e7eeea; --muted:#9aa8a3; --line:#2c3633;
+  --teal:#3fae9d; --teal-ink:#06201b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121816; --surface:#1a2220; --ink:#e7eeea; --muted:#9aa8a3; --line:#2c3633;
+  --teal:#3fae9d; --teal-ink:#06201b; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;padding:24px 16px 48px}
+main{max-width:520px;margin:0 auto}
+h1{font-family:var(--display);font-weight:800;font-size:2rem;letter-spacing:-.02em;line-height:1.1;margin:0 0 6px}
+.tag{color:var(--muted);margin:0 0 20px}
+.intro{margin:0 0 20px}
+section{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:12px}
+h2{font-family:var(--display);font-weight:800;font-size:1.2rem;margin:0 0 6px}
+section p{margin:0}
+ul{margin:8px 0 0;padding-left:20px}
+a{color:var(--ink);font-weight:700}
+.kofi{display:flex;align-items:center;justify-content:center;min-height:48px;margin-top:14px;border-radius:10px;background:var(--teal);color:var(--teal-ink);text-decoration:none;font-weight:700}
+.back{display:inline-block;margin-top:12px;color:var(--teal)}
+.foot{color:var(--muted);font-size:.85rem;margin-top:24px}
+</style>
+</head>
+<body>
+<main>
+  <h1>How you can help</h1>
+  <p class="tag">Keep the words coming.</p>
+  <p class="intro">Samey and Spinonym are made by one person, with no ads and no sign-ups. They're from the maker of <a href="https://playtheroute.uk/">The Route</a>, the daily train game, and all three share one small tip jar. If you'd like to help, here's how.</p>
+
+  <section>
+    <h2>☕ Buy me a coffee</h2>
+    <p>Tips through Ko-fi help with:</p>
+    <ul>
+      <li>hosting and domain costs</li>
+      <li>writing new puzzles every day</li>
+      <li>new kinds of word for the Spinonym wheel</li>
+      <li>growing the glossary</li>
+      <li>keeping the games free</li>
+    </ul>
+    <a class="kofi" href="https://ko-fi.com/playtheroute" target="_blank" rel="noopener">☕ Support us on Ko-fi</a>
+  </section>
+
+  <section>
+    <h2>📣 Spread the word</h2>
+    <p>Share your result with friends, family or the group chat. Word of mouth is how most people find us.</p>
+  </section>
+
+  <section>
+    <h2>💡 Share ideas and feedback</h2>
+    <p>Spotted a dodgy answer, or have an idea for a word or a new game type? <a href="/feedback/">Send feedback</a>. Every message is read.</p>
+  </section>
+
+  <section>
+    <h2>📖 Keep playing</h2>
+    <p>Coming back each day is the biggest compliment of all. Thank you.</p>
+  </section>
+
+  <a class="back" id="back" href="/">← Back to Samey</a>
+  <p class="foot">Last updated: October 2026</p>
+</main>
+<script>
+  if (new URLSearchParams(location.search).get("game") === "spinonym") {
+    const b = document.getElementById("back");
+    b.href = "/spinonym/"; b.textContent = "← Back to Spinonym";
+  }
+</script>
+</body>
+</html>
