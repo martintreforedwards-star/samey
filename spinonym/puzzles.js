@@ -1,7 +1,8 @@
 // Spinonym puzzle bank.
 // Add puzzles here without touching the game code. Each puzzle needs:
-//   type   : one of the 19 wheel types (see TYPES in index.html)
+//   type   : one of the 21 wheel types (see TYPES in index.html)
 //   clue   : the big word or phrase on the card
+//   svg    : optional icon drawn above the clue (skeuomorph days)
 //   sub    : the line under it (a nudge, not the answer)
 //   answer : one word, lower case
 //   close  : other fair answers, space-separated. Guessing one is free and checks no letters.
@@ -178,6 +179,51 @@ const PUZZLES = [
   {type:"clipping", clue:"Refrigerator", sub:"Its everyday short form. Keeps the milk cold.", answer:"fridge"},
   {type:"clipping", clue:"Hippopotamus", sub:"Its everyday short form. A big river animal.", answer:"hippo"},
   {type:"clipping", clue:"Gymnasium", sub:"Its everyday short form. Where you work out.", answer:"gym"},
+
+  // Skeuomorphs: the clue is an icon (svg). Each one keeps the look of an older object. Joined the wheel Sat 17 Oct 2026.
+  // Draw icons generically (never copy a real brand's icon). svg uses currentColor so it follows the theme.
+  {type:"skeuomorph", clue:"The save button", sub:"What is it a picture of?", answer:"floppy", close:"disk diskette disc",
+   note:"Most computers stopped coming with floppy drives in the late 2000s, yet this shape still means Save to people who have never held one.",
+   svg:"<svg viewBox=\"0 0 120 120\"><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M22 22h62l14 14v62H22z\"/><rect fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" x=\"38\" y=\"22\" width=\"36\" height=\"24\"/><rect x=\"62\" y=\"27\" width=\"7\" height=\"14\" fill=\"currentColor\"/><rect fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" x=\"34\" y=\"64\" width=\"52\" height=\"34\" rx=\"2\"/><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M42 76h36M42 86h28\"/></svg>"},
+  {type:"skeuomorph", clue:"The email button", sub:"What did email replace?", answer:"envelope", close:"letter post mail",
+   note:"Email has no paper at all, yet it kept the envelope, the inbox, cc (carbon copy) and attachments from the post.",
+   svg:"<svg viewBox=\"0 0 120 120\"><rect fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" x=\"18\" y=\"32\" width=\"84\" height=\"58\" rx=\"4\"/><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M20 35l40 30 40-30\"/><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M20 88l30-26M100 88L70 62\"/></svg>"},
+  {type:"skeuomorph", clue:"The voicemail symbol", sub:"What did the two circles originally show?", answer:"tape", close:"cassette reel reels spool spools",
+   note:"Answering machines recorded messages on tape. The two circles are the spools you could see turning through the cassette window.",
+   svg:"<svg viewBox=\"0 0 120 120\"><circle fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" cx=\"36\" cy=\"58\" r=\"20\"/><circle fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" cx=\"84\" cy=\"58\" r=\"20\"/><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M36 78h48\"/><circle cx=\"36\" cy=\"58\" r=\"4\" fill=\"currentColor\"/><circle cx=\"84\" cy=\"58\" r=\"4\" fill=\"currentColor\"/></svg>"},
+  {type:"skeuomorph", clue:"A flame-shaped bulb", sub:"What is it pretending to be?", answer:"candle", close:"flame wick",
+   note:"Chandeliers were built to hold candles. Bulbs kept the flame shape so the old fittings still looked right, and they still do.",
+   svg:"<svg viewBox=\"0 0 120 120\"><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M60 14c-14 18-20 32-20 44 0 12 9 20 20 20s20-8 20-20c0-12-6-26-20-44z\"/><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M48 78h24v8H48zM48 92h24M50 100h20M54 108h12\"/></svg>"},
+  {type:"skeuomorph", clue:"An electric car's front panel", sub:"Copied from petrol cars. What did the grille let air through to?", answer:"radiator", close:"engine grille grill",
+   note:"An electric motor needs far less airflow, so many EVs wear a solid, painted-on grille simply because people expect a car to have a face.",
+   svg:"<svg viewBox=\"0 0 120 120\"><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M16 78V60l10-22c2-4 5-6 9-6h50c4 0 7 2 9 6l10 22v18z\"/><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M16 78v12h12v-12M92 78v12h12v-12\"/><circle fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" cx=\"28\" cy=\"64\" r=\"6\"/><circle fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" cx=\"92\" cy=\"64\" r=\"6\"/><rect fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" x=\"42\" y=\"56\" width=\"36\" height=\"18\" rx=\"3\"/><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M46 62h28M46 68h28\"/></svg>"},
+  {type:"skeuomorph", clue:"The attach button", sub:"What's the object?", answer:"paperclip", close:"clip staple",
+   note:"Attaching a file used to mean clipping a sheet to a letter. The bent wire stayed, even though nothing is clipped to anything.",
+   svg:"<svg viewBox=\"0 0 120 120\"><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M76 40v44a16 16 0 0 1-32 0V32a11 11 0 0 1 22 0v48a5 5 0 0 1-10 0V42\"/></svg>"},
+  {type:"skeuomorph", clue:"The call button", sub:"What object is this?", answer:"handset", close:"receiver telephone landline phone",
+   note:"Mobiles are flat slabs, but the call button is still the curved handset you lifted off a desk phone. That phone also gave us a retronym: landline.",
+   svg:"<svg viewBox=\"0 0 120 120\"><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M30 26c6-4 12-4 15 1l8 14c3 5 1 9-4 12l-5 3c4 10 12 18 22 22l3-5c3-5 7-7 12-4l14 8c5 3 5 9 1 15l-4 5c-5 6-14 7-22 3C47 90 30 73 22 51c-4-8-3-17 3-21z\"/></svg>"},
+  {type:"skeuomorph", clue:"A moulded hubcap", sub:"What is the pattern copying?", answer:"spokes", close:"spoke wheel cartwheel",
+   note:"Early car wheels were spoked like a cart's. Today's steel wheels don't need spokes, but the hubcap often pretends they're there.",
+   svg:"<svg viewBox=\"0 0 120 120\"><circle fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" cx=\"60\" cy=\"60\" r=\"44\"/><circle fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" cx=\"60\" cy=\"60\" r=\"34\"/><circle fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" cx=\"60\" cy=\"60\" r=\"8\"/><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M60 52V26M60 68v26M52 60H26M68 60h26M54 54L36 36M66 66l18 18M66 54l18-18M54 66L36 84\"/></svg>"},
+  {type:"skeuomorph", clue:"A notes app", sub:"What paper is it imitating?", answer:"notepad", close:"pad notebook jotter paper",
+   note:"Early notes apps copied the ruled yellow pad right down to the margin line, and lined backgrounds still turn up in notes apps today.",
+   svg:"<svg viewBox=\"0 0 120 120\"><rect fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" x=\"26\" y=\"18\" width=\"68\" height=\"86\" rx=\"4\"/><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M26 30h68M38 18v86M44 46h40M44 58h40M44 70h40M44 82h30\"/></svg>"},
+  {type:"skeuomorph", clue:"The old waiting icon", sub:"What did it show?", answer:"hourglass", close:"sandglass timer",
+   note:"Computers never measured time with sand, but an hourglass was the clearest picture of 'wait a moment'. Spinning wheels mostly replaced it.",
+   svg:"<svg viewBox=\"0 0 120 120\"><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M34 18h52M34 102h52M40 18c0 22 16 30 16 42S40 80 40 102M80 18c0 22-16 30-16 42s16 20 16 42\"/><path d=\"M50 92c4-8 16-8 20 0z\" fill=\"currentColor\"/></svg>"},
+  {type:"skeuomorph", clue:"Where your files live", sub:"What's the real-world object?", answer:"folder", close:"file binder",
+   note:"There are no folders on a hard drive, only data. The tabbed card folder made the idea of grouping files easy to grasp.",
+   svg:"<svg viewBox=\"0 0 120 120\"><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M16 34a6 6 0 0 1 6-6h24l8 10h44a6 6 0 0 1 6 6v46a6 6 0 0 1-6 6H22a6 6 0 0 1-6-6z\"/><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M16 48h88\"/></svg>"},
+  {type:"skeuomorph", clue:"The save-for-later icon", sub:"What does its shape come from?", answer:"bookmark", close:"ribbon",
+   note:"Hardbacks often have a ribbon sewn in to mark your page. Websites borrowed its notched tail for anything you want to come back to.",
+   svg:"<svg viewBox=\"0 0 120 120\"><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M38 16h44v88L60 84l-22 20z\"/></svg>"},
+  {type:"skeuomorph", clue:"The online shopping icon", sub:"What are you pretending to push?", answer:"trolley", close:"cart basket",
+   note:"Nothing gets wheeled anywhere online, but adding things to a trolley or basket makes a website feel like a shop.",
+   svg:"<svg viewBox=\"0 0 120 120\"><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M14 26h14l12 48h50l10-36H34\"/><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M40 50h56M44 62h48\"/><circle fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" cx=\"46\" cy=\"90\" r=\"7\"/><circle fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" cx=\"84\" cy=\"90\" r=\"7\"/></svg>"},
+  {type:"skeuomorph", clue:"The paste button", sub:"What's the object?", answer:"clipboard", close:"board",
+   note:"Copied text sits on an invisible 'clipboard' until you paste it, named after the board that held paper while you carried it about.",
+   svg:"<svg viewBox=\"0 0 120 120\"><rect fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" x=\"26\" y=\"24\" width=\"68\" height=\"82\" rx=\"6\"/><rect fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" x=\"44\" y=\"16\" width=\"32\" height=\"16\" rx=\"4\"/><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M40 52h40M40 66h40M40 80h28\"/></svg>"},
 ];
 
 // Name that nym: the bonus round. Three a day, in order, then it cycles.
@@ -240,6 +286,8 @@ const QUIZ = [
    why:"Demonym: the name for people from a place.", id:"demonym"},
   {ex:"Cheddar, from the village in Somerset", a:"Toponym", o:["Eponym","Toponym","Demonym","Endonym"],
    why:"Toponym: a word that comes from a place name.", id:"toponym"},
+  {ex:"A floppy disk as the Save button", a:"Skeuomorph", o:["Retronym","Skeuomorph","Metonym","Eponym"],
+   why:"Skeuomorph: a design that keeps the look of the thing it replaced.", id:"skeuomorph"},
   {ex:"“Landline”, once mobiles came along", a:"Retronym", o:["Retronym","Neologism","Clipping","Backronym"],
    why:"Retronym: a new name for an old thing, needed because something newer arrived.", id:"retronym"},
   {ex:"SOS as “Save Our Souls”", a:"Backronym", o:["Acronym","Initialism","Backronym","Retronym"],

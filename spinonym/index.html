@@ -15,7 +15,7 @@
 <meta property="og:image" content="https://samey.uk/spinonym/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="The Spinonym wheel, with twenty kinds of word in four coloured groups">
+<meta property="og:image:alt" content="The Spinonym wheel, with twenty-one kinds of word in four coloured groups">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Spinonym: spin the nym">
 <meta name="twitter:description" content="A daily word game. The wheel picks today's kind of word: antonym, anagram, eponym and more. You have 4 goes.">
@@ -94,6 +94,8 @@ select{flex:1;min-width:0;background:var(--surface);color:var(--ink);border:1px 
 .clue{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;gap:4px}
 .clue .word{font-family:var(--display);font-weight:800;font-size:2.4rem;line-height:1.08;letter-spacing:-.02em;text-wrap:balance}
 .clue .word.long{font-size:1.75rem}
+.clue .icon{display:block;width:min(150px,45vw);aspect-ratio:1;margin:6px auto 10px;color:var(--ink)}
+.clue .icon svg{width:100%;height:100%;display:block}
 .clue .kind{color:var(--muted)}
 .board{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
 .tile{width:clamp(30px,10.5vw,48px);aspect-ratio:1;border-radius:6px;background:var(--slot);display:grid;place-items:center;font-family:var(--mono);font-size:clamp(1.05rem,5vw,1.5rem);text-transform:uppercase;color:var(--ink);transition:background .25s,transform .25s}
@@ -216,7 +218,7 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
     <p class="dayline" id="dayLine"></p>
     <div class="wheelwrap">
       <svg class="pointer" viewBox="0 0 30 26" aria-hidden="true"><path d="M2 2 H28 L15 24 Z" fill="var(--ink)" stroke="var(--bg)" stroke-width="2.5" stroke-linejoin="round"/></svg>
-      <div class="spinner" id="spinner"><svg id="wheel" viewBox="-170 -170 340 340" role="img" aria-label="The Spinonym wheel: four groups and twenty kinds of word"></svg></div>
+      <div class="spinner" id="spinner"><svg id="wheel" viewBox="-170 -170 340 340" role="img" aria-label="The Spinonym wheel: four groups and twenty-one kinds of word"></svg></div>
       <div class="hub" aria-hidden="true">nym</div>
     </div>
     <div class="reveal" id="reveal" hidden aria-live="polite">
@@ -285,7 +287,7 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
       </div>
       <p class="next" id="goldNote" hidden></p>
       <p class="next" id="nextNote" hidden></p>
-      <p class="also" id="alsoNote">Fancy another? <a href="/">Play today's Samey</a>, or try <a href="ghost-shapes.html">Ghost Shapes</a>, our daily icon game.</p>
+      <p class="also" id="alsoNote">Fancy another? <a href="/">Play today's Samey</a>.</p>
     </section>
   </section>
 
@@ -343,7 +345,6 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
       <li>Stuck? A hint fills in part of the word, but uses up a go.</li>
       <li>Solve it to unlock the bonus round. Get all three right to find an Easter egg in the <a href="glossary.html">glossary</a>.</li>
       <li>Win 7 days in a row and a golden bonus puzzle unlocks, with a rarer kind of word. It comes round again every 7th day of your streak.</li>
-      <li>Done for the day? <a href="ghost-shapes.html">Ghost Shapes</a> is a quick bonus game: name the old object behind three everyday icons.</li>
     </ul>
   </details>
 </main>
@@ -372,6 +373,7 @@ const TYPES = [
   {id:"kangaroo-word", name:"Kangaroo word", g:"meaning", w:4, ask:"Find the word hiding inside", def:"A word that hides a word with the same meaning inside it, letters in order, like a joey in a pouch.", eg:"masculine hides male"},
   {id:"contronym", name:"Contronym", g:"meaning", w:5, ask:"Find the one word that means both", def:"One word with two opposite meanings.", eg:"dust: to sprinkle it on, or to wipe it off"},
   {id:"collective-noun", name:"Collective noun", g:"meaning", w:5, ask:"What do you call a group of", def:"The word for a group of things, especially animals.", eg:"a pod of dolphins"},
+  {id:"skeuomorph", name:"Skeuomorph", g:"meaning", w:4, ask:"What older object is this icon copying?", def:"A design that keeps the look of the thing it replaced, even after the original reason has gone.", eg:"the floppy disk on the Save button"},
   {id:"anagram", name:"Anagram", g:"sound", w:15, ask:"Rearrange the letters of", def:"The same letters rearranged to make a new word.", eg:"night becomes thing"},
   {id:"homophone", name:"Homophone", g:"sound", w:12, ask:"Find a word that sounds like", def:"Sounds the same, but is spelt differently and means something else.", eg:"sea and see"},
   {id:"homograph", name:"Homograph", g:"sound", w:5, ask:"One spelling, two meanings", def:"Spelt the same, but with a different meaning.", eg:"a tear in your eye, a tear in your shirt"},
@@ -415,7 +417,7 @@ function hash(n){ let x=Math.imul((n|0)^0x5bd1e995, 2654435761); x^=x>>>15; x=Ma
 // Types added after launch, and the day each joined the wheel (day 0 = Sat 10 Oct 2026).
 // Before its day a type doesn't exist, so every earlier day keeps exactly the puzzle it had.
 // It also debuts on its first day. To add another type: add it to TYPES and list it here with tomorrow's day number.
-const JOINED = {"contronym":4, "literary-eponym":5};   // Wed 14 Oct, Thu 15 Oct
+const JOINED = {"contronym":4, "literary-eponym":5, "skeuomorph":7};   // Wed 14 Oct, Thu 15 Oct, Sat 17 Oct
 const typesOn = d => TYPES.filter(t => !(t.id in JOINED) || JOINED[t.id] <= d);
 const DEBUT = Object.fromEntries(Object.entries(JOINED).map(([id,d])=>[d,id]));
 function pickType(d,salt){
@@ -502,7 +504,8 @@ function fillPuzzle(){
   document.body.dataset.group = t.g;
   $("typeChip").textContent = `${GROUPS[t.g].name} · ${t.name}`;
   $("defName").textContent = t.name; $("defText").textContent = t.def; $("defEg").textContent = t.eg; $("defLink").href = "glossary.html#" + t.id;
-  $("clueAsk").textContent = t.ask; $("clueWord").textContent = p.clue; $("clueWord").classList.toggle("long", p.clue.length > 14); showSub();
+  $("clueAsk").textContent = t.ask; if(p.svg){ $("clueWord").innerHTML = `<span class="icon" role="img" aria-label="Mystery icon">${p.svg}</span>`; $("clueWord").append(p.clue); } else $("clueWord").textContent = p.clue;
+  $("clueWord").classList.toggle("long", p.clue.length > 14); showSub();
   $("lenNote").textContent = p.answer.length + " letters";
   $("guess").value=""; $("msg").textContent=""; $("msg").className="msg";
   $("result").hidden = true; $("playArea").hidden = false; $("defBox").hidden = true; $("defBtn").setAttribute("aria-expanded","false");
