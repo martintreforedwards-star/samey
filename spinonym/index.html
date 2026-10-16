@@ -200,6 +200,14 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
 .modal .btns .btn{gap:8px;min-height:46px;font-size:1rem}
 .btn.wa{background:#1f8f4e;color:#fff}
 .modal .next{text-align:center;font-size:.9rem;margin:0}
+.archlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.archlist a{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px;min-height:52px;color:inherit;text-decoration:none;font-weight:700}
+.archlist a:hover{border-color:var(--ink)}
+.archlist .when{font-weight:400;color:var(--muted);font-size:.92rem}
+.archlist .st{font-family:var(--mono);font-size:.9rem;white-space:nowrap}
+.archlist .st.won{color:var(--good)} .archlist .st.lost{color:var(--bad)} .archlist .st.new{color:var(--muted)}
+.archhead h2{font-family:var(--display);font-weight:800;font-size:1.8rem;margin:0;letter-spacing:-.02em}
+.archhead p{margin:4px 0 0;color:var(--muted)}
 @media (prefers-reduced-motion: reduce){.tile{transition:none}.tile.pop{transform:none}.spinner{transition-duration:.6s}.modal[open]{animation:none}}
 </style>
 </head>
@@ -210,7 +218,7 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
       <svg class="logo" viewBox="-32 -32 64 64" aria-hidden="true"><path d="M0 -30A30 30 0 0 1 25.98 15L0 0Z" fill="#2B5597"/><path d="M25.98 15A30 30 0 0 1 -25.98 15L0 0Z" fill="#A84F0C"/><path d="M-25.98 15A30 30 0 0 1 -25.98 -15L0 0Z" fill="#17796B"/><path d="M-25.98 -15A30 30 0 0 1 0 -30L0 0Z" fill="#6B3F99"/><circle r="10" fill="#16181D" stroke="var(--bg)" stroke-width="3"/></svg>
       <span><h1>Spinonym</h1><small>Spin the nym</small></span>
     </a>
-    <span class="navlinks"><a class="navlink" href="glossary.html">Glossary</a><a class="navlink" href="/feedback/?game=spinonym">Feedback</a></span>
+    <span class="navlinks"><a class="navlink" id="archLink" href="#" hidden>Archive</a><a class="navlink" href="glossary.html">Glossary</a><a class="navlink" href="/feedback/?game=spinonym">Feedback</a></span>
     <label class="pick" id="pickWrap" for="puzzle" hidden>Test puzzle <select id="puzzle"></select></label>
   </header>
 
@@ -288,6 +296,7 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
       </div>
       <p class="next" id="goldNote" hidden></p>
       <p class="next" id="nextNote" hidden></p>
+      <p class="also" id="archNote" hidden></p>
       <p class="next">Made by one person, with no ads. Enjoying it? <a href="https://ko-fi.com/playtheroute" target="_blank" rel="noopener" style="color:var(--ink);font-weight:700">☕ Buy me a coffee</a></p>
       <p class="also" id="alsoNote">Fancy another? <a href="/">Play today's Samey</a>.</p>
     </section>
@@ -333,6 +342,16 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
         <button class="btn big" id="backBtn" type="button">Back to my result</button>
       </div>
     </div>
+  </section>
+
+  <!-- 4. Archive of earlier puzzles -->
+  <section class="view" id="archiveView" hidden>
+    <div class="archhead">
+      <h2>Earlier puzzles</h2>
+      <p>Missed a day? Every past spin is here. These don't count towards your streak, and the bonus rounds stay with the daily puzzle.</p>
+    </div>
+    <ul class="archlist" id="archList"></ul>
+    <a class="btn" id="archToday" href="./">Back to today's puzzle</a>
   </section>
 
   <details>
@@ -409,7 +428,14 @@ let WORDS = null;   // Samey's word list, at the site root. If it fails to load,
 fetch("../words.txt").then(r=> r.ok ? r.text() : Promise.reject()).then(t=>{ WORDS = new Set(t.split("\n")); }).catch(()=>{});
 const $ = id => document.getElementById(id);
 const TEST = location.hash === "#test";
-addEventListener("hashchange", ()=>location.reload());   // typing #test onto an open page switches mode straight away   // samey.uk/spinonym/#test lets you pick any puzzle; nothing is saved
+addEventListener("hashchange", ()=>location.reload());
+// ---- Archive of earlier puzzles ----
+// Set ARCHIVE_ON to true to show it to everyone. Until then it only appears at samey.uk/spinonym/#archive (or #test).
+const ARCHIVE_ON = false;
+const ARCH = ARCHIVE_ON || TEST || location.hash==="#archive";
+const ARCH_TAIL = ARCHIVE_ON ? "" : (TEST ? "#test" : "#archive");   // keeps preview links inside the preview
+const ARCH_KEY = "spinonym-archive";
+const ARCH_N = (()=>{ const v=+new URLSearchParams(location.search).get("day"); return ARCH && Number.isInteger(v) && v>=1 ? v-1 : null; })();   // typing #test onto an open page switches mode straight away   // samey.uk/spinonym/#test lets you pick any puzzle; nothing is saved
 let state, main, gold = null, bonus;   // state = whichever puzzle is on screen: main (today's) or gold (golden bonus)
 
 // ---- Daily schedule: same for everyone, fixed by date ----
@@ -489,12 +515,14 @@ function newState(p, t, extra){
   return Object.assign({p, t, actions:[], known:Array(p.answer.length).fill(null), hinted:Array(p.answer.length).fill(false),
     rows:[], closeTried:new Set(), missed:new Set(), used:0, hintUsed:false, done:false, won:false}, extra);
 }
-function setup(pid, n){
+const dayDate = n => new Date(LAUNCH + n*864e5);
+function setup(pid, n, archive){
   const p = PUZZLES[pid], t = TYPE[p.type];
-  main = state = newState(p, t, {kind:"main", pid, n, daily:false, spun:false});
+  main = state = newState(p, t, {kind:"main", pid, n, daily:false, spun:false, archive:!!archive});
   gold = null;
   bonus = {i:0, picks:[], done:false, egg:null};
-  $("dayLine").textContent = `No. ${n+1} · ` + new Date().toLocaleDateString("en-GB",{weekday:"long", day:"numeric", month:"long"});
+  $("dayLine").textContent = (main.archive ? "Archive · " : "") + `No. ${n+1} · ` + dayDate(n).toLocaleDateString("en-GB",{weekday:"long", day:"numeric", month:"long", timeZone:"UTC"});
+  $("playBtn").textContent = main.archive ? "Play this puzzle" : "Play today's puzzle";
   $("revGroup").textContent = GROUPS[t.g].name; $("revName").textContent = t.name; $("revDef").textContent = t.def; $("revEg").textContent = "e.g. " + t.eg;
   $("reveal").hidden = true; $("spinBtn").hidden = false; $("spinBtn").disabled = false; highlight(null);
   fillPuzzle();
@@ -518,7 +546,7 @@ function openPuzzle(st){
   if(st.done) finish();
   show("gameView");
 }
-function show(id){ ["wheelView","gameView","bonusView"].forEach(v=>$(v).hidden = v!==id); window.scrollTo(0,0); }
+function show(id){ ["wheelView","gameView","bonusView","archiveView"].forEach(v=>$(v).hidden = v!==id); window.scrollTo(0,0); }
 
 function render(fresh){
   const b=$("board"); b.innerHTML="";
@@ -606,7 +634,7 @@ function useHint(){
 function shareText(){
   const marks=main.rows.map(r=> r.hint?"💡":r.win?"🟩":"🟨").join("");
   const score=main.won?`${main.used}/${MAX}`:`X/${MAX}`;
-  let s=`Spinonym No. ${main.n+1} · ${main.t.name} ${score}\n${marks}`;
+  let s=`Spinonym No. ${main.n+1}${main.archive?" (archive)":""} · ${main.t.name} ${score}\n${marks}`;
   if(bonus.done){ const k=bonusScore(); s+=`\nBonus ${k}/3${k===3?" 🥚":""}`; }
   if(gold && gold.done) s+=`\n★ Golden ${gold.won?gold.used+"/"+MAX:"X/"+MAX}`;
   return s + `\n${gameRank(main.won, main.used).title}\n${SITE}`;
@@ -618,19 +646,21 @@ function finish(fresh){
   $("resultTitle").textContent = isGold
     ? (state.won ? "Golden bonus solved!" : "The golden one got away")
     : (state.won ? (state.used===1?"First go!":`Got it in ${state.used}`) : "Out of goes");
-  $("resultText").textContent = `${p.clue} → ${p.answer.toUpperCase()}.` + (state.won ? "" : isGold ? " Keep the streak going for another shot." : " Better luck with tomorrow's spin.");
+  $("resultText").textContent = `${p.clue} → ${p.answer.toUpperCase()}.` + (state.won ? "" : isGold ? " Keep the streak going for another shot." : main.archive ? " Try another from the archive." : " Better luck with tomorrow's spin.");
   let note = p.note || "";
   if(isGold && state.won && state.egg){ const e=EGGS.find(x=>x.id===state.egg); if(e) note = `You've also found the ${e.name} Easter egg. It's in your glossary now.`; }
   $("resultNote").hidden = !note; $("resultNote").textContent = note;
-  ["stats","shareText","copyBtn","bonusBtn","goldBtn","nextNote","alsoNote","goldNote"].forEach(id=>$(id).hidden = isGold);
+  ["stats","shareText","copyBtn","bonusBtn","goldBtn","nextNote","alsoNote","goldNote","archNote"].forEach(id=>$(id).hidden = isGold);
   $("mainBtn").hidden = !isGold;
   $("result").hidden=false;
   if(isGold) return;
   $("shareText").textContent = shareText();
-  $("bonusBtn").hidden = !state.won;
+  $("bonusBtn").hidden = !state.won || main.archive;
   $("bonusBtn").textContent = bonus.done ? `Bonus round: ${bonusScore()}/3` : "Play the bonus round →";
   $("bonusBtn").classList.toggle("done", bonus.done);
   if(state.daily && !state.replaying){ recordResult(state.won); }
+  if(main.archive) saveArchive();
+  archNote();
   if(state.daily) showStats(); else $("stats").hidden = true;
   goldOffer();
   $("copyBtn").textContent="Share result";
@@ -677,14 +707,14 @@ $("shMore").addEventListener("click", ()=>{ navigator.share({text:shareText()}).
 
 // ---- Golden bonus: every 7th day of a winning streak ----
 function liveStreak(){ const st=loadStats(); return (st.lastWon===todayKey()||st.lastWon===yesterdayKey()) ? st.streak : 0; }
-function goldEligible(){ if(!main.won) return false; if(TEST) return true; const k=liveStreak(); return k>=7 && k%7===0; }
+function goldEligible(){ if(!main.won || main.archive) return false; if(TEST) return true; const k=liveStreak(); return k>=7 && k%7===0; }
 function goldOffer(){
   const ok = goldEligible(), k = TEST ? 0 : liveStreak();
   $("goldBtn").hidden = !ok;
   $("goldBtn").textContent = gold && gold.done ? (gold.won ? `★ Golden bonus: ${gold.used}/${MAX}` : "★ Golden bonus: missed") : "★ Play the golden bonus →";
   $("goldBtn").classList.toggle("done", !!(gold && gold.done));
   const left = 7 - (k % 7);
-  $("goldNote").hidden = ok || !main.won || !main.daily;
+  $("goldNote").hidden = ok || !main.won || !main.daily;   // also hidden in the archive, where daily is false
   $("goldNote").textContent = `${left} more win${left===1?"":"s"} in a row to unlock a golden bonus puzzle.`;
 }
 function makeGold(){
@@ -772,6 +802,7 @@ function renderBonusEnd(){
 // ---- Saving: one puzzle a day, stored in this browser ----
 const SAVE_KEY="spinonym-today", STATS_KEY="spinonym-stats";
 function persist(){
+  if(main.archive){ saveArchive(); return; }
   if(!main.daily || main.replaying || (gold && gold.replaying)) return;
   try{ localStorage.setItem(SAVE_KEY, JSON.stringify({day:todayKey(), pid:main.pid, spun:main.spun, actions:main.actions,
     bonus:{picks:bonus.picks, done:bonus.done, egg:bonus.egg}, gold: gold ? {actions:gold.actions, egg:gold.egg} : null})); }catch(e){}
@@ -789,6 +820,42 @@ function showStats(){
   const st=loadStats(), live=(st.lastWon===todayKey()||st.lastWon===yesterdayKey())?st.streak:0;
   $("stPlayed").textContent=st.played; $("stWin").textContent=st.played?Math.round(100*st.won/st.played):0;
   $("stStreak").textContent=live; $("stBest").textContent=st.best; $("stats").hidden=false;
+}
+// Archive results live in their own store, so they never touch the daily save or the streak.
+function loadArchive(){ let a=null; try{ a=JSON.parse(localStorage.getItem(ARCH_KEY)); }catch(e){} return a && typeof a==="object" ? a : {}; }
+function saveArchive(){
+  if(!main.archive || main.replaying || TEST) return;
+  const a=loadArchive();
+  a[main.n] = {pid:main.pid, spun:main.spun, actions:main.actions, done:main.done, won:main.won, used:main.used};
+  try{ localStorage.setItem(ARCH_KEY, JSON.stringify(a)); }catch(e){}
+}
+function archNote(){
+  const el=$("archNote"), today=dayNum();
+  if(!ARCH || today<1 || !(main.daily || main.archive)){ el.hidden=true; return; }
+  el.hidden=false; el.textContent="";
+  const a=document.createElement("a"); a.href="#"; a.textContent = main.archive ? "Play another earlier puzzle" : "Play earlier puzzles";
+  a.addEventListener("click", e=>{ e.preventDefault(); openArchive(); });
+  el.append(main.archive ? "" : "Can't wait for tomorrow? ", a, main.archive ? " or " : ".");
+  if(main.archive){ const b=document.createElement("a"); b.href="./"+ARCH_TAIL; b.textContent="go back to today's puzzle"; el.append(b, "."); }
+}
+function openArchive(){
+  const list=$("archList"), store=loadArchive(), today=dayNum(); list.innerHTML="";
+  for(let k=today-1; k>=0; k--){
+    const li=document.createElement("li"), a=document.createElement("a"), r=store[k];
+    a.href=`?day=${k+1}${ARCH_TAIL}`;
+    const left=document.createElement("span"); left.innerHTML=`No. ${k+1} <span class="when"></span>`;
+    left.querySelector(".when").textContent = "· " + dayDate(k).toLocaleDateString("en-GB",{weekday:"short", day:"numeric", month:"short", timeZone:"UTC"});
+    const st=document.createElement("span"); st.className="st";
+    const fresh = r && r.pid===puzzleForDay(k);
+    if(fresh && r.done){ st.classList.add(r.won?"won":"lost"); st.textContent = r.won ? `✓ ${r.used}/${MAX}` : `✗ X/${MAX}`; }
+    else if(fresh && (r.actions||[]).length){ st.classList.add("new"); st.textContent="In progress"; }
+    else { st.classList.add("new"); st.textContent="Play →"; }
+    a.append(left, st); li.appendChild(a); list.appendChild(li);
+  }
+  if(!list.children.length){ const li=document.createElement("li"); li.className="next"; li.textContent="No earlier puzzles yet. Come back tomorrow."; list.appendChild(li); }
+  $("archToday").href = "./" + ARCH_TAIL;
+  document.body.dataset.group = "meaning";
+  show("archiveView");
 }
 const LOADED_DAY=todayKey();
 function tick(){
@@ -826,7 +893,23 @@ function selectShare(btn){
 }
 
 drawWheel();
-if(TEST){
+if(ARCH && dayNum()>=1){ $("archLink").hidden=false; $("archLink").addEventListener("click", e=>{ e.preventDefault(); openArchive(); }); }
+if(ARCH_N!==null && ARCH_N < dayNum()){
+  // An earlier puzzle from the archive: no streak, no stats, no bonus round, no golden bonus.
+  const n=ARCH_N, pid=puzzleForDay(n);
+  setup(pid, n, true);
+  const saved=loadArchive()[n];
+  if(saved && saved.pid===pid){
+    main.replaying=true;
+    for(const a of saved.actions||[]){ if(state.done) break; if(a.h) useHint(); else if(a.g) guess(a.g); }
+    main.replaying=false; $("msg").textContent=""; $("msg").className="msg";
+    if(saved.spun || (saved.actions||[]).length){
+      main.spun=true; spinTo(spinAngle(pid,n), true); highlight(main.t);
+      $("spinBtn").hidden=true; $("reveal").hidden=false;
+      openPuzzle(main);
+    }
+  }
+} else if(TEST){
   $("pickWrap").hidden=false;
   PUZZLES.forEach(p=>{ const o=document.createElement("option"); o.value=p.id; o.textContent=`${TYPE[p.type].name}: ${p.clue}`; $("puzzle").appendChild(o); });
   GOLD.forEach(p=>{ const o=document.createElement("option"); o.value="g"+p.id; o.textContent=`★ ${GOLD_TYPES[p.type].name}: ${p.clue}`; $("puzzle").appendChild(o); });
