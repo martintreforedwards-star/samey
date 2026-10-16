@@ -1,1 +1,166 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feedback · Samey &amp; Spinonym</title>
+<meta name="robots" content="noindex">
+<style>
+  :root {
+    --bg: #f7f5f0; --card: #ffffff; --text: #1f1d1a; --muted: #6b665e;
+    --line: #ddd8ce; --accent: #2f6f5e; --accent-text: #ffffff; --error: #b3261e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #161513; --card: #211f1c; --text: #f0ece4; --muted: #a39d92;
+      --line: #3a3732; --accent: #5fb39b; --accent-text: #0d1f1a; --error: #f2948c;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 520px; margin: 0 auto; padding: 28px 16px 48px; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  .intro { color: var(--muted); margin: 0 0 24px; }
+  form, .thanks {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 14px; padding: 20px;
+  }
+  label { display: block; font-weight: 600; margin: 0 0 6px; }
+  .opt { font-weight: 400; color: var(--muted); }
+  .field { margin-bottom: 18px; }
+  select, input, textarea {
+    width: 100%; font: inherit; color: var(--text); background: var(--bg);
+    border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px;
+  }
+  textarea { min-height: 130px; resize: vertical; }
+  select:focus, input:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 400px) { .row { grid-template-columns: 1fr; } }
+  .hp { position: absolute; left: -9999px; }
+  button {
+    width: 100%; font: inherit; font-weight: 700; border: 0; border-radius: 10px;
+    padding: 12px; background: var(--accent); color: var(--accent-text); cursor: pointer;
+  }
+  button:disabled { opacity: .6; cursor: default; }
+  .status { margin: 12px 0 0; min-height: 1.5em; color: var(--error); }
+  .back { display: inline-block; margin-top: 20px; color: var(--accent); }
+  .thanks { display: none; text-align: center; }
+  .thanks h2 { margin: 0 0 8px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Send feedback</h1>
+  <p class="intro">Spotted a dodgy answer, found a bug, or have an idea? Every message is read.</p>
 
+  <form id="fb" novalidate>
+    <div class="row">
+      <div class="field">
+        <label for="game">Game</label>
+        <select id="game" name="game">
+          <option value="Samey">Samey</option>
+          <option value="Spinonym">Spinonym</option>
+          <option value="Both / general">Both / general</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="type">About</label>
+        <select id="type" name="type">
+          <option value="Puzzle issue">A puzzle</option>
+          <option value="Bug">Something broken</option>
+          <option value="Idea">An idea</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="puzzle">Which puzzle? <span class="opt">(optional)</span></label>
+      <input id="puzzle" name="puzzle" type="text" placeholder="e.g. today's, or the date">
+    </div>
+
+    <div class="field">
+      <label for="message">Your message</label>
+      <textarea id="message" name="message" required maxlength="3000"></textarea>
+    </div>
+
+    <div class="field">
+      <label for="email">Your email <span class="opt">(optional, only if you'd like a reply)</span></label>
+      <input id="email" name="email" type="email" autocomplete="email">
+    </div>
+
+    <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+    <button id="send" type="submit">Send</button>
+    <p class="status" id="status" role="status"></p>
+  </form>
+
+  <div class="thanks" id="thanks">
+    <h2>Thank you!</h2>
+    <p>Your feedback is on its way.</p>
+  </div>
+
+  <a class="back" id="back" href="/">← Back to the game</a>
+</main>
+
+<script>
+  // Paste the access key Web3Forms emails you here:
+  const ACCESS_KEY = "YOUR_ACCESS_KEY";
+
+  const q = new URLSearchParams(location.search);
+  const $ = id => document.getElementById(id);
+
+  // Prefill from links like /feedback/?game=spinonym&puzzle=2026-10-16&type=puzzle
+  const game = (q.get("game") || "").toLowerCase();
+  if (game === "samey") $("game").value = "Samey";
+  if (game === "spinonym") $("game").value = "Spinonym";
+  const type = (q.get("type") || "").toLowerCase();
+  const typeMap = { puzzle: "Puzzle issue", bug: "Bug", idea: "Idea", other: "Other" };
+  if (typeMap[type]) $("type").value = typeMap[type];
+  if (q.get("puzzle")) $("puzzle").value = q.get("puzzle");
+  if (game === "spinonym") $("back").href = "/spinonym/";
+
+  $("fb").addEventListener("submit", async e => {
+    e.preventDefault();
+    const msg = $("message").value.trim();
+    if (!msg) { $("status").textContent = "Please write a message first."; return; }
+    $("status").textContent = "";
+    $("send").disabled = true;
+    $("send").textContent = "Sending…";
+
+    const payload = {
+      access_key: ACCESS_KEY,
+      subject: `${$("game").value} feedback: ${$("type").value}`,
+      from_name: `${$("game").value} player`,
+      game: $("game").value,
+      about: $("type").value,
+      puzzle: $("puzzle").value.trim() || "(not given)",
+      message: msg,
+      device: navigator.userAgent,
+      botcheck: e.target.botcheck.checked
+    };
+    const email = $("email").value.trim();
+    if (email) { payload.email = email; payload.replyto = email; }
+
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message);
+      $("fb").style.display = "none";
+      $("thanks").style.display = "block";
+    } catch (err) {
+      $("status").textContent = "Sorry, that didn't send. Please try again in a moment.";
+      $("send").disabled = false;
+      $("send").textContent = "Send";
+    }
+  });
+</script>
+</body>
+</html>
