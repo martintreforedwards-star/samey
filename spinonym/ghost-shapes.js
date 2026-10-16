@@ -1,0 +1,112 @@
+// Ghost Shapes puzzles. Three a day, in this order, then it loops.
+// Each entry: prompt, answers (any one counts if it appears in the guess), show (the reveal),
+// hint (costs a go), story (why the shape survived), svg (drawn generically, never a real brand's icon).
+const SK = 'fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"';
+const SK3 = 'fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"';
+
+const SHAPES = [
+  { prompt:"Tap this to save. What is it a picture of?",
+    answers:["floppy","diskette","disk","disc"],
+    show:"A floppy disk",
+    hint:"It held 1.44MB and slotted into the front of a computer.",
+    story:"Most computers stopped coming with floppy drives in the late 2000s, yet this shape still means Save to people who have never held one.",
+    svg:`<svg viewBox="0 0 120 120"><path ${SK} d="M22 22h62l14 14v62H22z"/><rect ${SK} x="38" y="22" width="36" height="24"/><rect x="62" y="27" width="7" height="14" fill="currentColor"/><rect ${SK} x="34" y="64" width="52" height="34" rx="2"/><path ${SK3} d="M42 76h36M42 86h28"/></svg>`},
+
+  { prompt:"Many electric cars still have this. What did it once let air through to?",
+    answers:["radiator","grille","grill","engine","cooling"],
+    show:"A radiator grille",
+    hint:"Petrol engines get hot and need cooling.",
+    story:"An electric motor needs far less airflow, so many EVs wear a solid, painted-on grille simply because people expect a car to have a face.",
+    svg:`<svg viewBox="0 0 120 120"><path ${SK} d="M16 78V60l10-22c2-4 5-6 9-6h50c4 0 7 2 9 6l10 22v18z"/><path ${SK} d="M16 78v12h12v-12M92 78v12h12v-12"/><circle ${SK} cx="28" cy="64" r="6"/><circle ${SK} cx="92" cy="64" r="6"/><rect ${SK} x="42" y="56" width="36" height="18" rx="3"/><path ${SK3} d="M46 62h28M46 68h28"/></svg>`},
+
+  { prompt:"The email icon. What did email replace?",
+    answers:["envelope","letter","post","mail","snailmail"],
+    show:"A paper envelope",
+    hint:"You'd lick it, seal it and add a stamp.",
+    story:"Email has no paper at all, yet it kept the envelope, the inbox, cc (carbon copy) and attachments from the post.",
+    svg:`<svg viewBox="0 0 120 120"><rect ${SK} x="18" y="32" width="84" height="58" rx="4"/><path ${SK} d="M20 35l40 30 40-30"/><path ${SK} d="M20 88l30-26M100 88L70 62"/></svg>`},
+
+  { prompt:"The voicemail symbol. What did it originally show?",
+    answers:["tape","reel","cassette","spool","answeringmachine","answerphone"],
+    show:"Two tape reels, from an answering machine",
+    hint:"Magnetic, and wound between two spools.",
+    story:"Answering machines recorded messages on tape. The two circles are the spools you could see turning through the cassette window.",
+    svg:`<svg viewBox="0 0 120 120"><circle ${SK} cx="36" cy="58" r="20"/><circle ${SK} cx="84" cy="58" r="20"/><path ${SK} d="M36 78h48"/><circle cx="36" cy="58" r="4" fill="currentColor"/><circle cx="84" cy="58" r="4" fill="currentColor"/></svg>`},
+
+  { prompt:"An LED bulb in this shape. What is it pretending to be?",
+    answers:["candle","flame","wick"],
+    show:"A candle flame",
+    hint:"It needed a wick and a match.",
+    story:"Chandeliers were built to hold candles. Bulbs kept the flame shape so the old fittings still looked right, and they still do.",
+    svg:`<svg viewBox="0 0 120 120"><path ${SK} d="M60 14c-14 18-20 32-20 44 0 12 9 20 20 20s20-8 20-20c0-12-6-26-20-44z"/><path ${SK} d="M48 78h24v8H48zM48 92h24M50 100h20M54 108h12"/></svg>`},
+
+  { prompt:"Pressed to attach a file. What's the object?",
+    answers:["paperclip","paper clip","clip"],
+    show:"A paperclip",
+    hint:"Bent wire that holds sheets together.",
+    story:"Attaching a file used to mean clipping a sheet to a letter. The bent wire stayed, even though nothing is clipped to anything.",
+    svg:`<svg viewBox="0 0 120 120"><path ${SK} d="M76 40v44a16 16 0 0 1-32 0V32a11 11 0 0 1 22 0v48a5 5 0 0 1-10 0V42"/></svg>`},
+
+  { prompt:"The call button on your phone. What object is this?",
+    answers:["handset","receiver","landline","telephone","deskphone","desk phone"],
+    show:"A landline telephone handset",
+    hint:"It sat in a cradle on a curly cord.",
+    story:"Mobiles are flat slabs, but the call button is still the curved handset you lifted off a desk phone. That phone also gave us a retronym: landline.",
+    svg:`<svg viewBox="0 0 120 120"><path ${SK} d="M30 26c6-4 12-4 15 1l8 14c3 5 1 9-4 12l-5 3c4 10 12 18 22 22l3-5c3-5 7-7 12-4l14 8c5 3 5 9 1 15l-4 5c-5 6-14 7-22 3C47 90 30 73 22 51c-4-8-3-17 3-21z"/></svg>`},
+
+  { prompt:"Many plastic hubcaps are moulded like this. What are they copying?",
+    answers:["spoke","wire wheel","wirewheel","cartwheel","wagon wheel","wagonwheel","bicycle"],
+    show:"A spoked wheel",
+    hint:"Carts, carriages and early cars all ran on these.",
+    story:"Early car wheels were spoked like a cart's. Today's steel wheels don't need spokes, but the hubcap often pretends they're there.",
+    svg:`<svg viewBox="0 0 120 120"><circle ${SK} cx="60" cy="60" r="44"/><circle ${SK} cx="60" cy="60" r="34"/><circle ${SK} cx="60" cy="60" r="8"/><path ${SK3} d="M60 52V26M60 68v26M52 60H26M68 60h26M54 54L36 36M66 66l18 18M66 54l18-18M54 66L36 84"/></svg>`},
+
+  { prompt:"A notes app background. What paper is it imitating?",
+    answers:["legal pad","legalpad","notepad","pad","notebook","jotter","lined paper","linedpaper","exercise book"],
+    show:"A lined notepad",
+    hint:"Yellow pages, ruled lines, a margin down the left.",
+    story:"Early notes apps copied the ruled yellow pad right down to the margin line, and lined backgrounds still turn up in notes apps today.",
+    svg:`<svg viewBox="0 0 120 120"><rect ${SK} x="26" y="18" width="68" height="86" rx="4"/><path ${SK3} d="M26 30h68M38 18v86M44 46h40M44 58h40M44 70h40M44 82h30"/></svg>`},
+
+  { prompt:"Pressed to pin something to the top. What's being pushed in?",
+    answers:["drawing pin","drawingpin","thumbtack","thumb tack","push pin","pushpin","noticeboard"],
+    show:"A drawing pin",
+    hint:"Pushed by thumb into a cork noticeboard.",
+    story:"Pinning a message just means it stays at the top of a list, but the icon is still the pin you'd push through paper into cork.",
+    svg:`<svg viewBox="0 0 120 120"><path ${SK} d="M48 20h24M52 20v28l-14 16h44L68 48V20M60 64v36"/></svg>`},
+
+  { prompt:"The waiting icon on older screens. What did it show?",
+    answers:["hourglass","sand timer","sandtimer","egg timer","eggtimer","sandglass"],
+    show:"An hourglass",
+    hint:"Sand trickling from one glass bulb into another.",
+    story:"Computers never measured time with sand, but an hourglass was the clearest picture of 'wait a moment'. Spinning wheels mostly replaced it.",
+    svg:`<svg viewBox="0 0 120 120"><path ${SK} d="M34 18h52M34 102h52M40 18c0 22 16 30 16 42S40 80 40 102M80 18c0 22-16 30-16 42s16 20 16 42"/><path d="M50 92c4-8 16-8 20 0z" fill="currentColor"/></svg>`},
+
+  { prompt:"Where files live on a computer. What's the real-world object?",
+    answers:["folder","manila","filing","cardboard file"],
+    show:"A cardboard filing folder",
+    hint:"Brown card with a tab sticking up, kept in a filing cabinet.",
+    story:"There are no folders on a hard drive, only data. The tabbed card folder made the idea of grouping files easy to grasp.",
+    svg:`<svg viewBox="0 0 120 120"><path ${SK} d="M16 34a6 6 0 0 1 6-6h24l8 10h44a6 6 0 0 1 6 6v46a6 6 0 0 1-6 6H22a6 6 0 0 1-6-6z"/><path ${SK} d="M16 48h88"/></svg>`},
+
+  { prompt:"The 'save for later' icon. What does its shape come from?",
+    answers:["ribbon","bookmark","book mark"],
+    show:"A ribbon bookmark",
+    hint:"A strip of fabric sewn into the spine of a book.",
+    story:"Hardbacks often have a ribbon sewn in to mark your page. Websites borrowed its notched tail for anything you want to come back to.",
+    svg:`<svg viewBox="0 0 120 120"><path ${SK} d="M38 16h44v88L60 84l-22 20z"/></svg>`},
+
+  { prompt:"The online shopping icon. What are you pretending to push?",
+    answers:["trolley","cart","shopping trolley","basket"],
+    show:"A supermarket trolley",
+    hint:"Four wheels, a wire cage and a wonky front wheel.",
+    story:"Nothing gets wheeled anywhere online, but adding things to a trolley or basket makes a website feel like a shop.",
+    svg:`<svg viewBox="0 0 120 120"><path ${SK} d="M14 26h14l12 48h50l10-36H34"/><path ${SK3} d="M40 50h56M44 62h48"/><circle ${SK} cx="46" cy="90" r="7"/><circle ${SK} cx="84" cy="90" r="7"/></svg>`},
+
+  { prompt:"Tap this to paste. What's the object?",
+    answers:["clipboard","clip board"],
+    show:"A clipboard",
+    hint:"A board with a spring clip, carried by people taking surveys.",
+    story:"Copied text sits on an invisible 'clipboard' until you paste it, named after the board that held paper while you carried it about.",
+    svg:`<svg viewBox="0 0 120 120"><rect ${SK} x="26" y="24" width="68" height="82" rx="6"/><rect ${SK} x="44" y="16" width="32" height="16" rx="4"/><path ${SK3} d="M40 52h40M40 66h40M40 80h28"/></svg>`},
+];

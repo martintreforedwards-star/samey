@@ -99,6 +99,9 @@
   .sound .dot { background: var(--sound); } .sound .tag.group { color: var(--sound); }
   .names .dot { background: var(--names); } .names .tag.group { color: var(--names); }
   .word .dot { background: var(--word); } .word .tag.group { color: var(--word); }
+  .design .dot { background: var(--muted); } .design .tag.group { color: var(--muted); }
+  .play { margin: 8px 0 0; }
+  .play a { color: var(--bonus); font-weight: 700; }
   .tag.bonus { color: var(--bonus); }
   .tag.extra { color: var(--muted); }
   .tag.figure { color: var(--muted); }
@@ -138,6 +141,7 @@
     <li><a href="#capitonym">C</a></li>
     <li><a href="#demonym">D</a></li>
     <li><a href="#eggcorn">E</a></li>
+    <li><a href="#folk-etymology">F</a></li>
     <li><a href="#heteronym">H</a></li>
     <li><a href="#initialism">I</a></li>
     <li><a href="#kangaroo-word">K</a></li>
@@ -268,6 +272,16 @@
       <h2><span class="dot" aria-hidden="true"></span>Exonym <span class="tag group">Names</span> <span class="tag extra">More wordplay</span></h2>
       <p class="def">The name outsiders use for a place or people. The opposite of an endonym.</p>
       <p class="eg">e.g. <strong>Germany</strong> for Deutschland</p>
+    </li>
+    <li class="term word" id="folk-etymology" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Folk etymology <span class="tag group">Word-building</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">An unfamiliar word reshaped by people into parts that sound familiar.</p>
+      <p class="eg">e.g. Spanish <strong>cucaracha</strong> became <strong>cockroach</strong>, though it's neither a cock nor a roach</p>
+    </li>
+    <li class="term word" id="fossil-word" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Fossil word <span class="tag group">Word-building</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">An old word that now survives only inside one set phrase.</p>
+      <p class="eg">e.g. <strong>kith</strong> in kith and kin, <strong>ado</strong> in without further ado</p>
     </li>
     <li class="term sound" id="half-rhyme" data-kind="figure">
       <h2><span class="dot" aria-hidden="true"></span>Half rhyme <span class="tag group">Sound &amp; spelling</span> <span class="tag figure">Figure of speech</span></h2>
@@ -434,6 +448,11 @@
       <p class="def">A made-up name someone uses instead of their real one.</p>
       <p class="eg">e.g. Samuel Clemens wrote as <strong>Mark Twain</strong></p>
     </li>
+    <li class="term sound" id="rebracketing" data-kind="extra">
+      <h2><span class="dot" aria-hidden="true"></span>Rebracketing <span class="tag group">Sound &amp; spelling</span> <span class="tag extra">More wordplay</span></h2>
+      <p class="def">When the break between two words is misheard, so a letter jumps from one word to the other.</p>
+      <p class="eg">e.g. <strong>a napron</strong> became <strong>an apron</strong>, and <strong>an ewt</strong> became <strong>a newt</strong></p>
+    </li>
     <li class="term word" id="retronym" data-kind="bonus">
       <h2><span class="dot" aria-hidden="true"></span>Retronym <span class="tag group">Word-building</span> <span class="tag bonus">Bonus</span></h2>
       <p class="def">A new name for an old thing, needed because something newer came along.</p>
@@ -453,6 +472,12 @@
       <h2><span class="dot" aria-hidden="true"></span>Simile <span class="tag group">Meaning</span> <span class="tag figure">Figure of speech</span></h2>
       <p class="def">Comparing two things using “like” or “as”.</p>
       <p class="eg">e.g. <strong>as brave as a lion</strong></p>
+    </li>
+    <li class="term design" id="skeuomorph" data-kind="bonus">
+      <h2><span class="dot" aria-hidden="true"></span>Skeuomorph <span class="tag group">Design</span> <span class="tag bonus">Bonus game</span></h2>
+      <p class="def">A design that keeps the look of the thing it replaced, even after the original reason has gone.</p>
+      <p class="eg">e.g. the <strong>floppy disk</strong> save icon. Words do it too: you still <strong>dial</strong> a number and <strong>hang up</strong>.</p>
+      <p class="play"><a href="ghost-shapes.html">Play Ghost Shapes &rarr;</a></p>
     </li>
     <li class="term sound" id="spoonerism" data-kind="extra">
       <h2><span class="dot" aria-hidden="true"></span>Spoonerism <span class="tag group">Sound &amp; spelling</span> <span class="tag extra">More wordplay</span></h2>
