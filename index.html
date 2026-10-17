@@ -142,6 +142,21 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
 .modal .btns .btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;text-decoration:none;font-size:1rem}
 .btn.wa{background:#1f8f4e;color:#fff}
 .modal .next{text-align:center;font-size:.9rem}
+.archline{margin:0;color:var(--muted);font-size:.92rem}
+.archline a,.next a{color:var(--ink);font-weight:700}
+body.arching main > :not(header):not(#archiveView){display:none !important}
+#archiveView{display:flex;flex-direction:column;gap:12px}
+#archiveView[hidden]{display:none}
+.archhead h2{font-family:var(--display);font-weight:800;font-size:1.6rem;margin:0}
+.archhead p{margin:4px 0 0;color:var(--muted)}
+.archlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.archlist a{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 16px;min-height:52px;color:inherit;text-decoration:none;font-weight:700}
+.archlist a:hover{border-color:var(--ink)}
+.archlist .when{font-weight:400;color:var(--muted);font-size:.92rem}
+.archlist .st{font-family:var(--mono);font-size:.9rem;white-space:nowrap}
+.archlist .st.won{color:var(--teal)} .archlist .st.lost{color:var(--bad)} .archlist .st.new{color:var(--muted)}
+.archlist li.next{padding:8px 0}
+#archToday{align-self:flex-start;text-decoration:none}
 @media (prefers-reduced-motion: reduce){.tile{transition:none}.tile.pop{transform:none}.modal[open]{animation:none}}
 </style>
 
@@ -155,6 +170,8 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
     </div>
     <label class="pick" id="pickWrap" for="puzzle" hidden>Puzzle <select id="puzzle"></select></label>
   </header>
+
+  <p class="archline" id="archLine" hidden></p>
 
   <section class="clue" aria-live="polite">
     <span class="eyebrow">Find a word that means the same as</span>
@@ -196,6 +213,7 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
     </dl>
     <div class="share" id="shareText"></div>
     <p class="next" id="nextNote" hidden></p>
+    <p class="next" id="archNote" hidden></p>
     <p class="next">Made by one person, with no ads. Enjoying it? <a href="https://ko-fi.com/playtheroute" target="_blank" rel="noopener" style="color:var(--ink);font-weight:700">☕ Buy me a coffee</a></p>
     <a class="spn-card" href="/spinonym/">
       <svg class="spn-wheel" viewBox="-32 -32 64 64" aria-hidden="true"><path d="M0 -30A30 30 0 0 1 25.98 15L0 0Z" fill="#2B5597"/><path d="M25.98 15A30 30 0 0 1 -25.98 15L0 0Z" fill="#A84F0C"/><path d="M-25.98 15A30 30 0 0 1 -25.98 -15L0 0Z" fill="#17796B"/><path d="M-25.98 -15A30 30 0 0 1 0 -30L0 0Z" fill="#6B3F99"/><circle r="10" fill="#16181D" stroke="#ffffff" stroke-width="2.5"/></svg>
@@ -246,7 +264,16 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
   <p class="spn-foot">New: <a href="/spinonym/">Spinonym</a>, our daily wheel of words. Spin the nym.</p>
   <p class="spn-foot" style="margin-top:8px">New: <a href="/dotty/">Dotty</a>, put the missing accents and punctuation back.</p>
   <p class="spn-foot" style="margin-top:8px">Newest: <a href="/syntaxed/">Syntaxed</a>, grammar puzzles that make you giggle, not wince.</p>
-  <p class="spn-foot" style="margin-top:8px"><a href="/feedback/?game=samey">Send feedback</a> · <a href="/support/">Support us</a></p>
+  <!-- Archive of earlier puzzles -->
+  <section id="archiveView" hidden>
+    <div class="archhead">
+      <h2>Earlier puzzles</h2>
+      <p>Missed a day? Every past Samey is here. These don't count towards your streak or stats.</p>
+    </div>
+    <ul class="archlist" id="archList"></ul>
+    <a class="btn" id="archToday" href="./">Back to today's puzzle</a>
+  </section>
+  <p class="spn-foot" style="margin-top:8px"><span id="archFoot" hidden><a href="#" id="archLink">Earlier puzzles</a> · </span><a href="/feedback/?game=samey">Send feedback</a> · <a href="/support/">Support us</a></p>
 </main>
 
 <dialog class="modal" id="shareModal" aria-labelledby="shTitle">
@@ -463,18 +490,22 @@ const mask = arr => arr.map(c=>c||"_").join(" ");
 
 const TIERS = ["","Gentle","Easy","Medium","Tricky","Toughest"];
 // Mon=1 ... Fri=5; weekends sit in the middle.
-function todayTier(){ const w=new Date().getDay(); return (w===0||w===6) ? 3 : w; }
+const tierOf = w => (w===0||w===6) ? 3 : w;
+const dayDate = n => new Date(2026,9,9+n);   // Samey No. n+1
+function todayDays(){ const d=new Date(); return Math.round((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())-LAUNCH)/864e5); }
 let LAUNCH_OVERRIDE=null;
-function dayIndex(){
-  const d=new Date(), tier=todayTier();
-  const days=Math.round((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())-LAUNCH)/864e5);
+function dayIndex(){ return puzzleForDay(todayDays()); }
+// The puzzle for day n (0 = launch day). Same answer for everyone, today or looking back from the archive.
+function puzzleForDay(days){
+  const tier=tierOf(dayDate(days).getDay());
+  LAUNCH_OVERRIDE=null;
   // Launch day (Fri 9 Oct 2026) keeps the puzzle it went out with, at its original Toughest level.
   if(days===0){ const li=PUZZLES.findIndex(p=>p.clue==="Present"); if(li>=0){ LAUNCH_OVERRIDE={i:li, tier:5}; return li; } }
   const pool=PUZZLES.map((p,i)=>p.tier===tier?i:-1).filter(i=>i>=0);
   // Each level works through its own list: count how many earlier days (after launch day) used this level.
   // Medium is used Wed, Sat and Sun, so it moves on three times a week rather than once.
   let n=0;
-  for(let k=1;k<days;k++){ const w=new Date(2026,9,9+k).getDay(); if(((w===0||w===6)?3:w)===tier) n++; }
+  for(let k=1;k<days;k++){ if(tierOf(dayDate(k).getDay())===tier) n++; }
   return pool[n % pool.length];
 }
 
@@ -599,11 +630,13 @@ function finish(){
   const marks = state.rows.map(r=> r.hint ? "💡" : r.win ? "🟩" : "🟨").join("");
   const score = state.won ? `${state.used}/${MAX}` : `X/${MAX}`;
   const rank = gameRank(state.won, state.used);
-  $("shareText").textContent = `Samey ${state.daily ? dayNumber() : '#'+(state.i+1)} (${TIERS[state.tier]})  ${score}\n${marks}\n${rank.title}\n${SITE}`;
+  $("shareText").textContent = `Samey ${state.daily ? dayNumber() : state.archive ? `No. ${state.n+1} · archive` : '#'+(state.i+1)} (${TIERS[state.tier]})  ${score}\n${marks}\n${rank.title}\n${SITE}`;
   $("result").hidden = false;
   if(state.daily){ recordResult(state.won); showStats(); }
   $("copyBtn").textContent = "Share result";
-  $("nextBtn").hidden = state.daily;
+  $("nextBtn").hidden = state.daily || state.archive;
+  if(state.archive) saveArch();
+  archNote();
   $("nextNote").hidden = !state.daily;
   if(state.daily) tick();
   // Pop the share modal on a fresh finish, not when a finished game is restored on reload
@@ -660,6 +693,50 @@ function selectShare(btn){
 PUZZLES.forEach((p,i)=>{ const o=document.createElement("option"); o.value=i; o.textContent=`#${i+1} · ${TIERS[p.tier]}`; $("puzzle").appendChild(o); });
 // ---- one puzzle a day ----
 const TEST = location.hash === "#test";      // samey.uk/#test shows the puzzle picker for play-testing
+addEventListener("hashchange", ()=>location.reload());   // typing #test or #archive onto an open page switches mode straight away
+// ---- Archive of earlier puzzles ----
+// Set ARCHIVE_ON to true to show it to everyone. Until then it only appears at samey.uk/#archive (or #test).
+const ARCHIVE_ON = false;
+const ARCH = ARCHIVE_ON || TEST || location.hash==="#archive";
+const ARCH_TAIL = ARCHIVE_ON ? "" : (TEST ? "#test" : "#archive");   // keeps preview links inside the preview
+const ARCH_KEY = "samey-archive";
+const ARCH_N = (()=>{ const v=+new URLSearchParams(location.search).get("day"); return ARCH && Number.isInteger(v) && v>=1 ? v-1 : null; })();
+const fmtDay = (n, long) => dayDate(n).toLocaleDateString("en-GB", long ? {weekday:"long", day:"numeric", month:"long"} : {weekday:"short", day:"numeric", month:"short"});
+// Archive results live in their own store, so they never touch the daily save, the stats or the streak.
+function loadArch(){ let a=null; try{ a=JSON.parse(localStorage.getItem(ARCH_KEY)); }catch(e){} return a && typeof a==="object" ? a : {}; }
+function saveArch(){
+  if(!state.archive || state.replaying || TEST) return;
+  const a=loadArch();
+  a[state.n] = {i:state.i, actions:state.actions, done:state.done, won:state.won, used:state.used};
+  try{ localStorage.setItem(ARCH_KEY, JSON.stringify(a)); }catch(e){}
+}
+function archNote(){
+  const el=$("archNote");
+  if(!ARCH || todayDays()<1 || !(state.daily || state.archive)){ el.hidden=true; return; }
+  el.hidden=false; el.textContent="";
+  const a=document.createElement("a"); a.href="#"; a.textContent = state.archive ? "Play another earlier puzzle" : "Play earlier puzzles";
+  a.addEventListener("click", e=>{ e.preventDefault(); openArchive(); });
+  el.append(state.archive ? "" : "Can't wait for tomorrow? ", a, state.archive ? " or " : ".");
+  if(state.archive){ const b=document.createElement("a"); b.href="./"+ARCH_TAIL; b.textContent="go back to today's puzzle"; el.append(b, "."); }
+}
+function openArchive(){
+  const list=$("archList"), store=loadArch(), today=todayDays(); list.innerHTML="";
+  for(let k=today-1; k>=0; k--){
+    const li=document.createElement("li"), a=document.createElement("a"), r=store[k], i=puzzleForDay(k);
+    a.href=`?day=${k+1}${ARCH_TAIL}`;
+    const left=document.createElement("span"); left.textContent=`No. ${k+1} `;
+    const when=document.createElement("span"); when.className="when"; when.textContent=`· ${fmtDay(k)} · ${TIERS[tierOf(dayDate(k).getDay())]}`; left.appendChild(when);
+    const st=document.createElement("span"); st.className="st";
+    const fresh = r && r.i===i;
+    if(fresh && r.done){ st.classList.add(r.won?"won":"lost"); st.textContent = r.won ? `✓ ${r.used}/${MAX}` : `✗ X/${MAX}`; }
+    else if(fresh && (r.actions||[]).length){ st.classList.add("new"); st.textContent="In progress"; }
+    else { st.classList.add("new"); st.textContent="Play →"; }
+    a.append(left, st); li.appendChild(a); list.appendChild(li);
+  }
+  if(!list.children.length){ const li=document.createElement("li"); li.className="next"; li.textContent="No earlier puzzles yet. Come back tomorrow."; list.appendChild(li); }
+  $("archToday").href = "./" + ARCH_TAIL;
+  document.body.classList.add("arching"); $("archiveView").hidden=false; window.scrollTo(0,0);
+}
 function dayKey(d){ return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`; }
 function yesterdayKey(){ const d=new Date(); d.setDate(d.getDate()-1); return dayKey(d); }
 const STATS_KEY = "samey-stats";
@@ -690,6 +767,7 @@ function dayNumber(){ const d=new Date(); return "No. " + (Math.round((Date.UTC(
 const SAVE_KEY = "samey-today";
 function log(a){
   state.actions.push(a);
+  if(state.archive){ saveArch(); return; }
   if(!state.daily || state.replaying) return;
   try{ localStorage.setItem(SAVE_KEY, JSON.stringify({day:todayKey(), i:state.i, actions:state.actions})); }catch(e){}
 }
@@ -703,7 +781,22 @@ function tick(){
 const LOADED_DAY = todayKey();
 setInterval(()=>{ if(todayKey()!==LOADED_DAY) location.reload(); else tick(); }, 30000);
 
-if(TEST){
+if(ARCH && todayDays()>=1){ $("archFoot").hidden=false; $("archLink").addEventListener("click", e=>{ e.preventDefault(); openArchive(); }); }
+if(ARCH_N!==null && ARCH_N < todayDays()){
+  // An earlier puzzle from the archive: no streak, no stats.
+  const n=ARCH_N;
+  start(puzzleForDay(n));
+  state.archive=true; state.n=n;
+  const line=$("archLine"); line.hidden=false;
+  line.append(`Earlier puzzle · No. ${n+1} · ${fmtDay(n,true)} · `);
+  const back=document.createElement("a"); back.href="./"+ARCH_TAIL; back.textContent="Today's puzzle"; line.append(back);
+  const saved=loadArch()[n];
+  if(saved && saved.i===state.i){
+    state.replaying=true;
+    for(const a of saved.actions||[]){ if(state.done) break; if(a.h) useHint(); else if(a.g) guess(a.g); }
+    state.replaying=false; $("msg").textContent=""; $("msg").className="msg";
+  }
+}else if(TEST){
   $("pickWrap").hidden = false;
   start(dayIndex());
 }else{

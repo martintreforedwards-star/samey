@@ -77,6 +77,18 @@ header { display: flex; align-items: baseline; justify-content: space-between; g
 .strap { color: var(--muted); font-size: 0.9rem; margin: 6px 0 0; }
 .date { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; }
 
+.archline { margin: -6px 0 0; color: var(--muted); font-size: 0.92rem; }
+.archline a, .note a { color: var(--ink); font-weight: 700; }
+.archhead h2 { margin: 0; font-size: 1.4rem; }
+.archhead p { margin: 4px 0 0; color: var(--muted); }
+.archlist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.archlist a { display: flex; justify-content: space-between; align-items: center; gap: 12px; background: var(--tile); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; min-height: 52px; color: inherit; text-decoration: none; font-weight: 700; }
+.archlist a:hover { border-color: var(--ink); }
+.archlist .when { font-weight: 400; color: var(--muted); font-size: 0.9rem; }
+.archlist .st { font-size: 0.9rem; white-space: nowrap; }
+.archlist .st.won { color: var(--ok); } .archlist .st.lost { color: var(--dot); } .archlist .st.new { color: var(--muted); }
+.archlist li.empty { color: var(--muted); }
+.panel .archback { flex: none; padding: 0 18px; align-self: flex-start; display: inline-flex; align-items: center; min-height: 46px; text-decoration: none; }
 .twist { display: flex; gap: 12px; align-items: flex-start; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; }
 .twist .pip { flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--dot-soft); color: var(--dot); display: grid; place-items: center; font-weight: 700; font-size: 0.8rem; }
 .twist b { display: block; font-size: 0.95rem; }
@@ -188,7 +200,8 @@ details ul { padding-left: 1.2rem; margin: 0.5rem 0 0; display: flex; flex-direc
     </div>
     <span class="date" id="date"></span>
   </header>
-  <nav class="navlinks" aria-label="Dotty pages"><a class="navlink" href="glossary.html">Glossary</a><a class="navlink" href="/feedback/?game=dotty">Feedback</a></nav>
+  <nav class="navlinks" aria-label="Dotty pages"><a class="navlink" id="archLink" href="#" hidden>Earlier puzzles</a><a class="navlink" href="glossary.html">Glossary</a><a class="navlink" href="/feedback/?game=dotty">Feedback</a></nav>
+  <p class="archline" id="archLine" hidden></p>
   <div class="twist" id="twist"></div>
   <section class="panel" id="panel" aria-live="polite"></section>
   <details>
@@ -498,6 +511,17 @@ const TEST = location.hash === "#test"; // samey.uk/dotty/#test previews other d
 const now = new Date();
 const TODAY = Math.floor(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / 864e5);
 let offset = 0;
+addEventListener("hashchange", () => location.reload()); // typing #test or #archive onto an open page switches mode straight away
+/* ---------- archive of earlier puzzles ---------- */
+// Set ARCHIVE_ON to true to show it to everyone. Until then it only appears at samey.uk/dotty/#archive (or #test).
+const ARCHIVE_ON = false;
+const ARCH = ARCHIVE_ON || TEST || location.hash === "#archive";
+const ARCH_TAIL = ARCHIVE_ON ? "" : (TEST ? "#test" : "#archive"); // keeps preview links inside the preview
+const ARCH_KEY = "dotty-archive";
+const PAST = TODAY - START; // how many earlier Dottys there are
+const ARCH_N = (() => { const v = +new URLSearchParams(location.search).get("day"); return ARCH && Number.isInteger(v) && v >= 1 && v <= PAST ? v - 1 : null; })();
+const ARCHIVED = ARCH_N !== null; // playing an earlier puzzle: no stats, no streak, no bonus round
+if (ARCHIVED) offset = START + ARCH_N - TODAY;
 function dayInfo(abs) {
   const wd = (abs + 4) % 7; // 1970-01-01 was a Thursday
   const n = abs - START;
@@ -553,7 +577,8 @@ function newGame() {
   S = { info, tw, p, tray: shuffle([...correct, ...decoys], seed + 1), placed:{}, locked:{}, used:0, sel:null, done:false, win:false,
         masked, revealOrder: shuffle([...masked], seed + 4), hiddenAtSolve: 0, bonus, shake:[],
         msg: p.hasPunct ? "Tap a mark below, then tap where it goes. Accents go on letters, punctuation goes in the dashed gaps." : "Tap a mark below, then tap the letter it goes on." };
-  if (!offset) restore();
+  if (ARCHIVED) restore(loadArch()[S.info.no]);
+  else if (!offset) restore();
   renderTwist();
   render();
 }
@@ -562,7 +587,7 @@ function renderTwist() {
   document.getElementById("date").textContent = fmtDay(info.abs);
   document.getElementById("twist").replaceChildren(
     h("div", { class:"pip", "aria-hidden":"true" }, ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][info.wd]),
-    h("div", {}, h("b", {}, `Today's twist: ${tw.name}`), h("span", {}, tw.note)));
+    h("div", {}, h("b", {}, `${ARCHIVED ? "Twist" : "Today's twist"}: ${tw.name}`), h("span", {}, tw.note)));
 }
 const answerOf = id => (S.p.marks.find(m => m[0] === id) || [])[1];
 const matches = (ans, k) => ans === k || (ans === "–" && k === "-");
@@ -572,7 +597,7 @@ function finish(win) {
   S.p.marks.forEach(([id, k]) => S.locked[id] = k);
   S.placed = {}; S.masked = new Set(); S.sel = null;
   S.msg = win ? "Every mark in place." : "Here's how it should look.";
-  if (!TEST) recordResult(win);
+  if (!TEST && !ARCHIVED) recordResult(win);
 }
 function check() {
   const entries = Object.entries(S.placed);
@@ -681,7 +706,7 @@ const MISS = { title:"🌫️ Smudged", desc:"The marks won this round." };
 const rankOf = () => !S.win ? MISS : RANKS[Math.max(S.used - 1, S.hints ? 1 : 0)] || RANKS[3]; // a hint-assisted solve can't be top rank
 function shareText() {
   const { info, tw, win, used } = S;
-  const lines = [`Dotty No. ${info.no} · ${tw.name}`, `${"●".repeat(win ? used : 4).padEnd(4, "○")} ${win ? `${used}/4` : "X/4"}`];
+  const lines = [`Dotty No. ${info.no}${ARCHIVED ? " (archive)" : ""} · ${tw.name}`, `${"●".repeat(win ? used : 4).padEnd(4, "○")} ${win ? `${used}/4` : "X/4"}`];
   if (tw.mask && win) lines.push(`${S.hiddenAtSolve} letter${S.hiddenAtSolve === 1 ? "" : "s"} still hidden`);
   if (S.bonus && S.bonus.answer === S.bonus.key) lines.push(S.bonus.rare ? "★ Rare mark named" : "★ Bonus mark named");
   lines.push(rankOf().title, SITE);
@@ -698,16 +723,23 @@ function recordResult(won) {
   try { localStorage.setItem(STATS_KEY, JSON.stringify(st)); } catch (e) {}
 }
 const liveStreak = st => (st.lastWon === todayKey() || st.lastWon === yesterdayKey()) ? st.streak : 0;
+function saveData() {
+  return { day: todayKey(), no: S.info.no, placed: S.placed, locked: S.locked, used: S.used,
+    done: S.done, win: S.win, hints: S.hints || 0, hiddenAtSolve: S.hiddenAtSolve, msg: S.msg, masked: [...S.masked], shareShown: S.shareShown,
+    bonusAnswer: S.bonus ? S.bonus.answer : null };
+}
+// Earlier puzzles keep their own store, so they never touch today's save, the stats or the streak.
+function loadArch() { let a = null; try { a = JSON.parse(localStorage.getItem(ARCH_KEY)); } catch (e) {} return a && typeof a === "object" ? a : {}; }
 function persist() {
   if (TEST || !S) return;
-  try { localStorage.setItem(SAVE_KEY, JSON.stringify({ day: todayKey(), no: S.info.no, placed: S.placed, locked: S.locked, used: S.used,
-    done: S.done, win: S.win, hints: S.hints || 0, hiddenAtSolve: S.hiddenAtSolve, msg: S.msg, masked: [...S.masked], shareShown: S.shareShown,
-    bonusAnswer: S.bonus ? S.bonus.answer : null })); } catch (e) {}
+  if (ARCHIVED) { const a = loadArch(); a[S.info.no] = saveData(); try { localStorage.setItem(ARCH_KEY, JSON.stringify(a)); } catch (e) {} return; }
+  try { localStorage.setItem(SAVE_KEY, JSON.stringify(saveData())); } catch (e) {}
 }
-function restore() {
+function restore(saved) {
   if (TEST) return;
-  let saved = null; try { saved = JSON.parse(localStorage.getItem(SAVE_KEY)); } catch (e) {}
-  if (!saved || saved.day !== todayKey() || saved.no !== S.info.no) return;
+  if (saved === undefined) { try { saved = JSON.parse(localStorage.getItem(SAVE_KEY)); } catch (e) {}
+    if (!saved || saved.day !== todayKey()) return; }
+  if (!saved || saved.no !== S.info.no) return;
   Object.assign(S, { placed: saved.placed || {}, locked: saved.locked || {}, used: saved.used || 0, hints: saved.hints || 0, done: !!saved.done, win: !!saved.win,
     hiddenAtSolve: saved.hiddenAtSolve || 0, msg: saved.msg || S.msg, masked: new Set(saved.masked || []), shareShown: !!saved.shareShown });
   if (S.bonus && saved.bonusAnswer != null) S.bonus.answer = saved.bonusAnswer;
@@ -718,7 +750,7 @@ function openShare() {
   if (!m.showModal) return copyResult($("copyBtn"));
   $("shTitle").textContent = rank.title;
   let sub = rank.desc + (S.win ? " Challenge your friends to beat it." : " See how your friends get on.");
-  const k = liveStreak(loadStats()); if (S.win && k > 1 && !TEST) sub = `${k} days in a row. ` + sub;
+  const k = liveStreak(loadStats()); if (S.win && k > 1 && !TEST && !ARCHIVED) sub = `${k} days in a row. ` + sub;
   $("shSub").textContent = sub;
   $("shPreview").textContent = text;
   $("shWa").href = "https://wa.me/?text=" + encodeURIComponent(text);
@@ -743,10 +775,11 @@ function resultView() {
   return h("div", { class:"result" },
     h("p", { class:"rank" }, rankOf().title),
     h("p", {}, S.win ? `Solved with ${S.used} of 4 goes.` : "Out of goes this time."),
-    TEST ? null : h("dl", { class:"stats" }, stat("Played", st.played), stat("Win %", st.played ? Math.round(100 * st.won / st.played) : 0), stat("Streak", liveStreak(st)), stat("Best", st.best)),
+    TEST || ARCHIVED ? null : h("dl", { class:"stats" }, stat("Played", st.played), stat("Win %", st.played ? Math.round(100 * st.won / st.played) : 0), stat("Streak", liveStreak(st)), stat("Best", st.best)),
     h("div", { class:"share", id:"shareText" }, shareText()),
     h("button", { class:"btn", id:"copyBtn", type:"button", onclick: openShare }, "Share result"),
-    h("p", { class:"note" }, "A new Dotty arrives at midnight."),
+    ARCHIVED ? h("p", { class:"note" }, h("a", { href:"#", onclick: e => { e.preventDefault(); openArchive(); } }, "Play another earlier puzzle"), " or ", h("a", { href:"./" + ARCH_TAIL }, "go back to today's puzzle"), ".")
+      : h("p", { class:"note" }, "A new Dotty arrives at midnight.", ARCH && PAST >= 1 && !offset ? [" Can't wait? ", h("a", { href:"#", onclick: e => { e.preventDefault(); openArchive(); } }, "Play earlier puzzles"), "."] : null),
     h("p", { class:"note" }, "Made by one person, with no ads. Enjoying it? ", h("a", { href:"https://ko-fi.com/playtheroute", target:"_blank", rel:"noopener" }, "☕ Buy me a coffee")));
 }
 
@@ -777,7 +810,7 @@ function render() {
     parts.push(h("div", { class:"actions" }, acts));
   }
   parts.push(h("p", { class: "msg" + (S.win ? " good" : "") }, S.done ? (S.win ? S.msg : `${S.msg} ${p.text}`) : S.msg));
-  const bonusOn = S.done && S.win && S.used <= 2 && !S.hints;
+  const bonusOn = S.done && S.win && S.used <= 2 && !S.hints && !ARCHIVED; // bonus rounds stay with the daily puzzle
   if (bonusOn) parts.push(bonusView());
   const showResult = S.done && (!bonusOn || S.bonus.answer != null);
   if (showResult) parts.push(resultView());
@@ -794,6 +827,30 @@ for (let i = 0; TEST && i < 28; i++) {
   preview.append(h("option", { value: i }, `${i === 0 ? "Today" : fmtDay(TODAY + i)} · ${TWISTS[info.twistKey].name}`));
 }
 preview.addEventListener("change", () => { offset = +preview.value; newGame(); });
+
+function openArchive() {
+  const store = loadArch(), items = [];
+  for (let k = PAST - 1; k >= 0; k--) {
+    const info = dayInfo(START + k), r = store[info.no];
+    const st = r && r.done ? h("span", { class: "st " + (r.win ? "won" : "lost") }, r.win ? `✓ ${r.used}/4` : "✗ X/4")
+      : r && (r.used || Object.keys(r.locked || {}).length) ? h("span", { class:"st new" }, "In progress") : h("span", { class:"st new" }, "Play →");
+    items.push(h("li", {}, h("a", { href: `?day=${info.no}${ARCH_TAIL}` },
+      h("span", {}, `No. ${info.no} `, h("span", { class:"when" }, `· ${fmtDay(info.abs)} · ${TWISTS[info.twistKey].name}`)), st)));
+  }
+  if (!items.length) items.push(h("li", { class:"empty" }, "No earlier puzzles yet. Come back tomorrow."));
+  $("twist").hidden = true; $("archLine").hidden = true;
+  panel.replaceChildren(
+    h("div", { class:"archhead" }, h("h2", {}, "Earlier puzzles"),
+      h("p", {}, "Missed a day? Every past Dotty is here. These don't count towards your streak, and the bonus rounds stay with the daily puzzle.")),
+    h("ul", { class:"archlist" }, items),
+    h("a", { class:"btn archback", href:"./" + ARCH_TAIL }, "Back to today's puzzle"));
+  window.scrollTo(0, 0);
+}
+if (ARCH && PAST >= 1) { $("archLink").hidden = false; $("archLink").addEventListener("click", e => { e.preventDefault(); openArchive(); }); }
+if (ARCHIVED) {
+  const line = $("archLine"); line.hidden = false;
+  line.append(`Earlier puzzle · No. ${ARCH_N + 1} · `, h("a", { href:"./" + ARCH_TAIL }, "Today's puzzle"));
+}
 newGame();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "210d8562172a4416bc59877612814183"}'></script><!-- End Cloudflare Web Analytics -->
