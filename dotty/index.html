@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="A daily puzzle of missing marks. Put the accents and punctuation back where they belong. You have 4 goes.">
+<meta name="theme-color" content="#17203A">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://samey.uk/dotty/">
+<meta property="og:site_name" content="Dotty">
+<meta property="og:title" content="Dotty: small marks, big difference">
+<meta property="og:description" content="A daily puzzle of missing marks. Put the accents and punctuation back. You have 4 goes.">
+<meta property="og:image" content="https://samey.uk/dotty/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Dotty wordmark above the word café, with its accent being dropped into place">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Dotty: small marks, big difference">
+<meta name="twitter:description" content="A daily puzzle of missing marks. Put the accents and punctuation back. You have 4 goes.">
+<meta name="twitter:image" content="https://samey.uk/dotty/og-image.png">
+<title>Dotty</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Literata:opsz,wght@7..72,500;7..72,700;7..72,800&display=swap">
+<style>
+/* Layout: one narrow phone column; letters are the hero, marks are the only colour. */
+:root {
+  --bg: #EDF0F5;
+  --surface: #FFFFFF;
+  --tile: #F6F8FB;
+  --ink: #17203A;
+  --muted: #5B6580;
+  --line: #D3D9E4;
+  --dot: #E2405A;
+  --dot-soft: #FCE4E8;
+  --ok: #1D7F55;
+  --ok-soft: #DDF2E8;
+  --gold: #B7791F;
+  --font-letter: "Literata", "Noto Serif", Georgia, serif;
+  --font-ui: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F131D; --surface: #171D2B; --tile: #1E2537; --ink: #E7EBF4; --muted: #98A2BA;
+    --line: #2B3346; --dot: #FF6A7E; --dot-soft: #3A1D27; --ok: #47C28C; --ok-soft: #173326; --gold: #F0B44C;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F131D; --surface: #171D2B; --tile: #1E2537; --ink: #E7EBF4; --muted: #98A2BA;
+  --line: #2B3346; --dot: #FF6A7E; --dot-soft: #3A1D27; --ok: #47C28C; --ok-soft: #173326; --gold: #F0B44C;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+[hidden] { display: none !important; }
+@supports not (width: 1cqw) { .tile, .slot { --w: 30px !important; } }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-ui); font-size: 16px; line-height: 1.45;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: max(20px, env(safe-area-inset-top, 0px)) max(40px, env(safe-area-inset-bottom, 0px));
+  margin: 0;
+}
+.wrap { max-width: 460px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.wordmark { font-family: var(--font-letter); font-weight: 800; font-size: 2.6rem; letter-spacing: -0.02em; margin: 0; line-height: 1; }
+.wordmark .o { position: relative; display: inline-block; }
+.wordmark .o::before {
+  content: ""; position: absolute; left: 50%; top: -0.08em; width: 0.2em; height: 0.2em;
+  background: var(--dot); border-radius: 50%; transform: translateX(-50%);
+}
+.strap { color: var(--muted); font-size: 0.9rem; margin: 6px 0 0; }
+.date { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; }
+
+.twist { display: flex; gap: 12px; align-items: flex-start; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; }
+.twist .pip { flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--dot-soft); color: var(--dot); display: grid; place-items: center; font-weight: 700; font-size: 0.8rem; }
+.twist b { display: block; font-size: 0.95rem; }
+.twist span { color: var(--muted); font-size: 0.88rem; }
+button:focus-visible, select:focus-visible { outline: 3px solid var(--dot); outline-offset: 2px; }
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 20px 18px; display: flex; flex-direction: column; gap: 16px; }
+.panel-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.panel h2 { margin: 0; font-family: var(--font-letter); font-size: 1.35rem; font-weight: 700; }
+.goes { display: flex; gap: 6px; align-items: center; }
+.goes span { width: 12px; height: 12px; border-radius: 50%; background: var(--dot); transition: background .2s, box-shadow .2s; }
+.goes span.used { background: transparent; box-shadow: inset 0 0 0 2px var(--line); }
+.clue { margin: 0; font-size: 1.05rem; font-weight: 700; text-wrap: balance; }
+.clue small { display: block; font-weight: 700; color: var(--muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
+.how { margin: 0; color: var(--muted); font-size: 0.9rem; }
+
+.word { container-type: inline-size; display: flex; flex-wrap: wrap; justify-content: center; row-gap: 12px; padding-top: 14px; }
+.part { display: flex; gap: 3px; }
+.part.sp { margin-right: 12px; }
+.part.sp:last-child { margin-right: 0; }
+.tile, .slot {
+  --w: min(42px, calc((100cqw - var(--n) * 3px) / var(--n)));
+  font-family: var(--font-letter); font-weight: 500; line-height: 1;
+  height: calc(var(--w) * 1.42); font-size: calc(var(--w) * 0.72);
+  display: grid; place-items: center; padding: calc(var(--w) * 0.14) 0 0; position: relative; color: var(--ink);
+}
+.tile { width: var(--w); background: var(--tile); border: 2px solid var(--line); border-radius: 10px; cursor: pointer; }
+.slot { width: calc(var(--w) * 0.62); background: transparent; border: 2px dashed var(--line); border-radius: 8px; cursor: pointer; padding: 0; }
+.gapmode .slot:not(.locked) { border-color: var(--dot); }
+.tile.placed, .slot.placed { border: 2px solid var(--dot); background: var(--dot-soft); }
+.tile.locked, .slot.locked { border: 2px solid var(--ok); background: var(--ok-soft); cursor: default; }
+.slot.quiet { border-color: transparent; }
+.tile.digit { cursor: default; }
+.tile.masked { color: var(--muted); background: repeating-linear-gradient(135deg, var(--tile) 0 6px, var(--surface) 6px 12px); }
+.shake { animation: shake .35s; }
+@keyframes shake { 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-3px); } }
+
+.tray { display: grid; grid-template-columns: repeat(var(--cols), 1fr); gap: 8px; }
+.chip {
+  font: inherit; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px 4px 9px; min-height: 64px;
+  background: var(--tile); border: 2px solid var(--line); border-radius: 12px; color: var(--ink); cursor: pointer;
+}
+.chip b { font-family: var(--font-letter); font-weight: 500; font-size: 1.9rem; line-height: 1.15; }
+.chip span { font-size: 0.7rem; color: var(--muted); line-height: 1.2; text-align: center; }
+.chip[aria-pressed="true"] { border-color: var(--dot); background: var(--dot-soft); }
+
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn {
+  font: inherit; font-weight: 700; flex: 1 1 120px; padding: 13px 10px; border-radius: 12px; cursor: pointer;
+  border: 2px solid var(--ink); background: var(--ink); color: var(--bg);
+}
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.msg { min-height: 1.45em; margin: 0; font-size: 0.95rem; text-align: center; color: var(--muted); }
+.msg.good { color: var(--ok); font-weight: 700; }
+
+.bonus { display: flex; flex-direction: column; gap: 12px; border-top: 1px solid var(--line); padding-top: 16px; }
+.bonus h3 { margin: 0; font-size: 1rem; display: flex; gap: 8px; align-items: center; }
+.bonus h3 i { font-style: normal; color: var(--gold); }
+.lens {
+  width: min(180px, 55vw); aspect-ratio: 1; max-width: 100%; margin: 0 auto; border-radius: 50%; overflow: hidden;
+  background: var(--tile); border: 2px solid var(--line); display: grid; place-items: center; color: var(--ink);
+}
+.lens .glyph { font-family: var(--font-letter); font-weight: 500; font-size: 110px; line-height: 1; display: block; transition: transform .6s cubic-bezier(.3,.7,.2,1); }
+.lens .glyph.sym { font-family: "Segoe UI Symbol", "Noto Sans Symbols", "Apple Symbols", var(--font-letter); font-size: 96px; }
+.lens svg { width: 46%; height: 46%; }
+.lens svg circle { fill: var(--ink); }
+.options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.opt { font: inherit; font-weight: 700; padding: 12px 6px; border-radius: 12px; border: 2px solid var(--line); background: var(--tile); color: var(--ink); cursor: pointer; }
+.opt:disabled { opacity: .4; cursor: default; }
+.opt.right { border-color: var(--ok); background: var(--ok-soft); opacity: 1; }
+.opt.wrong { border-color: var(--dot); background: var(--dot-soft); opacity: 1; }
+.fact { margin: 0; padding: 10px 12px; background: var(--tile); border-radius: 10px; font-size: 0.9rem; }
+
+.result { display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--line); padding-top: 14px; }
+.result p { margin: 0; text-align: center; }
+.result .btn { flex: none; }
+.foot { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--muted); font-size: 0.8rem; text-align: center; }
+.foot select { font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; max-width: 100%; }
+.rank { margin: 0; font-family: var(--font-letter); font-size: 1.4rem; font-weight: 700; text-align: center; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 0; text-align: center; }
+.stats div { background: var(--tile); border-radius: 10px; padding: 8px 4px; }
+.stats dt { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.stats dd { margin: 0; font-weight: 700; font-size: 1.2rem; font-variant-numeric: tabular-nums; }
+.note { margin: 0; text-align: center; font-size: 0.88rem; color: var(--muted); }
+.note a, .foot a { color: var(--ink); font-weight: 700; }
+.share { font-family: ui-monospace, Menlo, Consolas, monospace; white-space: pre; background: var(--tile); border-radius: 8px; padding: 10px; overflow-x: auto; user-select: all; font-size: 0.9rem; }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; font-size: 0.92rem; color: var(--muted); }
+summary { cursor: pointer; font-weight: 700; color: var(--ink); }
+details ul { padding-left: 1.2rem; margin: 0.5rem 0 0; display: flex; flex-direction: column; gap: 4px; }
+.modal { border: 0; border-radius: 16px; padding: 22px 20px 20px; width: min(380px, calc(100vw - 32px)); background: var(--surface); color: var(--ink); box-shadow: 0 18px 50px rgba(0,0,0,.28); }
+.modal::backdrop { background: rgba(12,16,28,.55); }
+.modal[open] { display: flex; flex-direction: column; gap: 12px; }
+.modal h2 { font-family: var(--font-letter); font-size: 1.5rem; margin: 0; padding-right: 36px; }
+.modal .sub { margin: 0; color: var(--muted); }
+.modal .x { position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; border: 0; border-radius: 50%; background: transparent; color: var(--muted); font-size: 1.5rem; line-height: 1; cursor: pointer; }
+.modal .btns { display: flex; flex-direction: column; gap: 8px; }
+.modal .btn { display: flex; align-items: center; justify-content: center; min-height: 46px; text-decoration: none; flex: none; }
+.btn.wa { background: #1f8f4e; border-color: #1f8f4e; color: #fff; }
+@media (prefers-reduced-motion: reduce) { .lens .glyph, .goes span { transition: none; } .shake { animation: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1 class="wordmark">D<span class="o">o</span>tty</h1>
+      <p class="strap">Small marks, big difference.</p>
+    </div>
+    <span class="date" id="date"></span>
+  </header>
+  <div class="twist" id="twist"></div>
+  <section class="panel" id="panel" aria-live="polite"></section>
+  <details>
+    <summary>How to play</summary>
+    <ul>
+      <li>Each day there's one word, name, place or title with its marks taken out: accents like é, ñ and ü, and punctuation like ! ' and -.</li>
+      <li>Tap a mark in the tray, then tap where it goes. Accents go on letters. Punctuation goes in the dashed gaps.</li>
+      <li>Press Check. Marks in the right place turn green and stay. Any in the wrong place come off. Each check uses a go, and you have 4.</li>
+      <li>Stuck? A hint puts one mark in for you, but uses a go.</li>
+      <li>Every day has a twist, and they get trickier through the week. Monday is the gentlest, Friday the hardest.</li>
+      <li>On Tuesdays and Sundays there's a bonus round: name one of the marks for a bonus star. Sometimes it's a rare one.</li>
+    </ul>
+  </details>
+  <div class="foot">
+    <span>More daily games: <a href="/">Samey</a> · <a href="/spinonym/">Spinonym</a></span>
+    <span><a href="/feedback/?game=dotty">Send feedback</a> · <a href="/support/?game=dotty">Support us</a></span>
+    <span id="testWrap" hidden><label for="preview">Test mode: preview a day</label> <select id="preview"></select></span>
+  </div>
+</div>
+
+<dialog class="modal" id="shareModal" aria-labelledby="shTitle">
+  <button class="x" id="shClose" type="button" aria-label="Close">×</button>
+  <h2 id="shTitle"></h2>
+  <p class="sub" id="shSub"></p>
+  <div class="share" id="shPreview"></div>
+  <div class="btns">
+    <a class="btn wa" id="shWa" target="_blank" rel="noopener">Send on WhatsApp</a>
+    <button class="btn ghost" id="shMore" type="button" hidden>More ways to share</button>
+    <button class="btn ghost" id="shCopy" type="button">Copy result</button>
+  </div>
+  <p class="note">A new Dotty arrives at midnight.</p>
+</dialog>
+
+<script>
+/* ---------- marks ---------- */
+const COMB = { acute:"́", grave:"̀", circumflex:"̂", tilde:"̃", diaeresis:"̈",
+  ring:"̊", cedilla:"̧", caron:"̌", breve:"̆", macron:"̄" };
+const BY_COMB = Object.fromEntries(Object.entries(COMB).map(([k,v]) => [v,k]));
+const ACCENTS = Object.keys(COMB);
+const PUNCT = { "!":"Exclamation mark", "?":"Question mark", ".":"Full stop", ",":"Comma", ";":"Semicolon", ":":"Colon",
+  "'":"Apostrophe", "\"":"Quotation marks", "(":"Open bracket", ")":"Close bracket", "[":"Open square bracket", "]":"Close square bracket",
+  "{":"Open curly bracket", "}":"Close curly bracket", "<":"Left angle bracket", ">":"Right angle bracket",
+  "«":"Open guillemet", "»":"Close guillemet", "-":"Hyphen", "–":"En dash", "—":"Em dash", "/":"Slash", "…":"Ellipsis",
+  "¡":"Inverted exclamation mark", "¿":"Inverted question mark" };
+const LABEL = { acute:"Acute", grave:"Grave", circumflex:"Circumflex", tilde:"Tilde", diaeresis:"Diaeresis",
+  ring:"Ring", cedilla:"Cedilla", caron:"Caron", breve:"Breve", macron:"Macron", ...PUNCT };
+const isAccent = k => k in COMB;
+const markOn = (ch, kind) => (ch + COMB[kind]).normalize("NFC");
+const showPunct = (k, open) => k === "'" ? (open ? "‘" : "’") : k === "\"" ? (open ? "“" : "”") : k;
+const chipGlyph = k => isAccent(k) ? "◌" + COMB[k] : k === "'" ? "’" : k === "\"" ? "“ ”" : k;
+const COMMON_P = ["!", "?", ".", ",", "'", "\"", "-", "/", "(", ")", ":"];
+const LOOKALIKE_P = ["–", "—", ";"];
+
+/* ---------- puzzle pools: type the answer exactly as written; the game works out every mark ---------- */
+const WORDS = [
+  ["naïve","Too trusting for your own good"], ["façade","The front of a building"], ["piñata","Hit it until the sweets fall out"],
+  ["résumé","A CV, American style"], ["crème","The best of the best: the ____ de la crème"], ["smörgåsbord","A Swedish spread of many dishes"],
+  ["fiancée","She's engaged to be married"], ["cliché","A phrase worn out by overuse"], ["décor","How a room is done up"],
+  ["señor","Spanish for 'mister'"], ["café","Where you grab a flat white"], ["fiancé","He's engaged to be married"],
+  ["protégé","A mentor's star pupil"], ["rosé","Pink wine for a summer evening"], ["pâté","Spread it on toast, smooth or coarse"],
+  ["exposé","A story that lifts the lid on a scandal"], ["attaché","A diplomat's aide, or their slim briefcase"], ["purée","Blitz it until smooth"],
+  ["sauté","Fry quickly in a little fat"], ["flambé","Set the pudding alight"], ["glacé","The kind of cherry on top of a bun"],
+  ["consommé","A clear, fancy soup"], ["blasé","Unimpressed: been there, done that"], ["passé","Gone out of fashion"],
+  ["risqué","A bit near the knuckle"], ["outré","Startlingly unconventional"], ["née","Born with the surname…"],
+  ["émigré","Someone who has left their homeland"], ["élan","Style and flair"], ["éclair","Choux bun filled with cream"],
+  ["précis","A short summary"], ["château","A French castle, or a wine estate"], ["noël","Christmas, in carol-speak"],
+  ["naïveté","Innocence, perhaps a little too much"], ["über","German for 'over', as in ___-cool"], ["açaí","Purple berry in a smoothie bowl"],
+  ["curaçao","Blue orange-flavoured liqueur"], ["garçon","Old-fashioned word for a waiter"], ["provençal","In the style of southern France"],
+  ["soupçon","Just a tiny hint"], ["aperçu","A quick, telling insight"], ["crèche","Where toddlers are looked after"],
+  ["première","A film's opening night"], ["rôle","A part in a play, the old-fashioned way"], ["dénouement","The final unravelling of a plot"],
+  ["mêlée","A confused scuffle"], ["fête","A village fair with a tombola"], ["háček","Czech name for the little hook over a letter"],
+  ["Māori","The Indigenous people of New Zealand"], ["soufflé","Rises in the oven, sinks if you slam the door"], ["mañana","Tomorrow, or some vague time after"],
+  ["gâteau","A rich, fancy cake"], ["doppelgänger","Your uncanny lookalike"], ["crêpe","A thin pancake"],
+  ["entrée","A starter here, a main course in the US"], ["touché","Said when someone scores a fair point"], ["jalapeño","Green chilli with a kick"],
+  ["señorita","A young Spanish woman"], ["glühwein","Mulled wine at a Christmas market"], ["cortège","A solemn procession"],
+  ["lamé","Shiny metallic fabric"], ["macramé","Knotted-string craft, big in the 70s"], ["frappé","Iced, frothy coffee"],
+  ["canapé","Bite-sized party nibble"], ["matinée","An afternoon showing"], ["soirée","An evening party"],
+  ["ingénue","An innocent young woman, especially in a play"], ["communiqué","An official statement"], ["séance","A gathering to contact spirits"],
+  ["cafetière","Plunger pot for coffee"], ["étude","A short musical study"], ["éclat","Brilliant success: done with great ___"],
+];
+const PHRASES = [
+  ["déjà vu","That 'I've been here before' feeling"], ["crème brûlée","Custard with a crackly burnt-sugar top"], ["piña colada","Pineapple and coconut cocktail"],
+  ["coup d'état","A sudden seizure of power"], ["tête-à-tête","A private chat between two people"], ["vis-à-vis","In relation to"],
+  ["à la carte","Ordering dish by dish from the menu"], ["à la mode","Fashionable, or with ice cream in the US"], ["crème fraîche","Tangy thick cream"],
+  ["papier-mâché","Newspaper-and-paste craft"], ["pièce de résistance","The showstopper of the meal"], ["raison d'être","Your reason for being"],
+  ["bête noire","The thing you can't stand"], ["cause célèbre","A controversy everyone is talking about"], ["crème de menthe","Green mint liqueur"],
+  ["chargé d'affaires","Diplomat standing in for an ambassador"], ["après-ski","Drinks after a day on the slopes"], ["cinéma vérité","Fly-on-the-wall documentary style"],
+  ["mise-en-scène","Everything arranged in the frame of a film"], ["idée fixe","An obsession you can't shake"], ["crêpe Suzette","Pancake flamed in orange liqueur"],
+  ["Belle Époque","France's golden age before the First World War"], ["plus ça change","The more things change…"], ["El Niño","Warm Pacific weather pattern"],
+  ["café au lait","Coffee with hot milk"], ["maître d'","Head waiter who shows you to your table"], ["crème caramel","Set custard with a runny caramel top"],
+  ["fin de siècle","End-of-an-era mood, literally 'end of century'"], ["répondez s'il vous plaît","What RSVP stands for"], ["Père Noël","Father Christmas in France"],
+  ["pâte à choux","Pastry for éclairs and profiteroles"], ["crème anglaise","Posh name for custard"], ["à bientôt","French for 'see you soon'"],
+  ["Ça va?","French for 'how's it going?'"], ["Danke schön","German for 'thank you very much'"], ["pied-à-terre","A small city flat for occasional stays"],
+];
+const PLACES = [
+  ["São Paulo","Brazil's biggest city"], ["Zürich","Swiss banking city on a lake"], ["Málaga","Costa del Sol city, Picasso's birthplace"],
+  ["Kraków","Poland's old royal capital"], ["Gdańsk","Polish port where Solidarity began"], ["Córdoba","Spanish city with the Great Mosque"],
+  ["Cádiz","Ancient Andalusian port on the Atlantic"], ["Bogotá","Colombia's capital, high in the Andes"], ["Québec","Canadian province and its capital"],
+  ["Montréal","Canada's biggest French-speaking city"], ["Nîmes","French city that gave denim its name"], ["Orléans","City Joan of Arc freed from siege"],
+  ["Köln","Cologne, as the locals spell it"], ["München","Munich, as the locals spell it"], ["Düsseldorf","German city on the Rhine"],
+  ["Nürnberg","Nuremberg, famous for its Christmas market"], ["Göteborg","Gothenburg, as the Swedes spell it"], ["Malmö","Swedish city across the bridge from Copenhagen"],
+  ["Reykjavík","Iceland's capital"], ["Plzeň","Czech city that gave pilsner its name"], ["Český Krumlov","Fairytale Czech town on a river bend"],
+  ["Košice","Slovakia's second city"], ["Poznań","Polish city with butting goats on its town hall clock"], ["Asunción","Capital of Paraguay"],
+  ["Medellín","Colombia's 'city of eternal spring'"], ["Cancún","Mexican resort on the Caribbean"], ["Brasília","Brazil's purpose-built capital"],
+  ["Galápagos","Islands where Darwin studied finches"], ["León","Spanish city, and a big one in Mexico too"], ["Côte d'Azur","The French Riviera"],
+  ["Champs-Élysées","Paris avenue leading to the Arc de Triomphe"], ["Lübeck","German city famous for marzipan"], ["Neuchâtel","Swiss lakeside town known for watches"],
+  ["Besançon","French city where Victor Hugo was born"],
+];
+const NAMES = [
+  ["Zoë","Name where the dots say 'sound both vowels'"], ["Chloë","Another name with a 'say it separately' diaeresis"], ["Brontë","Yorkshire novelists Charlotte, Emily and Anne"],
+  ["Beyoncé","Singer who released Lemonade"], ["Björk","Icelandic singer of 'It's Oh So Quiet'"], ["Björn","ABBA member, or tennis legend Borg"],
+  ["Céline Dion","'My Heart Will Go On'"], ["Pelé","Brazilian footballing legend"], ["Jürgen Klopp","Former Liverpool manager"],
+  ["Mesut Özil","Arsenal playmaker and 2014 World Cup winner"], ["Rafa Benítez","Won the 2005 Champions League with Liverpool"], ["Penélope Cruz","Spanish actress and Oscar winner"],
+  ["Dvořák","Czech composer of the New World Symphony"], ["Frédéric","Chopin's first name"], ["Renée","Zellweger, Bridget Jones herself"],
+  ["Anaïs","French girl's name, also a perfume"], ["Hélène","French form of Helen"], ["Raphaël","French form of Raphael"], ["Pokémon","Pocket monsters you collect"],
+  ["Nescafé","Instant coffee brand"], ["Citroën","French car maker with a double-chevron badge"], ["Škoda","Czech car maker"],
+  ["Moët","Champagne house, partner of Chandon"], ["Häagen-Dazs","Ice cream brand with a made-up umlaut"], ["Motörhead","Lemmy's band, heavy-metal umlaut and all"],
+  ["Mötley Crüe","Glam metal band with umlauts just for show"], ["Plácido Domingo","One of the Three Tenors"],
+];
+const UK_PLACES = [
+  ["Westward Ho!","Devon village named after a Victorian novel"], ["Stratford-upon-Avon","Shakespeare's birthplace"],
+  ["Weston-super-Mare","Somerset resort where the tide goes out a very long way"], ["King's Lynn","Norfolk port on the Great Ouse"],
+  ["Bishop's Stortford","Hertfordshire town next to Stansted"], ["Stoke-on-Trent","Home of the Potteries"],
+  ["Henley-on-Thames","Town of the royal rowing regatta"], ["Southend-on-Sea","Essex resort with the world's longest pleasure pier"],
+  ["Ashby-de-la-Zouch","Leicestershire market town with a ruined castle"], ["Chapel-en-le-Frith","Derbyshire town called the capital of the Peak"],
+  ["Barrow-in-Furness","Cumbrian shipbuilding town"], ["Clacton-on-Sea","Essex seaside resort"],
+  ["Stow-on-the-Wold","Hilltop Cotswold market town"], ["Bourton-on-the-Water","Called the Venice of the Cotswolds"],
+  ["Land's End","Cornwall's famous far-western tip"],
+  ["Earl's Court","West London district, once home to a huge exhibition centre"], ["Shepherd's Bush","West London area with a big Westfield"],
+  ["Regent's Park","London park that's home to the zoo"], ["King's Cross","London station with Platform 9¾"],
+  ["Lord's","The home of cricket"], ["Hay-on-Wye","Welsh border town famous for books"],
+  ["Ross-on-Wye","Herefordshire market town on a river bend"], ["Betws-y-Coed","Snowdonia village among the waterfalls"],
+  ["Pen-y-ghent","One of Yorkshire's Three Peaks"], ["Berwick-upon-Tweed","England's most northerly town"],
+  ["Bradford-on-Avon","Wiltshire town with a tiny Saxon church"], ["Ashton-under-Lyne","Greater Manchester market town"],
+  ["Newcastle-under-Lyme","Staffordshire town, not the one on the Tyne"], ["Leigh-on-Sea","Essex fishing town famous for cockles"],
+  ["Ynys Môn","Anglesey, in Welsh"],
+];
+const TITLES = [
+  ["Oklahoma!","Rodgers and Hammerstein's first musical together"], ["Mamma Mia!","ABBA jukebox musical set on a Greek island"],
+  ["Airplane!","Spoof disaster film: 'Surely you can't be serious'"], ["Hello, Dolly!","Musical about matchmaker Dolly Levi"],
+  ["Oliver!","Musical where an orphan asks for more"], ["Help!","Beatles film and album from 1965"],
+  ["Moulin Rouge!","Baz Luhrmann's 2001 musical set in Paris"], ["Dude, Where's My Car?","2000 comedy about a missing motor"],
+  ["Who's Afraid of Virginia Woolf?","Edward Albee play about a warring couple"], ["What's Up, Doc?","Bugs Bunny's catchphrase"],
+  ["Are You Being Served?","Sitcom set in Grace Brothers department store"], ["Who Wants to Be a Millionaire?","Quiz show with three lifelines"],
+  ["Where's Wally?","Find the man in the striped jumper"], ["O Brother, Where Art Thou?","Coen brothers film about escaped convicts"],
+  ["(What's the Story) Morning Glory?","Oasis album with Wonderwall on it"], ["(500) Days of Summer","Romcom that jumps around a relationship"],
+  ["(I Can't Get No) Satisfaction","Rolling Stones hit from 1965"], ["Don't Look Back in Anger","Oasis song: 'So Sally can wait'"],
+  ["Mission: Impossible","Tom Cruise spy franchise"], ["Dr. No","The very first Bond film"],
+  ["Mr. Brightside","The Killers' song that never leaves the charts"], ["Ocean's Eleven","Heist film with a crew of eleven"],
+  ["Schindler's List","Spielberg's 1993 film, shot in black and white"], ["Bridget Jones's Diary","A singleton's journal, as a novel and a film"],
+  ["Charlotte's Web","Children's book about a spider and a pig"], ["Ferris Bueller's Day Off","1986 film about the ultimate skive"],
+  ["Guess Who's Coming to Dinner","1967 film starring Sidney Poitier"], ["Panic! at the Disco","Band behind 'High Hopes'"],
+  ["Guns N' Roses","Band fronted by Axl Rose"], ["Sweet Child o' Mine","Axl Rose's 1987 love song"],
+  ["Wham!","George Michael's duo with Andrew Ridgeley"], ["AC/DC","Australian rockers of 'Highway to Hell'"],
+  ["Jeopardy!","US quiz where answers are phrased as questions"],
+];
+const MORE_NAMES = [
+  ["Jay-Z","Rapper married to Beyoncé"], ["Coca-Cola","The real thing, in a red can"], ["will.i.am","Black Eyed Peas frontman"],
+  ["McDonald's","The golden arches"], ["Sainsbury's","Supermarket in orange"], ["Kellogg's","Corn Flakes maker"],
+  ["Domino's","Pizza delivery chain"], ["Lloyd's of London","Historic insurance market"], ["Yahoo!","Web company that once ruled search"],
+  ["\"Weird Al\" Yankovic","Accordion-playing king of parody songs"], ["Earvin \"Magic\" Johnson","LA Lakers basketball legend"],
+];
+const EXPRESSIONS = [
+  ["o'clock","Time, on the hour"], ["ne'er-do-well","A good-for-nothing"],
+  ["will-o'-the-wisp","Ghostly light over a marsh"], ["jack-o'-lantern","Carved Halloween pumpkin"], ["ma'am","How to address the Queen: rhymes with jam"],
+  ["y'all","Southern US for 'you lot'"], ["fo'c'sle","Front deck of a ship, sailor-style"], ["bo'sun","Ship's officer in charge of the deck crew"],
+  ["forget-me-not","Little blue flower"], ["mother-in-law","Your spouse's mum"], ["happy-go-lucky","Cheerfully carefree"],
+  ["jack-in-the-box","Toy that springs out of a lid"], ["merry-go-round","Fairground carousel"], ["know-it-all","Someone who's always right, apparently"],
+  ["hide-and-seek","Count to ten, then come looking"], ["Hobson's choice","No real choice at all"], ["Mother's Day","Spring Sunday for mums"],
+  ["New Year's Eve","31 December"], ["Valentine's Day","14 February"],
+  ["Hallowe'en","31 October, old-style spelling"], ["Let's eat, Grandma!","Inviting Grandma to dinner, not onto the menu"],
+  ["24/7","Round the clock"], ["50/50","Millionaire lifeline that removes two answers"], ["and/or","Either or both"],
+  ["1939–1945","Years of the Second World War"], ["1914–1918","Years of the First World War"],
+  ["[sic]","Means 'yes, the original really said this'"], ["<3","A heart, typed"],
+  ["¡Hola!","Spanish hello, with an upside-down start"], ["¡Olé!","Cheer at a flamenco show"], ["¿Qué pasa?","Spanish for 'what's up?'"],
+];
+const POOL_LABEL = { word:"Word", phrase:"Phrase", place:"Place", name:"Name", title:"Title" };
+
+/* ---------- rare marks for the bonus round ---------- */
+const ORNAMENTS = [
+  { g:"❧", name:"Fleuron", fact:"Also called a hedera, Latin for ivy. Printers used it to decorate the ends of sections." },
+  { g:"☙", name:"Reversed fleuron", fact:"A fleuron turned the other way, often used in pairs to frame a heading." },
+  { g:"¶", name:"Pilcrow", fact:"The paragraph mark. Medieval scribes painted it in red to start a new thought." },
+  { g:"§", name:"Section sign", fact:"Used to point to a numbered section of a law or document, as in §12." },
+  { g:"☞︎", name:"Manicule", fact:"Latin for 'little hand'. Readers drew them in margins to point at important lines." },
+  { g:"⁂", name:"Asterism", fact:"Three asterisks in a triangle, used to break up a chapter." },
+  { g:"†", name:"Dagger", fact:"The footnote mark that comes after the asterisk. Also called an obelisk." },
+  { g:"‡", name:"Double dagger", fact:"The next footnote mark after the dagger." },
+  { g:"‽", name:"Interrobang", fact:"A question mark and exclamation mark in one, invented by an American advertising man in 1962." },
+  { mirror:"?", name:"Percontation point", fact:"A backwards question mark proposed in the 1580s for rhetorical questions." },
+  { g:"÷", name:"Obelus", fact:"Before it meant divide, it marked doubtful passages in ancient manuscripts." },
+  { dots:true, name:"Four dot punctuation", fact:"An ancient mark used to separate sections in early Greek writing." },
+];
+
+/* ---------- turn an answer into letter tiles and gap slots ---------- */
+let uid = 0;
+function parseEntry(text) {
+  const norm = text.normalize("NFD").replace(/[’‘]/g, "'").replace(/[“”]/g, "\"");
+  const parts = [], raws = [];
+  let cur = null, between = "";
+  for (const c of norm) {
+    if (/\p{M}/u.test(c)) {
+      const kind = BY_COMB[c];
+      if (!kind || !cur || !cur.length || cur[cur.length - 1].mark) throw new Error("Dotty: unsupported mark in " + text);
+      cur[cur.length - 1].mark = kind; continue;
+    }
+    if (/[\p{L}\p{N}]/u.test(c)) {
+      if (!cur) { raws.push(between); between = ""; cur = []; parts.push(cur); }
+      cur.push({ id: "L" + uid++, ch: c, mark: null, letter: /\p{L}/u.test(c) });
+      continue;
+    }
+    cur = null; between += c;
+  }
+  raws.push(between);
+  const bounds = raws.map((raw, b) => {
+    const chars = [...raw];
+    const slots = [];
+    chars.forEach((c, i) => {
+      if (c === " ") return;
+      if (!PUNCT[c]) throw new Error(`Dotty: unknown punctuation "${c}" in ${text}`);
+      slots.push({ id: "S" + uid++, ans: c, open: b === 0 || chars[i - 1] === " " || "([{<«¡¿".includes(chars[i - 1] || "") });
+    });
+    if (!slots.length) slots.push({ id: "S" + uid++, ans: null, open: b === 0 || b < raws.length - 1 });
+    return { raw, space: raw.includes(" "), slots, last: b === raws.length - 1 };
+  });
+  return { parts, bounds };
+}
+const ALL = [
+  ...WORDS.map(e => ["word", ...e]), ...PHRASES.map(e => ["phrase", ...e]), ...EXPRESSIONS.map(e => ["phrase", ...e]),
+  ...PLACES.map(e => ["place", ...e]), ...UK_PLACES.map(e => ["place", ...e]),
+  ...NAMES.map(e => ["name", ...e]), ...MORE_NAMES.map(e => ["name", ...e]), ...TITLES.map(e => ["title", ...e]),
+].map(([pool, text, clue]) => {
+  const { parts, bounds } = parseEntry(text);
+  const cells = parts.flat(), slots = bounds.flatMap(b => b.slots);
+  const marks = [...cells.filter(c => c.mark).map(c => [c.id, c.mark]), ...slots.filter(s => s.ans).map(s => [s.id, s.ans])];
+  const hasAccent = cells.some(c => c.mark), hasPunct = slots.some(s => s.ans);
+  return { pool, text, clue, parts, bounds, cells, slots, marks, hasAccent, hasPunct };
+});
+
+/* ---------- twists: the same game every day, harder rules later in the week ---------- */
+const TWISTS = {
+  plain:  { name:"Plain", note:"Each mark has its name underneath. A gentle start.", tray:4, labels:true, count:true },
+  bonus:  { name:"Bonus round", note:"When you've finished, name one of the marks for a bonus star. Sometimes it's a rare one.", tray:4, labels:true, count:true, bonus:true },
+  blank:  { name:"Blank chips", note:"The marks have no names today.", tray:5, labels:false, count:true },
+  hidden: { name:"Hidden count", note:"No names on the marks, some lookalike dashes, and we won't say how many marks are missing.", tray:6, labels:false, count:false, lookalikes:true },
+  masked: { name:"Masked", note:"Like Thursday, but some letters are hidden too. You can reveal them for free, but your result shows how many were still hidden when you finished.", tray:6, labels:false, count:false, lookalikes:true, mask:true },
+};
+const DAY_TWIST = ["bonus", "plain", "bonus", "blank", "hidden", "masked", "blank"]; // Sun..Sat
+
+/* ---------- daily selection ---------- */
+function rng(seed) { let s = Math.abs(seed) % 233280; return () => (s = (s * 9301 + 49297) % 233280) / 233280; }
+function shuffle(arr, seed) { const r = rng(seed); const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+const ORDER = shuffle(ALL, 2026);
+const START = Math.floor(Date.UTC(2026, 9, 17) / 864e5); // Sat 17 Oct 2026 = Dotty No. 1
+const TEST = location.hash === "#test"; // samey.uk/dotty/#test previews other days; nothing is saved
+const now = new Date();
+const TODAY = Math.floor(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / 864e5);
+let offset = 0;
+function dayInfo(abs) {
+  const wd = (abs + 4) % 7; // 1970-01-01 was a Thursday
+  const n = abs - START;
+  return { abs, wd, no: n + 1, twistKey: DAY_TWIST[wd], p: ORDER[((n % ORDER.length) + ORDER.length) % ORDER.length] };
+}
+const fmtDay = abs => new Date(abs * 864e5).toLocaleDateString("en-GB", { weekday:"short", day:"numeric", month:"short", timeZone:"UTC" });
+
+/* ---------- helpers ---------- */
+const panel = document.getElementById("panel");
+const h = (tag, attrs = {}, ...kids) => {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+    else if (k === "class") el.className = v;
+    else if (v === true) el.setAttribute(k, "");
+    else if (v !== false && v != null) el.setAttribute(k, v);
+  }
+  for (const kid of kids.flat()) if (kid != null) el.append(kid);
+  return el;
+};
+const SVGNS = "http://www.w3.org/2000/svg";
+function fourDots() {
+  const svg = document.createElementNS(SVGNS, "svg"); svg.setAttribute("viewBox", "0 0 40 40"); svg.setAttribute("aria-hidden", "true");
+  [[20,7],[7,20],[33,20],[20,33]].forEach(([x,y]) => { const c = document.createElementNS(SVGNS, "circle"); c.setAttribute("cx", x); c.setAttribute("cy", y); c.setAttribute("r", 5); svg.append(c); });
+  return svg;
+}
+
+/* ---------- game ---------- */
+let S;
+function newGame() {
+  const info = dayInfo(TODAY + offset);
+  const tw = TWISTS[info.twistKey];
+  const p = info.p, seed = info.abs;
+  const correct = [...new Set(p.marks.map(m => m[1]))];
+  const size = Math.min(8, Math.max(tw.tray, correct.length + 2));
+  const decoyPool = [...(p.hasAccent ? ACCENTS : []), ...(p.hasPunct ? [...COMMON_P, ...(tw.lookalikes ? LOOKALIKE_P : [])] : [])];
+  const decoys = shuffle(decoyPool.filter(k => !correct.includes(k)), seed).slice(0, size - correct.length);
+  const letters = p.cells.filter(c => c.letter).map(c => c.id);
+  const masked = new Set(tw.mask ? shuffle(letters, seed + 3).slice(0, Math.ceil(letters.length * 0.5)) : []);
+  let bonus = null;
+  if (tw.bonus) {
+    if (seed % 4 === 0) {
+      const o = ORNAMENTS[Math.floor(seed / 4) % ORNAMENTS.length];
+      const others = shuffle(ORNAMENTS.filter(x => x !== o), seed + 6).slice(0, 3).map(x => x.name);
+      bonus = { rare: o, key: o.name, opts: shuffle([o.name, ...others], seed + 7).map(n => ({ key: n, label: n })), answer: null };
+    } else {
+      const [id, kind] = p.marks[Math.floor(rng(seed + 5)() * p.marks.length)];
+      const family = isAccent(kind) ? ACCENTS : Object.keys(PUNCT);
+      const others = shuffle(family.filter(k => k !== kind), seed + 6).slice(0, 3);
+      bonus = { id, key: kind, opts: shuffle([kind, ...others], seed + 7).map(k => ({ key: k, label: LABEL[k] })), answer: null };
+    }
+  }
+  S = { info, tw, p, tray: shuffle([...correct, ...decoys], seed + 1), placed:{}, locked:{}, used:0, sel:null, done:false, win:false,
+        masked, revealOrder: shuffle([...masked], seed + 4), hiddenAtSolve: 0, bonus, shake:[],
+        msg: p.hasPunct ? "Tap a mark below, then tap where it goes. Accents go on letters, punctuation goes in the dashed gaps." : "Tap a mark below, then tap the letter it goes on." };
+  if (!offset) restore();
+  renderTwist();
+  render();
+}
+function renderTwist() {
+  const { tw, info } = S;
+  document.getElementById("date").textContent = fmtDay(info.abs);
+  document.getElementById("twist").replaceChildren(
+    h("div", { class:"pip", "aria-hidden":"true" }, ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][info.wd]),
+    h("div", {}, h("b", {}, `Today's twist: ${tw.name}`), h("span", {}, tw.note)));
+}
+const answerOf = id => (S.p.marks.find(m => m[0] === id) || [])[1];
+const matches = (ans, k) => ans === k || (ans === "–" && k === "-");
+function finish(win) {
+  S.done = true; S.win = win;
+  S.hiddenAtSolve = S.masked.size;
+  S.p.marks.forEach(([id, k]) => S.locked[id] = k);
+  S.placed = {}; S.masked = new Set(); S.sel = null;
+  S.msg = win ? "Every mark in place." : "Here's how it should look.";
+  if (!TEST) recordResult(win);
+}
+function check() {
+  const entries = Object.entries(S.placed);
+  if (!entries.length) { S.msg = "Place at least one mark first."; return render(); }
+  S.used++; S.shake = [];
+  let wrong = 0;
+  for (const [id, k] of entries) {
+    if (matches(answerOf(id), k)) { S.locked[id] = answerOf(id); S.masked.delete(id); } else { wrong++; S.shake.push(id); }
+  }
+  S.placed = {};
+  const left = S.p.marks.filter(([id]) => !S.locked[id]).length;
+  if (!left) return finish(true), render();
+  if (S.used >= 4) return finish(false), render();
+  const lead = wrong ? `${wrong} ${wrong > 1 ? "were" : "was"} in the wrong place and came off.` : "All correct so far.";
+  S.msg = S.tw.count ? `${lead} ${left} still missing.` : `${lead} Some are still missing.`;
+  render();
+}
+function hint() {
+  const [id, k] = S.p.marks.find(([id]) => !S.locked[id]);
+  S.used++; S.hints = (S.hints || 0) + 1; S.shake = [];
+  S.locked[id] = k; delete S.placed[id]; S.masked.delete(id);
+  const cell = S.p.cells.find(c => c.id === id);
+  S.msg = cell ? `Hint: ${LABEL[k].toLowerCase()} on the ${cell.ch}.` : `Hint: ${LABEL[k].toLowerCase()} placed for you.`;
+  if (S.p.marks.every(([id]) => S.locked[id])) finish(true);
+  else if (S.used >= 4) finish(false);
+  render();
+}
+function placeAt(id, isSlot) {
+  if (S.done || S.locked[id]) return;
+  S.shake = [];
+  if (!S.sel) {
+    if (S.placed[id]) delete S.placed[id]; else S.msg = "Pick a mark from the tray first.";
+  } else if (isAccent(S.sel) === isSlot) {
+    S.msg = isSlot ? "That's an accent, so it goes on a letter." : "That's punctuation, so it goes in a dashed gap.";
+  } else {
+    S.placed[id] === S.sel ? delete S.placed[id] : (S.placed[id] = S.sel);
+  }
+  render();
+}
+
+function wordView() {
+  const { p } = S;
+  const slotEl = slot => {
+    const kind = S.locked[slot.id] || S.placed[slot.id];
+    const cls = "slot" + (S.locked[slot.id] ? " locked" : S.placed[slot.id] ? " placed" : "") + (S.done && !kind ? " quiet" : "") + (S.shake.includes(slot.id) ? " shake" : "");
+    return h("button", { class: cls, "aria-label": kind ? LABEL[kind] : "Gap", onclick: () => placeAt(slot.id, true) },
+      kind ? showPunct(kind, slot.ans === kind ? slot.open : slot.open) : "");
+  };
+  const tileEl = c => {
+    if (!c.letter) return h("span", { class:"tile digit" }, c.ch);
+    const kind = S.locked[c.id] || S.placed[c.id];
+    const masked = S.masked.has(c.id);
+    const shown = masked ? (kind ? chipGlyph(kind) : "") : (kind ? markOn(c.ch, kind) : c.ch);
+    const cls = "tile" + (masked ? " masked" : "") + (S.locked[c.id] ? " locked" : S.placed[c.id] ? " placed" : "") + (S.shake.includes(c.id) ? " shake" : "");
+    return h("button", { class: cls, "aria-label": (masked ? "Hidden letter" : `Letter ${c.ch}`) + (kind ? ` with ${LABEL[kind]}` : ""),
+      onclick: () => placeAt(c.id, false) }, shown);
+  };
+  const units = p.parts.map((part, i) => part.length + 0.65 * (p.bounds[i + 1].slots.length + (i === 0 ? p.bounds[0].slots.length : 0)));
+  const n = Math.max(...units).toFixed(2);
+  return h("div", { class: "word", style: `--n:${n}` }, p.parts.map((part, i) => {
+    const after = p.bounds[i + 1];
+    return h("div", { class: "part" + (after.space ? " sp" : "") },
+      i === 0 ? p.bounds[0].slots.map(slotEl) : null, part.map(tileEl), after.slots.map(slotEl));
+  }));
+}
+
+function bonusView() {
+  const b = S.bonus;
+  const answered = b.answer != null;
+  let glyph;
+  if (b.rare) {
+    const o = b.rare;
+    glyph = o.dots ? fourDots() : h("span", { class:"glyph sym", style: o.mirror ? "transform:scaleX(-1)" : null }, o.mirror || o.g);
+  } else if (isAccent(b.key)) {
+    const cell = S.p.cells.find(c => c.id === b.id);
+    const upper = cell.ch !== cell.ch.toLowerCase();
+    const origin = b.key === "cedilla" ? "50% 88%" : upper ? "50% 10%" : "50% 22%";
+    glyph = h("span", { class:"glyph", style:`transform-origin:${origin};transform:scale(${answered ? 1 : 2.4})` }, markOn(cell.ch, b.key));
+  } else {
+    const slot = S.p.slots.find(s => s.id === b.id);
+    glyph = h("span", { class:"glyph" }, showPunct(b.key, slot.open));
+  }
+  const title = answered ? (b.answer === b.key ? "Bonus star earned" : "No star this time")
+    : b.rare ? "Rare bonus: what's this mark called?" : "Bonus: what's this mark called?";
+  return h("div", { class:"bonus" },
+    h("h3", {}, h("i", { "aria-hidden":"true" }, "★"), title),
+    h("div", { class:"lens", role:"img", "aria-label": answered ? `The ${b.rare ? b.rare.name : LABEL[b.key]}` : "A mark to name" }, glyph),
+    h("div", { class:"options" }, b.opts.map(o => h("button", {
+      class: "opt" + (answered && o.key === b.key ? " right" : answered && o.key === b.answer ? " wrong" : ""),
+      disabled: answered, onclick: () => { b.answer = o.key; render(); } }, o.label))),
+    answered && b.rare ? h("p", { class:"fact" }, h("b", {}, b.rare.name + ". "), b.rare.fact) : null);
+}
+
+const SITE = "https://samey.uk/dotty/";
+const RANKS = [
+  { title:"🖋️ Master Typesetter", desc:"Every mark in place first time. The old printers would have hired you." },
+  { title:"🔍 Eagle Eye", desc:"Spotted every mark in two." },
+  { title:"✏️ Sharp Pencil", desc:"Got there with a bit of thought." },
+  { title:"📌 Just Dotted It", desc:"Every mark in place on the final go." },
+];
+const MISS = { title:"🌫️ Smudged", desc:"The marks won this round." };
+const rankOf = () => !S.win ? MISS : RANKS[Math.max(S.used - 1, S.hints ? 1 : 0)] || RANKS[3]; // a hint-assisted solve can't be top rank
+function shareText() {
+  const { info, tw, win, used } = S;
+  const lines = [`Dotty No. ${info.no} · ${tw.name}`, `${"●".repeat(win ? used : 4).padEnd(4, "○")} ${win ? `${used}/4` : "X/4"}`];
+  if (tw.mask && win) lines.push(`${S.hiddenAtSolve} letter${S.hiddenAtSolve === 1 ? "" : "s"} still hidden`);
+  if (S.bonus && S.bonus.answer === S.bonus.key) lines.push(S.bonus.rare ? "★ Rare mark named" : "★ Bonus mark named");
+  lines.push(rankOf().title, SITE);
+  return lines.join("\n");
+}
+function todayKey(d = new Date()) { return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`; }
+function yesterdayKey() { const d = new Date(); d.setDate(d.getDate() - 1); return todayKey(d); }
+const SAVE_KEY = "dotty-today", STATS_KEY = "dotty-stats";
+function loadStats() { let st = null; try { st = JSON.parse(localStorage.getItem(STATS_KEY)); } catch (e) {} return Object.assign({ played:0, won:0, streak:0, best:0, lastPlayed:null, lastWon:null }, st || {}); }
+function recordResult(won) {
+  const st = loadStats(), today = todayKey(); if (st.lastPlayed === today) return;
+  st.played++; st.lastPlayed = today;
+  if (won) { st.won++; st.streak = st.lastWon === yesterdayKey() ? st.streak + 1 : 1; st.lastWon = today; st.best = Math.max(st.best, st.streak); } else st.streak = 0;
+  try { localStorage.setItem(STATS_KEY, JSON.stringify(st)); } catch (e) {}
+}
+const liveStreak = st => (st.lastWon === todayKey() || st.lastWon === yesterdayKey()) ? st.streak : 0;
+function persist() {
+  if (TEST || !S) return;
+  try { localStorage.setItem(SAVE_KEY, JSON.stringify({ day: todayKey(), no: S.info.no, placed: S.placed, locked: S.locked, used: S.used,
+    done: S.done, win: S.win, hints: S.hints || 0, hiddenAtSolve: S.hiddenAtSolve, msg: S.msg, masked: [...S.masked], shareShown: S.shareShown,
+    bonusAnswer: S.bonus ? S.bonus.answer : null })); } catch (e) {}
+}
+function restore() {
+  if (TEST) return;
+  let saved = null; try { saved = JSON.parse(localStorage.getItem(SAVE_KEY)); } catch (e) {}
+  if (!saved || saved.day !== todayKey() || saved.no !== S.info.no) return;
+  Object.assign(S, { placed: saved.placed || {}, locked: saved.locked || {}, used: saved.used || 0, hints: saved.hints || 0, done: !!saved.done, win: !!saved.win,
+    hiddenAtSolve: saved.hiddenAtSolve || 0, msg: saved.msg || S.msg, masked: new Set(saved.masked || []), shareShown: !!saved.shareShown });
+  if (S.bonus && saved.bonusAnswer != null) S.bonus.answer = saved.bonusAnswer;
+}
+const $ = id => document.getElementById(id);
+function openShare() {
+  const m = $("shareModal"), text = shareText(), rank = rankOf();
+  if (!m.showModal) return copyResult($("copyBtn"));
+  $("shTitle").textContent = rank.title;
+  let sub = rank.desc + (S.win ? " Challenge your friends to beat it." : " See how your friends get on.");
+  const k = liveStreak(loadStats()); if (S.win && k > 1 && !TEST) sub = `${k} days in a row. ` + sub;
+  $("shSub").textContent = sub;
+  $("shPreview").textContent = text;
+  $("shWa").href = "https://wa.me/?text=" + encodeURIComponent(text);
+  $("shMore").hidden = !navigator.share;
+  $("shCopy").textContent = "Copy result";
+  if (!m.open) m.showModal();
+}
+function copyResult(btn) {
+  const text = shareText();
+  const select = () => { const box = $("shareModal").open ? $("shPreview") : $("shareText"); if (!box) return;
+    const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); if (btn) btn.textContent = "Selected, press copy"; };
+  try { navigator.clipboard.writeText(text).then(() => { if (btn) btn.textContent = "Copied"; }, select); } catch (e) { select(); }
+}
+$("shClose").addEventListener("click", () => $("shareModal").close());
+$("shareModal").addEventListener("click", e => { if (e.target === e.currentTarget) e.currentTarget.close(); });
+$("shCopy").addEventListener("click", e => copyResult(e.currentTarget));
+$("shMore").addEventListener("click", () => { navigator.share({ text: shareText() }).catch(() => {}); });
+
+function resultView() {
+  const st = loadStats();
+  const stat = (label, v) => h("div", {}, h("dt", {}, label), h("dd", {}, String(v)));
+  return h("div", { class:"result" },
+    h("p", { class:"rank" }, rankOf().title),
+    h("p", {}, S.win ? `Solved with ${S.used} of 4 goes.` : "Out of goes this time."),
+    TEST ? null : h("dl", { class:"stats" }, stat("Played", st.played), stat("Win %", st.played ? Math.round(100 * st.won / st.played) : 0), stat("Streak", liveStreak(st)), stat("Best", st.best)),
+    h("div", { class:"share", id:"shareText" }, shareText()),
+    h("button", { class:"btn", id:"copyBtn", type:"button", onclick: openShare }, "Share result"),
+    h("p", { class:"note" }, "A new Dotty arrives at midnight."),
+    h("p", { class:"note" }, "Made by one person, with no ads. Enjoying it? ", h("a", { href:"https://ko-fi.com/playtheroute", target:"_blank", rel:"noopener" }, "☕ Buy me a coffee")));
+}
+
+function render() {
+  const { p, tw } = S;
+  const family = p.hasAccent && p.hasPunct ? "accents and punctuation" : p.hasAccent ? "accents" : "punctuation";
+  const n = p.marks.length;
+  const countLine = tw.count || S.done ? `${n} missing mark${n > 1 ? "s" : ""} (${family}).` : `Missing ${family}. Today we won't say how many.`;
+  const cols = S.tray.length <= 4 || S.tray.length >= 7 ? 4 : 3;
+  panel.classList.toggle("gapmode", !!S.sel && !isAccent(S.sel));
+  const parts = [
+    h("div", { class:"panel-head" }, h("h2", {}, "Put the missing marks back"),
+      h("div", { class:"goes", "aria-label": `${4 - S.used} of 4 goes left` }, [0,1,2,3].map(i => h("span", { class: i < S.used ? "used" : "" })))),
+    h("p", { class:"clue" }, h("small", {}, `${POOL_LABEL[p.pool]} clue`), p.clue),
+    h("p", { class:"how" }, countLine),
+    wordView(),
+  ];
+  if (!S.done) {
+    parts.push(h("div", { class:"tray", style:`--cols:${cols}` }, S.tray.map(k =>
+      h("button", { class:"chip", "aria-pressed": String(S.sel === k), "aria-label": LABEL[k],
+        onclick: () => { S.sel = S.sel === k ? null : k; S.shake = []; render(); } },
+        h("b", {}, chipGlyph(k)), tw.labels ? h("span", {}, LABEL[k]) : null))));
+    const acts = [h("button", { class:"btn ghost", onclick: hint }, "Hint"), h("button", { class:"btn", onclick: check }, "Check")];
+    if (S.masked.size) acts.unshift(h("button", { class:"btn ghost", style:"flex-basis:100%", onclick: () => {
+      const next = S.revealOrder.find(id => S.masked.has(id));
+      S.masked.delete(next); S.msg = `${S.masked.size} letter${S.masked.size === 1 ? "" : "s"} still hidden.`; render();
+    } }, `Reveal a letter (free, ${S.masked.size} hidden)`));
+    parts.push(h("div", { class:"actions" }, acts));
+  }
+  parts.push(h("p", { class: "msg" + (S.win ? " good" : "") }, S.done ? (S.win ? S.msg : `${S.msg} ${p.text}`) : S.msg));
+  if (S.done && S.bonus) parts.push(bonusView());
+  const showResult = S.done && (!S.bonus || S.bonus.answer != null);
+  if (showResult) parts.push(resultView());
+  panel.replaceChildren(...parts);
+  if (showResult && !S.shareShown) { S.shareShown = true; setTimeout(openShare, 900); }
+  persist();
+}
+
+/* ---------- test mode (samey.uk/dotty/#test): preview the coming weeks, nothing is saved ---------- */
+const preview = document.getElementById("preview");
+if (TEST) document.getElementById("testWrap").hidden = false;
+for (let i = 0; TEST && i < 28; i++) {
+  const info = dayInfo(TODAY + i);
+  preview.append(h("option", { value: i }, `${i === 0 ? "Today" : fmtDay(TODAY + i)} · ${TWISTS[info.twistKey].name}`));
+}
+preview.addEventListener("change", () => { offset = +preview.value; newGame(); });
+newGame();
+</script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "210d8562172a4416bc59877612814183"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Feedback · Samey &amp; Spinonym</title>
+<title>Feedback · Samey, Spinonym &amp; Dotty</title>
 <meta name="robots" content="noindex">
 <style>
   :root {
@@ -63,6 +63,7 @@
         <select id="game" name="game">
           <option value="Samey">Samey</option>
           <option value="Spinonym">Spinonym</option>
+          <option value="Dotty">Dotty</option>
           <option value="Both / general">Both / general</option>
         </select>
       </div>
@@ -117,11 +118,13 @@
   const game = (q.get("game") || "").toLowerCase();
   if (game === "samey") $("game").value = "Samey";
   if (game === "spinonym") $("game").value = "Spinonym";
+  if (game === "dotty") $("game").value = "Dotty";
   const type = (q.get("type") || "").toLowerCase();
   const typeMap = { puzzle: "Puzzle issue", bug: "Bug", idea: "Idea", other: "Other" };
   if (typeMap[type]) $("type").value = typeMap[type];
   if (q.get("puzzle")) $("puzzle").value = q.get("puzzle");
   if (game === "spinonym") $("back").href = "/spinonym/";
+  if (game === "dotty") $("back").href = "/dotty/";
 
   $("fb").addEventListener("submit", async e => {
     e.preventDefault();
