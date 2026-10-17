@@ -72,6 +72,8 @@ header { display: flex; align-items: baseline; justify-content: space-between; g
   content: ""; position: absolute; left: 50%; top: -0.08em; width: 0.2em; height: 0.2em;
   background: var(--dot); border-radius: 50%; transform: translateX(-50%);
 }
+.navlinks { display: flex; gap: 12px; margin-top: -6px; }
+.navlink { color: var(--ink); font-weight: 700; font-size: 0.95rem; min-height: 44px; display: inline-flex; align-items: center; padding: 0 4px; text-decoration: underline; text-underline-offset: 3px; }
 .strap { color: var(--muted); font-size: 0.9rem; margin: 6px 0 0; }
 .date { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; }
 
@@ -186,6 +188,7 @@ details ul { padding-left: 1.2rem; margin: 0.5rem 0 0; display: flex; flex-direc
     </div>
     <span class="date" id="date"></span>
   </header>
+  <nav class="navlinks" aria-label="Dotty pages"><a class="navlink" href="glossary.html">Glossary</a><a class="navlink" href="/feedback/?game=dotty">Feedback</a></nav>
   <div class="twist" id="twist"></div>
   <section class="panel" id="panel" aria-live="polite"></section>
   <details>
@@ -613,6 +616,7 @@ function placeAt(id, isSlot) {
 function wordView() {
   const { p } = S;
   const slotEl = slot => {
+    if (!p.hasPunct) return null; // accent-only puzzles have no gaps to fill
     const kind = S.locked[slot.id] || S.placed[slot.id];
     const cls = "slot" + (S.locked[slot.id] ? " locked" : S.placed[slot.id] ? " placed" : "") + (S.done && !kind ? " quiet" : "") + (S.shake.includes(slot.id) ? " shake" : "");
     return h("button", { class: cls, "aria-label": kind ? LABEL[kind] : "Gap", onclick: () => placeAt(slot.id, true) },
@@ -627,7 +631,7 @@ function wordView() {
     return h("button", { class: cls, "aria-label": (masked ? "Hidden letter" : `Letter ${c.ch}`) + (kind ? ` with ${LABEL[kind]}` : ""),
       onclick: () => placeAt(c.id, false) }, shown);
   };
-  const units = p.parts.map((part, i) => part.length + 0.65 * (p.bounds[i + 1].slots.length + (i === 0 ? p.bounds[0].slots.length : 0)));
+  const units = p.parts.map((part, i) => part.length + (p.hasPunct ? 0.65 * (p.bounds[i + 1].slots.length + (i === 0 ? p.bounds[0].slots.length : 0)) : 0));
   const n = Math.max(...units).toFixed(2);
   return h("div", { class: "word", style: `--n:${n}` }, p.parts.map((part, i) => {
     const after = p.bounds[i + 1];
