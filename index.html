@@ -622,15 +622,18 @@ function useHint(){
   $("guess").focus();
 }
 
+// Share grid: one row per guess, one square per letter of the answer, filling in as letters are found (💡 = hint used)
+function shareGrid(st){
+  return st.rows.map(r=> r.board.split(" ").map((c,i)=> c==="_" ? "⬜" : st.hinted[i] ? "🟨" : "🟩").join("") + (r.hint ? " 💡" : "")).join("\n");
+}
 function finish(){
   $("playArea").hidden = true;
   const p = state.p;
   $("resultTitle").textContent = state.won ? (state.used===1 ? "First go!" : `Got it in ${state.used}`) : "Out of goes";
   $("resultText").textContent = `${p.clue} → ${p.answer}.` + (state.won ? "" : " Better luck with the next one.");
-  const marks = state.rows.map(r=> r.hint ? "💡" : r.win ? "🟩" : "🟨").join("");
   const score = state.won ? `${state.used}/${MAX}` : `X/${MAX}`;
   const rank = gameRank(state.won, state.used);
-  $("shareText").textContent = `Samey ${state.daily ? dayNumber() : state.archive ? `No. ${state.n+1} · archive` : '#'+(state.i+1)} (${TIERS[state.tier]})  ${score}\n${marks}\n${rank.title}\n${SITE}`;
+  $("shareText").textContent = `Samey ${state.daily ? dayNumber() : state.archive ? `No. ${state.n+1} · archive` : '#'+(state.i+1)} · ${TIERS[state.tier]}\n${p.clue.toUpperCase()} → ?\n${shareGrid(state)}\n${score} · ${rank.title}\nYour go: ${SITE}`;
   $("result").hidden = false;
   if(state.daily){ recordResult(state.won); showStats(); }
   $("copyBtn").textContent = "Share result";

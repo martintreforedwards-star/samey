@@ -646,12 +646,14 @@ function useHint(){
 }
 
 function shareText(){
-  const marks=main.rows.map(r=> r.hint?"💡":r.win?"🟩":"🟨").join("");
   const score=main.won?`${main.used}/${MAX}`:`X/${MAX}`;
-  let s=`Spinonym No. ${main.n+1}${main.archive?" (archive)":""} · ${main.t.name} ${score}\n${marks}`;
+  const grid=main.rows.map(r=> r.board.split(" ").map((c,i)=> c==="_"?"⬜":main.hinted[i]?"🟨":"🟩").join("")+(r.hint?" 💡":"")).join("\n");
+  const ask=main.t.ask, w=main.p.clue.toUpperCase();
+  const clue=main.p.svg ? `${ask} 🖼️` : ask.endsWith("?") ? `${ask} ${w}` : `${ask}${/(meanings|word)$/.test(ask)?":":""} ${w} → ?`;
+  let s=`Spinonym No. ${main.n+1}${main.archive?" (archive)":""} · ${main.t.name}\n${clue}\n${grid}\n${score} · ${gameRank(main.won, main.used).title}`;
   if(bonus.done){ const k=bonusScore(); s+=`\nBonus ${k}/3${k===3?" 🥚":""}`; }
   if(gold && gold.done) s+=`\n★ Golden ${gold.won?gold.used+"/"+MAX:"X/"+MAX}`;
-  return s + `\n${gameRank(main.won, main.used).title}\n${SITE}`;
+  return s + `\nYour go: ${SITE}`;
 }
 function finish(fresh){
   $("playArea").hidden=true;
