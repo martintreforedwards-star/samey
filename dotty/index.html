@@ -163,6 +163,7 @@ button:focus-visible, select:focus-visible { outline: 3px solid var(--dot); outl
 .share { font-family: ui-monospace, Menlo, Consolas, monospace; white-space: pre; background: var(--tile); border-radius: 8px; padding: 10px; overflow-x: auto; user-select: all; font-size: 0.9rem; }
 details { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; font-size: 0.92rem; color: var(--muted); }
 summary { cursor: pointer; font-weight: 700; color: var(--ink); }
+details a, .fact a { color: var(--ink); font-weight: 700; }
 details ul { padding-left: 1.2rem; margin: 0.5rem 0 0; display: flex; flex-direction: column; gap: 4px; }
 .modal { border: 0; border-radius: 16px; padding: 22px 20px 20px; width: min(380px, calc(100vw - 32px)); background: var(--surface); color: var(--ink); box-shadow: 0 18px 50px rgba(0,0,0,.28); }
 .modal::backdrop { background: rgba(12,16,28,.55); }
@@ -195,12 +196,12 @@ details ul { padding-left: 1.2rem; margin: 0.5rem 0 0; display: flex; flex-direc
       <li>Press Check. Marks in the right place turn green and stay. Any in the wrong place come off. Each check uses a go, and you have 4.</li>
       <li>Stuck? A hint puts one mark in for you, but uses a go.</li>
       <li>Every day has a twist. Sunday to Tuesday are gentle, then it gets trickier from Wednesday, with Friday the hardest.</li>
-      <li>Solve it in 1 or 2 goes without a hint and you unlock the bonus round: name one of the marks for a bonus star. Sometimes it's a rare one.</li>
+      <li>Solve it in 1 or 2 goes without a hint and you unlock the bonus round: name one of the marks for a bonus star. Sometimes it's a rare one, and it goes into the <a href="glossary.html">mark glossary</a>.</li>
     </ul>
   </details>
   <div class="foot">
     <span>More daily games: <a href="/">Samey</a> · <a href="/spinonym/">Spinonym</a></span>
-    <span><a href="/feedback/?game=dotty">Send feedback</a> · <a href="/support/?game=dotty">Support us</a></span>
+    <span><a href="glossary.html">Mark glossary</a> · <a href="/feedback/?game=dotty">Send feedback</a> · <a href="/support/?game=dotty">Support us</a></span>
     <span id="testWrap" hidden><label for="preview">Test mode: preview a day</label> <select id="preview"></select></span>
   </div>
 </div>
@@ -401,6 +402,19 @@ const MARK_FACTS = {
   "¡": "Spanish opens exclamations with an upside-down mark, so you know the tone from the start.",
   "¿": "Spanish opens questions with an upside-down mark, so you know it's a question from the start.",
 };
+
+/* ---------- links into the glossary, and rare marks the player has met ---------- */
+const slug = t => t.toLowerCase().replace(/[^a-z]+/g, "-");
+const PUNCT_GLOSS = { ".":"full-stop", "!":"exclamation-mark", "?":"question-mark", "…":"ellipsis", "¡":"inverted-marks", "¿":"inverted-marks",
+  ",":"comma", ";":"semicolon", ":":"colon", "'":"apostrophe", "\"":"quotation-marks", "(":"round-brackets", ")":"round-brackets",
+  "[":"square-brackets", "]":"square-brackets", "{":"curly-brackets", "}":"curly-brackets", "<":"angle-brackets", ">":"angle-brackets",
+  "«":"guillemets", "»":"guillemets", "-":"hyphen", "–":"en-dash", "—":"em-dash", "/":"slash" };
+const glossId = b => b.rare ? slug(b.rare.name) : isAccent(b.key) ? b.key : PUNCT_GLOSS[b.key];
+function noteRare(name) {
+  if (TEST) return;
+  let found = []; try { found = JSON.parse(localStorage.getItem("dotty-rare")) || []; } catch (e) {}
+  if (!found.includes(slug(name))) { found.push(slug(name)); try { localStorage.setItem("dotty-rare", JSON.stringify(found)); } catch (e) {} }
+}
 
 /* ---------- rare marks for the bonus round ---------- */
 const ORNAMENTS = [
@@ -645,10 +659,11 @@ function bonusView() {
     h("div", { class:"lens", role:"img", "aria-label": answered ? `The ${b.rare ? b.rare.name : LABEL[b.key]}` : "A mark to name" }, glyph),
     h("div", { class:"options" }, b.opts.map(o => h("button", {
       class: "opt" + (answered && o.key === b.key ? " right" : answered && o.key === b.answer ? " wrong" : ""),
-      disabled: answered, onclick: () => { b.answer = o.key; render(); } }, o.label))),
+      disabled: answered, onclick: () => { b.answer = o.key; if (b.rare) noteRare(b.rare.name); render(); } }, o.label))),
     answered ? h("p", { class:"fact" },
       h("b", {}, b.answer === b.key ? `Correct! That's the ${(b.rare ? b.rare.name : LABEL[b.key]).toLowerCase()}. ` : `Not quite. It's the ${(b.rare ? b.rare.name : LABEL[b.key]).toLowerCase()}. `),
-      b.rare ? b.rare.fact : MARK_FACTS[b.key] || "") : null);
+      b.rare ? b.rare.fact : MARK_FACTS[b.key] || "", " ",
+      h("a", { href: "glossary.html#" + glossId(b) }, "More in the glossary")) : null);
 }
 
 const SITE = "https://samey.uk/dotty/";

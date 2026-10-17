@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Every accent and punctuation mark in Dotty: what it's called, what it does and where in the world it's used.">
+<meta name="theme-color" content="#17203A">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Mark glossary · Dotty</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Literata:opsz,wght@7..72,500;7..72,700;7..72,800&display=swap">
+<style>
+/* Layout: one reading column of mark cards; the glyph tile on the left mirrors the game's tray chips. */
+:root {
+  --bg: #EDF0F5; --surface: #FFFFFF; --tile: #F6F8FB; --ink: #17203A; --muted: #5B6580; --line: #D3D9E4;
+  --dot: #E2405A; --dot-soft: #FCE4E8; --gold: #8A6A00;
+  --font-letter: "Literata", "Noto Serif", Georgia, serif;
+  --font-ui: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #0F131D; --surface: #171D2B; --tile: #1E2537; --ink: #E7EBF4; --muted: #98A2BA; --line: #2B3346; --dot: #FF6A7E; --dot-soft: #3A1D27; --gold: #F0B44C; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --bg: #0F131D; --surface: #171D2B; --tile: #1E2537; --ink: #E7EBF4; --muted: #98A2BA; --line: #2B3346; --dot: #FF6A7E; --dot-soft: #3A1D27; --gold: #F0B44C; color-scheme: dark; }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-ui); font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: max(20px, env(safe-area-inset-top, 0px)) max(40px, env(safe-area-inset-bottom, 0px)); }
+.wrap { max-width: 620px; margin: 0 auto; }
+.back { color: var(--muted); text-decoration: none; font-weight: 700; }
+.back:hover { color: var(--ink); }
+h1 { font-family: var(--font-letter); font-weight: 800; font-size: 2.3rem; line-height: 1.1; margin: 16px 0 8px; letter-spacing: -0.02em; text-wrap: balance; }
+.intro { color: var(--muted); margin: 0 0 18px; max-width: 60ch; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 8px; }
+.filters button { font: inherit; font-weight: 700; font-size: 0.9rem; padding: 8px 14px; border-radius: 999px; border: 2px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+.filters button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+button:focus-visible, a:focus-visible { outline: 3px solid var(--dot); outline-offset: 2px; }
+h2 { font-family: var(--font-letter); font-weight: 800; font-size: 1.6rem; margin: 32px 0 4px; }
+.section-intro { color: var(--muted); margin: 0 0 14px; }
+h3.sub { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 22px 0 8px; }
+.list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.term { display: flex; gap: 14px; align-items: flex-start; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px; scroll-margin-top: 16px; }
+.term:target { border-color: var(--dot); box-shadow: 0 0 0 2px var(--dot-soft); }
+.tile { flex: none; width: 64px; height: 64px; border-radius: 12px; background: var(--tile); border: 2px solid var(--line); display: grid; place-items: center; }
+.g { font-family: var(--font-letter); font-weight: 500; font-size: 2rem; line-height: 1; white-space: nowrap; }
+.g.sym { font-family: "Segoe UI Symbol", "Noto Sans Symbols", "Apple Symbols", var(--font-letter); }
+.g svg { width: 26px; height: 26px; display: block; }
+.g svg circle { fill: var(--ink); }
+.body { min-width: 0; }
+.term h3 { margin: 0; font-size: 1.1rem; }
+.aka { margin: 0; color: var(--muted); font-size: 0.88rem; }
+.def { margin: 6px 0 0; }
+.eg { margin: 6px 0 0; color: var(--muted); font-size: 0.92rem; }
+.eg strong { color: var(--ink); font-family: var(--font-letter); font-weight: 700; }
+.rare h3 .name::after { content: " ★"; color: var(--gold); }
+.lock { display: none; margin: 6px 0 0; color: var(--muted); }
+.term.locked { border-style: dashed; }
+.term.locked .tile { filter: blur(6px); }
+.term.locked .name { filter: blur(7px); user-select: none; }
+.term.locked .aka, .term.locked .def { display: none; }
+.term.locked .lock { display: block; }
+footer { margin-top: 32px; color: var(--muted); font-size: 0.9rem; display: flex; flex-direction: column; gap: 4px; }
+footer a { color: var(--ink); font-weight: 700; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <a class="back" href="./">&larr; Back to Dotty</a>
+  <h1>Mark glossary</h1>
+  <p class="intro">Every mark you'll meet in Dotty: what it's called, what it does and where in the world it's used. Rare marks stay hidden until you meet them in a bonus round.</p>
+
+  <div class="filters" role="group" aria-label="Show">
+    <button type="button" data-filter="all" aria-pressed="true">All</button>
+    <button type="button" data-filter="accent" aria-pressed="false">Accents</button>
+    <button type="button" data-filter="punct" aria-pressed="false">Punctuation</button>
+    <button type="button" data-filter="rare" aria-pressed="false">Rare marks</button>
+  </div>
+
+  <section data-section="accent">
+  <h2 id="accents">Accents</h2>
+  <p class="section-intro">Marks that sit on or under a letter and change how it's said. Dictionaries call them diacritics.</p>
+  <ul class="list">
+    <li class="term accent" id="acute" data-kind="accent">
+      <div class="tile"><span class="g">é</span></div>
+      <div class="body">
+        <h3><span class="name">Acute</span></h3>
+        
+        <p class="def">Leans to the right. Used in French, Spanish, Portuguese, Italian, Czech, Hungarian, Polish, Icelandic and more. In French it changes the sound of e, as in café; in Spanish it shows which syllable to stress.</p>
+        <p class="eg">In Dotty: <strong>café</strong>, <strong>résumé</strong>, <strong>Málaga</strong></p>
+      </div>
+    </li>
+    <li class="term accent" id="grave" data-kind="accent">
+      <div class="tile"><span class="g">è</span></div>
+      <div class="body">
+        <h3><span class="name">Grave</span></h3>
+        <p class="aka">Say it to rhyme with &#x27;halve&#x27;.</p>
+        <p class="def">Leans to the left. Found mostly in French and Italian. In French it tells où (where) apart from ou (or).</p>
+        <p class="eg">In Dotty: <strong>crème</strong>, <strong>première</strong>, <strong>à la carte</strong></p>
+      </div>
+    </li>
+    <li class="term accent" id="circumflex" data-kind="accent">
+      <div class="tile"><span class="g">ê</span></div>
+      <div class="body">
+        <h3><span class="name">Circumflex</span></h3>
+        <p class="aka">Nicknamed the little hat.</p>
+        <p class="def">Common in French, Portuguese and Welsh. In French it often marks a lost s: château was once chasteau, and fête was feste, like our feast.</p>
+        <p class="eg">In Dotty: <strong>château</strong>, <strong>crêpe</strong>, <strong>Ynys Môn</strong></p>
+      </div>
+    </li>
+    <li class="term accent" id="tilde" data-kind="accent">
+      <div class="tile"><span class="g">ñ</span></div>
+      <div class="body">
+        <h3><span class="name">Tilde</span></h3>
+        
+        <p class="def">The little wave. Best known from Spanish ñ, as in señor, which began as a double n with the second one shrunk on top. Portuguese uses it on vowels, as in São Paulo.</p>
+        <p class="eg">In Dotty: <strong>señor</strong>, <strong>piña colada</strong>, <strong>São Paulo</strong></p>
+      </div>
+    </li>
+    <li class="term accent" id="diaeresis" data-kind="accent">
+      <div class="tile"><span class="g">ë</span></div>
+      <div class="body">
+        <h3><span class="name">Diaeresis</span></h3>
+        <p class="aka">Also called an umlaut, depending on the job.</p>
+        <p class="def">The same two dots do two jobs. In German, Swedish, Finnish, Turkish and Hungarian they change a vowel&#x27;s sound, and German calls them an umlaut. In French and English they tell you to say a vowel separately, as in naïve and Zoë. Heavy metal bands add them just for show.</p>
+        <p class="eg">In Dotty: <strong>naïve</strong>, <strong>Zoë</strong>, <strong>Motörhead</strong></p>
+      </div>
+    </li>
+    <li class="term accent" id="ring" data-kind="accent">
+      <div class="tile"><span class="g">å</span></div>
+      <div class="body">
+        <h3><span class="name">Ring</span></h3>
+        <p class="aka">Also called a kroužek in Czech.</p>
+        <p class="def">A small circle on top. Used in Swedish, Danish and Norwegian, where å is a letter of its own near the end of the alphabet, and in Czech as ů.</p>
+        <p class="eg">In Dotty: <strong>smörgåsbord</strong></p>
+      </div>
+    </li>
+    <li class="term accent" id="cedilla" data-kind="accent">
+      <div class="tile"><span class="g">ç</span></div>
+      <div class="body">
+        <h3><span class="name">Cedilla</span></h3>
+        <p class="aka">From the Spanish for &#x27;little z&#x27;.</p>
+        <p class="def">The little tail underneath. Used in French and Portuguese to make c soft, like an s, and in Turkish for ç and ş.</p>
+        <p class="eg">In Dotty: <strong>façade</strong>, <strong>garçon</strong>, <strong>Besançon</strong></p>
+      </div>
+    </li>
+    <li class="term accent" id="caron" data-kind="accent">
+      <div class="tile"><span class="g">č</span></div>
+      <div class="body">
+        <h3><span class="name">Caron</span></h3>
+        <p class="aka">Also called a háček, Czech for &#x27;little hook&#x27;, or a wedge.</p>
+        <p class="def">A small v on top. Used in Czech, Slovak, Slovenian, Croatian, Latvian and Lithuanian. It usually turns c into ch, s into sh and z into the sound in &#x27;measure&#x27;.</p>
+        <p class="eg">In Dotty: <strong>Škoda</strong>, <strong>Dvořák</strong>, <strong>Plzeň</strong></p>
+      </div>
+    </li>
+    <li class="term accent" id="breve" data-kind="accent">
+      <div class="tile"><span class="g">ă</span></div>
+      <div class="body">
+        <h3><span class="name">Breve</span></h3>
+        <p class="aka">From the Latin for &#x27;short&#x27;.</p>
+        <p class="def">A small rounded cup on top. Used in Romanian (ă), Turkish (ğ) and Vietnamese, and in old poetry books to mark a short syllable.</p>
+        
+      </div>
+    </li>
+    <li class="term accent" id="macron" data-kind="accent">
+      <div class="tile"><span class="g">ā</span></div>
+      <div class="body">
+        <h3><span class="name">Macron</span></h3>
+        <p class="aka">From the Greek for &#x27;long&#x27;.</p>
+        <p class="def">A flat bar on top that marks a long vowel. Used in Māori, Latvian and Hawaiian, and in Latin textbooks.</p>
+        <p class="eg">In Dotty: <strong>Māori</strong></p>
+      </div>
+    </li>
+  </ul>
+  </section>
+
+  <section data-section="punct">
+  <h2 id="punctuation">Punctuation</h2>
+  <p class="section-intro">Marks that sit between words and tell you how to read them.</p>
+  <h3 class="sub">Sentence punctuation</h3>
+  <ul class="list">
+    <li class="term punct" id="full-stop" data-kind="punct">
+      <div class="tile"><span class="g">.</span></div>
+      <div class="body">
+        <h3><span class="name">Full stop</span></h3>
+        <p class="aka">Called a period in the US.</p>
+        <p class="def">Ends a sentence. Americans also put one after Mr, Mrs and Dr, which is why some official titles have it.</p>
+        <p class="eg">In Dotty: <strong>Dr. No</strong>, <strong>will.i.am</strong></p>
+      </div>
+    </li>
+    <li class="term punct" id="exclamation-mark" data-kind="punct">
+      <div class="tile"><span class="g">!</span></div>
+      <div class="body">
+        <h3><span class="name">Exclamation mark</span></h3>
+        <p class="aka">Called an exclamation point in the US.</p>
+        <p class="def">Shows surprise, excitement or a raised voice. Some place names and titles carry one as part of the name.</p>
+        <p class="eg">In Dotty: <strong>Westward Ho!</strong>, <strong>Oklahoma!</strong>, <strong>Wham!</strong></p>
+      </div>
+    </li>
+    <li class="term punct" id="question-mark" data-kind="punct">
+      <div class="tile"><span class="g">?</span></div>
+      <div class="body">
+        <h3><span class="name">Question mark</span></h3>
+        
+        <p class="def">Ends a question. Greek uses a mark that looks like our semicolon instead.</p>
+        <p class="eg">In Dotty: <strong>Where&#x27;s Wally?</strong>, <strong>What&#x27;s Up, Doc?</strong></p>
+      </div>
+    </li>
+    <li class="term punct" id="ellipsis" data-kind="punct">
+      <div class="tile"><span class="g">…</span></div>
+      <div class="body">
+        <h3><span class="name">Ellipsis</span></h3>
+        <p class="aka">Also called dot dot dot.</p>
+        <p class="def">Three dots that show words left out, or a thought trailing off…</p>
+        
+      </div>
+    </li>
+    <li class="term punct" id="inverted-marks" data-kind="punct">
+      <div class="tile"><span class="g">¡ ¿</span></div>
+      <div class="body">
+        <h3><span class="name">Inverted exclamation and question marks</span></h3>
+        
+        <p class="def">Spanish opens exclamations and questions with upside-down marks, so you know the tone from the very first word.</p>
+        <p class="eg">In Dotty: <strong>¡Hola!</strong>, <strong>¿Qué pasa?</strong></p>
+      </div>
+    </li>
+  </ul>
+  <h3 class="sub">Commas and separators</h3>
+  <ul class="list">
+    <li class="term punct" id="comma" data-kind="punct">
+      <div class="tile"><span class="g">,</span></div>
+      <div class="body">
+        <h3><span class="name">Comma</span></h3>
+        
+        <p class="def">Marks a short pause and separates parts of a sentence. Sometimes it changes the meaning completely. In much of Europe it&#x27;s also the decimal point, so 3.5 is written 3,5.</p>
+        <p class="eg">In Dotty: <strong>Hello, Dolly!</strong>, <strong>Let&#x27;s eat, Grandma!</strong></p>
+      </div>
+    </li>
+    <li class="term punct" id="semicolon" data-kind="punct">
+      <div class="tile"><span class="g">;</span></div>
+      <div class="body">
+        <h3><span class="name">Semicolon</span></h3>
+        
+        <p class="def">Joins two closely linked sentences; stronger than a comma, softer than a full stop. In Greek the same shape is the question mark.</p>
+        
+      </div>
+    </li>
+    <li class="term punct" id="colon" data-kind="punct">
+      <div class="tile"><span class="g">:</span></div>
+      <div class="body">
+        <h3><span class="name">Colon</span></h3>
+        
+        <p class="def">Introduces a list, a quote or an explanation. In film titles it often splits the name from the subtitle.</p>
+        <p class="eg">In Dotty: <strong>Mission: Impossible</strong></p>
+      </div>
+    </li>
+  </ul>
+  <h3 class="sub">Apostrophes</h3>
+  <ul class="list">
+    <li class="term punct" id="apostrophe" data-kind="punct">
+      <div class="tile"><span class="g">’</span></div>
+      <div class="body">
+        <h3><span class="name">Apostrophe</span></h3>
+        
+        <p class="def">Marks missing letters, as in o&#x27;clock (of the clock), and shows ownership. French uses it too: c&#x27;est, l&#x27;eau.</p>
+        <p class="eg">In Dotty: <strong>o&#x27;clock</strong>, <strong>King&#x27;s Lynn</strong>, <strong>Guns N&#x27; Roses</strong></p>
+      </div>
+    </li>
+  </ul>
+  <h3 class="sub">Quotation marks</h3>
+  <ul class="list">
+    <li class="term punct" id="quotation-marks" data-kind="punct">
+      <div class="tile"><span class="g">“ ”</span></div>
+      <div class="body">
+        <h3><span class="name">Quotation marks</span></h3>
+        <p class="aka">Also called inverted commas or speech marks.</p>
+        <p class="def">Show speech, quotes and nicknames. English uses curly ones. French, Russian and Italian use guillemets instead, and German often uses „ “.</p>
+        <p class="eg">In Dotty: <strong>&quot;Weird Al&quot; Yankovic</strong>, <strong>Earvin &quot;Magic&quot; Johnson</strong></p>
+      </div>
+    </li>
+  </ul>
+  <h3 class="sub">Brackets</h3>
+  <ul class="list">
+    <li class="term punct" id="round-brackets" data-kind="punct">
+      <div class="tile"><span class="g">( )</span></div>
+      <div class="body">
+        <h3><span class="name">Round brackets</span></h3>
+        <p class="aka">Called parentheses in the US.</p>
+        <p class="def">Set aside extra information that the sentence could do without.</p>
+        <p class="eg">In Dotty: <strong>(500) Days of Summer</strong>, <strong>(I Can&#x27;t Get No) Satisfaction</strong></p>
+      </div>
+    </li>
+    <li class="term punct" id="square-brackets" data-kind="punct">
+      <div class="tile"><span class="g">[ ]</span></div>
+      <div class="body">
+        <h3><span class="name">Square brackets</span></h3>
+        
+        <p class="def">Show words added by someone other than the writer, often an editor.</p>
+        <p class="eg">In Dotty: <strong>[sic]</strong></p>
+      </div>
+    </li>
+    <li class="term punct" id="curly-brackets" data-kind="punct">
+      <div class="tile"><span class="g">{ }</span></div>
+      <div class="body">
+        <h3><span class="name">Curly brackets</span></h3>
+        <p class="aka">Also called braces.</p>
+        <p class="def">Mostly used in maths, to group a set of things, and in computer code.</p>
+        
+      </div>
+    </li>
+    <li class="term punct" id="angle-brackets" data-kind="punct">
+      <div class="tile"><span class="g">&lt; &gt;</span></div>
+      <div class="body">
+        <h3><span class="name">Angle brackets</span></h3>
+        <p class="aka">Also called chevrons.</p>
+        <p class="def">Used in maths and computer code, and online for typed hearts.</p>
+        <p class="eg">In Dotty: <strong>&lt;3</strong></p>
+      </div>
+    </li>
+  </ul>
+  <h3 class="sub">Guillemets</h3>
+  <ul class="list">
+    <li class="term punct" id="guillemets" data-kind="punct">
+      <div class="tile"><span class="g">« »</span></div>
+      <div class="body">
+        <h3><span class="name">Guillemets</span></h3>
+        <p class="aka">Also called angle quotes. Said to be named after a French printer called Guillaume.</p>
+        <p class="def">The quotation marks of French, Russian, Italian, Spanish and many more. French puts a small space inside them: « Bonjour ».</p>
+        
+      </div>
+    </li>
+  </ul>
+  <h3 class="sub">Hyphens and dashes</h3>
+  <ul class="list">
+    <li class="term punct" id="hyphen" data-kind="punct">
+      <div class="tile"><span class="g">-</span></div>
+      <div class="body">
+        <h3><span class="name">Hyphen</span></h3>
+        
+        <p class="def">The shortest line. Joins words together into one idea.</p>
+        <p class="eg">In Dotty: <strong>mother-in-law</strong>, <strong>Stratford-upon-Avon</strong>, <strong>Jay-Z</strong></p>
+      </div>
+    </li>
+    <li class="term punct" id="en-dash" data-kind="punct">
+      <div class="tile"><span class="g">–</span></div>
+      <div class="body">
+        <h3><span class="name">En dash</span></h3>
+        <p class="aka">Roughly as wide as a letter n.</p>
+        <p class="def">Links ranges of numbers and dates. A hyphen is often used instead, and Dotty accepts either.</p>
+        <p class="eg">In Dotty: <strong>1939–1945</strong>, <strong>1914–1918</strong></p>
+      </div>
+    </li>
+    <li class="term punct" id="em-dash" data-kind="punct">
+      <div class="tile"><span class="g">—</span></div>
+      <div class="body">
+        <h3><span class="name">Em dash</span></h3>
+        <p class="aka">Roughly as wide as a letter m.</p>
+        <p class="def">Marks a sudden break in a sentence — like this.</p>
+        
+      </div>
+    </li>
+  </ul>
+  <h3 class="sub">Slashes</h3>
+  <ul class="list">
+    <li class="term punct" id="slash" data-kind="punct">
+      <div class="tile"><span class="g">/</span></div>
+      <div class="body">
+        <h3><span class="name">Slash</span></h3>
+        <p class="aka">Also called an oblique or a stroke.</p>
+        <p class="def">Shows alternatives and splits.</p>
+        <p class="eg">In Dotty: <strong>AC/DC</strong>, <strong>24/7</strong>, <strong>and/or</strong></p>
+      </div>
+    </li>
+  </ul>
+  </section>
+
+  <section data-section="rare">
+  <h2 id="rare-marks">Rare marks</h2>
+  <p class="section-intro" id="rare-count">Solve Dotty in 1 or 2 goes to unlock the bonus round. Now and then it shows one of these.</p>
+  <ul class="list">
+    <li class="term rare locked" id="fleuron" data-kind="rare">
+      <div class="tile"><span class="g sym">❧</span></div>
+      <div class="body">
+        <h3><span class="name">Fleuron</span></h3>
+        <p class="aka">Also called a hedera, Latin for ivy.</p>
+        <p class="def">A printer&#x27;s flower, used to decorate the end of a section or a chapter.</p>
+        <p class="lock">Locked. Meet this mark in a Dotty bonus round to reveal it.</p>
+      </div>
+    </li>
+    <li class="term rare locked" id="reversed-fleuron" data-kind="rare">
+      <div class="tile"><span class="g sym">☙</span></div>
+      <div class="body">
+        <h3><span class="name">Reversed fleuron</span></h3>
+        
+        <p class="def">A fleuron turned the other way, often used in pairs to frame a heading.</p>
+        <p class="lock">Locked. Meet this mark in a Dotty bonus round to reveal it.</p>
+      </div>
+    </li>
+    <li class="term rare locked" id="pilcrow" data-kind="rare">
+      <div class="tile"><span class="g">¶</span></div>
+      <div class="body">
+        <h3><span class="name">Pilcrow</span></h3>
+        <p class="aka">The paragraph mark.</p>
+        <p class="def">Medieval scribes painted it in red to start a new thought. Word processors still show it where you pressed Enter.</p>
+        <p class="lock">Locked. Meet this mark in a Dotty bonus round to reveal it.</p>
+      </div>
+    </li>
+    <li class="term rare locked" id="section-sign" data-kind="rare">
+      <div class="tile"><span class="g">§</span></div>
+      <div class="body">
+        <h3><span class="name">Section sign</span></h3>
+        
+        <p class="def">Points to a numbered section of a law or document, as in §12.</p>
+        <p class="lock">Locked. Meet this mark in a Dotty bonus round to reveal it.</p>
+      </div>
+    </li>
+    <li class="term rare locked" id="manicule" data-kind="rare">
+      <div class="tile"><span class="g sym">☞︎</span></div>
+      <div class="body">
+        <h3><span class="name">Manicule</span></h3>
+        <p class="aka">Latin for &#x27;little hand&#x27;. Also called an index or a fist.</p>
+        <p class="def">Readers drew them in margins to point at important lines, centuries before the mouse pointer.</p>
+        <p class="lock">Locked. Meet this mark in a Dotty bonus round to reveal it.</p>
+      </div>
+    </li>
+    <li class="term rare locked" id="asterism" data-kind="rare">
+      <div class="tile"><span class="g sym">⁂</span></div>
+      <div class="body">
+        <h3><span class="name">Asterism</span></h3>
+        
+        <p class="def">Three asterisks in a triangle, used to break up a chapter.</p>
+        <p class="lock">Locked. Meet this mark in a Dotty bonus round to reveal it.</p>
+      </div>
+    </li>
+    <li class="term rare locked" id="dagger" data-kind="rare">
+      <div class="tile"><span class="g">†</span></div>
+      <div class="body">
+        <h3><span class="name">Dagger</span></h3>
+        <p class="aka">Also called an obelisk.</p>
+        <p class="def">The footnote mark that comes after the asterisk.</p>
+        <p class="lock">Locked. Meet this mark in a Dotty bonus round to reveal it.</p>
+      </div>
+    </li>
+    <li class="term rare locked" id="double-dagger" data-kind="rare">
+      <div class="tile"><span class="g">‡</span></div>
+      <div class="body">
+        <h3><span class="name">Double dagger</span></h3>
+        
+        <p class="def">The next footnote mark after the dagger.</p>
+        <p class="lock">Locked. Meet this mark in a Dotty bonus round to reveal it.</p>
+      </div>
+    </li>
+    <li class="term rare locked" id="interrobang" data-kind="rare">
+      <div class="tile"><span class="g sym">‽</span></div>
+      <div class="body">
+        <h3><span class="name">Interrobang</span></h3>
+        
+        <p class="def">A question mark and exclamation mark in one, invented by an American advertising man in 1962 for questions like &#x27;You did what‽&#x27;</p>
+        <p class="lock">Locked. Meet this mark in a Dotty bonus round to reveal it.</p>
+      </div>
+    </li>
+    <li class="term rare locked" id="percontation-point" data-kind="rare">
+      <div class="tile"><span class="g sym" style="display:inline-block;transform:scaleX(-1)">?</span></div>
+      <div class="body">
+        <h3><span class="name">Percontation point</span></h3>
+        
+        <p class="def">A backwards question mark proposed in the 1580s for rhetorical questions. It never caught on.</p>
+        <p class="lock">Locked. Meet this mark in a Dotty bonus round to reveal it.</p>
+      </div>
+    </li>
+    <li class="term rare locked" id="obelus" data-kind="rare">
+      <div class="tile"><span class="g">÷</span></div>
+      <div class="body">
+        <h3><span class="name">Obelus</span></h3>
+        
+        <p class="def">Before it meant divide, it marked doubtful passages in ancient manuscripts.</p>
+        <p class="lock">Locked. Meet this mark in a Dotty bonus round to reveal it.</p>
+      </div>
+    </li>
+    <li class="term rare locked" id="four-dot-punctuation" data-kind="rare">
+      <div class="tile"><span class="g"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="7" r="5"/><circle cx="7" cy="20" r="5"/><circle cx="33" cy="20" r="5"/><circle cx="20" cy="33" r="5"/></svg></span></div>
+      <div class="body">
+        <h3><span class="name">Four dot punctuation</span></h3>
+        
+        <p class="def">An ancient mark used to separate sections in early Greek writing.</p>
+        <p class="lock">Locked. Meet this mark in a Dotty bonus round to reveal it.</p>
+      </div>
+    </li>
+  </ul>
+  </section>
+
+  <footer>
+    <span><a href="./">Play today's Dotty</a> · <a href="/feedback/?game=dotty">Send feedback</a></span>
+    <span>More daily games: <a href="/">Samey</a> · <a href="/spinonym/">Spinonym</a></span>
+  </footer>
+</main>
+<script>
+  (function () {
+    // Rare marks: the game stores the ones you've met in localStorage 'dotty-rare' as a JSON array of ids. ["*"] unlocks them all.
+    var found = [];
+    try { found = JSON.parse(localStorage.getItem('dotty-rare') || '[]') || []; } catch (e) { found = []; }
+    var rares = document.querySelectorAll('.term.rare'), count = 0;
+    rares.forEach(function (t) {
+      var open = found.indexOf('*') !== -1 || found.indexOf(t.id) !== -1;
+      t.classList.toggle('locked', !open);
+      t.querySelector('.name').setAttribute('aria-hidden', open ? 'false' : 'true');
+      if (open) count++;
+    });
+    var label = document.getElementById('rare-count');
+    if (count === rares.length) label.textContent = 'All ' + rares.length + ' found. Well played.';
+    else if (count > 0) label.textContent = count + ' of ' + rares.length + ' found. Solve Dotty in 1 or 2 goes for a chance to meet the next.';
+    var buttons = document.querySelectorAll('.filters button'), sections = document.querySelectorAll('section[data-section]');
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var f = btn.getAttribute('data-filter');
+        buttons.forEach(function (b) { b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+        sections.forEach(function (s) { s.hidden = f !== 'all' && s.getAttribute('data-section') !== f; });
+      });
+    });
+  })();
+</script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "210d8562172a4416bc59877612814183"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
