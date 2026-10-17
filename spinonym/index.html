@@ -209,6 +209,20 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
 .archhead h2{font-family:var(--display);font-weight:800;font-size:1.8rem;margin:0;letter-spacing:-.02em}
 .archhead p{margin:4px 0 0;color:var(--muted)}
 @media (prefers-reduced-motion: reduce){.tile{transition:none}.tile.pop{transform:none}.spinner{transition-duration:.6s}.modal[open]{animation:none}}
+
+/* Cross-game cards (same design as Samey's result cards) */
+.xg{display:flex;flex-direction:column;gap:10px;text-align:left;--xg-s:var(--surface,var(--card,#fff))}
+.xg .xg-head{text-align:left;margin:4px 0 0;font-size:.92rem;font-weight:700;color:var(--muted)}
+.xg-card{--c:#1f7a6d;display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:10px;background:color-mix(in srgb,var(--c) 12%,var(--xg-s));border:2px solid var(--c);color:var(--ink);text-decoration:none;min-height:44px}
+.xg-card:hover .xg-arrow{transform:translateX(3px)}
+.xg-card:focus-visible{outline:3px solid var(--c);outline-offset:2px}
+.xg-icon{flex:none;width:48px;height:48px}
+.xg-text{display:flex;flex-direction:column;gap:1px;min-width:0}
+.xg-new{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:color-mix(in srgb,var(--c) 60%,var(--ink))}
+.xg-title{font-family:var(--display,inherit);font-weight:800;font-size:1.3rem;line-height:1.1}
+.xg-sub{font-size:.9rem;color:var(--muted)}
+.xg-arrow{margin-left:auto;font-size:1.4rem;font-weight:700;flex:none;color:color-mix(in srgb,var(--c) 60%,var(--ink));transition:transform .15s}
+.xg-samey{--c:#1f7a6d}.xg-spinonym{--c:#d99a1e}.xg-dotty{--c:#E2405A}.xg-syntaxed{--c:#3B5BDB}
 </style>
 </head>
 <body data-group="meaning">
@@ -298,7 +312,7 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
       <p class="next" id="nextNote" hidden></p>
       <p class="also" id="archNote" hidden></p>
       <p class="next">Made by one person, with no ads. Enjoying it? <a href="https://ko-fi.com/playtheroute" target="_blank" rel="noopener" style="color:var(--ink);font-weight:700">☕ Buy me a coffee</a></p>
-      <p class="also" id="alsoNote">Fancy another? <a href="/">Play today's Samey</a>.</p>
+      <div class="xg" id="alsoNote"><p class="xg-head">Fancy another?</p><a class="xg-card xg-samey" href="/"><svg class="xg-icon" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><circle cx="25" cy="32" r="15" fill="#1f7a6d" fill-opacity=".95"/><circle cx="39" cy="32" r="15" fill="#d99a1e" fill-opacity=".85"/></svg><span class="xg-text"><span class="xg-new">Also from Samey</span><span class="xg-title">Play Samey</span><span class="xg-sub">Find the hidden word that means the same</span></span><span class="xg-arrow" aria-hidden="true">→</span></a><a class="xg-card xg-dotty" href="/dotty/"><svg class="xg-icon" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><rect x="27" y="27" width="10" height="27" rx="5" fill="#fff"/><circle cx="21" cy="15" r="6" fill="#E2405A"/><circle cx="43" cy="15" r="6" fill="#E2405A"/></svg><span class="xg-text"><span class="xg-new">Also from Samey</span><span class="xg-title">Play Dotty</span><span class="xg-sub">Put the missing accents and punctuation back</span></span><span class="xg-arrow" aria-hidden="true">→</span></a><a class="xg-card xg-syntaxed" href="/syntaxed/"><svg class="xg-icon" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><rect x="10" y="14" width="26" height="10" rx="5" fill="#fff"/><rect x="40" y="14" width="14" height="10" rx="5" fill="#748FFC"/><rect x="10" y="29" width="14" height="10" rx="5" fill="#748FFC"/><rect x="28" y="29" width="26" height="10" rx="5" fill="#fff"/><rect x="10" y="44" width="34" height="10" rx="5" fill="#fff"/><circle cx="51" cy="49" r="4" fill="#3B5BDB"/></svg><span class="xg-text"><span class="xg-new">Also from Samey</span><span class="xg-title">Play Syntaxed</span><span class="xg-sub">Grammar puzzles that make you giggle, not wince</span></span><span class="xg-arrow" aria-hidden="true">→</span></a></div>
     </section>
   </section>
 
