@@ -55,15 +55,25 @@ ul.rounds{padding-left:20px;margin:10px 0 0}
 footer{margin-top:24px;text-align:center;font-size:15px}
 footer a{color:var(--accent);text-decoration:none;margin:0 6px}
 .test{font-size:13px;color:var(--bad);text-align:center;margin-bottom:8px}
+.archline{font-size:15px;color:var(--muted);margin:-4px 0 12px}
+.archline a,.card a.inl{color:var(--accent);font-weight:600}
+.archlist{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+.archlist a{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;min-height:52px;border:1.5px solid var(--line);border-radius:12px;color:inherit;text-decoration:none;font-weight:600}
+.archlist a:hover{border-color:var(--ink)}
+.archlist .when{font-weight:400;color:var(--muted);font-size:15px}
+.archlist .st{font-size:15px;white-space:nowrap;color:var(--muted)}
+.archlist .st.done{color:var(--good)}
+a.primary{text-align:center;text-decoration:none}
 </style>
 </head>
 <body>
 <main>
   <header><h1>Syntax<span>ed</span></h1><div class="dots" id="dots"></div></header>
   <div id="test"></div>
+  <p class="archline" id="archLine" hidden></p>
   <div id="app"></div>
   <footer><span class="muted">More games:</span><a href="/">Samey</a><a href="/spinonym/">Spinonym</a><a href="/dotty/">Dotty</a>
-  <p class="muted" style="margin-top:10px"><a href="/feedback/?game=syntaxed">Send feedback</a> · <a href="/support/?game=syntaxed">Support us</a></p></footer>
+  <p class="muted" style="margin-top:10px"><span id="archFoot" hidden><a href="#" id="archLink">Earlier puzzles</a> · </span><a href="/feedback/?game=syntaxed">Send feedback</a> · <a href="/support/?game=syntaxed">Support us</a></p></footer>
 </main>
 <script>
 // ---- Puzzle data: first option in every opts list is the correct answer (shuffled on screen) ----
@@ -116,14 +126,171 @@ const PUZZLES = {
 const LABEL={sneaked:'Sneaked',eggcorn:'Eggcorn',shuffle:'Shuffle',danglers:'Danglers',garden:'Garden Path · Boss round'};
 const ASK={sneaked:'Which past tense is made up?',eggcorn:'Which phrase has been misheard?',shuffle:'Put the words back in order',danglers:'What does it literally say?',garden:'What does it actually mean?'};
 
-// ---- Day selection: Mon=1 … Sun=7. Add ?day=1..7 to the URL to test any day. ----
+const NEW_SNEAKED = [
+  {opts:['think → thunk','drink → drank','sink → sank','shrink → shrank'],reveal:'Thunk is the sound of something landing. The past of think is thought.'},
+  {opts:['snow → snew','grow → grew','blow → blew','throw → threw'],reveal:"It's just snowed."},
+  {opts:['bring → brang','sing → sang','ring → rang','spring → sprang'],reveal:'Brang turns up in some dialects, but standard English says brought.'},
+  {opts:['glide → glode','ride → rode','drive → drove','write → wrote'],reveal:"It's just glided."},
+  {opts:['tweak → twoke','speak → spoke','break → broke','steal → stole'],reveal:"It's just tweaked."},
+  {opts:['flee → flew','fly → flew','bleed → bled','meet → met'],reveal:'Flew belongs to fly. Flee gives fled.'},
+  {opts:['slide → slode','hide → hid','bite → bit','light → lit'],reveal:"It's slid."},
+  {opts:['fright → fraught','fight → fought','seek → sought','buy → bought'],reveal:'Fraught is a real word (full of worry), just not a past tense of fright.'},
+  {opts:['beep → bept','keep → kept','sleep → slept','weep → wept'],reveal:"It's just beeped."},
+  {opts:['peel → pelt','feel → felt','kneel → knelt','deal → dealt'],reveal:'Pelt is a real word, but you peeled the potatoes.'},
+  {opts:['sneeze → snoze','freeze → froze','choose → chose','tread → trod'],reveal:'Snoze sounds like a nap. It\'s sneezed.'},
+  {opts:['link → lunk','stink → stunk','slink → slunk','sting → stung'],reveal:"It's just linked."},
+  {opts:['knit → knat','spit → spat','sit → sat','begin → began'],reveal:"It's knitted (or knit)."},
+  {opts:['trim → tram','swim → swam','run → ran','swing → swung'],reveal:"A tram runs on rails. It's trimmed."},
+  {opts:['bang → bung','hang → hung','dig → dug','stick → stuck'],reveal:'Bung is a real word (a stopper), but doors banged.'},
+  {opts:['yell → yold','tell → told','sell → sold','hold → held'],reveal:"It's yelled."},
+  {opts:['mind → mound','find → found','bind → bound','grind → ground'],reveal:"A mound is a heap. It's minded."},
+  {opts:['share → shore','tear → tore','wear → wore','swear → swore'],reveal:"The shore is the seaside. It's shared."},
+  {opts:['mend → ment','lend → lent','send → sent','bend → bent'],reveal:"It's mended."},
+  {opts:['bake → book','shake → shook','take → took','stand → stood'],reveal:"A book is for reading. It's baked."},
+  {opts:['weed → wed','feed → fed','breed → bred','lead → led'],reveal:"You wed a person, but you weeded the garden."},
+  {opts:['grin → gran','spin → spun','win → won','strike → struck'],reveal:"Gran is Grandma. It's grinned."},
+  {opts:['toot → tot','shoot → shot','fall → fell','eat → ate'],reveal:"A tot is a small child. It's tooted."},
+  {opts:['scream → screamt','dream → dreamt','mean → meant','lean → leant'],reveal:'Dreamt is fine, screamt is not. It\'s screamed.'},
+  {opts:['hum → ham','come → came','give → gave','see → saw'],reveal:"Ham is for sandwiches. It's hummed."},
+  {opts:['mow → mew','know → knew','draw → drew','overthrow → overthrew'],reveal:"Mew is a cat noise. It's mowed."},
+  {opts:['heap → heapt','leap → leapt','creep → crept','sweep → swept'],reveal:"It's heaped."},
+  {opts:['regret → regrot','forget → forgot','beget → begot','get → got'],reveal:'Regrot sounds like a garden problem. It\'s regretted.'}
+];
+const NEW_EGGCORN = [
+  {opts:['pass mustard','cut the mustard','a dark horse','by hook or by crook'],reveal:'It\'s "pass muster": good enough for an inspection.'},
+  {opts:["a hair's breath",'the whole kit and caboodle','a flash in the pan','run the gauntlet'],reveal:'It\'s "a hair\'s breadth": the width of a hair.'},
+  {opts:['on the spurt of the moment','touch and go','neck and neck','a baker\'s dozen'],reveal:'It\'s "on the spur of the moment".'},
+  {opts:['tongue and cheek','cold turkey','scot-free','a red-letter day'],reveal:'It\'s "tongue in cheek", as if you\'re hiding a smirk.'},
+  {opts:['self-depreciating','hoist with his own petard','bite the bullet',"a busman's holiday"],reveal:'It\'s "self-deprecating". Depreciating is what your car does.'},
+  {opts:['mind-bottling','at sixes and sevens','a different kettle of fish',"the bee's knees"],reveal:'It\'s "mind-boggling". Nobody is bottling minds.'},
+  {opts:['a sneak peak','by the skin of your teeth','a dead ringer','mind your Ps and Qs'],reveal:'It\'s "sneak peek": a quick look, not a mountain top.'},
+  {opts:['an ex-patriot','hair of the dog','lock, stock and barrel','the proof of the pudding'],reveal:'It\'s "expatriate": someone living abroad. They can still be patriotic.'},
+  {opts:['a side of cold slaw','a cock-and-bull story','eat humble pie','gild the lily'],reveal:'It\'s "coleslaw", from the Dutch for cabbage salad.'},
+  {opts:['wet your appetite','hue and cry','in the offing','kith and kin'],reveal:'It\'s "whet", meaning sharpen, like a whetstone.'},
+  {opts:['take it for granite','let the cat out of the bag','on the wagon','pull out all the stops'],reveal:'It\'s "take it for granted". Granite is a rock.'},
+  {opts:['a blessing in the skies','raining cats and dogs','show a leg','spick and span'],reveal:'It\'s "a blessing in disguise".'},
+  {opts:['nerve-wrecking','take the mickey','get the upper hand','through thick and thin'],reveal:'It\'s "nerve-racking" (or "nerve-wracking"): stretched as if on a rack.'},
+  {opts:['heart-rendering','wet behind the ears','a wild goose chase',"the cat's whiskers"],reveal:'It\'s "heart-rending": tearing your heart.'},
+  {opts:['by in large','champing at the bit','a sight for sore eyes','chew the fat'],reveal:'It\'s "by and large", an old sailing term.'},
+  {opts:['make due','cut to the chase','fly off the handle','go the whole hog'],reveal:'It\'s "make do": manage with what you\'ve got.'},
+  {opts:['without further adieu','happy as Larry','in the doldrums','knee-high to a grasshopper'],reveal:'It\'s "ado", meaning fuss. Adieu means goodbye.'},
+  {opts:['at your beckon call','lily-livered','mad as a hatter','not cricket'],reveal:'It\'s "at your beck and call".'},
+  {opts:['strain your vocal chords','off the cuff','over the moon','put a sock in it'],reveal:'It\'s "vocal cords". Chords are for guitars.'},
+  {opts:['a total pre-Madonna','quick as a flash','rule of thumb','sour grapes'],reveal:'It\'s "prima donna", Italian for first lady of the opera.'},
+  {opts:['eek out a living',"steal someone's thunder",'the last straw','turn a blind eye'],reveal:'It\'s "eke out", meaning make something last. Eek is a squeak.'},
+  {opts:['hunger pains','under the weather','waste not, want not','a penny for your thoughts'],reveal:'It\'s "hunger pangs".'},
+  {opts:['caught lip-singing','all mouth and no trousers',"Bob's your uncle",'curry favour'],reveal:'It\'s "lip-syncing", short for synchronising.'},
+  {opts:['curve your enthusiasm','daylight robbery','a feather in your cap','gone for a burton'],reveal:'It\'s "curb", meaning hold back.'},
+  {opts:['died in the wool','hold your horses','in a pickle','jump the gun'],reveal:'It\'s "dyed in the wool": coloured before it was spun, so it\'s there for good.'},
+  {opts:['in the mist of','kick the bucket','long in the tooth','muck in'],reveal:'It\'s "in the midst of": in the middle.'},
+  {opts:['pour over the details','nail your colours to the mast','on cloud nine','pot luck'],reveal:'It\'s "pore over": study closely. Pouring would just make a mess.'},
+  {opts:['a hair-brained scheme','bare-faced cheek','a storm in a teacup','spill the beans'],reveal:'It\'s "hare-brained": as daft as a March hare.'}
+];
+const NEW_SHUFFLE = [
+  {words:['louder','words','speak','than','actions'],answer:'Actions speak louder than words',reveal:''},
+  {words:['day','built',"wasn't",'a','in','Rome'],answer:"Rome wasn't built in a day",reveal:''},
+  {words:['together','of','flock','feather','a','birds'],answer:'Birds of a feather flock together',reveal:''},
+  {words:['fonder','grow','heart','makes','the','absence'],answer:'Absence makes the heart grow fonder',reveal:''},
+  {words:['its','day','has','dog','every'],answer:'Every dog has its day',reveal:''},
+  {words:['nine','saves','time','in','stitch','a'],answer:'A stitch in time saves nine',reveal:'Mend a small tear now and you save nine stitches later.'},
+  {words:['work','light','make','hands','many'],answer:'Many hands make light work',reveal:''},
+  {words:['choosers','be',"can't",'beggars'],answer:"Beggars can't be choosers",reveal:''},
+  {words:['sword','the','than','mightier','is','pen','the'],answer:'The pen is mightier than the sword',reveal:'From an 1839 play by Edward Bulwer-Lytton.'},
+  {words:['cover','its','by','book','a','judge',"can't",'you'],answer:"You can't judge a book by its cover",reveal:''},
+  {words:['right','a','make',"don't",'wrongs','two'],answer:"Two wrongs don't make a right",reveal:''},
+  {words:['bold','the','favours','fortune'],answer:'Fortune favours the bold',reveal:''},
+  {words:['policy','best','the','is','honesty'],answer:'Honesty is the best policy',reveal:''},
+  {words:['cat','the','killed','curiosity'],answer:'Curiosity killed the cat',reveal:'The older saying was "care killed the cat", where care meant worry.'},
+  {words:['basket','one','in','eggs','your','all','put',"don't"],answer:"Don't put all your eggs in one basket",reveal:''},
+  {words:['away','doctor','the','keeps','day','a','apple','an'],answer:'An apple a day keeps the doctor away',reveal:''},
+  {words:['do','Romans','the','as','do','Rome','in','when'],answer:'When in Rome, do as the Romans do',reveal:''},
+  {words:['alike','think','minds','great'],answer:'Great minds think alike',reveal:''},
+  {words:['side','other','the','on','greener','always','is','grass','the'],answer:'The grass is always greener on the other side',reveal:''},
+  {words:['medicine','best','the','is','laughter'],answer:'Laughter is the best medicine',reveal:''},
+  {words:['water','than','thicker','is','blood'],answer:'Blood is thicker than water',reveal:''},
+  {words:['lie','dogs','sleeping','let'],answer:'Let sleeping dogs lie',reveal:''},
+  {words:['end','an','to','come','must','things','good','all'],answer:'All good things must come to an end',reveal:''},
+  {words:['invention','of','mother','the','is','necessity'],answer:'Necessity is the mother of invention',reveal:''},
+  {words:['deep','run','waters','still'],answer:'Still waters run deep',reveal:''},
+  {words:['shines','sun','the','while','hay','make'],answer:'Make hay while the sun shines',reveal:''},
+  {words:['home','like','place','no',"there's"],answer:"There's no place like home",reveal:''},
+  {words:['moss','no','gathers','stone','rolling','a'],answer:'A rolling stone gathers no moss',reveal:''}
+];
+const NEW_DANGLERS = [
+  {sentence:'Barking loudly, the postman ran from the dog.',opts:['The postman was barking','The dog barked at the postman','The postman ran home','The dog ran away'],reveal:'Woof, says the postman.'},
+  {sentence:'After years lost under the sofa, Mum found the remote.',opts:['Mum spent years under the sofa','The remote was under the sofa','Mum bought a new remote','The sofa was moved'],reveal:'Welcome back, Mum.'},
+  {sentence:'Flying over the field, the cows looked tiny.',opts:['The cows were flying','We looked down from a plane','The cows were far away','The field was small'],reveal:'Cows have never looked so free.'},
+  {sentence:'Wrapped in tinfoil, Grandma put the turkey in the oven.',opts:['Grandma was wrapped in tinfoil','The turkey was wrapped in tinfoil','Grandma cooked lunch','The oven was hot'],reveal:'Gas mark 6 for Grandma.'},
+  {sentence:'Hanging on the wall, I admired the painting.',opts:['I was hanging on the wall','The painting was on the wall','I painted the wall','I bought the painting'],reveal:'A very still art lover.'},
+  {sentence:'Having been fed, the zookeeper left the lions.',opts:['The zookeeper had been fed','The lions had eaten','The lions were left hungry','The zookeeper fed himself'],reveal:'Lucky zookeeper, given the alternative.'},
+  {sentence:'At the age of five, my mum taught me to swim.',opts:['Mum was five years old','I learned to swim at five','Mum is a swimming teacher','I was a fast learner'],reveal:'Very young to be teaching.'},
+  {sentence:'Sizzling in the pan, Dad flipped the pancakes.',opts:['Dad was sizzling in the pan','The pancakes were cooking','Dad made breakfast','The pan was too hot'],reveal:'Toss him gently.'},
+  {sentence:'Delicious and crispy, I ate the roast potatoes.',opts:['I was delicious and crispy','The potatoes were delicious','I cooked the potatoes','The potatoes went cold'],reveal:'High praise for yourself.'},
+  {sentence:'Buzzing around the jam, Auntie swatted the wasps.',opts:['Auntie was buzzing around the jam','The wasps were at the jam','Auntie made jam','The wasps stung Auntie'],reveal:'Auntie loves jam a bit too much.'},
+  {sentence:'Lost in the post, the teacher never got my homework.',opts:['The teacher was lost in the post','My homework went missing','The teacher lost my homework','I forgot my homework'],reveal:'Return to sender.'},
+  {sentence:'Fast asleep in his basket, I stroked the cat.',opts:['I was asleep in the cat\'s basket','The cat was asleep','I woke the cat','The cat sleeps in a basket'],reveal:'Room for two, apparently.'},
+  {sentence:'Covered in mud, Mum hosed down the dog.',opts:['Mum was covered in mud','The dog was muddy','Mum washed the car','The dog hates baths'],reveal:'Mum may need the hose next.'},
+  {sentence:'Running for the bus, my sandwich fell in a puddle.',opts:['My sandwich was running for the bus','I dropped my sandwich','The bus splashed my sandwich','I missed the bus'],reveal:'A sandwich in a hurry.'},
+  {sentence:'Squawking all night, the neighbours complained about the parrot.',opts:['The neighbours squawked all night','The parrot was noisy','The neighbours own a parrot','The parrot complained'],reveal:'Pot, meet kettle.'},
+  {sentence:'Freshly painted, Dad leaned against the fence.',opts:['Dad was freshly painted','The fence had wet paint','Dad painted the fence','The fence fell over'],reveal:'Two coats, nice and even.'},
+  {sentence:'Stuffed with sage and onion, the family enjoyed the chicken.',opts:['The family was stuffed with sage and onion','The chicken had stuffing','The family cooked dinner','The chicken was too big'],reveal:'Well, they did eat a lot.'},
+  {sentence:'Ringing loudly, I answered the phone.',opts:['I was ringing loudly','The phone was ringing','I made a phone call','The phone was too loud'],reveal:'Ring ring.'},
+  {sentence:'Swinging from tree to tree, the tourists watched the monkeys.',opts:['The tourists were swinging through the trees','The monkeys were swinging','The tourists climbed a tree','The monkeys watched the tourists'],reveal:'An adventurous holiday.'},
+  {sentence:'We saw a fox driving to the shops.',opts:['The fox was driving','We saw a fox on our way to the shops','A fox ran across the road','The fox was in the shop'],reveal:'Indicating left, no doubt.'},
+  {sentence:'I spotted a whale using my new binoculars.',opts:['The whale was using my binoculars','I used binoculars to see a whale','The whale was far away','I lost my binoculars'],reveal:'Whales love a gadget.'},
+  {sentence:'For sale: a piano by a lady with carved legs.',opts:['The lady has carved legs','The piano has carved legs','A lady is selling a piano','The piano is antique'],reveal:'A famous old small ad.'},
+  {sentence:'Dad bought a bike for my sister with a bell.',opts:['My sister has a bell','The bike has a bell','Dad rang a bell','My sister bought a bike'],reveal:'Ding ding.'},
+  {sentence:'Grazing in the meadow, the farmer counted his sheep.',opts:['The farmer was grazing in the meadow','The sheep were grazing','The farmer fell asleep','The meadow was full'],reveal:'Plenty of grass to go round.'},
+  {sentence:'Bubbling on the stove, Mum stirred the soup.',opts:['Mum was bubbling on the stove','The soup was simmering','Mum made soup','The stove was broken'],reveal:'Turn Mum down to a simmer.'},
+  {sentence:'Rising over the hills, we watched the sun.',opts:['We were rising over the hills','The sun was rising','We climbed the hills','We watched the sunset'],reveal:'Good morning, everyone up there.'},
+  {sentence:'Wagging its tail, the boy fed the puppy.',opts:['The boy was wagging a tail','The puppy wagged its tail','The puppy was hungry','The boy was happy'],reveal:'A very happy boy.'},
+  {sentence:'Crunchy and golden, the children loved the fish fingers.',opts:['The children were crunchy and golden','The fish fingers were crispy','The children cooked tea','The fish fingers were burnt'],reveal:'Serve with peas.'}
+];
+const NEW_GARDEN = [
+  {sentence:'The old man the boat.',opts:['Older people are crewing the boat','An old man owns a boat','The boat is very old','An old man is in the boat'],reveal:'"The old" are the people and "man" is the verb: they crew the boat.'},
+  {sentence:'The complex houses married and single soldiers and their families.',opts:['The building is home to soldiers and their families','Some houses are complicated','Soldiers get married in complex houses','Families build complicated houses'],reveal:'"Complex" is the building and "houses" is what it does.'},
+  {sentence:'The cotton clothing is made of grows in Mississippi.',opts:['The cotton used for clothing grows in Mississippi','Cotton clothes are made in Mississippi','Mississippi makes clothing','Clothing grows on plants'],reveal:'Read it as "the cotton (that) clothing is made of".'},
+  {sentence:'When Fred eats food gets thrown.',opts:['Food gets thrown whenever Fred eats','Fred eats food that has been thrown','Fred throws food at people','Fred only eats thrown food'],reveal:'A comma after "eats" would have saved everyone.'},
+  {sentence:'The man who hunts ducks out on weekends.',opts:['The hunter slips away at weekends','He hunts ducks at weekends','Ducks are hunted outdoors','A man hunts every weekend'],reveal:'"Ducks out" means slips away. He isn\'t hunting ducks at all.'}
+];
+
+// ---- Schedule: each round type works through its own list, one entry per day ----
+// Syntaxed No. 1 was launch day, Sat 17 Oct 2026. The first week replays the original Mon–Sun puzzles from that Saturday,
+// then the new ones follow. Sundays add a Garden Path boss round. When a list runs out it starts again from the top,
+// so add more to the NEW_ lists above before then. As written they last 35 days, to Fri 20 Nov 2026.
+const LAUNCH_ORDER=[6,7,1,2,3,4,5];
+const TYPES=['sneaked','eggcorn','shuffle','danglers'];
+const POOL={};
+for(const t of TYPES){ const extra={sneaked:NEW_SNEAKED,eggcorn:NEW_EGGCORN,shuffle:NEW_SHUFFLE,danglers:NEW_DANGLERS}[t];
+  POOL[t]=[...LAUNCH_ORDER.map(d=>PUZZLES[d].find(r=>r.type===t)), ...extra.map(r=>Object.assign({type:t},r))]; }
+POOL.garden=[PUZZLES[7].find(r=>r.type==='garden'), ...NEW_GARDEN.map(r=>Object.assign({type:'garden'},r))];
+const START=Date.UTC(2026,9,17);
+const dayDate=n=>new Date(START+n*864e5);   // read with UTC getters
+const keyOf=n=>{const d=dayDate(n);return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0')};
+const fmt=(n,o)=>dayDate(n).toLocaleDateString('en-GB',Object.assign({timeZone:'UTC'},o));
+function roundsFor(n){
+  const rs=TYPES.map(t=>POOL[t][n%POOL[t].length]);
+  if(dayDate(n).getUTCDay()===0) rs.push(POOL.garden[(Math.floor((n+6)/7)-1)%POOL.garden.length]);
+  return rs;
+}
+
+// ---- Which day is on screen ----
+// samey.uk/syntaxed/#test plays today without saving; add ?day=N for Syntaxed No. N (any day, past or future).
+// ?day=N on its own opens an earlier puzzle from the archive.
+const ARCHIVE_ON=true;
+addEventListener('hashchange',()=>location.reload());
 const params=new URLSearchParams(location.search);
-const td=parseInt(params.get('day'),10);
-const isTest=td>=1&&td<=7;
 const now=new Date();
-const dayNum=isTest?td:(now.getDay()||7);
-const dateKey=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
-const rounds=PUZZLES[dayNum];
+const TODAY=Math.max(0,Math.round((Date.UTC(now.getFullYear(),now.getMonth(),now.getDate())-START)/864e5));
+const isTest=location.hash==='#test';
+const ARCH=ARCHIVE_ON||isTest||location.hash==='#archive';
+const ARCH_TAIL=ARCHIVE_ON?(isTest?'#test':''):(isTest?'#test':'#archive');
+const td=parseInt(params.get('day'),10);
+const N=Number.isInteger(td)&&td>=1&&(isTest||(ARCH&&td<=TODAY))?td-1:TODAY;
+const isArch=!isTest&&N<TODAY;
+const dayNum=dayDate(N).getUTCDay()||7;   // Mon=1 … Sun=7, also part of the option-order seed
+const dateKey=keyOf(N);
+const rounds=roundsFor(N);
 const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 
 // Seeded shuffle so everyone sees the same option order on the same day
@@ -138,7 +305,7 @@ function dots(){$('#dots').innerHTML=rounds.map((_,k)=>`<div class="dot ${st.res
 
 function intro(){
   const sunday=rounds.length===5;
-  app.innerHTML=`<div class="card"><div class="tag">${sunday?'Sunday · boss round day':'Today'}</div>
+  app.innerHTML=`<div class="card"><div class="tag">${sunday?'Sunday · boss round day':isArch||isTest?fmt(N,{weekday:'long',day:'numeric',month:'long'}):'Today'}</div>
   <div class="q">${rounds.length} quick rounds. One try each.</div>
   <ul class="rounds">${rounds.map(r=>`<li>${LABEL[r.type]}</li>`).join('')}</ul>
   <button class="primary" id="go">Play</button></div>`;
@@ -179,8 +346,8 @@ function shuffleRound(r){
   }
   app.querySelectorAll('#pool .w').forEach(b=>b.onclick=()=>{const k=+b.dataset.k;if(!placed.includes(k)){placed.push(k);draw()}});
   check.onclick=()=>{
-    const guess=placed.map(k=>r.words[k]).join(' ').toLowerCase();
-    const ok=guess===r.answer.toLowerCase();
+    const norm=x=>x.toLowerCase().replace(/[^a-z' ]/g,'').replace(/\s+/g,' ').trim();   // ignore commas and capitals
+    const ok=norm(placed.map(k=>r.words[k]).join(' '))===norm(r.answer);
     line.classList.add(ok?'right':'wrong');
     line.querySelectorAll('.w').forEach(b=>b.onclick=null);
     $('#pool').remove();check.remove();
@@ -202,17 +369,35 @@ function results(){
   st.i=rounds.length;dots();
   const s=st.res.filter(Boolean).length,n=rounds.length;
   const ticks=st.res.map(x=>x?'✅':'❌').join('');
-  const nice=now.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
-  const share=`Syntaxed ${nice}\n${s}/${n} ${ticks}\n${rank(s,n)}\nsamey.uk/syntaxed/`;
-  app.innerHTML=`<div class="card center"><div class="tag">${isTest?'Test day '+dayNum:nice}</div>
+  const nice=fmt(N,{weekday:'short',day:'numeric',month:'short'});
+  const share=`Syntaxed ${isArch?`No. ${N+1} (archive)`:nice}\n${s}/${n} ${ticks}\n${rank(s,n)}\nsamey.uk/syntaxed/`;
+  app.innerHTML=`<div class="card center"><div class="tag">${isTest?'Test · No. '+(N+1)+' · '+nice:isArch?'No. '+(N+1)+' · '+nice:nice}</div>
   <div class="score">${s}/${n}</div><div class="ticks">${ticks}</div><div class="rank">${rank(s,n)}</div>
-  <p class="muted">${n===5?'See you tomorrow.':'Sunday brings a boss round.'}</p>
+  <p class="muted">${isArch?`<a class="inl" href="#" id="moreArch">Play another earlier puzzle</a> or <a class="inl" href="./${ARCH_TAIL}">go back to today's puzzle</a>.`:(n===5?'See you tomorrow.':'Sunday brings a boss round.')+(ARCH&&TODAY>=1&&!isTest?` Can't wait? <a class="inl" href="#" id="moreArch">Play earlier puzzles</a>.`:'')}</p>
   <button class="primary" id="share">Share</button><button class="ghost" id="copy">Copy result</button></div>`;
   $('#share').onclick=()=>{if(navigator.share){navigator.share({text:share}).catch(()=>{})}else{location.href='https://wa.me/?text='+encodeURIComponent(share)}};
   $('#copy').onclick=()=>{try{navigator.clipboard.writeText(share);$('#copy').textContent='Copied'}catch(e){}};
+  const more=$('#moreArch');if(more)more.onclick=e=>{e.preventDefault();openArchive()};
 }
 
-if(isTest)$('#test').innerHTML=`<div class="test">Test mode: day ${dayNum} · results not saved</div>`;
+function openArchive(){
+  const items=[];
+  for(let k=TODAY-1;k>=0;k--){
+    const r=store.get('syntaxed-'+keyOf(k)),n=roundsFor(k).length,boss=n===5?' · boss round':'';
+    const stx=r&&r.length===n?`<span class="st done">${r.filter(Boolean).length}/${n}</span>`:'<span class="st">Play →</span>';
+    items.push(`<li><a href="?day=${k+1}${ARCH_TAIL}"><span>No. ${k+1} <span class="when">· ${fmt(k,{weekday:'short',day:'numeric',month:'short'})}${boss}</span></span>${stx}</a></li>`);
+  }
+  if(!items.length)items.push('<li class="muted">No earlier puzzles yet. Come back tomorrow.</li>');
+  $('#archLine').hidden=true;$('#dots').innerHTML='';
+  app.innerHTML=`<div class="card"><div class="q" style="font-size:22px;margin-top:0">Earlier puzzles</div>
+  <p class="muted" style="margin:4px 0 0">Missed a day? Every past Syntaxed is here.</p>
+  <ul class="archlist">${items.join('')}</ul><a class="primary" href="./${ARCH_TAIL}">Back to today's puzzle</a></div>`;
+  window.scrollTo(0,0);
+}
+
+if(isTest)$('#test').innerHTML=`<div class="test">Test mode: No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})} · results not saved</div>`;
+if(ARCH&&TODAY>=1){$('#archFoot').hidden=false;$('#archLink').onclick=e=>{e.preventDefault();openArchive()};}
+if(isArch){const l=$('#archLine');l.hidden=false;l.innerHTML=`Earlier puzzle · No. ${N+1} · <a href="./${ARCH_TAIL}">Today's puzzle</a>`;}
 const done=!isTest&&store.get('syntaxed-'+dateKey);
 if(done&&done.length===rounds.length){st.res=done;results()}else intro();
 </script>
