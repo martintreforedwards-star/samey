@@ -122,6 +122,10 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
 .dty-card:hover .spn-arrow{transform:translateX(3px)}
 .dty-card:focus-visible{outline:3px solid #E2405A;outline-offset:2px}
 .dty-card .spn-new,.dty-card .spn-arrow{color:color-mix(in srgb,#E2405A 60%,var(--ink))}
+.syx-card{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:10px;background:color-mix(in srgb,#3B5BDB 12%,var(--surface));border:2px solid #3B5BDB;color:var(--ink);text-decoration:none;min-height:44px}
+.syx-card:hover .spn-arrow{transform:translateX(3px)}
+.syx-card:focus-visible{outline:3px solid #3B5BDB;outline-offset:2px}
+.syx-card .spn-new,.syx-card .spn-arrow{color:color-mix(in srgb,#3B5BDB 60%,var(--ink))}
 .spn-foot{text-align:center;font-size:.92rem;color:var(--muted);margin:0}
 .spn-foot a{color:var(--ink);font-weight:700}
 /* Share modal: opens once a game ends, and again from the Share result button */
@@ -205,9 +209,18 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
     <a class="dty-card" href="/dotty/">
       <svg class="spn-wheel" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><rect x="27" y="27" width="10" height="27" rx="5" fill="#fff"/><circle cx="21" cy="15" r="6" fill="#E2405A"/><circle cx="43" cy="15" r="6" fill="#E2405A"/></svg>
       <span class="spn-text">
-        <span class="spn-new">Newest from Samey</span>
+        <span class="spn-new">New from Samey</span>
         <span class="spn-title">Play Dotty</span>
         <span class="spn-sub">Put the missing accents and punctuation back</span>
+      </span>
+      <span class="spn-arrow" aria-hidden="true">→</span>
+    </a>
+    <a class="syx-card" href="/syntaxed/">
+      <svg class="spn-wheel" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><rect x="10" y="14" width="26" height="10" rx="5" fill="#fff"/><rect x="40" y="14" width="14" height="10" rx="5" fill="#748FFC"/><rect x="10" y="29" width="14" height="10" rx="5" fill="#748FFC"/><rect x="28" y="29" width="26" height="10" rx="5" fill="#fff"/><rect x="10" y="44" width="34" height="10" rx="5" fill="#fff"/><circle cx="51" cy="49" r="4" fill="#3B5BDB"/></svg>
+      <span class="spn-text">
+        <span class="spn-new">Newest from Samey</span>
+        <span class="spn-title">Play Syntaxed</span>
+        <span class="spn-sub">Grammar puzzles that make you giggle, not wince</span>
       </span>
       <span class="spn-arrow" aria-hidden="true">→</span>
     </a>
@@ -231,7 +244,8 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
     </ul>
   </details>
   <p class="spn-foot">New: <a href="/spinonym/">Spinonym</a>, our daily wheel of words. Spin the nym.</p>
-  <p class="spn-foot" style="margin-top:8px">Newest: <a href="/dotty/">Dotty</a>, put the missing accents and punctuation back.</p>
+  <p class="spn-foot" style="margin-top:8px">New: <a href="/dotty/">Dotty</a>, put the missing accents and punctuation back.</p>
+  <p class="spn-foot" style="margin-top:8px">Newest: <a href="/syntaxed/">Syntaxed</a>, grammar puzzles that make you giggle, not wince.</p>
   <p class="spn-foot" style="margin-top:8px"><a href="/feedback/?game=samey">Send feedback</a> · <a href="/support/">Support us</a></p>
 </main>
 
