@@ -363,6 +363,45 @@ const EXPRESSIONS = [
 ];
 const POOL_LABEL = { word:"Word", phrase:"Phrase", place:"Place", name:"Name", title:"Title" };
 
+/* ---------- what each mark does and where it's used, shown after the bonus question ---------- */
+const MARK_FACTS = {
+  acute: "Used in French, Spanish, Portuguese, Italian, Czech, Hungarian, Polish, Icelandic and more. In French it changes the sound of e, as in café.",
+  grave: "Found mostly in French and Italian, as in crème and città. In French it tells où (where) apart from ou (or).",
+  circumflex: "Common in French, Portuguese and Welsh. In French it often marks a lost s: château was once chasteau.",
+  tilde: "Best known from Spanish ñ, as in señor, and from Portuguese ã and õ, as in São Paulo.",
+  diaeresis: "The same two dots do two jobs. In German, Swedish, Finnish, Turkish and Hungarian they change the vowel's sound, and German calls them an umlaut. In French and English they tell you to say a vowel separately, as in naïve.",
+  ring: "Used in Swedish, Danish and Norwegian (å) and in Czech (ů).",
+  cedilla: "Used in French and Portuguese to make c soft, as in façade, and in Turkish (ç and ş).",
+  caron: "Also called a háček, Czech for 'little hook'. Used in Czech, Slovak, Slovenian, Croatian, Latvian and Lithuanian, as in Škoda.",
+  breve: "Used in Romanian (ă), Turkish (ğ) and Vietnamese.",
+  macron: "Marks a long vowel in Māori, Latvian and Hawaiian, and in Latin textbooks.",
+  "!": "Used in almost every language written in Latin letters. Spanish also puts an upside-down one at the start: ¡Hola!",
+  "?": "Used across most languages written in Latin letters. Spanish opens questions with ¿, and Greek uses ; as its question mark.",
+  ".": "Ends sentences almost everywhere. In the US it's called a period, and it often follows Mr. and Dr. there.",
+  ",": "Used in most languages. In much of Europe it's also the decimal point, so 3.5 is written 3,5.",
+  ";": "In English it joins two closely linked sentences. In Greek, the same shape is the question mark.",
+  ":": "Introduces a list, a quote or an explanation. In film titles it often splits the name from the subtitle.",
+  "'": "Marks missing letters, as in o'clock (of the clock), and ownership in English. French uses it too: c'est, l'eau.",
+  "\"": "English uses these curly quotes. French, Russian and Italian use guillemets « » instead, and German often uses „ “.",
+  "(": "Brackets set aside extra information. In the UK we call them brackets; in the US they're parentheses.",
+  ")": "Brackets set aside extra information. In the UK we call them brackets; in the US they're parentheses.",
+  "[": "Square brackets show words added by an editor, as in [sic].",
+  "]": "Square brackets show words added by an editor, as in [sic].",
+  "{": "Curly brackets, or braces, are mostly used in maths and computer code.",
+  "}": "Curly brackets, or braces, are mostly used in maths and computer code.",
+  "<": "Angle brackets are used in maths and computer code, and online for typed hearts like <3.",
+  ">": "Angle brackets are used in maths and computer code, and online for typed hearts like <3.",
+  "«": "Guillemets are the quotation marks of French, Russian, Italian, Spanish and many more.",
+  "»": "Guillemets are the quotation marks of French, Russian, Italian, Spanish and many more.",
+  "-": "Joins words together, as in mother-in-law and Stratford-upon-Avon.",
+  "–": "The en dash, roughly as wide as an n, links ranges like 1939–1945.",
+  "—": "The em dash, roughly as wide as an m, marks a break in a sentence.",
+  "/": "The slash, or oblique, shows alternatives (and/or) and splits (50/50).",
+  "…": "Three dots that show words left out, or a thought trailing off.",
+  "¡": "Spanish opens exclamations with an upside-down mark, so you know the tone from the start.",
+  "¿": "Spanish opens questions with an upside-down mark, so you know it's a question from the start.",
+};
+
 /* ---------- rare marks for the bonus round ---------- */
 const ORNAMENTS = [
   { g:"❧", name:"Fleuron", fact:"Also called a hedera, Latin for ivy. Printers used it to decorate the ends of sections." },
@@ -607,7 +646,9 @@ function bonusView() {
     h("div", { class:"options" }, b.opts.map(o => h("button", {
       class: "opt" + (answered && o.key === b.key ? " right" : answered && o.key === b.answer ? " wrong" : ""),
       disabled: answered, onclick: () => { b.answer = o.key; render(); } }, o.label))),
-    answered && b.rare ? h("p", { class:"fact" }, h("b", {}, b.rare.name + ". "), b.rare.fact) : null);
+    answered ? h("p", { class:"fact" },
+      h("b", {}, b.answer === b.key ? `Correct! That's the ${(b.rare ? b.rare.name : LABEL[b.key]).toLowerCase()}. ` : `Not quite. It's the ${(b.rare ? b.rare.name : LABEL[b.key]).toLowerCase()}. `),
+      b.rare ? b.rare.fact : MARK_FACTS[b.key] || "") : null);
 }
 
 const SITE = "https://samey.uk/dotty/";
