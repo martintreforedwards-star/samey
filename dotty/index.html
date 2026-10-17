@@ -194,8 +194,8 @@ details ul { padding-left: 1.2rem; margin: 0.5rem 0 0; display: flex; flex-direc
       <li>Tap a mark in the tray, then tap where it goes. Accents go on letters. Punctuation goes in the dashed gaps.</li>
       <li>Press Check. Marks in the right place turn green and stay. Any in the wrong place come off. Each check uses a go, and you have 4.</li>
       <li>Stuck? A hint puts one mark in for you, but uses a go.</li>
-      <li>Every day has a twist, and they get trickier through the week. Monday is the gentlest, Friday the hardest.</li>
-      <li>On Tuesdays and Sundays there's a bonus round: name one of the marks for a bonus star. Sometimes it's a rare one.</li>
+      <li>Every day has a twist. Sunday to Tuesday are gentle, then it gets trickier from Wednesday, with Friday the hardest.</li>
+      <li>Solve it in 1 or 2 goes without a hint and you unlock the bonus round: name one of the marks for a bonus star. Sometimes it's a rare one.</li>
     </ul>
   </details>
   <div class="foot">
@@ -426,13 +426,12 @@ const ALL = [
 
 /* ---------- twists: the same game every day, harder rules later in the week ---------- */
 const TWISTS = {
-  plain:  { name:"Plain", note:"Each mark has its name underneath. A gentle start.", tray:4, labels:true, count:true },
-  bonus:  { name:"Bonus round", note:"When you've finished, name one of the marks for a bonus star. Sometimes it's a rare one.", tray:4, labels:true, count:true, bonus:true },
+  plain:  { name:"Plain", note:"Each mark has its name underneath.", tray:4, labels:true, count:true },
   blank:  { name:"Blank chips", note:"The marks have no names today.", tray:5, labels:false, count:true },
   hidden: { name:"Hidden count", note:"No names on the marks, some lookalike dashes, and we won't say how many marks are missing.", tray:6, labels:false, count:false, lookalikes:true },
   masked: { name:"Masked", note:"Like Thursday, but some letters are hidden too. You can reveal them for free, but your result shows how many were still hidden when you finished.", tray:6, labels:false, count:false, lookalikes:true, mask:true },
 };
-const DAY_TWIST = ["bonus", "plain", "bonus", "blank", "hidden", "masked", "blank"]; // Sun..Sat
+const DAY_TWIST = ["plain", "plain", "plain", "blank", "hidden", "masked", "blank"]; // Sun..Sat
 
 /* ---------- daily selection ---------- */
 function rng(seed) { let s = Math.abs(seed) % 233280; return () => (s = (s * 9301 + 49297) % 233280) / 233280; }
@@ -483,7 +482,7 @@ function newGame() {
   const letters = p.cells.filter(c => c.letter).map(c => c.id);
   const masked = new Set(tw.mask ? shuffle(letters, seed + 3).slice(0, Math.ceil(letters.length * 0.5)) : []);
   let bonus = null;
-  if (tw.bonus) {
+  { // every day has a bonus ready; it only unlocks for a clean solve in 1 or 2 goes
     if (seed % 4 === 0) {
       const o = ORNAMENTS[Math.floor(seed / 4) % ORNAMENTS.length];
       const others = shuffle(ORNAMENTS.filter(x => x !== o), seed + 6).slice(0, 3).map(x => x.name);
@@ -601,7 +600,7 @@ function bonusView() {
     glyph = h("span", { class:"glyph" }, showPunct(b.key, slot.open));
   }
   const title = answered ? (b.answer === b.key ? "Bonus star earned" : "No star this time")
-    : b.rare ? "Rare bonus: what's this mark called?" : "Bonus: what's this mark called?";
+    : b.rare ? "Bonus unlocked, and it's a rare one: what's this mark called?" : "Bonus unlocked: what's this mark called?";
   return h("div", { class:"bonus" },
     h("h3", {}, h("i", { "aria-hidden":"true" }, "★"), title),
     h("div", { class:"lens", role:"img", "aria-label": answered ? `The ${b.rare ? b.rare.name : LABEL[b.key]}` : "A mark to name" }, glyph),
@@ -718,8 +717,9 @@ function render() {
     parts.push(h("div", { class:"actions" }, acts));
   }
   parts.push(h("p", { class: "msg" + (S.win ? " good" : "") }, S.done ? (S.win ? S.msg : `${S.msg} ${p.text}`) : S.msg));
-  if (S.done && S.bonus) parts.push(bonusView());
-  const showResult = S.done && (!S.bonus || S.bonus.answer != null);
+  const bonusOn = S.done && S.win && S.used <= 2 && !S.hints;
+  if (bonusOn) parts.push(bonusView());
+  const showResult = S.done && (!bonusOn || S.bonus.answer != null);
   if (showResult) parts.push(resultView());
   panel.replaceChildren(...parts);
   if (showResult && !S.shareShown) { S.shareShown = true; setTimeout(openShare, 900); }
