@@ -431,7 +431,7 @@ const TEST = location.hash === "#test";
 addEventListener("hashchange", ()=>location.reload());
 // ---- Archive of earlier puzzles ----
 // Set ARCHIVE_ON to true to show it to everyone. Until then it only appears at samey.uk/spinonym/#archive (or #test).
-const ARCHIVE_ON = false;
+const ARCHIVE_ON = true;
 const ARCH = ARCHIVE_ON || TEST || location.hash==="#archive";
 const ARCH_TAIL = ARCHIVE_ON ? "" : (TEST ? "#test" : "#archive");   // keeps preview links inside the preview
 const ARCH_KEY = "spinonym-archive";
