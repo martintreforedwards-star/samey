@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Passé</title>
+<meta name="description" content="A daily game of forgotten words. Four old or obscure words, four meanings each. Only one is real.">
+<link rel="icon" href="/passe/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/passe/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://samey.uk/passe/">
+<meta property="og:site_name" content="Passé">
+<meta property="og:title" content="Passé: words that fell out of fashion">
+<meta property="og:description" content="Four forgotten words a day. Four meanings each. Only one is real.">
+<meta property="og:image" content="https://samey.uk/passe/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&display=swap">
+<style>
+:root{--bg:#f6f4f7;--card:#fff;--ink:#1f1b22;--muted:#675f6b;--line:#e2dbe4;--accent:#7b3f73;--good:#2f9e44;--bad:#c92a2a;--goodbg:#ebfbee;--badbg:#fff5f5;--chip:#f1ecf2;--head:"IM Fell English","Iowan Old Style",Georgia,"Times New Roman",serif}
+@media (prefers-color-scheme:dark){:root{--bg:#161418;--card:#211e24;--ink:#f1edf2;--muted:#a69ca9;--line:#3a343d;--accent:#d9a2cf;--good:#51cf66;--bad:#ff6b6b;--goodbg:#1d3324;--badbg:#3a1f22;--chip:#2c2830}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+main{max-width:480px;margin:0 auto;padding:16px 16px 40px;min-height:100vh}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+h1{font-family:var(--head);font-weight:400;font-size:32px;margin:0;line-height:1}
+h1 span{color:var(--accent)}
+.dots{display:flex;gap:6px}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--line)}
+.dot.cur{background:var(--accent)}.dot.ok{background:var(--good)}.dot.no{background:var(--bad)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+.tag{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600}
+.q{font-size:19px;font-weight:600;margin:6px 0 4px}
+.entry{border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:14px}
+.word{font-family:var(--head);font-size:clamp(34px,10vw,46px);line-height:1.05;margin:6px 0 4px;overflow-wrap:anywhere}
+.pron{color:var(--muted);font-size:15px}
+.pron i{font-family:var(--head);font-size:17px;color:var(--ink)}
+.opts{display:grid;gap:10px;margin-top:14px}
+button{font:inherit;color:inherit;cursor:pointer}
+.opt{text-align:left;padding:14px 16px;border-radius:12px;border:1.5px solid var(--line);background:var(--card)}
+.opt:hover:not([disabled]){border-color:var(--accent)}
+.opt:focus-visible,.primary:focus-visible,.ghost:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.opt.right{border-color:var(--good);background:var(--goodbg)}
+.opt.wrong{border-color:var(--bad);background:var(--badbg)}
+.opt.dim{opacity:.55}
+.opt[disabled]{cursor:default}
+.reveal{margin-top:16px;padding:14px 16px;border-radius:12px;background:var(--chip)}
+.reveal b{display:block;margin-bottom:4px}
+.reveal i{font-family:var(--head);font-size:1.05em}
+.primary{display:block;width:100%;margin-top:16px;padding:14px;border:0;border-radius:12px;background:var(--accent);color:#fff;font-weight:600}
+@media (prefers-color-scheme:dark){.primary{color:#1f1b22}}
+.ghost{display:block;width:100%;margin-top:10px;padding:12px;border:1.5px solid var(--line);border-radius:12px;background:none;font-weight:600}
+.center{text-align:center}
+.ticks{font-size:34px;letter-spacing:4px;margin:10px 0}
+.score{font-family:var(--head);font-size:52px;margin:4px 0;line-height:1}
+.rank{font-size:20px;font-weight:700;color:var(--accent)}
+.muted{color:var(--muted)}
+ul.rounds{padding-left:20px;margin:10px 0 0}
+.recap{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:12px;text-align:left;border-top:1px solid var(--line);padding-top:14px}
+.recap li{display:grid;grid-template-columns:auto 1fr;gap:2px 10px}
+.recap .h{font-family:var(--head);font-size:21px;line-height:1.2}
+.recap .m{grid-column:2;color:var(--muted);font-size:15px}
+footer{margin-top:24px;text-align:center;font-size:15px}
+footer a{color:var(--accent);text-decoration:none;margin:0 6px}
+footer .games{display:flex;flex-wrap:wrap;justify-content:center;gap:2px 0;margin:0}
+footer .games .muted{flex-basis:100%}
+.test{font-size:13px;color:var(--bad);text-align:center;margin-bottom:8px}
+.archline{font-size:15px;color:var(--muted);margin:-4px 0 12px}
+.archline a,.card a.inl{color:var(--accent);font-weight:600}
+.archlist{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+.archlist a{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;min-height:52px;border:1.5px solid var(--line);border-radius:12px;color:inherit;text-decoration:none;font-weight:600}
+.archlist a:hover{border-color:var(--ink)}
+.archlist .when{font-weight:400;color:var(--muted);font-size:15px}
+.archlist .st{font-size:15px;white-space:nowrap;color:var(--muted)}
+.archlist .st.done{color:var(--good)}
+a.primary{text-align:center;text-decoration:none}
+
+/* Cross-game cards (same design as Samey's result cards) */
+.card + .xg{margin-top:14px}
+.xg{display:flex;flex-direction:column;gap:10px;text-align:left;--xg-s:var(--surface,var(--card,#fff))}
+.xg .xg-head{text-align:left;margin:4px 0 0;font-size:.92rem;font-weight:700;color:var(--muted)}
+.xg-card{--c:#1f7a6d;display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:10px;background:color-mix(in srgb,var(--c) 12%,var(--xg-s));border:2px solid var(--c);color:var(--ink);text-decoration:none;min-height:44px}
+.xg-card:hover .xg-arrow{transform:translateX(3px)}
+.xg-card:focus-visible{outline:3px solid var(--c);outline-offset:2px}
+.xg-icon{flex:none;width:48px;height:48px}
+.xg-text{display:flex;flex-direction:column;gap:1px;min-width:0}
+.xg-new{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:color-mix(in srgb,var(--c) 60%,var(--ink))}
+.xg-title{font-family:var(--display,inherit);font-weight:800;font-size:1.3rem;line-height:1.1}
+.xg-sub{font-size:.9rem;color:var(--muted)}
+.xg-arrow{margin-left:auto;font-size:1.4rem;font-weight:700;flex:none;color:color-mix(in srgb,var(--c) 60%,var(--ink));transition:transform .15s}
+.xg-samey{--c:#1f7a6d}.xg-spinonym{--c:#d99a1e}.xg-dotty{--c:#E2405A}.xg-syntaxed{--c:#3B5BDB}
+@media (prefers-reduced-motion:no-preference){.reveal{animation:up .2s ease-out}@keyframes up{from{transform:translateY(6px);opacity:.4}to{transform:none;opacity:1}}}
+</style>
+</head>
+<body>
+<main>
+  <header><h1>Pass<span>é</span></h1><div class="dots" id="dots"></div></header>
+  <div id="test"></div>
+  <p class="archline" id="archLine" hidden></p>
+  <div id="app"></div>
+  <footer><p class="games"><span class="muted">More games:</span><a href="/">Samey</a><a href="/spinonym/">Spinonym</a><a href="/dotty/">Dotty</a><a href="/syntaxed/">Syntaxed</a></p>
+  <p class="muted" style="margin-top:10px"><span id="archFoot" hidden><a href="#" id="archLink">Earlier puzzles</a> · </span><a href="/feedback/?game=passe">Send feedback</a> · <a href="/support/?game=passe">Support us</a></p></footer>
+</main>
+<script>
+// ---- Word bank ----
+// Four lists, one per slot in the day's round, getting harder from 1 to 4.
+// Each entry: w = word, p = how to say it, pos = part of speech, def = the real meaning,
+// f = three made-up meanings, o = the origin note shown after guessing.
+// Write fakes in the same dictionary voice and length as the real meaning, and never use another real sense of the word.
+const TIER1 = [
+ {w:"susurrus",p:"soo-SUR-us",pos:"noun",def:"A soft whispering or rustling sound.",f:["A sweet wine thickened by slow boiling.","A hollow in a sea cliff where seabirds nest.","In Roman law, a debt passed down through a family."],o:"From Latin <i>susurrus</i>, ‘a whisper’. Say it aloud and it sounds like what it means: leaves, silk, a crowd murmuring."},
+ {w:"petrichor",p:"PET-rih-kor",pos:"noun",def:"The earthy smell that rises when rain falls on dry ground.",f:["A rock formed from layers of fossilised shells.","The sap that oozes from a broken branch.","A choir piece sung entirely on one note."],o:"Coined in 1964 by two Australian scientists, from Greek <i>petra</i>, ‘stone’, and <i>ichor</i>, the fluid said to flow in the veins of the gods."},
+ {w:"halcyon",p:"HAL-see-un",pos:"adjective",def:"Calm, peaceful and happy, usually of a time long past.",f:["Faintly glowing, as seawater does at night.","Salty and bitter, like water from a marsh.","Sharp-edged, like freshly broken flint."],o:"The halcyon was a mythical bird, later linked with the kingfisher, said to calm the sea while it nested."},
+ {w:"bumf",p:"BUMF",pos:"noun",def:"Boring paperwork, leaflets and forms nobody wants to read.",f:["The soft felt lining inside a hat.","A dull thud, like a sack dropped on a floor.","A thick porridge fed to pigs."],o:"Short for ‘bum-fodder’, old slang for toilet paper. It came to mean any paper you’d rather not have."},
+ {w:"crapulent",p:"KRAP-yoo-lent",pos:"adjective",def:"Feeling ill from eating or drinking too much.",f:["Crumbling and flaky, like old plaster.","Greedy for money, especially other people’s.","Talking a great deal of nonsense."],o:"From Latin <i>crapula</i>, ‘drunkenness’, which was borrowed from Greek."},
+ {w:"lollygag",p:"LOL-ee-gag",pos:"verb",def:"To dawdle or waste time doing nothing much.",f:["To gossip loudly behind someone’s back.","To suck a sweet slowly to make it last.","To laugh so hard you start to choke."],o:"American slang from the 1800s. Nobody is quite sure where it came from."},
+ {w:"gormless",p:"GORM-less",pos:"adjective",def:"Foolish and lacking common sense.",f:["Without an appetite; unable to eat.","Pale and sickly from staying indoors.","Shy and unwilling to speak to strangers."],o:"From the old word <i>gaum</i>, ‘attention’ or ‘understanding’, which came from Old Norse. Gormless means having none."},
+ {w:"frippery",p:"FRIP-er-ee",pos:"noun",def:"Showy but useless decoration, especially on clothes.",f:["A small pan for frying a single egg.","Nervous fidgeting with the hands.","A light rain that falls in sunshine."],o:"From Old French <i>freperie</i>, ‘old clothes’, from <i>frepe</i>, ‘a rag’."},
+ {w:"curmudgeon",p:"kur-MUJ-un",pos:"noun",def:"A bad-tempered person, usually an old one.",f:["A heavy wooden club carried by night watchmen.","A thick stew of oats and leftover meat.","A small, mean-looking breed of terrier."],o:"Recorded since the 1500s. Where it came from is still a mystery."},
+ {w:"skulduggery",p:"skul-DUG-er-ee",pos:"noun",def:"Underhand, dishonest behaviour.",f:["The digging of graves by night.","Judging someone’s character from the shape of their skull.","A noisy fight between rival gangs."],o:"An American respelling of the Scots word <i>sculduddery</i>. It has nothing to do with skulls."},
+ {w:"hullabaloo",p:"HUL-uh-buh-loo",pos:"noun",def:"A noisy fuss or commotion.",f:["A clear soup served before a hunting dinner.","A loose hooded cloak worn by shepherds.","A wooden whistle used to call ducks."],o:"First recorded in the 1700s, probably built from shouts like <i>hallo</i> and <i>hullo</i>."},
+ {w:"flibbertigibbet",p:"FLIB-er-tee-JIB-it",pos:"noun",def:"A flighty, gossipy person who can’t sit still.",f:["A small bird that hops along riverbanks.","A child’s toy that spins on a string.","A loose thread hanging from the edge of a cloth."],o:"It began as an imitation of chatter. Shakespeare uses it as the name of a devil in <i>King Lear</i>."},
+ {w:"collywobbles",p:"KOL-ee-wob-ulz",pos:"noun",def:"A stomach ache, or a fit of nerves.",f:["Shaking legs after a long climb.","The wobbly skin under a turkey’s beak.","Little piles of soot that fall down a chimney."],o:"Probably from <i>colic</i>, a stomach pain, plus <i>wobble</i>."},
+ {w:"nincompoop",p:"NIN-kum-poop",pos:"noun",def:"A silly or foolish person.",f:["A cheap clay pipe smoked by sailors.","An old card game for three players.","A puffed-up feather mattress."],o:"First recorded in the late 1600s. It’s often said to come from Latin <i>non compos mentis</i>, ‘not of sound mind’, but there’s little evidence for that."},
+ {w:"mollycoddle",p:"MOL-ee-kod-ul",pos:"verb",def:"To fuss over and protect someone too much.",f:["To cook fish slowly in milk.","To wrap a baby tightly in a blanket.","To tease someone until they cry."],o:"<i>Molly</i> was old slang for a soft, pampered person, and to <i>coddle</i> is to treat gently."},
+ {w:"hobnob",p:"HOB-nob",pos:"verb",def:"To mix socially, especially with important people.",f:["To bake oat biscuits on a griddle.","To mend a horse’s shoe by the roadside.","To haggle over the price of something."],o:"From <i>hob or nob</i>, an old toast between friends drinking together. The biscuit came much later."},
+ {w:"ragamuffin",p:"RAG-uh-muf-in",pos:"noun",def:"A ragged, scruffy child.",f:["A sweet bun studded with dried fruit.","A small dog bred for catching rats.","A cloth used to polish boots."],o:"Probably from Ragamoffyn, the name of a demon in the 14th-century poem <i>Piers Plowman</i>."},
+ {w:"gobbledygook",p:"GOB-ul-dee-gook",pos:"noun",def:"Language so full of jargon that it makes no sense.",f:["A thick sauce made from turkey gravy.","The gurgle a drain makes when it’s blocked.","A sticky sweet sold at fairs."],o:"Coined in 1944 by the Texas congressman Maury Maverick, who said official waffle sounded like a turkey gobbling."},
+ {w:"codswallop",p:"KODZ-wol-up",pos:"noun",def:"Nonsense.",f:["A heavy blow struck with a wet fish.","A Victorian fizzy drink sold in stoppered bottles.","A fishing net dragged between two boats."],o:"20th-century British slang. It’s often said to come from Hiram Codd’s bottled fizzy drinks, but there’s no proof."},
+ {w:"bombast",p:"BOM-bast",pos:"noun",def:"Grand-sounding words with little meaning behind them.",f:["A loud explosion set off at a celebration.","A thick leather belt worn by soldiers.","A coarse cloth woven from goat hair."],o:"It first meant cotton wadding used to pad out clothes. Puffed-up speech got the same name."},
+ {w:"phlegmatic",p:"fleg-MAT-ik",pos:"adjective",def:"Calm and hard to excite or upset.",f:["Prone to coughs and chest colds.","Bitter and sour in taste.","Easily moved to tears."],o:"In old medicine, phlegm was one of the four humours. Too much of it was thought to make you calm and unemotional."},
+ {w:"pernickety",p:"per-NIK-uh-tee",pos:"adjective",def:"Fussy about small details.",f:["Sour, like unripe fruit.","Prickly, like a holly bush.","Stingy with money."],o:"Scots, first recorded in the early 1800s. Its origin is unclear."},
+ {w:"defenestration",p:"dee-fen-uh-STRAY-shun",pos:"noun",def:"Throwing someone out of a window.",f:["Removing the fence around a field.","Boarding up an empty house.","Taking down a castle’s defences."],o:"From Latin <i>fenestra</i>, ‘window’. Best known from the Defenestration of Prague in 1618, when officials were thrown from a castle window and survived."},
+ {w:"lackadaisical",p:"lak-uh-DAY-zih-kul",pos:"adjective",def:"Lacking enthusiasm or effort.",f:["Covered in small flowers, like a spring lawn.","Short of breath after exercise.","Pale and washed-out in colour."],o:"From <i>lackaday</i>, an old cry of regret, short for ‘alack the day’."},
+ {w:"claptrap",p:"KLAP-trap",pos:"noun",def:"Pretentious nonsense.",f:["A spring-loaded trap for catching rabbits.","A wooden rattle used to scare birds.","A hinged lid on a beer tankard."],o:"In the 1700s it was a trick actors used to win applause: a trap to catch a clap."},
+ {w:"canoodle",p:"kuh-NOO-dul",pos:"verb",def:"To kiss and cuddle.",f:["To paddle a small boat in circles.","To fiddle with something nervously.","To doze lightly in a chair."],o:"American slang from the 1800s. No one is sure where it came from."},
+ {w:"conniption",p:"kuh-NIP-shun",pos:"noun",def:"A fit of rage or hysteria.",f:["A secret agreement between two thieves.","A small bite taken from the edge of a pie.","A sharp pinch on the arm."],o:"American slang from the 1800s, usually in the phrase ‘have a conniption fit’. Its origin is unknown."},
+ {w:"rapscallion",p:"rap-SKAL-yun",pos:"noun",def:"A mischievous rascal.",f:["A spring onion used in pickles.","A loud knock on a door.","A thin cane used by schoolmasters."],o:"A stretched-out form of <i>rascallion</i>, which grew out of <i>rascal</i>."},
+ {w:"wassail",p:"WOS-ayl",pos:"noun",def:"Spiced ale drunk at Christmas, and the merry singing that goes with it.",f:["A heavy wooden mallet for driving in fence posts.","A flat-bottomed barge used on rivers.","A servant who carried messages for a lord."],o:"From an old toast, <i>wæs hæl</i>, ‘be well’."},
+ {w:"slugabed",p:"SLUG-uh-bed",pos:"noun",def:"A lazy person who stays in bed late.",f:["A garden bed raised up to keep slugs off.","A heavy sleeper who snores loudly.","A low wooden cart for hauling peat."],o:"Recorded since the late 1500s. Juliet’s nurse calls her one in <i>Romeo and Juliet</i>."}
+];
+const TIER2 = [
+ {w:"ultracrepidarian",p:"ul-truh-krep-ih-DAIR-ee-un",pos:"noun",def:"A person who gives opinions on things beyond their knowledge.",f:["A shoemaker licensed to trade outside the guild.","A pilgrim who travelled beyond their own parish.","A follower of the strictest Puritan practice."],o:"From Pliny’s story of the painter Apelles, who told a cobbler criticising his work not to judge <i>ultra crepidam</i>, ‘beyond the sandal’. William Hazlitt used it as an insult in 1819."},
+ {w:"widdershins",p:"WID-er-shinz",pos:"adverb",def:"Anticlockwise, or against the direction of the sun.",f:["Sideways, the way a crab walks.","Barefoot, especially in wet grass.","At twilight, between sunset and dark."],o:"From Middle Low German <i>weddersinnes</i>, ‘against the way’. Going widdershins was once thought to bring bad luck."},
+ {w:"sesquipedalian",p:"ses-kwih-pih-DAY-lee-un",pos:"adjective",def:"Given to using long words.",f:["Having six feet, like an insect.","Relating to a 150th anniversary.","Walking with a limp."],o:"From Latin <i>sesquipedalia verba</i>, ‘words a foot and a half long’, the Roman poet Horace’s dig at overblown writing."},
+ {w:"hornswoggle",p:"HORN-swog-ul",pos:"verb",def:"To cheat or trick someone.",f:["To tie a steer’s horns before branding.","To blow a hunting horn badly.","To drink straight from the bottle."],o:"American slang from the early 1800s. Its origin is unknown."},
+ {w:"gallimaufry",p:"gal-ih-MAW-free",pos:"noun",def:"A jumble or muddled mixture of things.",f:["A wooden gallery above a church’s nave.","A cheap seat high up in a theatre.","A ship’s galley stove."],o:"From French <i>galimafrée</i>, a stew made from odds and ends."},
+ {w:"apricity",p:"uh-PRIS-ih-tee",pos:"noun",def:"The warmth of the sun on a winter’s day.",f:["The ripeness of fruit just before it falls.","A sudden fondness for someone you’ve just met.","The pale light just before dawn."],o:"From Latin <i>apricus</i>, ‘warmed by the sun’. It appears in a 1623 dictionary and then barely anywhere else."},
+ {w:"crepuscular",p:"krih-PUS-kyoo-lar",pos:"adjective",def:"Relating to twilight; of animals, active at dawn and dusk.",f:["Crinkled, like thin paper.","Creeping slowly along the ground.","Covered in small scabs."],o:"From Latin <i>crepusculum</i>, ‘twilight’. Deer and rabbits are crepuscular."},
+ {w:"logorrhoea",p:"log-uh-REE-uh",pos:"noun",def:"An unstoppable flow of words; talking far too much.",f:["A fear of working with numbers.","Rot that spreads through damp timber.","A love of collecting old maps."],o:"From Greek <i>logos</i>, ‘word’, and <i>rhoia</i>, ‘flow’, on the pattern of diarrhoea."},
+ {w:"lugubrious",p:"loo-GOO-bree-us",pos:"adjective",def:"Mournful and gloomy.",f:["Heavy and awkward to carry.","Oily and slippery to the touch.","Slow to get out of bed."],o:"From Latin <i>lugere</i>, ‘to mourn’."},
+ {w:"pusillanimous",p:"pyoo-sih-LAN-ih-mus",pos:"adjective",def:"Cowardly; lacking courage.",f:["Spiteful and quick to hold a grudge.","Weak and sickly from birth.","Agreed by everyone without a vote."],o:"From Latin <i>pusillus</i>, ‘very small’, and <i>animus</i>, ‘spirit’."},
+ {w:"obstreperous",p:"ub-STREP-er-us",pos:"adjective",def:"Noisy and hard to control.",f:["Blocking the way, like a fallen tree.","Stubbornly silent when questioned.","Twisted out of shape."],o:"From Latin <i>obstrepere</i>, ‘to make a noise against’."},
+ {w:"borborygmus",p:"bor-buh-RIG-mus",pos:"noun",def:"A rumbling noise from the stomach.",f:["A cave-dwelling lizard.","A medieval tax on grain.","A swelling on the back of the neck."],o:"From Greek <i>borborygmos</i>, which was probably meant to sound like a gurgling tummy."},
+ {w:"kakistocracy",p:"kak-iss-TOK-ruh-see",pos:"noun",def:"Government by the worst or least qualified people.",f:["Rule by a single wealthy family.","A country run by its army.","Government by people picked at random."],o:"From Greek <i>kakistos</i>, ‘worst’, plus <i>-cracy</i>, ‘rule’. First used in the 1600s."},
+ {w:"pettifogger",p:"PET-ee-fog-er",pos:"noun",def:"A petty lawyer who quibbles over trivial details.",f:["A worker who cleared fog from harbour lamps.","A shopkeeper who gave short measure.","A small bell rung at sea in fog."],o:"<i>Petty</i> plus <i>fogger</i>, an old word for a shady dealer."},
+ {w:"hugger-mugger",p:"HUG-er-mug-er",pos:"noun",def:"Secrecy; or a muddled confusion.",f:["A tight embrace between old friends.","A cheap tavern on a back street.","A drinking cup passed round a table."],o:"In <i>Hamlet</i>, the king admits Polonius was buried ‘in hugger-mugger’: hastily and in secret."},
+ {w:"welkin",p:"WEL-kin",pos:"noun",def:"The sky, or the heavens.",f:["A small sweet apple.","A deep well in a village square.","A woman’s woollen shawl."],o:"From Old English <i>wolcen</i>, ‘cloud’. It survives in the phrase ‘make the welkin ring’."},
+ {w:"bodkin",p:"BOD-kin",pos:"noun",def:"A thick, blunt needle for threading tape; once also a small dagger.",f:["A small wooden barrel for salt.","A boy servant in a great house.","A low stool used for milking."],o:"Hamlet’s ‘bare bodkin’ is a dagger. Sewing boxes kept the word."},
+ {w:"bloviate",p:"BLOH-vee-ate",pos:"verb",def:"To talk at length in a pompous, empty way.",f:["To swell up after eating too much.","To blow gently on hot food.","To flower late in the season."],o:"American slang from the 1800s, probably built on <i>blow</i>. President Warren Harding was famously fond of it."},
+ {w:"abecedarian",p:"ay-bee-see-DAIR-ee-un",pos:"noun",def:"Someone learning the alphabet; a beginner.",f:["A monk who copied manuscripts.","A collector of rare insects.","A believer in the hidden power of numbers."],o:"From Latin <i>abecedarius</i>, built from the first four letters: A, B, C, D."},
+ {w:"boondoggle",p:"BOON-dog-ul",pos:"noun",def:"A pointless project that wastes time and money.",f:["A lucky find, like a coin in the street.","A shallow pond where cattle drink.","A dog trained to herd geese."],o:"First an American scouting word for a braided leather cord. By the 1930s it meant pointless busywork."},
+ {w:"scofflaw",p:"SKOFF-law",pos:"noun",def:"Someone who flouts the law, usually in small ways.",f:["An old law against swearing in public.","A judge who mocks the people in his court.","A tax on bread and ale."],o:"The winning entry in a 1924 American competition to name people who drank illegally during Prohibition."},
+ {w:"otiose",p:"OH-shee-ose",pos:"adjective",def:"Serving no purpose; pointless.",f:["Relating to the ear.","Plump and well fed.","Bad-tempered in the morning."],o:"From Latin <i>otiosus</i>, ‘at leisure’."},
+ {w:"mondegreen",p:"MON-dih-green",pos:"noun",def:"A misheard phrase, especially a song lyric.",f:["A small grassy mound on a village green.","A mould that grows on old bread.","The first green shoots of spring."],o:"Coined in 1954 by the writer Sylvia Wright, who as a child heard a ballad’s ‘laid him on the green’ as ‘Lady Mondegreen’."},
+ {w:"scaramouch",p:"SKA-ruh-mooch",pos:"noun",def:"A boastful buffoon who is really a coward.",f:["A pouch worn on a soldier’s belt.","A scarecrow stuffed with straw.","A small, darting river fish."],o:"From Scaramuccia, a stock character in Italian comic theatre."},
+ {w:"antepenultimate",p:"an-tee-pih-NUL-tih-mut",pos:"adjective",def:"Third from last.",f:["Second from last.","Coming just before the start.","Very last of all."],o:"<i>Ante</i> means ‘before’, so it’s the one before the penultimate."},
+ {w:"sennight",p:"SEN-ite",pos:"noun",def:"A week.",f:["A fortnight.","The longest night of the year.","The night before a wedding."],o:"Short for ‘seven nights’, just as fortnight is short for ‘fourteen nights’."},
+ {w:"popinjay",p:"POP-in-jay",pos:"noun",def:"A vain, chattering person who dresses showily.",f:["A toy gun that fires corks.","A jay bird kept as a pet.","A juggler at a country fair."],o:"Originally a parrot, from Old French <i>papingay</i>."},
+ {w:"jackanapes",p:"JAK-uh-naypes",pos:"noun",def:"A cheeky, impertinent person.",f:["A sailor who climbs the rigging.","A rough woollen coat.","A tool for lifting cartwheels."],o:"Originally a tame monkey. It may come from a mocking nickname for a Duke of Suffolk in the 1400s."},
+ {w:"donnybrook",p:"DON-ee-brook",pos:"noun",def:"A rowdy brawl.",f:["A stream that floods every winter.","A university tutor’s study.","A country dance for couples."],o:"Named after Donnybrook Fair in Dublin, famous for its fights until it was shut down in the 1850s."},
+ {w:"mountebank",p:"MOWN-tih-bank",pos:"noun",def:"A swindler, especially one selling fake cures.",f:["A raised earth wall around a castle.","A bank of snow left by a plough.","A mounted soldier carrying messages."],o:"From Italian <i>monta in banco</i>, ‘climb on the bench’. Quacks stood on benches to sell their remedies."}
+];
+const TIER3 = [
+ {w:"mumpsimus",p:"MUMP-sih-mus",pos:"noun",def:"Someone who clings to a mistake after being shown it’s wrong; or the mistake itself.",f:["A low grumble muttered under the breath.","A Christmas pie of mixed meats and spices.","A childhood fever with swollen glands."],o:"From the tale of a priest who misread the Latin <i>sumpsimus</i> as ‘mumpsimus’ and refused to change. Henry VIII used the word in a speech to Parliament in 1545."},
+ {w:"cockalorum",p:"kok-uh-LOR-um",pos:"noun",def:"A small man with a big opinion of himself.",f:["A brass weathervane shaped like a cockerel.","A noisy drinking song.","The dawn chorus of a farmyard."],o:"Probably from <i>cock</i>, as in a strutting cockerel."},
+ {w:"gongoozler",p:"gon-GOOZ-ler",pos:"noun",def:"Someone who idly watches boats on a canal.",f:["A servant who struck the dinner gong.","A large sea fish with bulging eyes.","A gutter that drains a roof."],o:"Canal-boat slang from around 1900."},
+ {w:"sialoquent",p:"sy-AL-uh-kwent",pos:"adjective",def:"Spitting while you talk.",f:["Speaking in a whisper.","Fluent in several languages.","Talking in your sleep."],o:"From Greek <i>sialon</i>, ‘spittle’, and Latin <i>loqui</i>, ‘to speak’."},
+ {w:"quidnunc",p:"KWID-nunk",pos:"noun",def:"A nosy person who always wants the latest gossip.",f:["An old coin worth a penny.","A monk who has taken a vow of silence.","A clerk who records the weather."],o:"Latin <i>quid nunc?</i>, ‘what now?’"},
+ {w:"snollygoster",p:"SNOL-ee-gos-ter",pos:"noun",def:"A shrewd, unprincipled person, especially a politician.",f:["A runny nose from a winter cold.","A sticky dumpling boiled in a cloth.","A child who sneaks food from the larder."],o:"American slang from the 1800s."},
+ {w:"agelast",p:"AJ-uh-last",pos:"noun",def:"A person who never laughs.",f:["A person who never seems to grow old.","The final years of a long life.","A joint in a suit of armour."],o:"From Greek <i>agelastos</i>, ‘not laughing’. The French writer Rabelais used it for the grim and humourless."},
+ {w:"fopdoodle",p:"FOP-doo-dul",pos:"noun",def:"A fool, or an insignificant person.",f:["A curly design drawn in a book’s margin.","A lace frill on a gentleman’s sleeve.","A dance popular at country fairs."],o:"From the 1600s: <i>fop</i>, ‘a fool’, plus <i>doodle</i>, ‘a simpleton’."},
+ {w:"bedswerver",p:"BED-swer-ver",pos:"noun",def:"An unfaithful husband or wife.",f:["A restless sleeper who rolls about at night.","A servant who warmed beds with a pan of coals.","A drunkard who can’t find his way home."],o:"Shakespeare uses it in <i>The Winter’s Tale</i>."},
+ {w:"ninnyhammer",p:"NIN-ee-ham-er",pos:"noun",def:"A foolish person.",f:["A small hammer for tapping in tacks.","A woodpecker.","A blacksmith’s apprentice."],o:"<i>Ninny</i> is an old word for a fool. This longer version is recorded from the late 1500s."},
+ {w:"smellfungus",p:"smel-FUNG-gus",pos:"noun",def:"A constant grumbler who finds fault with everything.",f:["A pig trained to sniff out truffles.","A damp, mouldy cellar.","A herbal remedy for colds."],o:"Laurence Sterne’s nickname for the novelist Tobias Smollett, who wrote a famously grumpy travel book."},
+ {w:"floccinaucinihilipilification",p:"flok-sih-naw-sih-nih-hil-ih-pil-ih-fih-KAY-shun",pos:"noun",def:"Judging something to be worthless.",f:["The plucking of geese for their down.","Making a promise you can’t keep.","Fussing over tiny details."],o:"A joke word from the 1700s, built from four Latin words that all mean ‘worthless’: <i>flocci</i>, <i>nauci</i>, <i>nihili</i>, <i>pili</i>."},
+ {w:"snickersnee",p:"SNIK-er-snee",pos:"noun",def:"A large knife used as a weapon.",f:["A stifled laugh.","A sudden sneeze.","A pair of sheep shears."],o:"From an old Dutch phrase for knife fighting, <i>steken of snijden</i>, ‘to thrust or cut’."},
+ {w:"yclept",p:"ih-KLEPT",pos:"adjective",def:"Called, or named.",f:["Stolen.","Wept over.","Locked up."],o:"An old past tense of <i>clepe</i>, ‘to call’. The y- is what’s left of an Old English prefix."},
+ {w:"lucubration",p:"loo-kyoo-BRAY-shun",pos:"noun",def:"Hard study or writing done late at night.",f:["The oiling of a machine.","A sudden flash of insight.","The slow, steady glow of embers."],o:"From Latin <i>lucubrare</i>, ‘to work by lamplight’."},
+ {w:"noctivagant",p:"nok-TIV-uh-gunt",pos:"adjective",def:"Wandering about at night.",f:["Unable to see in the dark.","Having the same dream every night.","Flowering only at night."],o:"From Latin <i>nox</i>, ‘night’, and <i>vagari</i>, ‘to wander’."},
+ {w:"sternutation",p:"ster-nyoo-TAY-shun",pos:"noun",def:"Sneezing, or a sneeze.",f:["Steering a ship from the back.","A harsh telling-off.","The lowering of a flag at sunset."],o:"From Latin <i>sternutare</i>, ‘to sneeze’."},
+ {w:"oscitation",p:"os-ih-TAY-shun",pos:"noun",def:"Yawning; or drowsy inattention.",f:["Swinging back and forth.","Kissing on both cheeks.","Shivering with cold."],o:"From Latin <i>oscitare</i>, ‘to gape’."},
+ {w:"grumbletonian",p:"grum-bul-TOH-nee-un",pos:"noun",def:"A discontented person who is always complaining.",f:["A noisy ale-house.","A deep-voiced singer.","A rumbling thunderstorm."],o:"First used in the 1690s as a mocking name for politicians who grumbled about the royal court."},
+ {w:"hebdomadal",p:"heb-DOM-uh-dul",pos:"adjective",def:"Weekly.",f:["Relating to the stomach.","Happening once every seven years.","Fond of herbs."],o:"From Greek <i>hebdomas</i>, ‘a group of seven’. Oxford University was once run by its Hebdomadal Council."},
+ {w:"maffick",p:"MAF-ik",pos:"verb",def:"To celebrate wildly in the streets.",f:["To smuggle goods past customs.","To mumble while chewing.","To cheat at cards."],o:"From the Relief of Mafeking in 1900, when London crowds celebrated so wildly that a new word was made from it."},
+ {w:"tergiversate",p:"TER-jih-ver-sayt",pos:"verb",def:"To keep changing your position; to dodge the question.",f:["To write on the back of a page.","To toss and turn in your sleep.","To mend a broken fence."],o:"From Latin <i>tergum</i>, ‘back’, and <i>vertere</i>, ‘to turn’: to turn your back."},
+ {w:"velleity",p:"veh-LEE-ih-tee",pos:"noun",def:"A mild wish that you never act on.",f:["The softness of velvet.","Speed as measured at sea.","A sudden burst of courage."],o:"From Latin <i>velle</i>, ‘to wish’."},
+ {w:"cachinnate",p:"KAK-ih-nate",pos:"verb",def:"To laugh loudly.",f:["To hide something away for later.","To cough up phlegm.","To mutter angrily."],o:"From Latin <i>cachinnare</i>, which probably imitated the sound of a guffaw."},
+ {w:"tatterdemalion",p:"tat-er-dih-MAYL-yun",pos:"noun",def:"A person in ragged clothes.",f:["A flag torn by the wind.","A beggar’s song.","A medieval court jester."],o:"Built on <i>tatter</i>, ‘a rag’. The rest seems to have been added to make it sound grand."},
+ {w:"rodomontade",p:"rod-uh-mon-TAYD",pos:"noun",def:"Boastful talk.",f:["A walking stick topped with silver.","A procession on horseback.","A ballroom dance in a circle."],o:"From Rodomonte, a boastful king in Italian Renaissance poems."},
+ {w:"crinkum-crankum",p:"KRINK-um-KRANK-um",pos:"noun",def:"Something full of twists and turns.",f:["A tool for winding clocks.","A cheap tin toy.","A grumpy old man."],o:"A playful rhyme built on <i>crank</i>, ‘a bend or twist’."},
+ {w:"fainéant",p:"fay-nay-ON",pos:"noun",def:"An idle, lazy person.",f:["A person who faints easily.","A false friend.","A beggar who fakes an injury."],o:"French for ‘does nothing’, from <i>fait</i>, ‘does’, and <i>néant</i>, ‘nothing’."},
+ {w:"persiflage",p:"PER-sih-flahzh",pos:"noun",def:"Light, teasing banter.",f:["Thin hammered gold leaf.","A woven straw screen.","The scent of crushed herbs."],o:"French, from <i>persifler</i>, ‘to banter’."},
+ {w:"gasconade",p:"gas-kuh-NAYD",pos:"noun",def:"Extravagant boasting.",f:["A lemonade flavoured with ginger.","A trail of smoke from a chimney.","A siege fought with cannon."],o:"The people of Gascony in France had a reputation for bragging."}
+];
+const TIER4 = [
+ {w:"quockerwodger",p:"KWOK-er-woj-er",pos:"noun",def:"A wooden puppet whose limbs jerk on a string; later, a politician acting on someone else’s orders.",f:["A clumsy flat-bottomed boat used on fen dykes.","A Victorian street seller of hot eels and pies.","A loud, quacking laugh."],o:"Victorian slang. The jerking wooden toy became a sneer for an MP who voted as his patron told him: a puppet."},
+ {w:"slubberdegullion",p:"slub-er-dih-GUL-yun",pos:"noun",def:"A dirty, worthless slob.",f:["A gull that steals food from fishermen.","A sticky pudding of oats and treacle.","A clumsy rowing boat."],o:"From the 1600s, built on <i>slubber</i>, ‘to do something sloppily’."},
+ {w:"jobbernowl",p:"JOB-er-nole",pos:"noun",def:"A blockhead.",f:["A labourer hired by the day.","A barn owl.","A wooden yoke for oxen."],o:"From the 1500s. <i>Nowl</i> or <i>noll</i> is an old word for the head."},
+ {w:"zenzizenzizenzic",p:"zen-zih-zen-zih-ZEN-zik",pos:"noun",def:"A number raised to the eighth power.",f:["A Tibetan temple bell.","A trance reached by humming.","A flaw running through a gemstone."],o:"Used by the mathematician Robert Recorde in 1557: the square of a square of a square. It’s often said to have more Zs than any other English word."},
+ {w:"psithurism",p:"SITH-yer-iz-um",pos:"noun",def:"The sound of wind rustling through leaves.",f:["A lisp.","A snake’s warning hiss.","The worship of trees."],o:"From Greek <i>psithurisma</i>, ‘whispering’."},
+ {w:"pandiculation",p:"pan-dik-yoo-LAY-shun",pos:"noun",def:"A big stretch and yawn, especially on waking.",f:["The making of pancakes.","A slow walk round a garden.","A long, rambling speech."],o:"From Latin <i>pandiculari</i>, ‘to stretch oneself’."},
+ {w:"jentacular",p:"jen-TAK-yoo-lar",pos:"adjective",def:"Relating to breakfast.",f:["Polite and well mannered.","Relating to the jaw.","Slightly yellow in colour."],o:"From Latin <i>jentaculum</i>, ‘breakfast’."},
+ {w:"ultroneous",p:"ul-TROH-nee-us",pos:"adjective",def:"Done of your own accord; voluntary.",f:["Excessively loud.","Beyond what the law allows.","Very far away."],o:"From Latin <i>ultro</i>, ‘of one’s own accord’."},
+ {w:"quomodocunquize",p:"kwoh-moh-doh-KUN-kwize",pos:"verb",def:"To make money by any means possible.",f:["To argue just for the sake of winning.","To live comfortably on very little.","To change your name to escape your debts."],o:"A 17th-century coinage from Latin <i>quomodocunque</i>, ‘in whatever way’."},
+ {w:"doryphore",p:"DOR-ih-for",pos:"noun",def:"A pedant who points out other people’s small mistakes.",f:["A gilded fish carved on a ship’s bow.","A stone column holding up a porch.","A pilgrim who carries a holy relic."],o:"Greek for ‘spear-carrier’. In French it also means the Colorado beetle, a crop pest."},
+ {w:"nudiustertian",p:"nyoo-dee-us-TER-shun",pos:"adjective",def:"Of the day before yesterday.",f:["Relating to nude statues.","Brand new, just made.","On the third day of a fever."],o:"From Latin <i>nudius tertius</i>, ‘it is now the third day’."},
+ {w:"perendinate",p:"per-EN-dih-nate",pos:"verb",def:"To put something off until the day after tomorrow.",f:["To travel about on foot.","To speak at great length.","To follow someone everywhere."],o:"From Latin <i>perendie</i>, ‘on the day after tomorrow’."},
+ {w:"quisquilian",p:"kwis-KWIL-ee-un",pos:"adjective",def:"Trashy or worthless.",f:["Inquisitive.","Relating to quill pens.","Shaped like a quince."],o:"From Latin <i>quisquiliae</i>, ‘rubbish’ or ‘odds and ends’."},
+ {w:"impignorate",p:"im-PIG-nuh-rate",pos:"verb",def:"To pawn or pledge something.",f:["To fatten pigs for market.","To keep someone in the dark.","To stain with ink."],o:"From Latin <i>pignus</i>, ‘a pledge’."},
+ {w:"inaniloquent",p:"in-uh-NIL-uh-kwent",pos:"adjective",def:"Talking foolishly or emptily.",f:["Speechless with fright.","Unable to tell a lie.","Speaking only in whispers."],o:"From Latin <i>inanis</i>, ‘empty’, and <i>loqui</i>, ‘to speak’."},
+ {w:"agathokakological",p:"ag-uh-thoh-kak-uh-LOJ-ih-kul",pos:"adjective",def:"Made up of both good and evil.",f:["Relating to the study of gemstones.","Afraid of feathers.","Fond of complicated words."],o:"Coined by the poet Robert Southey in the 1830s, from Greek <i>agathos</i>, ‘good’, and <i>kakos</i>, ‘bad’."},
+ {w:"bibliotaph",p:"BIB-lee-uh-taf",pos:"noun",def:"Someone who hoards books and keeps them hidden away.",f:["An inscription carved on a gravestone.","A librarian who stamps returned books.","A book bound in leather."],o:"From Greek <i>biblion</i>, ‘book’, and <i>taphos</i>, ‘tomb’. They bury their books."},
+ {w:"deipnosophist",p:"dipe-NOS-uh-fist",pos:"noun",def:"Someone who’s good at clever conversation over dinner.",f:["A philosopher who studies dreams.","A deep-sea diver.","A teacher of fencing."],o:"From a Greek book, the <i>Deipnosophistae</i> (‘The Dinner-Table Philosophers’), written around AD 200."},
+ {w:"fustilarian",p:"fus-tih-LAIR-ee-un",pos:"noun",def:"A low, worthless scoundrel.",f:["A dealer in cheap cloth.","A schoolmaster who beat pupils with a stick.","A stale, musty cupboard."],o:"Shakespeare’s invention. Falstaff hurls it in <i>Henry IV, Part 2</i>."},
+ {w:"mumchance",p:"MUM-chans",pos:"adjective",def:"Silent and tongue-tied.",f:["Lucky at dice.","Secretive about money.","Half asleep."],o:"Originally the name of an old dice game played in silence."},
+ {w:"yarborough",p:"YAR-buh-ruh",pos:"noun",def:"In bridge or whist, a hand with no card higher than a nine.",f:["A small market town’s yearly fair.","A sheep’s fleece from the second shearing.","A wide-brimmed straw hat."],o:"Named after an Earl of Yarborough, who is said to have bet 1,000 to 1 against anyone being dealt one."},
+ {w:"lickpenny",p:"LIK-pen-ee",pos:"noun",def:"Something that eats up money.",f:["A miser who hoards coins.","A child’s game of chance.","A shopkeeper who cheats customers."],o:"<i>London Lickpenny</i> is a medieval poem about a poor man whose money drains away in the city."},
+ {w:"sockdolager",p:"sok-DOL-uh-jer",pos:"noun",def:"A decisive blow; or something outstanding.",f:["A thick woollen stocking.","A drinking companion.","A deep pond for washing sheep."],o:"American slang from the 1800s."},
+ {w:"lucifugous",p:"loo-SIF-yoo-gus",pos:"adjective",def:"Avoiding light.",f:["Glowing in the dark.","Fiendish and wicked.","Fond of matches and fire."],o:"From Latin <i>lux</i>, ‘light’, and <i>fugere</i>, ‘to flee’. Cockroaches are lucifugous."},
+ {w:"tyrotoxism",p:"ty-roh-TOK-siz-um",pos:"noun",def:"Poisoning from eating bad cheese.",f:["The rule of a cruel tyrant.","A dislike of beginners.","A fear of loud noises."],o:"From Greek <i>tyros</i>, ‘cheese’, and <i>toxikon</i>, ‘poison’."},
+ {w:"anfractuous",p:"an-FRAK-choo-us",pos:"adjective",def:"Winding and full of twists.",f:["Broken into many small pieces.","Hard to bend.","Cracked down the middle."],o:"From Latin <i>anfractus</i>, ‘a bend’."},
+ {w:"obambulate",p:"ob-AM-byoo-late",pos:"verb",def:"To wander about.",f:["To stand still for a long time.","To limp on one foot.","To walk in your sleep."],o:"From Latin <i>obambulare</i>, ‘to walk about’."},
+ {w:"elflock",p:"ELF-lok",pos:"noun",def:"A tangled knot of hair.",f:["A tiny padlock for a jewellery box.","A ring of mushrooms in a field.","A woodland bird’s nest."],o:"People blamed elves for knotting hair at night. In <i>Romeo and Juliet</i>, Mercutio says Queen Mab does it."},
+ {w:"brabble",p:"BRAB-ul",pos:"verb",def:"To squabble noisily over trifles.",f:["To babble in your sleep.","To stir porridge.","To splash about in shallow water."],o:"From Dutch <i>brabbelen</i>, ‘to jabber’. Shakespeare used it."},
+ {w:"nithing",p:"NY-thing",pos:"noun",def:"A contemptible coward or villain.",f:["A small fishing hook.","A worthless trinket.","A meeting of village elders."],o:"From Old Norse <i>níðingr</i>. Being called one was among the worst insults in the Viking world."}
+];
+const TIERS=[TIER1,TIER2,TIER3,TIER4];
+const LEVEL=['Gentle','Tricky','Hard','Fiendish'];
+
+// ---- Schedule ----
+// Passé No. 1 was launch day, Sun 18 Oct 2026. Each day takes the next word from each of the four lists.
+// When a list runs out it starts again from the top, so add more words before then.
+// As written (30 per list) the words last 30 days, to Mon 16 Nov 2026.
+const START=Date.UTC(2026,9,18);
+const dayDate=n=>new Date(START+n*864e5);   // read with UTC getters
+const keyOf=n=>{const d=dayDate(n);return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0')};
+const fmt=(n,o)=>dayDate(n).toLocaleDateString('en-GB',Object.assign({timeZone:'UTC'},o));
+const wordsFor=n=>TIERS.map(t=>t[n%t.length]);
+
+// ---- Which day is on screen ----
+// samey.uk/passe/#test plays today without saving; add ?day=N for Passé No. N (any day, past or future).
+// ?day=N on its own opens an earlier puzzle from the archive.
+const ARCHIVE_ON=true;
+addEventListener('hashchange',()=>location.reload());
+const params=new URLSearchParams(location.search);
+const now=new Date();
+const TODAY=Math.max(0,Math.round((Date.UTC(now.getFullYear(),now.getMonth(),now.getDate())-START)/864e5));
+const isTest=location.hash==='#test';
+const ARCH=ARCHIVE_ON||isTest||location.hash==='#archive';
+const ARCH_TAIL=ARCHIVE_ON?(isTest?'#test':''):(isTest?'#test':'#archive');
+const td=parseInt(params.get('day'),10);
+const N=Number.isInteger(td)&&td>=1&&(isTest||(ARCH&&td<=TODAY))?td-1:TODAY;
+const isArch=!isTest&&N<TODAY;
+const dateKey=keyOf(N);
+const rounds=wordsFor(N);
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+// Seeded shuffle so everyone sees the same option order on the same day
+function rng(seed){let h=1779033703^seed.length;for(let i=0;i<seed.length;i++){h=Math.imul(h^seed.charCodeAt(i),3432918353);h=h<<13|h>>>19}return function(){h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);h^=h>>>16;return(h>>>0)/4294967296}}
+function order(n,seed){const r=rng(seed),a=[...Array(n).keys()];for(let i=n-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+const $=s=>document.querySelector(s);
+const app=$('#app');
+let st={i:0,res:[]};
+const KEYS=['A','B','C','D'];
+
+function dots(){$('#dots').innerHTML=rounds.map((_,k)=>`<div class="dot ${st.res[k]===true?'ok':st.res[k]===false?'no':k===st.i?'cur':''}"></div>`).join('')}
+
+function intro(){
+  app.innerHTML=`<div class="card"><div class="tag">${isArch||isTest?fmt(N,{weekday:'long',day:'numeric',month:'long'}):'Today'}</div>
+  <div class="q">Four forgotten words. Each has four meanings, and only one is real.</div>
+  <p class="muted" style="margin:6px 0 0">The words get harder as you go. One guess per word.</p>
+  <ul class="rounds">${LEVEL.map((l,k)=>`<li>Word ${k+1} · ${l}</li>`).join('')}</ul>
+  <button class="primary" id="go">Play</button></div>`;
+  $('#go').onclick=()=>{st={i:0,res:[]};round()};
+  dots();
+}
+
+function round(){
+  const r=rounds[st.i];dots();
+  const opts=[r.def,...r.f];
+  const ord=order(4,dateKey+'|'+st.i+'|'+r.w);
+  app.innerHTML=`<div class="card"><div class="entry"><div class="tag">Word ${st.i+1} · ${LEVEL[st.i]}</div>
+  <div class="word"${r.w.length>12?` style="font-size:clamp(20px,calc(min(100vw - 80px,400px) / ${(r.w.length*.55).toFixed(2)}),46px)"`:""}>${r.w}</div><div class="pron"><i>${r.pos}</i> · ${r.p}</div></div>
+  <div class="q">Which is the real meaning?</div>
+  <div class="opts">${ord.map((k,pos)=>`<button class="opt" data-k="${k}">${opts[k]}</button>`).join('')}</div>
+  <div id="after"></div></div>`;
+  app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    const k=+b.dataset.k,ok=k===0;
+    app.querySelectorAll('.opt').forEach(x=>{x.disabled=true;const xk=+x.dataset.k;if(xk===0)x.classList.add('right');else if(x!==b)x.classList.add('dim')});
+    if(!ok)b.classList.add('wrong');
+    after(ok,r);
+  });
+}
+
+function after(ok,r){
+  st.res[st.i]=ok;dots();
+  const last=st.i===rounds.length-1;
+  $('#after').innerHTML=`<div class="reveal"><b>${ok?'Correct.':'Not quite. The real one is highlighted.'}</b>${r.o}</div><button class="primary" id="next">${last?'See results':'Next word'}</button>`;
+  const nx=$('#next');
+  nx.onclick=()=>{if(last){if(!isTest)store.set('passe-'+dateKey,st.res);results()}else{st.i++;round();window.scrollTo(0,0)}};
+  nx.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function rank(s){return['Better luck tomorrow','Dabbler','Bookworm','Antiquarian','Lexicographer'][s]}
+
+function results(){
+  st.i=rounds.length;dots();
+  const s=st.res.filter(Boolean).length,n=rounds.length;
+  const ticks=st.res.map(x=>x?'✅':'❌').join('');
+  const nice=fmt(N,{weekday:'short',day:'numeric',month:'short'});
+  const share=`Passé ${isArch?`No. ${N+1} (archive)`:nice}\n${s}/${n} ${ticks}\n${rank(s)}\nsamey.uk/passe/`;
+  app.innerHTML=`<div class="card center"><div class="tag">${isTest?'Test · No. '+(N+1)+' · '+nice:isArch?'No. '+(N+1)+' · '+nice:nice}</div>
+  <div class="score">${s}/${n}</div><div class="ticks">${ticks}</div><div class="rank">${rank(s)}</div>
+  <p class="muted">${isArch?`<a class="inl" href="#" id="moreArch">Play another earlier puzzle</a> or <a class="inl" href="./${ARCH_TAIL}">go back to today's puzzle</a>.`:'Four more forgotten words tomorrow.'+(ARCH&&TODAY>=1&&!isTest?` Can't wait? <a class="inl" href="#" id="moreArch">Play earlier puzzles</a>.`:'')}</p>
+  <button class="primary" id="share">Share</button><button class="ghost" id="copy">Copy result</button>
+  <ul class="recap">${rounds.map((r,k)=>`<li><span>${st.res[k]?'✅':'❌'}</span><span class="h">${r.w}</span><span class="m">${r.def}</span></li>`).join('')}</ul></div>${document.getElementById('xgCards').innerHTML}`;
+  $('#share').onclick=()=>{if(navigator.share){navigator.share({text:share}).catch(()=>{})}else{location.href='https://wa.me/?text='+encodeURIComponent(share)}};
+  $('#copy').onclick=()=>{try{navigator.clipboard.writeText(share).then(()=>{$('#copy').textContent='Copied'},()=>{})}catch(e){}};
+  const more=$('#moreArch');if(more)more.onclick=e=>{e.preventDefault();openArchive()};
+}
+
+function openArchive(){
+  const items=[];
+  for(let k=TODAY-1;k>=0;k--){
+    const r=store.get('passe-'+keyOf(k));
+    const stx=r&&r.length===4?`<span class="st done">${r.filter(Boolean).length}/4</span>`:'<span class="st">Play →</span>';
+    items.push(`<li><a href="?day=${k+1}${ARCH_TAIL}"><span>No. ${k+1} <span class="when">· ${fmt(k,{weekday:'short',day:'numeric',month:'short'})}</span></span>${stx}</a></li>`);
+  }
+  if(!items.length)items.push('<li class="muted">No earlier puzzles yet. Come back tomorrow.</li>');
+  $('#archLine').hidden=true;$('#dots').innerHTML='';
+  app.innerHTML=`<div class="card"><div class="q" style="font-size:22px;margin-top:0">Earlier puzzles</div>
+  <p class="muted" style="margin:4px 0 0">Missed a day? Every past Passé is here.</p>
+  <ul class="archlist">${items.join('')}</ul><a class="primary" href="./${ARCH_TAIL}">Back to today's puzzle</a></div>`;
+  window.scrollTo(0,0);
+}
+
+if(isTest)$('#test').innerHTML=`<div class="test">Test mode: No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})} · results not saved</div>`;
+if(ARCH&&TODAY>=1){$('#archFoot').hidden=false;$('#archLink').onclick=e=>{e.preventDefault();openArchive()};}
+if(isArch){const l=$('#archLine');l.hidden=false;l.innerHTML=`Earlier puzzle · No. ${N+1} · <a href="./${ARCH_TAIL}">Today's puzzle</a>`;}
+const done=!isTest&&store.get('passe-'+dateKey);
+if(done&&done.length===rounds.length){st.res=done;results()}else intro();
+</script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "210d8562172a4416bc59877612814183"}'></script><!-- End Cloudflare Web Analytics -->
+<template id="xgCards"><div class="xg"><p class="xg-head">Fancy another?</p><a class="xg-card xg-samey" href="/"><svg class="xg-icon" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><circle cx="25" cy="32" r="15" fill="#1f7a6d" fill-opacity=".95"/><circle cx="39" cy="32" r="15" fill="#d99a1e" fill-opacity=".85"/></svg><span class="xg-text"><span class="xg-new">Also from Samey</span><span class="xg-title">Play Samey</span><span class="xg-sub">Find the hidden word that means the same</span></span><span class="xg-arrow" aria-hidden="true">→</span></a><a class="xg-card xg-spinonym" href="/spinonym/"><svg class="xg-icon" viewBox="-32 -32 64 64" aria-hidden="true"><path d="M0 -30A30 30 0 0 1 25.98 15L0 0Z" fill="#2B5597"/><path d="M25.98 15A30 30 0 0 1 -25.98 15L0 0Z" fill="#A84F0C"/><path d="M-25.98 15A30 30 0 0 1 -25.98 -15L0 0Z" fill="#17796B"/><path d="M-25.98 -15A30 30 0 0 1 0 -30L0 0Z" fill="#6B3F99"/><circle r="10" fill="#16181D" stroke="#ffffff" stroke-width="2.5"/></svg><span class="xg-text"><span class="xg-new">Also from Samey</span><span class="xg-title">Play Spinonym</span><span class="xg-sub">Spin the wheel for today's kind of word</span></span><span class="xg-arrow" aria-hidden="true">→</span></a><a class="xg-card xg-dotty" href="/dotty/"><svg class="xg-icon" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><rect x="27" y="27" width="10" height="27" rx="5" fill="#fff"/><circle cx="21" cy="15" r="6" fill="#E2405A"/><circle cx="43" cy="15" r="6" fill="#E2405A"/></svg><span class="xg-text"><span class="xg-new">Also from Samey</span><span class="xg-title">Play Dotty</span><span class="xg-sub">Put the missing accents and punctuation back</span></span><span class="xg-arrow" aria-hidden="true">→</span></a><a class="xg-card xg-syntaxed" href="/syntaxed/"><svg class="xg-icon" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><rect x="10" y="14" width="26" height="10" rx="5" fill="#fff"/><rect x="40" y="14" width="14" height="10" rx="5" fill="#748FFC"/><rect x="10" y="29" width="14" height="10" rx="5" fill="#748FFC"/><rect x="28" y="29" width="26" height="10" rx="5" fill="#fff"/><rect x="10" y="44" width="34" height="10" rx="5" fill="#fff"/><circle cx="51" cy="49" r="4" fill="#3B5BDB"/></svg><span class="xg-text"><span class="xg-new">Also from Samey</span><span class="xg-title">Play Syntaxed</span><span class="xg-sub">Grammar puzzles that make you giggle, not wince</span></span><span class="xg-arrow" aria-hidden="true">→</span></a></div></template>
+</body>
+</html>

@@ -87,6 +87,10 @@ a{color:var(--ink);font-weight:700}
     const b = document.getElementById("back");
     b.href = "/syntaxed/"; b.textContent = "← Back to Syntaxed";
   }
+  if (new URLSearchParams(location.search).get("game") === "passe") {
+    const b = document.getElementById("back");
+    b.href = "/passe/"; b.textContent = "← Back to Passé";
+  }
 </script>
 </body>
 </html>

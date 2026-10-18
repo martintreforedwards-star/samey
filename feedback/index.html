@@ -65,6 +65,7 @@
           <option value="Spinonym">Spinonym</option>
           <option value="Dotty">Dotty</option>
           <option value="Syntaxed">Syntaxed</option>
+          <option value="Passé">Passé</option>
           <option value="All / general">All / general</option>
         </select>
       </div>
@@ -121,6 +122,7 @@
   if (game === "spinonym") $("game").value = "Spinonym";
   if (game === "dotty") $("game").value = "Dotty";
   if (game === "syntaxed") $("game").value = "Syntaxed";
+  if (game === "passe") $("game").value = "Passé";
   const type = (q.get("type") || "").toLowerCase();
   const typeMap = { puzzle: "Puzzle issue", bug: "Bug", idea: "Idea", other: "Other" };
   if (typeMap[type]) $("type").value = typeMap[type];
@@ -128,6 +130,7 @@
   if (game === "spinonym") $("back").href = "/spinonym/";
   if (game === "dotty") $("back").href = "/dotty/";
   if (game === "syntaxed") $("back").href = "/syntaxed/";
+  if (game === "passe") $("back").href = "/passe/";
 
   $("fb").addEventListener("submit", async e => {
     e.preventDefault();
