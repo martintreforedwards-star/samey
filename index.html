@@ -616,6 +616,11 @@ function guess(raw){
   if(WORDS && !WORDS.has(g) && g !== state.p.answer && !state.p.close.has(g)){
     msg.className="msg err"; msg.textContent=`"${g}" isn't in our word list. Try a real word. That didn't cost a go.`; return;
   }
+  // If the word list hasn't loaded, guesses can't be checked, so they must be the answer's length
+  // (otherwise typing the whole alphabet would reveal every letter in one go).
+  if(!WORDS && g.length !== state.p.answer.length && !state.p.close.has(g)){
+    msg.className="msg err"; msg.textContent=`The word list is still loading, so for now guesses need to be ${state.p.answer.length} letters. That didn't cost a go.`; return;
+  }
   if(g === state.p.clue.toLowerCase()){ msg.className="msg err"; msg.textContent="That's the starting word. Try one that means the same."; return; }
   if(state.rows.some(r=>r.guess===g)){ msg.className="msg err"; msg.textContent="You've already tried that one."; return; }
   const isClose = state.p.close.has(g) && g !== state.p.answer;   // means the same, but not today's word: counts as a normal go

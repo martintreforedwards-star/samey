@@ -608,6 +608,9 @@ function guess(raw){
   if(g===p.clue.toLowerCase()){ msg.className="msg err"; msg.textContent="That's the starting word. Try another."; return; }
   if(anagram && sorted(g)!==sorted(p.answer)){ msg.className="msg err"; msg.textContent=`Use exactly the letters in ${p.clue.toUpperCase()}. That didn't cost a go.`; return; }
   if(!p.free && !anagram && WORDS && !WORDS.has(g) && g!==p.answer && !p.close.has(g)){ msg.className="msg err"; msg.textContent=`"${g}" isn't in our word list. Try a real word. That didn't cost a go.`; return; }
+  // Names (pen names, exonyms...) and a missing word list can't be dictionary-checked, so those guesses must be the answer's length.
+  // Otherwise typing the whole alphabet would reveal every letter in one go.
+  if(!anagram && (p.free || !WORDS) && g.length!==p.answer.length && !p.close.has(g)){ msg.className="msg err"; msg.textContent=`Today's answer has ${p.answer.length} letters. That didn't cost a go.`; return; }
   if(state.rows.some(r=>r.guess===g)){ msg.className="msg err"; msg.textContent="You've already tried that one."; return; }
   const isClose = p.close.has(g) && g!==p.answer;   // a fair answer, but not today's: it counts as a normal go
   state.used++; act({g});
