@@ -668,7 +668,7 @@ function finish(){
   const rank = gameRank(state.won, state.used);
   $("shareText").textContent = `Samey ${state.daily ? dayNumber() : state.archive ? `No. ${state.n+1} · archive` : '#'+(state.i+1)} · ${TIERS[state.tier]}\n${p.clue.toUpperCase()} → ?\n${shareGrid(state)}\n${score} · ${rank.title}\nYour go: ${SITE}`;
   $("result").hidden = false;
-  if(state.daily){ recordResult(state.won); showStats(); }
+  if(state.daily){ recordResult(state.won); showStats(); (window.SameySetQ=window.SameySetQ||[]).push(["samey", score]); }
   $("copyBtn").textContent = "Share result";
   $("nextBtn").hidden = state.daily || state.archive;
   if(state.archive) saveArch();

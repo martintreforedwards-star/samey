@@ -678,6 +678,7 @@ function finish(fresh){
   $("bonusBtn").textContent = bonus.done ? `Bonus round: ${bonusScore()}/3` : "Play the bonus round →";
   $("bonusBtn").classList.toggle("done", bonus.done);
   if(state.daily && !state.replaying){ recordResult(state.won); }
+  if(state.daily && !isGold) (window.SameySetQ=window.SameySetQ||[]).push(["spinonym", main.won?`${main.used}/${MAX}`:`X/${MAX}`]);
   if(main.archive) saveArchive();
   archNote();
   if(state.daily) showStats(); else $("stats").hidden = true;

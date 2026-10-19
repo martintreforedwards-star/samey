@@ -611,7 +611,7 @@ function finish(win) {
   S.p.marks.forEach(([id, k]) => S.locked[id] = k);
   S.placed = {}; S.masked = new Set(); S.sel = null;
   S.msg = win ? "Every mark in place." : "Here's how it should look.";
-  if (!TEST && !ARCHIVED) recordResult(win);
+  if (!TEST && !ARCHIVED) { recordResult(win); (window.SameySetQ=window.SameySetQ||[]).push(["dotty", win ? `${S.used}/4` : "X/4"]); }
 }
 function check() {
   const entries = Object.entries(S.placed);

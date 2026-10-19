@@ -384,6 +384,7 @@ function results(){
   st.i=rounds.length;dots();
   const s=st.res.filter(Boolean).length,n=rounds.length;
   const ticks=st.res.map(x=>x?'✅':'❌').join('');
+  if(!isTest&&!isArch)(window.SameySetQ=window.SameySetQ||[]).push(['syntaxed',s+'/'+n]);
   const nice=fmt(N,{weekday:'short',day:'numeric',month:'short'});
   const share=`Syntaxed ${isArch?`No. ${N+1} (archive)`:nice}\n${s}/${n} ${ticks}\n${rank(s,n)}\nsamey.uk/syntaxed/`;
   app.innerHTML=`<div class="card center"><div class="tag">${isTest?'Test · No. '+(N+1)+' · '+nice:isArch?'No. '+(N+1)+' · '+nice:nice}</div>
@@ -414,7 +415,8 @@ if(isTest)$('#test').innerHTML=`<div class="test">Test mode: No. ${N+1} · ${fmt
 if(ARCH&&TODAY>=1){$('#archFoot').hidden=false;$('#archLink').onclick=e=>{e.preventDefault();openArchive()};}
 if(isArch){const l=$('#archLine');l.hidden=false;l.innerHTML=`Earlier puzzle · No. ${N+1} · <a href="./${ARCH_TAIL}">Today's puzzle</a>`;}
 const done=!isTest&&store.get('syntaxed-'+dateKey);
-if(done&&done.length===rounds.length){st.res=done;results()}else intro();
+// Wait for the page to finish loading: the results screen uses the 'Fancy another?' cards further down.
+document.addEventListener('DOMContentLoaded',()=>{if(done&&done.length===rounds.length){st.res=done;results()}else intro();});
 </script>
 <script src="/daily.js"></script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "210d8562172a4416bc59877612814183"}'></script><!-- End Cloudflare Web Analytics -->
