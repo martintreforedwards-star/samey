@@ -91,6 +91,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
 .opt .tag{font:700 .72rem var(--mono);letter-spacing:.04em;text-transform:uppercase;flex:none}
 .opt.right{background:var(--right);border-color:var(--right);color:var(--on-state)}
 .opt.wrong{background:var(--wrong);border-color:var(--wrong);color:var(--on-state)}
+.opt.right::after{content:" ✓";font-weight:700}.opt.wrong::after{content:" ✗";font-weight:700}
 .opt.fade{opacity:.45}
 @media (hover:hover){.opt:not(:disabled):hover{background:var(--accent-soft)}}
 .reveal{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:4px}

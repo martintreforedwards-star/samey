@@ -192,7 +192,7 @@ body.arching main > :not(header):not(#archiveView){display:none !important}
 
   <div class="meta">
     <span id="lenNote"></span>
-    <span class="pips" id="pips" aria-label="Goes used"></span>
+    <span class="pips" id="pips" role="img" aria-label="Goes used"></span>
   </div>
 
   <div class="keys" id="keys" aria-label="Letter board"></div>
@@ -558,11 +558,11 @@ function render(fresh){
     const t = document.createElement("div");
     t.className = "tile" + (c ? (state.hinted[i] ? " hint" : " hit") : "") + (fresh.has(i) ? " pop" : "");
     t.textContent = c || "";
-    t.setAttribute("aria-label", c ? c : "blank");
+    t.setAttribute("role", "img"); t.setAttribute("aria-label", c ? c : "blank");
     b.appendChild(t);
   });
   setTimeout(()=>b.querySelectorAll(".pop").forEach(t=>t.classList.remove("pop")),260);
-  const pips = $("pips"); pips.innerHTML = "";
+  const pips = $("pips"); pips.innerHTML = ""; pips.setAttribute("aria-label", `${state.rows.length} of ${MAX} goes used`);
   for(let k=0;k<MAX;k++){
     const d=document.createElement("span"); const r=state.rows[k];
     d.className="pip"+(r?(r.hint?" hinted":" used"):""); pips.appendChild(d);

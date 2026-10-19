@@ -275,7 +275,7 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
     <div class="board" id="board" aria-label="Answer board"></div>
     <div class="meta">
       <span id="lenNote"></span>
-      <span class="pips" id="pips" aria-label="Goes used"></span>
+      <span class="pips" id="pips" role="img" aria-label="Goes used"></span>
     </div>
     <div class="keys" id="keys" aria-label="Letter board"></div>
     <ul class="log" id="log" aria-label="Your goes"></ul>
@@ -570,7 +570,7 @@ function render(fresh){
     t.textContent=c||""; t.setAttribute("aria-label", c?c:"blank"); b.appendChild(t);
   });
   setTimeout(()=>b.querySelectorAll(".pop").forEach(t=>t.classList.remove("pop")),260);
-  const pips=$("pips"); pips.innerHTML="";
+  const pips=$("pips"); pips.innerHTML=""; pips.setAttribute("aria-label", `${state.rows.length} of ${MAX} goes used`);
   for(let k=0;k<MAX;k++){ const d=document.createElement("span"), r=state.rows[k]; d.className="pip"+(r?(r.hint?" hinted":" used"):""); pips.appendChild(d); }
   const keys=$("keys"); keys.innerHTML="";
   const hintOnly=new Set(state.known.filter((c,i)=>c&&state.hinted[i])), found=new Set(state.known.filter((c,i)=>c&&!state.hinted[i]));

@@ -42,6 +42,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .opt:focus-visible,.primary:focus-visible,.ghost:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .opt.right{border-color:var(--good);background:var(--goodbg)}
 .opt.wrong{border-color:var(--bad);background:var(--badbg)}
+.opt.right::after{content:" ✓";font-weight:700}.opt.wrong::after{content:" ✗";font-weight:700}
 .opt.dim{opacity:.55}
 .opt[disabled]{cursor:default}
 .reveal{margin-top:16px;padding:14px 16px;border-radius:12px;background:var(--chip)}
@@ -296,7 +297,7 @@ function round(){
   <div class="word"${r.w.length>12?` style="font-size:clamp(20px,calc(min(100vw - 80px,400px) / ${(r.w.length*.55).toFixed(2)}),46px)"`:""}>${r.w}</div><div class="pron"><i>${r.pos}</i> · ${r.p}</div></div>
   <div class="q">Which is the real meaning?</div>
   <div class="opts">${ord.map((k,pos)=>`<button class="opt" data-k="${k}">${opts[k]}</button>`).join('')}</div>
-  <div id="after"></div></div>`;
+  <div id="after" aria-live="polite"></div></div>`;
   app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
     const k=+b.dataset.k,ok=k===0;
     app.querySelectorAll('.opt').forEach(x=>{x.disabled=true;const xk=+x.dataset.k;if(xk===0)x.classList.add('right');else if(x!==b)x.classList.add('dim')});

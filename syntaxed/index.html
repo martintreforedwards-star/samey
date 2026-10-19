@@ -14,7 +14,7 @@
 <meta property="og:description" content="A daily grammar game. Four quick rounds, plus a boss round on Sundays.">
 <style>
 :root{--bg:#faf7f2;--card:#fff;--ink:#1f1d1a;--muted:#6b665e;--line:#e4ddd2;--accent:#3b5bdb;--good:#2f9e44;--bad:#e03131;--goodbg:#ebfbee;--badbg:#fff5f5;--chip:#f1ece4}
-@media (prefers-color-scheme:dark){:root{--bg:#16171a;--card:#202227;--ink:#f1efe9;--muted:#a19c93;--line:#363940;--accent:#748ffc;--good:#51cf66;--bad:#ff6b6b;--goodbg:#1d3324;--badbg:#3a1f22;--chip:#2b2e35}}
+@media (prefers-color-scheme:dark){:root{--bg:#16171a;--card:#202227;--ink:#f1efe9;--muted:#a19c93;--line:#363940;--accent:#748ffc;--on-accent:#0b1530;--good:#51cf66;--bad:#ff6b6b;--goodbg:#1d3324;--badbg:#3a1f22;--chip:#2b2e35}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
 main{max-width:480px;margin:0 auto;padding:16px 16px 40px;min-height:100vh}
@@ -34,10 +34,11 @@ button{font:inherit;color:inherit;cursor:pointer}
 .opt{text-align:left;padding:14px 16px;border-radius:12px;border:1.5px solid var(--line);background:var(--card)}
 .opt.right{border-color:var(--good);background:var(--goodbg)}
 .opt.wrong{border-color:var(--bad);background:var(--badbg)}
+.opt.right::after{content:" ✓";font-weight:700}.opt.wrong::after{content:" ✗";font-weight:700}
 .opt[disabled]{cursor:default}
 .reveal{margin-top:16px;padding:14px 16px;border-radius:12px;background:var(--chip)}
 .reveal b{display:block;margin-bottom:2px}
-.primary{display:block;width:100%;margin-top:16px;padding:14px;border:0;border-radius:12px;background:var(--accent);color:#fff;font-weight:600}
+.primary{display:block;width:100%;margin-top:16px;padding:14px;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent,#fff);font-weight:600}
 .primary[disabled]{opacity:.4;cursor:default}
 .ghost{display:block;width:100%;margin-top:10px;padding:12px;border:1.5px solid var(--line);border-radius:12px;background:none;font-weight:600}
 .line{min-height:58px;border:1.5px dashed var(--line);border-radius:12px;padding:8px;display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;align-content:flex-start}
@@ -78,6 +79,7 @@ a.primary{text-align:center;text-decoration:none}
 .xg-title{font-family:var(--display,inherit);font-weight:800;font-size:1.3rem;line-height:1.1}
 .xg-sub{font-size:.9rem;color:var(--muted)}
 .xg-arrow{margin-left:auto;font-size:1.4rem;font-weight:700;flex:none;color:color-mix(in srgb,var(--c) 60%,var(--ink));transition:transform .15s}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 .xg-samey{--c:#1f7a6d}.xg-spinonym{--c:#d99a1e}.xg-dotty{--c:#E2405A}.xg-syntaxed{--c:#3B5BDB}.xg-passe{--c:#7B3F73}.xg-natter{--c:#B0186A}
 </style>
 </head>
@@ -337,7 +339,7 @@ function round(){
   }else{
     h+=`<div class="opts">${order(r.opts.length,dateKey+dayNum+st.i).map(k=>`<button class="opt" data-k="${k}">${r.opts[k]}</button>`).join('')}</div>`;
   }
-  h+=`<div id="after"></div></div>`;
+  h+=`<div id="after" aria-live="polite"></div></div>`;
   app.innerHTML=h;
   r.type==='shuffle'?shuffleRound(r):pickRound(r);
 }
