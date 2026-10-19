@@ -60,6 +60,7 @@ ul.rounds{padding-left:20px;margin:10px 0 0}
 .recap li{display:grid;grid-template-columns:auto 1fr;gap:2px 10px}
 .recap .h{font-family:var(--head);font-size:21px;line-height:1.2}
 .recap .m{grid-column:2;color:var(--muted);font-size:15px}
+.recap .flag{grid-column:2;font-size:13px;color:var(--muted)}
 footer{margin-top:24px;text-align:center;font-size:15px}
 footer a{color:var(--accent);text-decoration:none;margin:0 6px}
 footer .games{display:flex;flex-wrap:wrap;justify-content:center;gap:2px 0;margin:0}
@@ -326,7 +327,7 @@ function results(){
   <div class="score">${s}/${n}</div><div class="ticks">${ticks}</div><div class="rank">${rank(s)}</div>
   <p class="muted">${isArch?`<a class="inl" href="#" id="moreArch">Play another earlier puzzle</a> or <a class="inl" href="./${ARCH_TAIL}">go back to today's puzzle</a>.`:'Four more forgotten words <span data-next="in {t}">tomorrow</span>.'+(ARCH&&TODAY>=1&&!isTest?` Can't wait? <a class="inl" href="#" id="moreArch">Play earlier puzzles</a>.`:'')}</p>
   <button class="primary" id="share">Share</button><button class="ghost" id="copy">Copy result</button>
-  <ul class="recap">${rounds.map((r,k)=>`<li><span>${st.res[k]?'✅':'❌'}</span><span class="h">${r.w}</span><span class="m">${r.def}</span></li>`).join('')}</ul></div>${document.getElementById('xgCards').innerHTML}`;
+  <ul class="recap">${rounds.map((r,k)=>`<li><span>${st.res[k]?'✅':'❌'}</span><span class="h">${r.w}</span><span class="m">${r.def}</span><a class="flag" href="/feedback/?game=passe&type=puzzle&puzzle=${encodeURIComponent((isArch?'No. '+(N+1)+' · ':nice+' · ')+r.w)}">Wrong?</a></li>`).join('')}</ul></div>${document.getElementById('xgCards').innerHTML}`;
   $('#share').onclick=()=>{if(navigator.share){navigator.share({text:share}).catch(()=>{})}else{location.href='https://wa.me/?text='+encodeURIComponent(share)}};
   $('#copy').onclick=()=>{try{navigator.clipboard.writeText(share).then(()=>{$('#copy').textContent='Copied'},()=>{})}catch(e){}};
   const more=$('#moreArch');if(more)more.onclick=e=>{e.preventDefault();openArchive()};

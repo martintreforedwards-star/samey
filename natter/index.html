@@ -97,6 +97,9 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
 .reveal p{margin:0}
 .reveal .ex{font-style:italic}
 .reveal .home{font-family:var(--mono);font-size:.8rem;color:var(--muted)}
+.reveal .home .flag{color:inherit}
+.src{margin:12px 0 0;font-size:.85rem;color:var(--muted)}
+.src a{color:inherit}
 
 .result{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
 .result h2{font-family:var(--display);font-weight:800;margin:0;font-size:1.5rem;text-wrap:balance}
@@ -452,12 +455,14 @@ function render(){
   }).join("");
   round.innerHTML=`<div class="dots" aria-label="Question ${qi+1} of ${qs.length}">${dots}</div>
     <div class="ask">${askHTML(q)}</div><div class="opts">${opts}</div>
-    ${ans!=null?`<div class="reveal"><p><b>${esc(q.w)}</b>: ${esc(q.m)}</p><p class="ex">“${esc(q.ex)}”</p><p class="home">Heard in ${esc(q.home)}</p></div>
+    ${ans!=null?`<div class="reveal"><p><b>${esc(q.w)}</b>: ${esc(q.m)}</p><p class="ex">“${esc(q.ex)}”</p><p class="home">Heard in ${esc(q.home)} · <a class="flag" href="${flagHref(q)}">Wrong?</a></p></div>
       <button class="primary" id="nextq">${qi===qs.length-1?"See how you did":"Next"}</button>`:""}`;
   round.querySelectorAll(".opt:not(:disabled)").forEach(b=>b.onclick=()=>{state.answers.push(b.dataset.o);state.pending=true;save();paintRound();render()});
   const nx=document.getElementById("nextq");
   if(nx){nx.onclick=()=>{state.pending=false;save();if(plan.kind==="tour"&&state.answers.length<qs.length)animateVB(targetVB(),600);paintRound();render()};nx.focus({preventScroll:true})}
 }
+// Pre-filled feedback link for one word, so a player can tell us when a word or its home is off
+const flagHref=q=>"/feedback/?game=natter&type=puzzle&puzzle="+encodeURIComponent((practice?"Practice":"No. "+plan.day)+" · "+q.w);
 function showResult(){
   const qs=plan.qs, score=qs.filter((q,i)=>state.answers[i]===q.answer).length, N=qs.length;
   const where=plan.region?REG[plan.region].name:plan.title;
@@ -467,6 +472,7 @@ function showResult(){
   const res=document.getElementById("result");res.hidden=false;
   res.innerHTML=`<h2>${score}/${N} · ${esc(cap(where))}</h2><p style="margin:0;color:var(--muted)">${lines[score]}</p>
     <ul>${qs.map((q,i)=>{const ok=state.answers[i]===q.answer;return`<li><span class="mark ${ok?"r":"w"}">${ok?"✓":"✗"}</span><b>${esc(q.w)}</b><span>${esc(q.m)}${plan.region?"":" · "+esc(REG[q.r].name)}</span></li>`}).join("")}</ul>
+    <p class="src">Words are checked against the BBC Voices survey and the Our Dialects maps where we can. Spot a mistake? <a href="/feedback/?game=natter&type=puzzle&puzzle=${encodeURIComponent((practice?"Practice":"No. "+plan.day)+" · "+where)}">Tell us</a>.</p>
     <div class="actions"><button class="primary" id="share">Share</button><button id="copy">Copy result</button></div>
     <button id="again">Practice round</button>
     ${practice||plan.day!==todayNum?"":`<p style="margin:0;color:var(--muted)" data-next="Next Natter in {t}.">A new Natter arrives at midnight.</p>`}
