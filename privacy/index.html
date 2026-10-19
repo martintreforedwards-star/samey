@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy · Samey and friends</title>
+<meta name="description" content="What the samey.uk games store, what they send, and who sees it.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>
+  :root {
+    --bg: #f7f5f0; --card: #ffffff; --text: #1f1d1a; --muted: #6b665e;
+    --line: #ddd8ce; --accent: #2f6f5e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #161513; --card: #211f1c; --text: #f0ece4; --muted: #a39d92;
+      --line: #3a3732; --accent: #5fb39b;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 620px; margin: 0 auto; padding: 28px 16px 48px; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  .intro { color: var(--muted); margin: 0 0 24px; }
+  section {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 14px; padding: 4px 20px 16px; margin-bottom: 14px;
+  }
+  h2 { font-size: 1.1rem; margin: 16px 0 6px; }
+  p, ul { margin: 0 0 10px; }
+  ul { padding-left: 20px; }
+  li { margin-bottom: 6px; }
+  a { color: var(--accent); }
+  .back { display: inline-block; margin-top: 12px; }
+  .updated { color: var(--muted); font-size: .9rem; margin-top: 20px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Privacy</h1>
+  <p class="intro">The short version: no accounts, no ads, no tracking cookies. Your scores stay on your phone. The only personal details we ever receive are the ones you choose to type into a form.</p>
+
+  <section>
+    <h2>Who runs this site</h2>
+    <p>Samey, Spinonym, Dotty, Syntaxed, Passé and Natter at samey.uk are made by one person, Martin Edwards, in the UK. He is responsible for any personal details you send through the site. To get in touch about privacy, use the <a href="/feedback/">feedback form</a> and choose “Other”.</p>
+  </section>
+
+  <section>
+    <h2>What stays on your device</h2>
+    <p>Your progress, scores, streaks, archive results and today's set are saved in your browser's own storage on your phone or computer. They are never sent to us and we can't see them. Clearing your browser data, or playing on another device, starts you afresh.</p>
+  </section>
+
+  <section>
+    <h2>What you send us</h2>
+    <p>If you use the <a href="/feedback/">feedback form</a>, a “Wrong?” link, or Natter's word suggestion box, we receive:</p>
+    <ul>
+      <li>what you type, and which game and puzzle it's about</li>
+      <li>your email address, but only if you choose to give one so we can reply</li>
+      <li>for the feedback form, basic details of your browser and device (for example “Chrome on Android”), to help track down bugs</li>
+    </ul>
+    <p>These messages are passed on by a form service called <a href="https://web3forms.com" rel="noopener">Web3Forms</a> and arrive in a private Gmail inbox, so Google also holds them. We use them only to fix problems, improve the puzzles and reply to you. We don't add you to any mailing list and don't share your details with anyone else. Messages are deleted once they've been dealt with and are no longer needed.</p>
+    <p>We use these details because you've chosen to send them to us and because it's in our legitimate interest to keep the games working and accurate.</p>
+  </section>
+
+  <section>
+    <h2>Visitor numbers</h2>
+    <p>We count visits with <a href="https://www.cloudflare.com/web-analytics/" rel="noopener">Cloudflare Web Analytics</a>, which doesn't use cookies and doesn't follow you around other websites. It tells us things like how many people played today and which country they're in, not who you are.</p>
+  </section>
+
+  <section>
+    <h2>Other services the site uses</h2>
+    <ul>
+      <li><b>GitHub Pages</b> hosts the site. Like any web host, GitHub keeps short-lived server logs, including IP addresses, for security.</li>
+      <li><b>Google Fonts</b> supplies some of the lettering, so your browser fetches font files from Google.</li>
+      <li><b>Sharing</b>: the WhatsApp and share buttons only open your own apps with your result filled in. Nothing is sent unless you send it.</li>
+      <li><b>Ko-fi</b>: if you follow a “Buy me a coffee” link, Ko-fi's own privacy policy applies there.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Your rights</h2>
+    <p>Under UK data protection law you can ask to see, correct or delete anything you've sent us. Just ask through the feedback form. If you're unhappy with how we've handled your details, you can complain to the <a href="https://ico.org.uk/make-a-complaint/" rel="noopener">Information Commissioner's Office</a>.</p>
+  </section>
+
+  <a class="back" id="back" href="/">← Back to Samey</a>
+  <p class="updated">Last updated: 19 October 2026</p>
+</main>
+<script>
+  const games = { spinonym: "Spinonym", dotty: "Dotty", syntaxed: "Syntaxed", passe: "Passé", natter: "Natter" };
+  const g = (new URLSearchParams(location.search).get("game") || "").toLowerCase();
+  if (games[g]) { const b = document.getElementById("back"); b.href = "/" + g + "/"; b.textContent = "← Back to " + games[g]; }
+</script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "210d8562172a4416bc59877612814183"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
