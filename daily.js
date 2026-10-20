@@ -52,8 +52,10 @@
     { id: "dotty", name: "Dotty", href: "/dotty/" },
     { id: "syntaxed", name: "Syntaxed", href: "/syntaxed/" },
     { id: "passe", name: "Passé", href: "/passe/" },
-    { id: "natter", name: "Natter", href: "/natter/" }
+    { id: "natter", name: "Natter", href: "/natter/" },
+    { id: "roots", name: "Roots", href: "/roots/" }
   ];
+  var WORDS = ["", "", "", "", "four", "five", "six", "seven", "eight", "nine", "ten"];
   var here = (location.pathname.split("/")[1] || "samey").toLowerCase();
   var SET_KEY = "samey-set";
   function getJSON(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }
@@ -87,14 +89,14 @@
     var date = new Date().toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
     return "My samey.uk set · " + date + "\n" +
       done.map(function (g) { return g.name + " " + s.g[g.id]; }).join("\n") +
-      "\n" + (done.length === GAMES.length ? "All six done 🏆" : done.length + " of " + GAMES.length + " done") + "\nhttps://samey.uk";
+      "\n" + (done.length === GAMES.length ? "All " + WORDS[GAMES.length] + " done 🏆" : done.length + " of " + GAMES.length + " done") + "\nhttps://samey.uk";
   }
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   function fillSet(box) {
     var s = readSet(), n = GAMES.filter(function (g) { return s.g[g.id]; }).length;
     box.textContent = "";
     var head = el("div", "sy-set-head");
-    head.append(el("b", null, "Today's set"), el("span", null, n === GAMES.length ? "All six done 🏆" : n + " of " + GAMES.length + " done"));
+    head.append(el("b", null, "Today's set"), el("span", null, n === GAMES.length ? "All " + WORDS[GAMES.length] + " done 🏆" : n + " of " + GAMES.length + " done"));
     var row = el("div", "sy-set-row");
     GAMES.forEach(function (g) {
       var sc = s.g[g.id], chip = el(g.id === here ? "span" : "a", "sy-chip" + (sc ? " done" : "") + (g.id === here ? " here" : ""));
@@ -122,7 +124,7 @@
     var css = ".sy-set{margin:20px 0 8px;padding:14px;border:1px solid rgba(127,127,127,.3);border-radius:14px;text-align:left;font-family:inherit}" +
       ".sy-set-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:10px;font-size:15px}" +
       ".sy-set-head span{opacity:.7;font-size:14px}" +
-      ".sy-set-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}" +
+      ".sy-set-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}.sy-set-row .sy-chip{flex:0 0 calc((100% - 16px)/3)}" +
       ".sy-chip{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border-radius:10px;border:1px solid rgba(127,127,127,.35);color:inherit;text-decoration:none;font-size:14px;line-height:1.2;min-width:0}" +
       ".sy-chip-name{font-weight:700;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}" +
       ".sy-chip-score{font-size:13px;opacity:.75}" +
@@ -137,7 +139,7 @@
   // Shown on each game's result screen, just above the "Fancy another?" cards.
   function placeSets() {
     if (!onToday()) return;
-    document.querySelectorAll(".xg:not([data-sy]), .spn-card:not([data-sy])").forEach(function (a) {
+    document.querySelectorAll(".xg:not([data-sy]), .roots-card:not([data-sy])").forEach(function (a) {
       a.setAttribute("data-sy", "");
       addStyle();
       var box = el("div", "sy-set");

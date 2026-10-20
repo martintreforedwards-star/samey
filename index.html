@@ -134,6 +134,10 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
 .nat-card:hover .spn-arrow{transform:translateX(3px)}
 .nat-card:focus-visible{outline:3px solid #B0186A;outline-offset:2px}
 .nat-card .spn-new,.nat-card .spn-arrow{color:color-mix(in srgb,#B0186A 60%,var(--ink))}
+.roots-card{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:10px;background:color-mix(in srgb,#8A5A2B 12%,var(--surface));border:2px solid #8A5A2B;color:var(--ink);text-decoration:none;min-height:44px}
+.roots-card:hover .spn-arrow{transform:translateX(3px)}
+.roots-card:focus-visible{outline:3px solid #8A5A2B;outline-offset:2px}
+.roots-card .spn-new,.roots-card .spn-arrow{color:color-mix(in srgb,#8A5A2B 60%,var(--ink))}
 .spn-foot{text-align:center;font-size:.92rem;color:var(--muted);margin:0}
 .spn-foot a{color:var(--ink);font-weight:700}
 /* Share modal: opens once a game ends, and again from the Share result button */
@@ -223,6 +227,15 @@ body.arching main > :not(header):not(#archiveView){display:none !important}
     <p class="next" id="nextNote" hidden></p>
     <p class="next" id="archNote" hidden></p>
     <p class="next">Made by one person, with no ads. Enjoying it? <a href="https://ko-fi.com/playtheroute" target="_blank" rel="noopener" style="color:var(--ink);font-weight:700">☕ Buy me a coffee</a></p>
+    <a class="roots-card" href="/roots/">
+      <svg class="spn-wheel" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><path d="M32 12v20" stroke="#fff" stroke-width="5" stroke-linecap="round"/><path d="M32 30c0 9-12 9-16 20M32 30c0 9 12 9 16 20M32 32v20" stroke="#E0A86A" stroke-width="4.5" fill="none" stroke-linecap="round"/><circle cx="32" cy="14" r="7" fill="#69D27A"/></svg>
+      <span class="spn-text">
+        <span class="spn-new">Newest from Samey</span>
+        <span class="spn-title">Play Roots</span>
+        <span class="spn-sub">Where words come from, in four quick rounds</span>
+      </span>
+      <span class="spn-arrow" aria-hidden="true">→</span>
+    </a>
     <a class="spn-card" href="/spinonym/">
       <svg class="spn-wheel" viewBox="-32 -32 64 64" aria-hidden="true"><path d="M0 -30A30 30 0 0 1 25.98 15L0 0Z" fill="#2B5597"/><path d="M25.98 15A30 30 0 0 1 -25.98 15L0 0Z" fill="#A84F0C"/><path d="M-25.98 15A30 30 0 0 1 -25.98 -15L0 0Z" fill="#17796B"/><path d="M-25.98 -15A30 30 0 0 1 0 -30L0 0Z" fill="#6B3F99"/><circle r="10" fill="#16181D" stroke="#ffffff" stroke-width="2.5"/></svg>
       <span class="spn-text">
@@ -262,7 +275,7 @@ body.arching main > :not(header):not(#archiveView){display:none !important}
     <a class="nat-card" href="/natter/">
       <svg class="spn-wheel" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><path d="M10 14h44a4 4 0 0 1 4 4v22a4 4 0 0 1-4 4H28l-11 9v-9h-7a4 4 0 0 1-4-4V18a4 4 0 0 1 4-4z" fill="#fff"/><circle cx="22" cy="29" r="4" fill="#E0458F"/><circle cx="32" cy="29" r="4" fill="#E0458F"/><circle cx="42" cy="29" r="4" fill="#E0458F"/></svg>
       <span class="spn-text">
-        <span class="spn-new">Newest from Samey</span>
+        <span class="spn-new">Also from Samey</span>
         <span class="spn-title">Play Natter</span>
         <span class="spn-sub">Real local word, or made up? A daily dialect game</span>
       </span>

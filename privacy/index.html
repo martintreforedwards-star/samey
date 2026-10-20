@@ -45,7 +45,7 @@
 
   <section>
     <h2>Who runs this site</h2>
-    <p>Samey, Spinonym, Dotty, Syntaxed, Passé and Natter at samey.uk are made by one person, Martin Edwards, in the UK. He is responsible for any personal details you send through the site. To get in touch about privacy, use the <a href="/feedback/">feedback form</a> and choose “Other”.</p>
+    <p>Samey, Spinonym, Dotty, Syntaxed, Passé, Natter and Roots at samey.uk are made by one person, Martin Edwards, in the UK. He is responsible for any personal details you send through the site. To get in touch about privacy, use the <a href="/feedback/">feedback form</a> and choose “Other”.</p>
   </section>
 
   <section>
@@ -86,10 +86,10 @@
   </section>
 
   <a class="back" id="back" href="/">← Back to Samey</a>
-  <p class="updated">Last updated: 19 October 2026</p>
+  <p class="updated">Last updated: 20 October 2026</p>
 </main>
 <script>
-  const games = { spinonym: "Spinonym", dotty: "Dotty", syntaxed: "Syntaxed", passe: "Passé", natter: "Natter" };
+  const games = { spinonym: "Spinonym", dotty: "Dotty", syntaxed: "Syntaxed", passe: "Passé", natter: "Natter", roots: "Roots" };
   const g = (new URLSearchParams(location.search).get("game") || "").toLowerCase();
   if (games[g]) { const b = document.getElementById("back"); b.href = "/" + g + "/"; b.textContent = "← Back to " + games[g]; }
 </script>
