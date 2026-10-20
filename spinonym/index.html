@@ -656,7 +656,7 @@ function shareText(){
   let s=`Spinonym No. ${main.n+1}${main.archive?" (archive)":""} · ${main.t.name}\n${clue}\n${grid}\n${score} · ${gameRank(main.won, main.used).title}`;
   if(bonus.done){ const k=bonusScore(); s+=`\nBonus ${k}/3${k===3?" 🥚":""}`; }
   if(gold && gold.done) s+=`\n★ Golden ${gold.won?gold.used+"/"+MAX:"X/"+MAX}`;
-  return s + `\nYour go: ${SITE}`;
+  return s + `\nYour go: ${SITE} #sameyuk`;
 }
 function finish(fresh){
   $("playArea").hidden=true;

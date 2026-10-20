@@ -481,8 +481,8 @@ function showResult(){
     <div class="toast" id="toast" role="status"></div>${document.getElementById("xgCards").innerHTML}`;
   drawArchive();
   const grid=qs.map((q,i)=>state.answers[i]===q.answer?"🟩":"🟥").join("");
-  const head=practice?"Natter (practice)":`Natter No. ${plan.day}${plan.day!==todayNum?" (earlier)":""}`;
-  const txt=`${head} · ${KIND[plan.kind]}: ${cap(where)}\n${grid} ${score}/${N}\n${lines[score]}\nsamey.uk/natter/`;
+  const head=practice?"Natter (practice)":`Natter No. ${plan.day}${plan.day!==todayNum?" (archive)":""}`;
+  const txt=`${head} · ${KIND[plan.kind]}: ${cap(where)}\n${grid} ${score}/${N}\n${lines[score]}\nYour go: https://samey.uk/natter/ #sameyuk`;
   document.getElementById("share").onclick=()=>{if(navigator.share){navigator.share({text:txt}).catch(()=>{})}else{location.href="https://wa.me/?text="+encodeURIComponent(txt)}};
   document.getElementById("copy").onclick=()=>{
     const t=document.getElementById("toast");

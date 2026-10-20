@@ -89,7 +89,7 @@
     var date = new Date().toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
     return "My samey.uk set · " + date + "\n" +
       done.map(function (g) { return g.name + " " + s.g[g.id]; }).join("\n") +
-      "\n" + (done.length === GAMES.length ? "All " + WORDS[GAMES.length] + " done 🏆" : done.length + " of " + GAMES.length + " done") + "\nhttps://samey.uk";
+      "\n" + (done.length === GAMES.length ? "All " + WORDS[GAMES.length] + " done 🏆" : done.length + " of " + GAMES.length + " done") + "\nYour go: https://samey.uk/ #sameyuk";
   }
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   function fillSet(box) {

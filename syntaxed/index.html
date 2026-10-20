@@ -388,7 +388,7 @@ function results(){
   const ticks=st.res.map(x=>x?'✅':'❌').join('');
   if(!isTest&&!isArch)(window.SameySetQ=window.SameySetQ||[]).push(['syntaxed',s+'/'+n]);
   const nice=fmt(N,{weekday:'short',day:'numeric',month:'short'});
-  const share=`Syntaxed ${isArch?`No. ${N+1} (archive)`:nice}\n${s}/${n} ${ticks}\n${rank(s,n)}\nsamey.uk/syntaxed/`;
+  const share=`Syntaxed No. ${N+1}${isArch?' (archive)':''}\n${s}/${n} ${ticks}\n${rank(s,n)}\nYour go: https://samey.uk/syntaxed/ #sameyuk`;
   app.innerHTML=`<div class="card center"><div class="tag">${isTest?'Test · No. '+(N+1)+' · '+nice:isArch?'No. '+(N+1)+' · '+nice:nice}</div>
   <div class="score">${s}/${n}</div><div class="ticks">${ticks}</div><div class="rank">${rank(s,n)}</div>
   <p class="muted">${isArch?`<a class="inl" href="#" id="moreArch">Play another earlier puzzle</a> or <a class="inl" href="./${ARCH_TAIL}">go back to today's puzzle</a>.`:'<span data-next="Next Syntaxed in {t}.">See you tomorrow.</span>'+(n===5?'':' Sunday brings a boss round.')+(ARCH&&TODAY>=1&&!isTest?` Can't wait? <a class="inl" href="#" id="moreArch">Play earlier puzzles</a>.`:'')}</p>

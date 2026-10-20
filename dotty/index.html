@@ -723,7 +723,7 @@ function shareText() {
   const lines = [`Dotty No. ${info.no}${ARCHIVED ? " (archive)" : ""} · ${tw.name}`, `${"●".repeat(win ? used : 4).padEnd(4, "○")} ${win ? `${used}/4` : "X/4"}`];
   if (tw.mask && win) lines.push(`${S.hiddenAtSolve} letter${S.hiddenAtSolve === 1 ? "" : "s"} still hidden`);
   if (S.bonus && S.bonus.answer === S.bonus.key) lines.push(S.bonus.rare ? "★ Rare mark named" : "★ Bonus mark named");
-  lines.push(rankOf().title, SITE);
+  lines.push(rankOf().title, `Your go: ${SITE} #sameyuk`);
   return lines.join("\n");
 }
 function todayKey(d = new Date()) { return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`; }
