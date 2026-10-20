@@ -1,0 +1,127 @@
+// ---- Roots puzzle bank ----
+// Four lists, one per round. Each day takes the next item from each list; a list starts again from the top when it runs out.
+// Every answer was checked against Etymonline (etymonline.com) before going in. Please check new ones there too.
+
+// Round 1 · Where's it from? w = word, a = the language it came into English from, f = three wrong languages, o = the story.
+// Never use a language that is somewhere else on the word's journey as a wrong answer.
+const FROM = [
+ {w:"shampoo",a:"Hindi",f:["Portuguese","Turkish","Malay"],o:"From Hindi <i>chāmpo</i>, ‘press!’, from <i>chāmpnā</i>, ‘to press or knead’. It first meant a massage, then washing the hair."},
+ {w:"robot",a:"Czech",f:["Russian","German","Hungarian"],o:"From Karel Čapek’s 1920 play <i>R.U.R.</i> Czech <i>robota</i> means ‘forced labour’."},
+ {w:"ketchup",a:"Malay",f:["Hindi","Portuguese","Dutch"],o:"Probably from Malay <i>kichap</i>, a fish sauce, which may come from Chinese. Tomatoes came much later."},
+ {w:"algebra",a:"Arabic",f:["Greek","Persian","Sanskrit"],o:"From Arabic <i>al-jabr</i>, ‘the reunion of broken parts’, from the title of a 9th-century maths book."},
+ {w:"pyjamas",a:"Persian",f:["Turkish","Arabic","Malay"],o:"From Persian <i>pae</i>, ‘leg’, and <i>jamah</i>, ‘garment’, via Hindi and Urdu."},
+ {w:"bungalow",a:"Hindi",f:["Malay","Tamil","Persian"],o:"From Hindi <i>bangla</i>, ‘in the Bengal style’: a low, thatched house."},
+ {w:"tycoon",a:"Japanese",f:["Korean","Mongolian","Hindi"],o:"From Japanese <i>taikun</i>, ‘great lord’, a title foreigners used for the shogun."},
+ {w:"caravan",a:"Persian",f:["Hindi","Turkish","Greek"],o:"From Persian <i>karwan</i>, a group of desert travellers, via Arabic and French. Caravans on wheels came much later."},
+ {w:"kiosk",a:"Turkish",f:["Arabic","Russian","Greek"],o:"From Turkish <i>köşk</i>, a garden pavilion. It became a newspaper stand in the 1860s."},
+ {w:"anorak",a:"Greenlandic",f:["Norwegian","Finnish","Icelandic"],o:"From Greenlandic <i>anoraq</i>, a hooded jacket. The ‘nerd’ sense is British, from the 1980s."},
+ {w:"ombudsman",a:"Swedish",f:["Danish","German","Dutch"],o:"From Swedish <i>ombudsman</i>, a commissioner or agent."},
+ {w:"sauna",a:"Finnish",f:["Swedish","Russian","Estonian"],o:"From Finnish <i>sauna</i>, a bathhouse heated with hot stones."},
+ {w:"slogan",a:"Gaelic",f:["Welsh","Cornish","Old Norse"],o:"From Gaelic <i>sluagh-ghairm</i>, ‘army cry’: the battle cry of a Highland or Irish clan."},
+ {w:"zero",a:"Arabic",f:["Greek","Hebrew","Persian"],o:"From Arabic <i>sifr</i>, ‘empty’, via Italian. The same Arabic word gave us <i>cipher</i>."},
+ {w:"jungle",a:"Hindi",f:["Malay","Portuguese","Swahili"],o:"From Hindi <i>jangal</i>, which meant dry, waste land, not rainforest."},
+ {w:"tattoo",a:"Polynesian",f:["Malay","Hindi","Japanese"],o:"From Tahitian and Samoan <i>tatau</i>, first written down by Captain Cook in 1769. The military <i>tattoo</i> is a different word, from Dutch."},
+ {w:"yacht",a:"Dutch",f:["French","Swedish","Danish"],o:"From early Dutch <i>jaght</i>, short for <i>jachtschip</i>, ‘ship for chasing’: a fast boat."},
+ {w:"boss",a:"Dutch",f:["German","French","Danish"],o:"From Dutch <i>baas</i>, ‘master’. Americans took to it partly to avoid saying ‘master’."},
+ {w:"cookie",a:"Dutch",f:["German","Swedish","French"],o:"From Dutch <i>koekje</i>, ‘little cake’."},
+ {w:"avocado",a:"Nahuatl",f:["Quechua","Portuguese","Taíno"],o:"From Nahuatl (Aztec) <i>ahuacatl</i>, via Spanish."},
+ {w:"hammock",a:"Taíno",f:["Nahuatl","Portuguese","Tupi"],o:"From Taíno, a Caribbean language, via Spanish <i>hamaca</i>. Columbus noted them in his journal."},
+ {w:"kindergarten",a:"German",f:["Dutch","Danish","Swedish"],o:"German for ‘children’s garden’, coined by Friedrich Fröbel in 1840."},
+ {w:"safari",a:"Swahili",f:["Zulu","Hindi","Afrikaans"],o:"From Swahili <i>safari</i>, ‘journey’, which Swahili took from Arabic."},
+ {w:"ukulele",a:"Hawaiian",f:["Tahitian","Spanish","Samoan"],o:"Hawaiian for ‘leaping flea’, for the player’s quick fingers. The instrument grew from one brought by Portuguese settlers."},
+ {w:"mammoth",a:"Russian",f:["Polish","Norwegian","German"],o:"From Russian <i>mammot’</i>, probably from Ostyak, another language spoken in Russia."},
+ {w:"berserk",a:"Old Norse",f:["Old English","Gaelic","Dutch"],o:"From Old Norse <i>berserkr</i>, a frenzied warrior, probably ‘bear-shirt’."},
+ {w:"wok",a:"Cantonese",f:["Japanese","Korean","Vietnamese"],o:"From Cantonese <i>wok</i>, a cooking pan."},
+ {w:"coach",a:"Hungarian",f:["French","German","Czech"],o:"Named after Kocs, a Hungarian village where the carriages were made. The ‘tutor’ sense started as Oxford student slang around 1830."}
+];
+
+// Round 2 · Then and now. m = three meanings, oldest first (the game shuffles them), o = the story.
+const THEN = [
+ {w:"nice",m:["foolish, ignorant","fussy, delicate","pleasant, agreeable"],o:"From Latin <i>nescius</i>, ‘not knowing’. It took about 500 years to become a compliment."},
+ {w:"silly",m:["blessed, happy","innocent, harmless","foolish"],o:"Old English <i>gesælig</i>, ‘blessed’. The blessed were thought innocent, and innocence slid into foolishness."},
+ {w:"girl",m:["a child of either sex","a female child","a young woman"],o:"In the 1300s a boy could be a ‘knave girl’. Nobody is sure where the word came from."},
+ {w:"naughty",m:["wicked, evil","badly behaved (of children)","saucy, risqué"],o:"From <i>naught</i>, ‘nothing’. Having nothing became being good for nothing."},
+ {w:"pretty",m:["cunning, crafty","brave, gallant","attractive in a delicate way"],o:"Old English <i>prættig</i>, ‘tricky’. Clever, then fine, then lovely to look at."},
+ {w:"bully",m:["sweetheart, darling","fine fellow, good friend","someone who picks on the weak"],o:"Probably from Dutch <i>boel</i>, ‘lover’. ‘Bully for you’ keeps the cheerful old sense."},
+ {w:"villain",m:["a low-born peasant","a scoundrel","the bad guy in a story"],o:"From Latin <i>villa</i>, a farm. Snobbery did the rest."},
+ {w:"spinster",m:["a woman who spins thread","any unmarried woman, in law","an older woman thought unlikely to marry"],o:"Spinning was work for unmarried women, so the job title became a legal status."},
+ {w:"broadcast",m:["to scatter seed by hand","to spread news widely","to send out by radio"],o:"A farming word: seed thrown broadly, not sown in rows."},
+ {w:"computer",m:["a person who does calculations","a calculating machine","an electronic programmable device"],o:"For centuries computers were people, often teams of women working out tables by hand."},
+ {w:"bead",m:["a prayer","a ball on a rosary","a drop, like a bead of sweat"],o:"Old English <i>gebed</i>, ‘prayer’. Each prayer was counted on a rosary, so the beads took the name."},
+ {w:"glamour",m:["a magic spell","magical beauty, charm","Hollywood-style allure"],o:"A Scots form of <i>grammar</i>: learning was thought to include magic. Walter Scott made it popular."},
+ {w:"treacle",m:["a cure for snakebite","a cure-all remedy","syrup from refining sugar"],o:"From Greek <i>thēriakē</i>, an antidote to animal bites. The sugar syrup it was mixed with kept the name."},
+ {w:"lewd",m:["not of the clergy, lay","uneducated","crude and lustful"],o:"Old English <i>læwede</i>, ‘lay’. The unlearned were looked down on, then thought base."},
+ {w:"mess",m:["a portion of food","a group who eat together","an untidy state"],o:"From Old French <i>mes</i>, a dish of food. The army ‘mess’ keeps the middle sense."},
+ {w:"terrific",m:["causing terror","very great, excessive","excellent"],o:"From Latin <i>terrere</i>, ‘to frighten’. Like <i>awesome</i>, it flipped from fear to praise."},
+ {w:"awful",m:["inspiring awe or dread","very bad","very (as in ‘an awful lot’)"],o:"Once used of God and kings. By the 1800s it was used of the weather."},
+ {w:"clue",m:["a ball of thread","something that guides you through a puzzle","a hint in a crossword"],o:"Spelt <i>clew</i>. Theseus followed a ball of thread out of the Minotaur’s maze."},
+ {w:"quaint",m:["wise, clever","cleverly made","charmingly old-fashioned"],o:"From Latin <i>cognitus</i>, ‘known’, via Old French <i>cointe</i>."},
+ {w:"knave",m:["a boy or male servant","a rogue, a rascal","the jack in a pack of cards"],o:"Old English <i>cnafa</i>, ‘boy’. German <i>Knabe</i> still means boy."},
+ {w:"fond",m:["foolish","foolishly doting","affectionate"],o:"From Middle English <i>fonne</i>, ‘a fool’. ‘Fond hopes’ keeps the foolish sense."},
+ {w:"starve",m:["to die","to die of hunger","to suffer from hunger"],o:"Old English <i>steorfan</i>, ‘to die’. German <i>sterben</i> still means to die."},
+ {w:"meat",m:["food of any kind","animal flesh as food","the main substance of something"],o:"Old English <i>mete</i>, ‘food’. ‘Sweetmeats’ are sweets, not meat."},
+ {w:"flirt",m:["to flick with the fingers","to dart about, flutter","to play at love"],o:"Probably imitating a quick flick. People flirted fans, snapping them open, long before they flirted with each other."}
+];
+
+// Round 3 · Root family. r = the root, g = what it means and where from, y = three words that come from it,
+// n = the lookalike that doesn't, o = the story of the odd one out.
+const FAMILY = [
+ {r:"ped",g:"foot (Latin <i>pes</i>)",y:["pedal","pedestrian","centipede"],n:"paediatric",o:"<i>Paediatric</i> comes from Greek <i>pais</i>, ‘child’. Same letters, different language."},
+ {r:"port",g:"to carry (Latin <i>portare</i>)",y:["transport","portable","export"],n:"portrait",o:"<i>Portrait</i> comes from <i>portray</i>, Latin <i>pro-trahere</i>, ‘to draw forth’."},
+ {r:"spec",g:"to look (Latin <i>specere</i>)",y:["inspect","spectacle","respect"],n:"speckle",o:"<i>Speckle</i> comes from Old English <i>specca</i>, a small spot. Nothing to do with Latin."},
+ {r:"aud",g:"to hear (Latin <i>audire</i>)",y:["audience","audible","audition"],n:"audacious",o:"<i>Audacious</i> comes from Latin <i>audax</i>, ‘bold’."},
+ {r:"vi",g:"to see (Latin <i>videre</i>)",y:["video","vision","evident"],n:"vivid",o:"<i>Vivid</i> comes from Latin <i>vivus</i>, ‘alive’."},
+ {r:"mort",g:"death (Latin <i>mors</i>)",y:["mortal","mortuary","mortgage"],n:"morning",o:"<i>Morning</i> comes from Old English <i>morgen</i>. A <i>mortgage</i> is a ‘dead pledge’."},
+ {r:"sol",g:"sun (Latin <i>sol</i>)",y:["solar","solstice","parasol"],n:"solitary",o:"<i>Solitary</i> comes from Latin <i>solus</i>, ‘alone’."},
+ {r:"mar",g:"sea (Latin <i>mare</i>)",y:["marine","maritime","submarine"],n:"marmalade",o:"<i>Marmalade</i> comes from Portuguese <i>marmelo</i>, ‘quince’."},
+ {r:"vor",g:"to eat (Latin <i>vorare</i>)",y:["carnivore","herbivore","voracious"],n:"vortex",o:"<i>Vortex</i> comes from Latin <i>vertere</i>, ‘to turn’."},
+ {r:"phon",g:"sound (Greek <i>phōnē</i>)",y:["telephone","symphony","microphone"],n:"phoney",o:"<i>Phoney</i> probably comes from <i>fawney</i>, a fake gilt ring used by swindlers."},
+ {r:"graph",g:"to write (Greek <i>graphein</i>)",y:["autograph","paragraph","photograph"],n:"grapefruit",o:"<i>Grapefruit</i> is probably named because it grows in clusters, like grapes."},
+ {r:"chron",g:"time (Greek <i>khronos</i>)",y:["chronic","chronicle","synchronise"],n:"chrome",o:"<i>Chrome</i> comes from Greek <i>khrōma</i>, ‘colour’."},
+ {r:"bi",g:"life (Greek <i>bios</i>)",y:["biology","biography","antibiotic"],n:"biscuit",o:"<i>Biscuit</i> comes from Latin <i>bis coctus</i>, ‘twice cooked’."},
+ {r:"ver",g:"true (Latin <i>verus</i>)",y:["verdict","verify","very"],n:"verb",o:"<i>Verb</i> comes from Latin <i>verbum</i>, ‘word’. A <i>verdict</i> is a ‘true saying’."},
+ {r:"cap",g:"head (Latin <i>caput</i>)",y:["captain","capital","decapitate"],n:"capsule",o:"<i>Capsule</i> comes from Latin <i>capsa</i>, ‘box’."},
+ {r:"pat",g:"father (Latin <i>pater</i>)",y:["paternal","patron","patriot"],n:"patent",o:"<i>Patent</i> comes from Latin <i>patere</i>, ‘to lie open’: an open letter from the king."},
+ {r:"man",g:"hand (Latin <i>manus</i>)",y:["manual","manuscript","manicure"],n:"mansion",o:"<i>Mansion</i> comes from Latin <i>manere</i>, ‘to stay’: a place to stay."},
+ {r:"hydr",g:"water (Greek <i>hydōr</i>)",y:["hydrant","dehydrate","hydroelectric"],n:"hybrid",o:"<i>Hybrid</i> comes from Latin <i>hybrida</i>, the offspring of a tame sow and a wild boar."},
+ {r:"terr",g:"earth (Latin <i>terra</i>)",y:["terrain","territory","terrace"],n:"terrible",o:"<i>Terrible</i> comes from Latin <i>terrere</i>, ‘to frighten’."},
+ {r:"dent",g:"tooth (Latin <i>dens</i>)",y:["dentist","trident","dandelion"],n:"dent",o:"A <i>dent</i> comes from Middle English <i>dint</i>, ‘a blow’. <i>Dandelion</i> is French <i>dent de lion</i>, ‘lion’s tooth’."},
+ {r:"flor",g:"flower (Latin <i>flos</i>)",y:["florist","flourish","flora"],n:"floor",o:"<i>Floor</i> is Old English <i>flor</i>, a native word."},
+ {r:"pyr",g:"fire (Greek <i>pyr</i>)",y:["pyre","pyromaniac","pyrotechnics"],n:"pyramid",o:"<i>Pyramid</i> comes from Greek <i>pyramis</i>, apparently from Egyptian."},
+ {r:"vin",g:"wine (Latin <i>vinum</i>)",y:["vinegar","vineyard","vintage"],n:"vindictive",o:"<i>Vindictive</i> comes from Latin <i>vindicta</i>, ‘revenge’. <i>Vinegar</i> is ‘sour wine’."},
+ {r:"nau",g:"ship (Greek <i>naus</i>)",y:["nautical","astronaut","nausea"],n:"naughty",o:"<i>Naughty</i> comes from <i>naught</i>, ‘nothing’. <i>Nausea</i> first meant seasickness."},
+ {r:"cent",g:"hundred (Latin <i>centum</i>)",y:["century","percent","centipede"],n:"centre",o:"<i>Centre</i> comes from Greek <i>kentron</i>, a sharp point, like a compass point."},
+ {r:"aqu",g:"water (Latin <i>aqua</i>)",y:["aquarium","aqueduct","aquatic"],n:"acquaint",o:"<i>Acquaint</i> comes from Latin <i>cognitus</i>, ‘known’."},
+ {r:"lum",g:"light (Latin <i>lumen</i>)",y:["luminous","illuminate","luminary"],n:"lumber",o:"Nobody is sure where <i>lumber</i> comes from. It may be linked to Lombard pawnbrokers, whose rooms were full of junk."}
+];
+
+// Round 4 · Long-lost twins. w = the word, a = its twin (same ancestor, different route), f = three unrelated words, o = the story.
+const TWINS = [
+ {w:"hospital",a:"hotel",f:["spittle","hope","hoop"],o:"Both from Latin <i>hospitale</i>, a guest house. <i>Hostel</i> is a third twin."},
+ {w:"shirt",a:"skirt",f:["shift","scarf","kilt"],o:"The same old Germanic word. <i>Shirt</i> came through Old English, <i>skirt</i> through Old Norse."},
+ {w:"guard",a:"ward",f:["gourd","sword","word"],o:"<i>Ward</i> is the English word. <i>Guard</i> is the same word that went through French and came back."},
+ {w:"royal",a:"regal",f:["rally","rival","loyal"],o:"Both from Latin <i>regalis</i>. <i>Royal</i> came the long way, through French."},
+ {w:"legal",a:"loyal",f:["eagle","lethal","league"],o:"Both from Latin <i>legalis</i>. Loyalty first meant keeping to the law."},
+ {w:"frail",a:"fragile",f:["frill","trail","flail"],o:"Both from Latin <i>fragilis</i>. <i>Frail</i> was worn down by French first."},
+ {w:"cattle",a:"chattel",f:["kettle","castle","battle"],o:"Both from Latin <i>capitale</i>, property. Wealth was counted in animals."},
+ {w:"dish",a:"desk",f:["dash","dusk","flask"],o:"Both from Latin <i>discus</i>, a flat plate. So are <i>disc</i> and <i>dais</i>."},
+ {w:"secure",a:"sure",f:["sour","shore","sore"],o:"Both from Latin <i>securus</i>, ‘free from care’. <i>Sure</i> came through French."},
+ {w:"poison",a:"potion",f:["person","posy","prison"],o:"Both from Latin <i>potio</i>, a drink. A poison was any potion, then a deadly one."},
+ {w:"gentle",a:"jaunty",f:["jolly","jaundice","giant"],o:"Both from French <i>gentil</i>, well-born. <i>Jaunty</i> was an English go at saying <i>gentil</i>, and first meant elegant, stylish."},
+ {w:"major",a:"mayor",f:["mare","manor","mayhem"],o:"Both from Latin <i>major</i>, ‘greater’. The mayor is the ‘greater’ one in town."},
+ {w:"servant",a:"sergeant",f:["surgeon","serpent","savant"],o:"Both from Latin <i>servire</i>, ‘to serve’. A sergeant was once just a servant."},
+ {w:"blaspheme",a:"blame",f:["blemish","blaze","bland"],o:"Both from Greek <i>blasphēmein</i>, ‘to speak evil of’. <i>Blame</i> was worn down through French."},
+ {w:"dignity",a:"dainty",f:["dandy","dental","dynasty"],o:"Both from Latin <i>dignitas</i>, ‘worth’. Something dainty was first something valued."},
+ {w:"faction",a:"fashion",f:["fascinate","passion","fission"],o:"Both from Latin <i>factio</i>, ‘a making’. Fashion is the way things are made."},
+ {w:"tradition",a:"treason",f:["trade","treaty","transition"],o:"Both from Latin <i>traditio</i>, a handing over: of customs, or of your country."},
+ {w:"inch",a:"ounce",f:["itch","pinch","notch"],o:"Both from Latin <i>uncia</i>, a twelfth part: 12 inches in a foot, and 12 ounces in a Roman pound."},
+ {w:"chief",a:"chef",f:["chafe","cheat","chess"],o:"Both from Latin <i>caput</i>, ‘head’. A chef is the head cook."},
+ {w:"zero",a:"cipher",f:["zephyr","sapphire","cider"],o:"Both from Arabic <i>sifr</i>, ‘empty’. One came through Italian, the other through Latin."},
+ {w:"hale",a:"whole",f:["hail","heel","hall"],o:"Both from Old English <i>hal</i>, ‘healthy, entire’. The <i>wh-</i> spelling of whole arrived in the 1400s."},
+ {w:"ship",a:"skiff",f:["skip","shift","sheaf"],o:"The same Germanic word. <i>Skiff</i> came back to English through Italian and French."},
+ {w:"corpse",a:"corps",f:["core","copse","cops"],o:"Both from Latin <i>corpus</i>, ‘body’. A corps is a body of soldiers."},
+ {w:"grammar",a:"glamour",f:["clamour","gleam","grandmother"],o:"Learning was once thought to include magic, so <i>grammar</i> became a Scots word for a spell."},
+ {w:"clock",a:"cloak",f:["clack","croak","clog"],o:"Both from Latin <i>clocca</i>, ‘bell’. A bell-shaped cape, and a bell that told the time."},
+ {w:"particle",a:"parcel",f:["parsley","partridge","pasture"],o:"Both from Latin <i>particula</i>, ‘a small part’."},
+ {w:"fantasy",a:"fancy",f:["fanfare","infancy","fan"],o:"<i>Fancy</i> is a shortened <i>fantasy</i>, from the 1400s."}
+];

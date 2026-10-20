@@ -67,6 +67,7 @@
           <option value="Syntaxed">Syntaxed</option>
           <option value="Passé">Passé</option>
           <option value="Natter">Natter</option>
+          <option value="Roots">Roots</option>
           <option value="All / general">All / general</option>
         </select>
       </div>
@@ -126,6 +127,7 @@
   if (game === "syntaxed") $("game").value = "Syntaxed";
   if (game === "passe") $("game").value = "Passé";
   if (game === "natter") $("game").value = "Natter";
+  if (game === "roots") $("game").value = "Roots";
   const type = (q.get("type") || "").toLowerCase();
   const typeMap = { puzzle: "Puzzle issue", bug: "Bug", idea: "Idea", other: "Other" };
   if (typeMap[type]) $("type").value = typeMap[type];
@@ -135,6 +137,7 @@
   if (game === "syntaxed") $("back").href = "/syntaxed/";
   if (game === "passe") $("back").href = "/passe/";
   if (game === "natter") $("back").href = "/natter/";
+  if (game === "roots") $("back").href = "/roots/";
 
   $("fb").addEventListener("submit", async e => {
     e.preventDefault();
