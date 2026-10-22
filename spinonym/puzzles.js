@@ -80,13 +80,13 @@ const PUZZLES = [
   {type:"collective-noun", clue:"Geese", sub:"A ____ of geese, when they're on the ground.", answer:"gaggle", close:"flock skein"},
 
   // ---- Sound & spelling ----
-  {type:"anagram", clue:"Silent", sub:"Use every letter. It means: pay attention.", answer:"listen", close:"enlist tinsel inlets"},
-  {type:"anagram", clue:"Earth", sub:"Use every letter. It's something that beats.", answer:"heart", close:"hater"},
-  {type:"anagram", clue:"Dusty", sub:"Use every letter. It's a room for reading.", answer:"study"},
-  {type:"anagram", clue:"Elbow", sub:"Use every letter. It means underneath.", answer:"below", close:"bowel"},
-  {type:"anagram", clue:"Lemon", sub:"Use every letter. It's a big, juicy fruit.", answer:"melon"},
-  {type:"anagram", clue:"Teacher", sub:"Use every letter. Someone who breaks the rules.", answer:"cheater", close:"hectare"},
-  {type:"anagram", clue:"Inch", sub:"Use every letter. It's part of your face.", answer:"chin"},
+  {type:"anagram", clue:"Silent", sub:"Use every letter.", answer:"listen", close:"enlist tinsel inlets"},
+  {type:"anagram", clue:"Earth", sub:"Use every letter.", answer:"heart", close:"hater"},
+  {type:"anagram", clue:"Dusty", sub:"Use every letter.", answer:"study"},
+  {type:"anagram", clue:"Elbow", sub:"Use every letter.", answer:"below", close:"bowel"},
+  {type:"anagram", clue:"Lemon", sub:"Use every letter.", answer:"melon"},
+  {type:"anagram", clue:"Teacher", sub:"Use every letter.", answer:"cheater", close:"hectare"},
+  {type:"anagram", clue:"Inch", sub:"Use every letter.", answer:"chin"},
 
   {type:"homophone", clue:"Knight", sub:"Same sound, different spelling: when the sun's gone down.", answer:"night"},
   {type:"homophone", clue:"Flour", sub:"Same sound, different spelling: it grows in the garden.", answer:"flower"},
