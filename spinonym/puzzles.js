@@ -33,13 +33,13 @@ const PUZZLES = [
   {type:"hypernym", clue:"Hammer · Saw · Spanner", sub:"One word covers all three.", answer:"tool", close:"equipment implement"},
   {type:"hypernym", clue:"Piano · Violin · Trumpet", sub:"One word covers all three.", answer:"instrument", close:"music"},
 
-  {type:"hyponym", clue:"Dog", sub:"A curly-coated breed, famous for fancy haircuts.", answer:"poodle",
+  {type:"hyponym", clue:"Dog", sub:"Its name comes from the German for 'splash'.", clueHint:"A curly-coated breed, famous for fancy haircuts.", answer:"poodle",
    close:"labrador spaniel terrier collie beagle dachshund bulldog greyhound whippet retriever pug corgi"},
-  {type:"hyponym", clue:"Cheese", sub:"Named after a village in Somerset.", answer:"cheddar",
+  {type:"hyponym", clue:"Cheese", sub:"In American slang, it also means money.", clueHint:"Named after a village in Somerset.", answer:"cheddar",
    close:"stilton brie wensleydale cheshire gouda edam camembert feta"},
-  {type:"hyponym", clue:"Tree", sub:"Its leaf is on Canada's flag.", answer:"maple",
+  {type:"hyponym", clue:"Tree", sub:"About 40 litres of its sap boil down to one of syrup.", clueHint:"Its leaf is on Canada's flag.", answer:"maple",
    close:"oak ash birch elm willow pine beech sycamore"},
-  {type:"hyponym", clue:"Bread", sub:"Italian, flat, and named after a slipper.", answer:"ciabatta",
+  {type:"hyponym", clue:"Bread", sub:"Invented in 1982, as Italy's answer to the baguette.", clueHint:"Its name is Italian for 'slipper'.", answer:"ciabatta",
    close:"focaccia baguette bloomer bagel brioche sourdough naan pitta"},
 
   {type:"meronym", clue:"Bicycle", sub:"The bit you sit on.", answer:"saddle",
