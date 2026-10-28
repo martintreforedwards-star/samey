@@ -90,3 +90,141 @@ const FAKE = [
  {r:[["dashcam","A camera on a car's dashboard","Merriam-Webster, 2025"],["dad bod","A comfy, less-than-gym-toned physique","Merriam-Webster, 2025"],["shapewear","Tight underwear that smooths your outline","Merriam-Webster, 2026"]],k:["carpark karma","Finding a space right by the door"]},
  {r:[["side-eye","A sideways look of disapproval","Merriam-Webster, 2025"],["padawan","A beginner learning from an expert","Merriam-Webster, 2023"],["logline","A one-sentence summary of a story","Merriam-Webster, 2023"]],k:["sidewit","A clever reply you only think of afterwards"]}
 ];
+
+// ---------- Rounds added on 28 Oct 2026 ----------
+// The standard shape: w = the word, a = the right answer, f = three wrong answers, o = the story shown afterwards.
+
+// Blend it · which two words were squashed together?
+const BLEND = [
+ {w:"copium",a:"cope + opium",f:["copy + delirium","cop + premium","cope + optimism"],o:"An imaginary ‘drug’ of denial after a disappointment. Added to Merriam-Webster in 2026."},
+ {w:"smishing",a:"SMS + phishing",f:["smash + fishing","smirk + wishing","small + phishing"],o:"Scamming people by text message. Added to Merriam-Webster in 2023."},
+ {w:"jorts",a:"jeans + shorts",f:["jogging + shorts","joke + sports","jersey + skirts"],o:"Denim shorts. Added to Merriam-Webster in 2023."},
+ {w:"staycation",a:"stay + vacation",f:["station + vacation","stay + location","stack + occasion"],o:"A holiday at or near home. It caught on during the money worries of 2008."},
+ {w:"glamping",a:"glamorous + camping",f:["glam rock + camping","glamour + clamping","gleaming + damping"],o:"Camping with comfy beds, proper loos and fairy lights."},
+ {w:"mansplain",a:"man + explain",f:["mansion + plain","manly + complain","man + plainly"],o:"When a man explains something, often patronisingly, to someone who already knows it. The Oxford English Dictionary added it in 2018."},
+ {w:"bromance",a:"brother + romance",f:["brolly + romance","broken + romance","brother + bromide"],o:"A close, non-romantic friendship between two men. <i>Bro</i> is short for brother."},
+ {w:"frenemy",a:"friend + enemy",f:["French + enemy","frenzy + enemy","friend + memory"],o:"Someone who acts like a friend but is really a rival. It's older than you might think: the American columnist Walter Winchell used it in 1932."},
+ {w:"vlog",a:"video + blog",f:["voice + log","visual + logic","vinyl + blog"],o:"A video diary posted online."},
+ {w:"webinar",a:"web + seminar",f:["web + binary","weekly + seminar","website + dinner"],o:"A talk or class held online."},
+ {w:"emoticon",a:"emotion + icon",f:["emoji + cartoon","emote + continue","emotion + cone"],o:"A face made of keyboard symbols, like :-). It came before the emoji."},
+ {w:"phablet",a:"phone + tablet",f:["photo + tablet","phantom + tablet","phone + Bluetooth"],o:"A phone so big it's almost a tablet."},
+ {w:"sharenting",a:"sharing + parenting",f:["share + renting","sharp + parenting","sharing + tenting"],o:"Parents posting lots of photos and news about their children online."},
+ {w:"tradwife",a:"traditional + wife",f:["trading + wife","tradesman's + wife","tradition + midwife"],o:"A wife and mother who cooks and cleans at home and posts about it online. Cambridge Dictionary added it in 2025."},
+ {w:"athleisure",a:"athletic + leisure",f:["athlete + pleasure","Athens + leisure","athletic + treasure"],o:"Sports clothes worn as everyday clothes."},
+ {w:"Brexit",a:"Britain + exit",f:["breakfast + exit","British + extra","break + exit"],o:"The UK leaving the European Union. Collins Word of the Year for 2016."},
+ {w:"permacrisis",a:"permanent + crisis",f:["permafrost + crisis","permission + crisis","perfect + crisis"],o:"A long stretch of instability and worry. Collins Word of the Year for 2022."},
+ {w:"cosplay",a:"costume + play",f:["cosy + play","cosmic + display","costly + replay"],o:"Dressing up as a character from a film, comic or game."},
+ {w:"chillax",a:"chill + relax",f:["chilli + relax","chill + tax","children + relax"],o:"To calm down and take it easy."}
+];
+
+// Old word, new trick · old = what it used to mean; a = the new meaning.
+const TRICK = [
+ {w:"jelly",old:"a wobbly pudding",a:"Jealous",f:["Very tired","Nervous and shaky","Overexcited"],o:"Short for jealous. The Oxford English Dictionary added this meaning in March 2026."},
+ {w:"nerf",old:"a make of soft foam toys",a:"To make something weaker, especially in a video game",f:["To fire foam darts at a friend","To pad something so it's safe","To make something look cuter"],o:"From the squashy Nerf toys. Added to Merriam-Webster in 2023."},
+ {w:"hallucinate",old:"to see things that aren't there",a:"When an AI makes something up and presents it as fact",f:["When a screen flickers","When a computer runs slowly","When a phone shows a fake alert"],o:"Cambridge Dictionary and Dictionary.com both made it Word of the Year in 2023."},
+ {w:"boss",old:"the person in charge at work",a:"A big enemy you must beat to move on in a video game",f:["The best player on a team","The person who sets up an online game","A secret level in a game"],o:"Added to Merriam-Webster in 2023."},
+ {w:"ghost",old:"the spirit of a dead person",a:"To suddenly stop replying to someone, with no explanation",f:["To follow someone online without posting","To sneak into a party uninvited","To pretend to be ill"],o:"One day they're chatting, the next they've vanished."},
+ {w:"troll",old:"a creature from folk tales that lives under a bridge",a:"Someone who posts things online just to upset people",f:["Someone who reads everything but never posts","A fake account run by a computer","Someone who deletes their posts quickly"],o:"Possibly also from <i>trolling</i>, dragging a fishing line to see what bites."},
+ {w:"cloud",old:"a mass of water drops in the sky",a:"Storage and computing on the internet, not on your own device",f:["A slow internet connection","A blurry photo","A group of people online at once"],o:"Your photos ‘in the cloud’ are really on computers somewhere else."},
+ {w:"stream",old:"a small river",a:"To watch or listen to something over the internet as it plays",f:["To download lots of files at once","To cry while watching a film","To type very fast"],o:"The video flows to you, like water."},
+ {w:"spam",old:"a tinned meat",a:"Unwanted junk messages sent to lots of people",f:["A message sent by mistake","A very short email","A deleted message"],o:"From a Monty Python sketch where everything on the menu comes with Spam, whether you want it or not."},
+ {w:"catfish",old:"a fish with whiskers",a:"To trick someone online by pretending to be someone else",f:["To post lots of pet photos","To fish for compliments online","To send someone a silly picture"],o:"From the 2010 documentary film <i>Catfish</i>."},
+ {w:"salty",old:"tasting of salt",a:"Bitter or annoyed, especially after losing",f:["Rude and swearing a lot","Very sweaty after exercise","Funny in a clever way"],o:"Lost the match and still moaning about it? You're salty."},
+ {w:"extra",old:"more than usual",a:"Over the top, making a big fuss",f:["Staying late at work","Always hungry","Very generous"],o:"A birthday with fireworks, a choir and a horse? That's extra."},
+ {w:"tea",old:"a hot drink",a:"Gossip",f:["A short break from your phone","Good advice","An awkward silence"],o:"Usually <i>spill the tea</i>: tell us everything."},
+ {w:"flex",old:"to bend",a:"To show off",f:["To change your plans","To exercise in public","To agree to anything"],o:"From flexing your muscles. A new car on Instagram? That's a flex."},
+ {w:"viral",old:"caused by a virus",a:"Shared very quickly by huge numbers of people online",f:["Full of fake news","Damaged by a computer bug","Popular with teenagers only"],o:"It spreads from person to person, like a virus."},
+ {w:"charismatic",old:"full of charm",a:"Describing animals, like pandas, that people love and want to protect",f:["Describing a pet that obeys commands","Describing a famous person who gives to charity","Describing a city that's good for tourists"],o:"Cute animals help conservation charities raise money. The Oxford English Dictionary added this meaning in March 2026."},
+ {w:"basic",old:"simple",a:"Unoriginal: liking whatever everyone else likes",f:["Rich but mean","Shy in big groups","Bad at technology"],o:"Pumpkin spice latte in a cosy jumper? Some would call that basic."},
+ {w:"cap",old:"a hat",a:"A lie",f:["A joke","A promise","A secret"],o:"<i>No cap</i> means ‘no lie, honestly’."}
+];
+
+// Where did it come from? · a = what the word was born in.
+// Never use a wrong answer the word also passed through (for example a film of the book).
+const SOURCE = [
+ {w:"cyberspace",a:"Sci-fi story",f:["Film","Song","Video game"],o:"Coined by William Gibson in a 1982 science-fiction story, years before most people had heard of the internet."},
+ {w:"muggle",a:"Children's book",f:["Song","TV cartoon","Poem"],o:"A person with no magic powers, from J.K. Rowling's Harry Potter books."},
+ {w:"gaslighting",a:"Film",f:["Novel","Song","Video game"],o:"From the 1944 film <i>Gaslight</i>, in which a husband tricks his wife into doubting her own mind. It was based on a 1938 play. Merriam-Webster's Word of the Year for 2022."},
+ {w:"stan",a:"Song",f:["Film","Novel","Video game"],o:"A super-fan. From Eminem's 2000 song ‘Stan’, about an obsessive fan."},
+ {w:"grok",a:"Novel",f:["Song","Video game","TV cartoon"],o:"To understand something completely. From Robert Heinlein's 1961 science-fiction novel <i>Stranger in a Strange Land</i>."},
+ {w:"Big Brother",a:"Novel",f:["Song","Video game","TV advert"],o:"From George Orwell's 1949 novel <i>Nineteen Eighty-Four</i>. The reality TV show borrowed the name decades later."},
+ {w:"Catch-22",a:"Novel",f:["Song","Radio show","TV advert"],o:"A no-win situation. From Joseph Heller's 1961 novel about airmen in the Second World War."},
+ {w:"Jedi",a:"Film",f:["Novel","Song","Poem"],o:"The wise warriors of <i>Star Wars</i>, first seen in 1977."},
+ {w:"chortle",a:"Poem",f:["Song","TV comedy","Film"],o:"Chuckle plus snort, made up by Lewis Carroll in his 1871 poem ‘Jabberwocky’."},
+ {w:"Scrooge",a:"Novel",f:["Song","Poem","TV cartoon"],o:"A mean person. Ebenezer Scrooge is the miser in Charles Dickens's <i>A Christmas Carol</i> (1843)."},
+ {w:"hobbit",a:"Children's book",f:["Song","Poem","TV comedy"],o:"From J.R.R. Tolkien's <i>The Hobbit</i> (1937)."},
+ {w:"d'oh",a:"TV cartoon",f:["Film","Novel","Song"],o:"Homer Simpson's cry of annoyance. The Oxford English Dictionary added it in 2001."},
+ {w:"Tardis",a:"Sci-fi TV show",f:["Novel","Film","Song"],o:"From <i>Doctor Who</i>, first shown in 1963. Now used for anything that's bigger on the inside than it looks."},
+ {w:"bazinga",a:"TV comedy",f:["Video game","Film","Novel"],o:"Sheldon's catchphrase in <i>The Big Bang Theory</i>, after he's played a joke on someone."}
+];
+
+// Older than you think · a = when it was first written down.
+const OLDER = [
+ {w:"unfriend",a:"1650s",f:["1880s","1950s","2000s"],o:"In 1659 Thomas Fuller wrote: ‘I hope, Sir, that we are not mutually un-friended by this difference.’ Facebook came along 345 years later."},
+ {w:"influencer",a:"1660s",f:["1890s","1970s","2000s"],o:"It meant any person or thing with influence. Being one as a job came much later."},
+ {w:"OMG",a:"1910s",f:["1960s","1980s","1990s"],o:"In a 1917 letter to Winston Churchill from the retired admiral Lord Fisher."},
+ {w:"hangry",a:"1950s",f:["1990s","2000s","2010s"],o:"Hungry plus angry. It goes back to at least the 1950s, though the Oxford English Dictionary only added it in 2018."},
+ {w:"nerd",a:"1950s",f:["1890s","1920s","1970s"],o:"First found in Dr Seuss's 1950 book <i>If I Ran the Zoo</i>, as one of his imaginary creatures."},
+ {w:"brunch",a:"1890s",f:["1950s","1970s","1990s"],o:"In 1895: ‘when a man makes lunch his first meal of the day it becomes brunch’."},
+ {w:"smog",a:"1900s",f:["1950s","1960s","1970s"],o:"Smoke plus fog, first recorded in 1905 and said to describe London."},
+ {w:"dude",a:"1880s",f:["1950s","1960s","1980s"],o:"It first mocked a fussy, overdressed man about town."},
+ {w:"legit",a:"1890s",f:["1960s","1980s","2000s"],o:"Theatre slang for ‘legitimate’ drama, as opposed to music hall and burlesque."},
+ {w:"hipster",a:"1930s",f:["1960s","1990s","2000s"],o:"From the late 1930s, for someone ahead of the latest trends."},
+ {w:"ginormous",a:"1940s",f:["1970s","1990s","2000s"],o:"Gigantic plus enormous. It started as military slang and was in a British newspaper by 1942."},
+ {w:"meme",a:"1970s",f:["1990s","2000s","2010s"],o:"Coined by the biologist Richard Dawkins in his 1976 book <i>The Selfish Gene</i>, for an idea that spreads from person to person."},
+ {w:"OK",a:"1830s",f:["1910s","1940s","1960s"],o:"First printed in a Boston newspaper in 1839, as a jokey short form of ‘oll korrect’."}
+];
+
+// Use it right · a = the one sentence that uses the word properly.
+const USE = [
+ {w:"mid",a:"Honestly, the film was a bit mid. I wouldn't watch it again.",f:["That film was so mid, I've watched it five times!","I'll meet you mid, by the clock tower.","She's very mid: always first with the answer."],o:"<i>Mid</i> means average, nothing special."},
+ {w:"delulu",a:"He thinks he'll play for England next week. He's totally delulu.",f:["I'm so delulu after that long run, I need a nap.","The pasta was delulu, so I had seconds.","We got delulu on the way home and had to ask directions."],o:"<i>Delulu</i> means believing things that aren't true, usually because you'd rather."},
+ {w:"rizz",a:"He's got so much rizz, everyone at the party wanted to talk to him.",f:["I spilt rizz all over the kitchen floor.","Don't shake the bottle or the rizz will go flat.","She rizzed on for an hour about her day at work."],o:"<i>Rizz</i> is charm, the kind that wins people over."},
+ {w:"doomscroll",a:"I meant to sleep at ten, but I doomscrolled the news until midnight.",f:["I doomscrolled through the recipe book to find the cake.","He doomscrolled the old wallpaper off the wall.","She doomscrolled her essay and got top marks."],o:"To <i>doomscroll</i> is to keep scrolling through bad news even though it makes you feel worse."},
+ {w:"zhuzh",a:"The room's nearly done. It just needs a cushion to zhuzh it up.",f:["The lemonade zhuzhed everywhere when I opened it.","He zhuzhed off without saying goodbye.","Please zhuzh quietly, the baby's asleep."],o:"To <i>zhuzh</i> something is to give it a quick touch to make it look better."},
+ {w:"bussin'",a:"These chips are bussin'! Can I have the recipe?",f:["The station was bussin', so we couldn't get a seat.","I'm bussin' to school today, the car's broken.","Stop bussin' and let me finish my sentence."],o:"<i>Bussin'</i> means really good, especially food."},
+ {w:"touch grass",a:"You've been gaming all weekend. Go and touch grass.",f:["After the exam I touched grass: I got every answer right.","She touched grass and finally became famous.","The team touched grass by scoring in the last minute."],o:"To <i>touch grass</i> is to get offline and back into the real world."},
+ {w:"glow-up",a:"Have you seen the old town hall since they did it up? What a glow-up.",f:["We had a glow-up at the fireworks last night.","Turn the glow-up down, it's too bright.","I've got a glow-up meeting at nine."],o:"A <i>glow-up</i> is a big improvement in how someone or something looks."},
+ {w:"Sunday scaries",a:"About six o'clock every Sunday, the Sunday scaries kick in.",f:["We watched the Sunday scaries on TV with popcorn.","The Sunday scaries are on at the cinema.","I bought some Sunday scaries for Halloween."],o:"The <i>Sunday scaries</i> are the worried feeling as the weekend ends."},
+ {w:"coffee badging",a:"She went in at ten, said hello, and was home by eleven. Classic coffee badging.",f:["I'm coffee badging: I've had five cups today.","He's coffee badging, saving stamps for a free drink.","They're coffee badging the new staff with name tags."],o:"<i>Coffee badging</i> is popping into the office just long enough to be seen."},
+ {w:"copium",a:"‘We'll win the league next year,’ said the fan, high on copium.",f:["Add a spoonful of copium to the stew.","He copied the homework using copium.","The new roof is made of copium."],o:"<i>Copium</i> is the imaginary ‘drug’ of denial after a let-down."},
+ {w:"sanewash",a:"The report sanewashed his rambling speech, making it sound sensible.",f:["She sanewashed the car before selling it.","I always sanewash my hands before cooking.","The jumper needs a sanewash on a cool cycle."],o:"To <i>sanewash</i> is to make something extreme or odd sound reasonable. Dictionary.com added it in 2025."},
+ {w:"quiet quit",a:"He's quiet quitting: he does his hours and not a minute more.",f:["She quiet quit the choir by singing very softly.","They quiet quit the library to avoid being shushed.","I quiet quit my car so it wouldn't wake the neighbours."],o:"To <i>quiet quit</i> is to do only the bare minimum at work."},
+ {w:"lowkey",a:"I'm lowkey excited about the school fair, but don't tell anyone.",f:["Turn the music lowkey, I'm on the phone.","The lowkey is under the mat if you're locked out.","He sang the whole song in lowkey."],o:"<i>Lowkey</i> means a bit, or secretly."}
+];
+
+// Spell it out · a = what the letters stand for.
+const SPELL = [
+ {w:"ngl",a:"not gonna lie",f:["never gonna leave","nice game, lads","no good luck"],o:"Added to Merriam-Webster in 2023."},
+ {w:"TFW",a:"that feeling when",f:["thanks for waiting","too far west","the final word"],o:"Used to start a relatable moment. Added to Merriam-Webster in 2023."},
+ {w:"TTYL",a:"talk to you later",f:["thanks, try your luck","take the year long","time to yell loudly"],o:"Added to Merriam-Webster in 2023."},
+ {w:"WFH",a:"working from home",f:["waiting for help","weekend family holiday","wish for happiness"],o:"Added to Merriam-Webster in 2025."},
+ {w:"GOAT",a:"greatest of all time",f:["game over, all together","going out at teatime","get out and train"],o:"<i>GOATED</i>, meaning considered the greatest, was added to Merriam-Webster in 2023."},
+ {w:"AGI",a:"artificial general intelligence",f:["automatic game interface","advanced graphics input","all-generation internet"],o:"An AI that could match people at almost any task. Added to Merriam-Webster in 2026."},
+ {w:"FOMO",a:"fear of missing out",f:["friends of my office","full of more options","fun on Mondays only"],o:"The worry that everyone else is having fun without you."},
+ {w:"IRL",a:"in real life",f:["I'm really late","instant reply link","in Rome lately"],o:"As opposed to online."},
+ {w:"IYKYK",a:"if you know, you know",f:["if you keep, you keep","I'm young, keep young, kids","if you're kind, you're kind"],o:"For an in-joke that only some people will get."},
+ {w:"POV",a:"point of view",f:["proof of video","picture of value","pop-up video"],o:"Very popular for videos showing a scene through someone's eyes."},
+ {w:"OOTD",a:"outfit of the day",f:["out of the door","one of those days","order on Thursday"],o:"Posted with a photo of what you're wearing."},
+ {w:"TBH",a:"to be honest",f:["the best half","thanks, big help","time before home"],o:"Usually just before something blunt."},
+ {w:"ICYMI",a:"in case you missed it",f:["I can't yet mention it","if conditions yield more info","I'm calling you, my idol"],o:"Used when sharing something again."},
+ {w:"SMH",a:"shaking my head",f:["so much happiness","send me help","see my house"],o:"For something silly or disappointing."},
+ {w:"TIL",a:"today I learned",f:["till I leave","tell it loudly","time is limited"],o:"Before an interesting fact you've just found out."},
+ {w:"BRB",a:"be right back",f:["bring rain boots","big round of biscuits","be really brave"],o:"One of the oldest bits of chat-room shorthand."},
+ {w:"AFK",a:"away from keyboard",f:["always fun and kind","ask for kindness","all friends know"],o:"Gamers say it when they step away."},
+ {w:"DM",a:"direct message",f:["daily meme","dream moment","don't mind"],o:"A private message on social media."},
+ {w:"FWIW",a:"for what it's worth",f:["fine, whatever, I win","friends with internet wifi","for when I'm working"],o:"A modest way to offer an opinion."}
+];
+
+// Translate it · Sundays only, as the last round. w = a sentence full of new words; a = the right plain-English version.
+const TRANSLATE = [
+ {w:"Ngl, that smashburger was bussin', no cap.",a:"Honestly, that burger was delicious. I mean it.",f:["Honestly, that burger was too greasy, I'm afraid.","I didn't order the burger, but it looked good.","That burger was overpriced, but I'm not complaining."],o:"<i>ngl</i> = not gonna lie · <i>bussin'</i> = really good · <i>no cap</i> = no lie."},
+ {w:"He's so delulu. He thinks he's got rizz, but it's pure copium.",a:"He's kidding himself. He thinks he's charming, but he's just in denial.",f:["He's confused. He thinks he's clever, but he's just tired.","He's very lucky. He's charming and he knows it.","He's grumpy. He thinks he's ill, but he's just hungry."],o:"<i>delulu</i> = believing what isn't true · <i>rizz</i> = charm · <i>copium</i> = denial."},
+ {w:"The Sunday scaries hit hard, so I doomscrolled till midnight. Need to touch grass.",a:"I was dreading Monday, so I read bad news online for hours. I need to get outside.",f:["I had nightmares on Sunday, so I read a scary book till midnight. I need to mow the lawn.","I was bored on Sunday, so I played games till midnight. I need a holiday.","I was excited about Monday, so I couldn't sleep. I need to go for a run."],o:"<i>Sunday scaries</i> = worry as the weekend ends · <i>doomscroll</i> = keep reading bad news · <i>touch grass</i> = go offline."},
+ {w:"The café had a total glow-up, but the cake's lowkey mid.",a:"The café looks much better after its makeover, but honestly the cake is just average.",f:["The café has new lights, but the cake is quietly excellent.","The café looks the same, but the cake is half price.","The café is very bright, and the cake is the best in town."],o:"<i>glow-up</i> = big improvement · <i>lowkey</i> = a bit, or secretly · <i>mid</i> = average."},
+ {w:"He was coffee badging again, then ghosted the team chat. Not GOATed behaviour.",a:"He popped into the office briefly again, then stopped answering the team's messages. Not great.",f:["He bought everyone coffee again, then sent the team a spooky message. Very kind.","He forgot his office pass again, then left the team chat. Not his fault.","He drank too much coffee again, then talked non-stop in the team chat. Typical."],o:"<i>coffee badging</i> = showing your face at the office · <i>ghost</i> = stop replying · <i>GOATed</i> = the greatest."},
+ {w:"Ngl, I'm lowkey jelly of your jorts.",a:"Honestly, I'm secretly a bit jealous of your denim shorts.",f:["Honestly, I've spilt jelly on your jogging shorts.","Honestly, your shorts are a bit too small for you.","Honestly, I'd like to borrow your jumper tonight."],o:"<i>ngl</i> = not gonna lie · <i>lowkey</i> = secretly · <i>jelly</i> = jealous · <i>jorts</i> = denim shorts."},
+ {w:"TFW the update nerfs your best character and your mate rage quits. SMH.",a:"That feeling when the game update weakens your best character and your friend storms off in a temper. Shaking my head.",f:["That feeling when the update makes your character stronger and your friend wins. Well done.","That feeling when the update deletes your saved game and your friend laughs. So funny.","That feeling when your friend gets hit by a foam dart and leaves the team. Ouch."],o:"<i>TFW</i> = that feeling when · <i>nerf</i> = weaken · <i>rage quit</i> = give up in a temper · <i>SMH</i> = shaking my head."},
+ {w:"Tbh the sequel was mid, but the cutscenes? Chef's kiss.",a:"To be honest, the sequel was only average, but the film scenes between the gameplay were brilliant.",f:["To be honest, the sequel was brilliant, but the trailers were too long.","To be honest, I fell asleep halfway, but the popcorn was lovely.","To be honest, the sequel was cut short, but the actors blew kisses."],o:"<i>tbh</i> = to be honest · <i>mid</i> = average · <i>cutscene</i> = a scene you watch rather than play · <i>chef's kiss</i> = perfect."},
+ {w:"My friend's finsta is full of OOTD pics. Very 'grammable, ngl.",a:"My friend's secret second Instagram account is full of outfit photos. They look great on Instagram, honestly.",f:["My friend's fitness app is full of workout photos. Very tiring, honestly.","My friend's new phone is full of old photos. Very blurry, honestly.","My friend's photo album is full of holiday snaps. Very boring, honestly."],o:"<i>finsta</i> = a secret Instagram account · <i>OOTD</i> = outfit of the day · <i>'grammable</i> = worth posting · <i>ngl</i> = not gonna lie."}
+];

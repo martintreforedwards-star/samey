@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Rizz</title>
-<meta name="description" content="A daily game of brand-new words. What they mean, when they landed, and which one we made up.">
+<meta name="description" content="A daily game of brand-new words: what they mean, where they came from, and which one we made up.">
 <meta name="robots" content="noindex">
 <link rel="icon" href="/rizz/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/rizz/apple-touch-icon.png">
@@ -12,7 +12,7 @@
 <meta property="og:url" content="https://samey.uk/rizz/">
 <meta property="og:site_name" content="Rizz">
 <meta property="og:title" content="Rizz: the new words game">
-<meta property="og:description" content="Three quick rounds a day on the newest words in English.">
+<meta property="og:description" content="Five quick rounds a day on the newest words in English.">
 <meta property="og:image" content="https://samey.uk/rizz/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,6 +52,9 @@ button{font:inherit;color:inherit;cursor:pointer}
 .opt .m{display:block;color:var(--muted);font-size:15px;margin-top:2px}
 .opt .src{display:none;font-size:13px;color:var(--muted);margin-top:4px}
 .opt.shown .src{display:block}
+.opts.two.words .opt{font-size:18px;font-family:inherit;font-weight:600}
+.opts.long .opt{font-size:16px;line-height:1.35}
+.word .say{display:block;font-size:clamp(22px,6.4vw,28px);line-height:1.25;letter-spacing:0}
 .reveal{margin-top:16px;padding:14px 16px;border-radius:12px;background:var(--chip)}
 .reveal b{display:block;margin-bottom:4px}
 .reveal .more{display:block;margin-top:8px;font-size:14px}
@@ -115,19 +118,50 @@ a.primary{text-align:center;text-decoration:none}
 <script src="data.js"></script>
 <script>
 // ---- Schedule ----
-// Rizz No. 1 is START. Each day takes the next item from each of the three lists in data.js.
-// Lists start again from the top when they run out, so add more before then (the shortest list sets the limit).
+// Rizz No. 1 is START. Every day has five rounds, picked from ten round types:
+//  · Monday to Saturday: five of the nine everyday rounds.
+//  · Sunday: four of them, then Translate it as the finale.
+// The nine take turns (see CYCLE), so each one comes up about every other day. Each round type works through its own
+// list in data.js and starts again from the top when it runs out, so keep adding words (shortest lists run out first).
 // PREVIEW: set START to the launch day when Rizz goes live.
 const START=Date.UTC(2026,9,28);
 const dayDate=n=>new Date(START+n*864e5);   // read with UTC getters
 const keyOf=n=>{const d=dayDate(n);return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0')};
 const fmt=(n,o)=>dayDate(n).toLocaleDateString('en-GB',Object.assign({timeZone:'UTC'},o));
-const ROUNDS=[
-  {key:'mean',name:"What's it mean?",blurb:'Pick the real meaning of a new word',list:MEAN},
-  {key:'when',name:'When did it land?',blurb:'Guess the year it was Word of the Year',list:WHEN},
-  {key:'fake',name:'Real or rizz?',blurb:'Three are in the dictionary. Spot the one we made up',list:FAKE}
-];
-const itemsFor=n=>ROUNDS.map(r=>r.list[n%r.list.length]);
+const T={
+  spell:{name:'Spell it out',blurb:'What do the letters stand for?',list:SPELL,q:()=>'What does it stand for?'},
+  mean:{name:"What's it mean?",blurb:'Pick the real meaning of a new word',list:MEAN,q:()=>'What does it mean?'},
+  blend:{name:'Blend it',blurb:'Which two words were squashed together?',list:BLEND,q:()=>'Which two words make it up?'},
+  trick:{name:'Old word, new trick',blurb:"What's the new meaning of an old word?",list:TRICK,q:it=>`It used to mean ${it.old}. What does it mean now?`},
+  use:{name:'Use it right',blurb:'Only one sentence gets the word right',list:USE,q:()=>'Which sentence uses it properly?'},
+  source:{name:'Where did it come from?',blurb:'What was the word born in?',list:SOURCE,q:()=>'Where was it born?',two:true},
+  older:{name:'Older than you think',blurb:'When was it first written down?',list:OLDER,q:()=>'When was it first written down?',two:true},
+  fake:{name:'Real or rizz?',blurb:'Spot the word we made up',list:FAKE,q:()=>'Three of these are in the dictionary. Which one did we make up?'},
+  when:{name:'When did it land?',blurb:'Guess the year it was Word of the Year',list:WHEN,q:it=>`Which year was it ${esc(it.by)}'s Word of the Year?`,two:true},
+  translate:{name:'Translate it',blurb:'Sunday special: say it in plain English',list:TRANSLATE,q:()=>'What does it mean in plain English?'}
+};
+const PLAY_ORDER=['spell','mean','blend','trick','use','source','older','fake','when','translate'];   // easier rounds first
+const CYCLE=['mean','blend','when','use','spell','fake','trick','older','source'];
+const isSunday=n=>dayDate(n).getUTCDay()===0;
+function plan(n){
+  let p=0;const seen={};let today=null;
+  for(let d=0;d<=n;d++){
+    const take=isSunday(d)?4:5,keys=[];
+    for(let i=0;i<take;i++)keys.push(CYCLE[(p+i)%CYCLE.length]);
+    p+=take;if(isSunday(d))keys.push('translate');
+    if(d===n)today=keys.map(k=>({k,c:seen[k]||0}));
+    keys.forEach(k=>seen[k]=(seen[k]||0)+1);
+  }
+  // Pick each round's item. If a word is already in another of today's rounds, use the next one in that list instead.
+  const used=new Set(),norm=s=>String(s).toLowerCase().replace(/[^a-z0-9]/g,'');
+  const wordsOf=(k,it)=>k==='fake'?[...it.r.map(x=>x[0]),it.k[0]]:k==='translate'?[]:[it.w];
+  return today.sort((x,y)=>PLAY_ORDER.indexOf(x.k)-PLAY_ORDER.indexOf(y.k)).map(({k,c})=>{
+    const L=T[k].list;let it=L[c%L.length];
+    for(let j=1;j<L.length&&wordsOf(k,it).some(w=>used.has(norm(w)));j++)it=L[(c+j)%L.length];
+    wordsOf(k,it).forEach(w=>used.add(norm(w)));
+    return{key:k,...T[k],it};
+  });
+}
 
 // ---- Which day is on screen ----
 // samey.uk/rizz/#test plays today without saving; add ?day=N for Rizz No. N (any day, past or future).
@@ -144,7 +178,9 @@ const td=parseInt(params.get('day'),10);
 const N=Number.isInteger(td)&&td>=1&&(isTest||(ARCH&&td<=TODAY))?td-1:TODAY;
 const isArch=!isTest&&N<TODAY;
 const dateKey=keyOf(N);
-const items=itemsFor(N);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ROUNDS=plan(N);
+const items=ROUNDS.map(r=>r.it);
 const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 
 // Seeded shuffle so everyone sees the same option order on the same day
@@ -154,46 +190,48 @@ function order(n,seed){const r=rng(seed),a=[...Array(n).keys()];for(let i=n-1;i>
 const $=s=>document.querySelector(s);
 const app=$('#app');
 let st={i:0,res:[]};
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const lc=s=>s.charAt(0).toLowerCase()+s.slice(1);
 
 function dots(){$('#dots').innerHTML=items.map((_,k)=>`<div class="dot ${st.res[k]===true?'ok':st.res[k]===false?'no':k===st.i?'cur':''}"></div>`).join('')}
 
 function intro(){
   app.innerHTML=`<div class="card"><div class="tag">${isArch||isTest?fmt(N,{weekday:'long',day:'numeric',month:'long'}):'Today'}</div>
-  <div class="q">Three quick rounds on the newest words in English.</div>
-  <p class="muted" style="margin:6px 0 0">One go at each. You'll get the story after every answer.</p>
+  <div class="q">Five quick rounds on the newest words in English.</div>
+  <p class="muted" style="margin:6px 0 0">One go at each. The rounds change every day${isSunday(N)?', and Sundays end with a special':''}. Here's today's mix:</p>
   <ul class="rounds">${ROUNDS.map(r=>`<li><b>${r.name}</b> · ${r.blurb}</li>`).join('')}</ul>
   <button class="primary" id="go">Play</button></div>`;
   $('#go').onclick=()=>{st={i:0,res:[]};round()};
   dots();
 }
 
-function shell(head,q,body){
-  const R=ROUNDS[st.i];
-  return `<div class="card"><div class="entry"><div class="tag">Round ${st.i+1} · ${R.name}</div>
-  <div class="word">${head}</div></div>
-  <div class="q">${q}</div>${body}<div id="after" aria-live="polite"></div></div>`;
-}
-
 function round(){
-  const k=ROUNDS[st.i].key,it=items[st.i];dots();
+  const R=ROUNDS[st.i],k=R.key,it=R.it;dots();
   // Option 0 is always the right answer; the order on screen is shuffled.
-  let opts,head,q,cls='';
-  if(k==='mean'){opts=[it.a,...it.f].map(esc);head=`<mark>${esc(it.w)}</mark>`;q='What does it mean?'}
-  else if(k==='when'){opts=[it.a,...it.f];head=`<mark>${esc(it.w)}</mark>`;q=`Which year was it ${esc(it.by)}'s Word of the Year?`;cls=' two'}
-  else {opts=[it.k,...it.r].map(x=>`<span class="w">${esc(x[0])}</span><span class="m">${esc(x[1])}</span>${x[2]?`<span class="src">Added: ${esc(x[2])}</span>`:''}`);head='Real or <mark>rizz</mark>?';q='Three of these are in the dictionary. Which one did we make up?'}
-  const seed=dateKey+'|'+st.i+'|'+(k==='fake'?it.k[0]:it.w);
-  let ord=order(4,seed);
-  if(k==='when')ord=[...ord].sort((x,y)=>opts[x]-opts[y]);   // years read best in order
-  app.innerHTML=shell(head,q,`<div class="opts${cls}">${ord.map(x=>`<button class="opt" data-k="${x}">${opts[x]}</button>`).join('')}</div>`);
+  let opts,head;
+  if(k==='fake'){opts=[it.k,...it.r].map(x=>`<span class="w">${esc(x[0])}</span><span class="m">${esc(x[1])}</span>${x[2]?`<span class="src">Added: ${esc(x[2])}</span>`:''}`);head='Real or <mark>rizz</mark>?'}
+  else{opts=[it.a,...it.f].map(esc);head=k==='translate'?`<span class="say">“${esc(it.w)}”</span>`:`<mark>${esc(it.w)}</mark>`}
+  let ord=order(4,dateKey+'|'+k+'|'+(k==='fake'?it.k[0]:it.w));
+  if(k==='when'||k==='older')ord=[...ord].sort((x,y)=>parseInt(opts[x])-parseInt(opts[y]));   // dates read best in order
+  app.innerHTML=`<div class="card"><div class="entry"><div class="tag">Round ${st.i+1} · ${R.name}</div>
+  <div class="word">${head}</div></div><div class="q">${R.q(it)}</div>
+  <div class="opts${R.two?' two':''}${k==='source'?' words':''}${k==='use'||k==='translate'?' long':''}">${ord.map(x=>`<button class="opt" data-k="${x}">${opts[x]}</button>`).join('')}</div><div id="after" aria-live="polite"></div></div>`;
   app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
     const ok=+b.dataset.k===0;
     app.querySelectorAll('.opt').forEach(x=>{x.disabled=true;x.classList.add('shown');if(+x.dataset.k===0)x.classList.add('right');else if(x!==b)x.classList.add('dim')});
     if(!ok)b.classList.add('wrong');
-    let story;
-    if(k==='mean')story=`<i>${esc(it.w)}</i>: ${esc(it.a.charAt(0).toLowerCase()+it.a.slice(1))}. ${it.o}`;
-    else if(k==='when')story=`<i>${esc(it.w)}</i> was ${esc(it.by)}'s Word of the Year in ${it.a}. ${it.o}`;
-    else story=`We made up <i>${esc(it.k[0])}</i>. The other three are real, and each one shows where it was added.`;
+    const W=`<i>${esc(k==='fake'?it.k[0]:it.w)}</i>`;
+    const story={
+      mean:()=>`${W}: ${esc(lc(it.a))}. ${it.o}`,
+      when:()=>`${W} was ${esc(it.by)}'s Word of the Year in ${it.a}. ${it.o}`,
+      fake:()=>`We made up ${W}. The other three are real, and each one shows where it was added.`,
+      blend:()=>`${W} = ${esc(it.a)}. ${it.o}`,
+      trick:()=>`${W} used to mean ${esc(it.old)}. Now it can also mean ${esc(lc(it.a))}. ${it.o}`,
+      source:()=>it.o,
+      older:()=>`${W} was first written down in the ${it.a}. ${it.o}`,
+      use:()=>it.o,
+      spell:()=>`${W} stands for <i>${esc(it.a)}</i>. ${it.o}`,
+      translate:()=>it.o
+    }[k]();
     after(ok,story,k==='fake'?(ok?'Spotted it.':'Not quite. That one is real.'):null);
   });
 }
@@ -207,11 +245,16 @@ function after(ok,html,head){
   nx.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
-function rank(s){return['Out of the Loop','Lowkey Learning','Main Character','Unspoken Rizz'][s]}
+function rank(s){return['Out of the Loop','Late Adopter','Lowkey Learning','Main Character','Trendsetter','Unspoken Rizz'][s]}
 function recapLine(k,it){
-  if(k==='mean')return[it.w,it.a];
+  if(k==='fake')return[it.k[0],'the one we made up'];
   if(k==='when')return[it.w,`${it.by}, ${it.a}`];
-  return[it.k[0],'the one we made up'];
+  if(k==='trick')return[it.w,`now: ${lc(it.a)}`];
+  if(k==='older')return[it.w,`first written down in the ${it.a}`];
+  if(k==='source')return[it.w,`born in: ${lc(it.a)}`];
+  if(k==='use')return[it.w,it.a];
+  if(k==='translate')return['Sunday special',it.a];
+  return[it.w,it.a];
 }
 
 function results(){
@@ -223,7 +266,7 @@ function results(){
   const share=`Rizz No. ${N+1}${isArch?' (archive)':''}\n${s}/${n} ${ticks}\n${rank(s)}\nYour go: https://samey.uk/rizz/ #sameyuk`;
   app.innerHTML=`<div class="card center"><div class="tag">${isTest?'Test · No. '+(N+1)+' · '+nice:isArch?'No. '+(N+1)+' · '+nice:nice}</div>
   <div class="score">${s}/${n}</div><div class="ticks">${ticks}</div><div class="rank">${rank(s)}</div>
-  <p class="muted">${isArch?`<a class="inl" href="#" id="moreArch">Play another earlier puzzle</a> or <a class="inl" href="./${ARCH_TAIL}">go back to today's puzzle</a>.`:'<span data-next="Three more rounds in {t}.">Three more rounds tomorrow.</span>'+(ARCH&&TODAY>=1&&!isTest?` Can't wait? <a class="inl" href="#" id="moreArch">Play earlier puzzles</a>.`:'')}</p>
+  <p class="muted">${isArch?`<a class="inl" href="#" id="moreArch">Play another earlier puzzle</a> or <a class="inl" href="./${ARCH_TAIL}">go back to today's puzzle</a>.`:'<span data-next="A new mix of rounds in {t}.">A new mix of rounds tomorrow.</span>'+(ARCH&&TODAY>=1&&!isTest?` Can't wait? <a class="inl" href="#" id="moreArch">Play earlier puzzles</a>.`:'')}</p>
   <button class="primary" id="share">Share</button><button class="ghost" id="copy">Copy result</button>
   <ul class="recap">${items.map((it,k)=>{const [h,m]=recapLine(ROUNDS[k].key,it);return`<li><span>${st.res[k]?'✅':'❌'}</span><span class="h">${esc(h)}</span><span class="m">${esc(m)}</span><span class="flag"><a href="/feedback/?game=rizz&type=puzzle&puzzle=${encodeURIComponent((isArch?'No. '+(N+1):nice)+' · '+ROUNDS[k].name+' · '+h)}">Wrong?</a></span></li>`}).join('')}</ul></div>${document.getElementById('xgCards').innerHTML}`;
   $('#share').onclick=()=>{if(navigator.share){navigator.share({text:share}).catch(()=>{})}else{location.href='https://wa.me/?text='+encodeURIComponent(share)}};
@@ -235,7 +278,7 @@ function openArchive(){
   const list=[];
   for(let k=TODAY-1;k>=0;k--){
     const r=store.get('rizz-'+keyOf(k));
-    const stx=r&&r.length===3?`<span class="st done">${r.filter(Boolean).length}/3</span>`:'<span class="st">Play →</span>';
+    const stx=r&&r.length===5?`<span class="st done">${r.filter(Boolean).length}/5</span>`:'<span class="st">Play →</span>';
     list.push(`<li><a href="?day=${k+1}${ARCH_TAIL}"><span>No. ${k+1} <span class="when">· ${fmt(k,{weekday:'short',day:'numeric',month:'short'})}</span></span>${stx}</a></li>`);
   }
   if(!list.length)list.push('<li class="muted">No earlier puzzles yet. Come back tomorrow.</li>');
