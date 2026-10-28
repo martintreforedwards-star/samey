@@ -95,6 +95,10 @@ a{color:var(--ink);font-weight:700}
     const b = document.getElementById("back");
     b.href = "/roots/"; b.textContent = "← Back to Roots";
   }
+  if (new URLSearchParams(location.search).get("game") === "rizz") {
+    const b = document.getElementById("back");
+    b.href = "/rizz/"; b.textContent = "← Back to Rizz";
+  }
   if (new URLSearchParams(location.search).get("game") === "natter") {
     const b = document.getElementById("back");
     b.href = "/natter/"; b.textContent = "← Back to Natter";
