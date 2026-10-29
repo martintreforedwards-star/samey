@@ -57,7 +57,8 @@
     { id: "rizz", name: "Rizz", href: "/rizz/", blurb: "The newest words in English, in five quick rounds.", isNew: true },
     { id: "babel", name: "Babel", href: "/babel/", blurb: "One word in four mystery languages. What is it in English?", isNew: true },
     { id: "rhymey", name: "Rhymey", href: "/rhymey/", blurb: "Rhyme and rhythm in quick daily rounds.", isNew: true },
-    { id: "phoney", name: "Phoney", href: "/phoney/", blurb: "How words really sound, from silent letters to glottal stops.", isNew: true }
+    { id: "phoney", name: "Phoney", href: "/phoney/", blurb: "How words really sound, from silent letters to glottal stops.", isNew: true },
+    { id: "idiomy", name: "Idiomy", href: "/idiomy/", blurb: "Tap words together to make idioms from today's hive.", isNew: true }
   ];
   var WORDS = ["", "", "", "", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"];
   var here = (location.pathname.split("/")[1] || "samey").toLowerCase();

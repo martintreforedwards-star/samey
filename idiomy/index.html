@@ -3,7 +3,6 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex">
 <title>Idiomy</title>
 <meta name="description" content="A daily honeycomb of words. Tap them together to make idioms.">
 <link rel="icon" href="/idiomy/favicon.svg" type="image/svg+xml">
@@ -91,7 +90,7 @@ footer{margin-top:18px;text-align:center}
   <nav class="sy-bar" aria-label="Games"></nav>
   <div id="test"></div>
   <div id="app"></div>
-  <footer><p class="muted">Preview · not linked from the other games yet · <a href="/feedback/?game=idiomy">Send feedback</a></p></footer>
+  <footer><p class="muted"><a href="/feedback/?game=idiomy">Send feedback</a> · <a href="/support/?game=idiomy">Support us</a></p></footer>
 </main>
 <script src="data.js"></script>
 <script>
@@ -188,8 +187,9 @@ function check(){
 function end(){
   lives();
   const f=st.found.length;
+  if(!isTest&&N===TODAY)(window.SameySetQ=window.SameySetQ||[]).push(['idiomy',f+'/'+TOTAL]);
   const sq=B.a.map((_,i)=>st.found.includes(i)?(st.hints.includes(i)?'🟨':'🟩'):'⬜').join('');
-  const share=`Idiomy No. ${N+1} (preview)\n${sq} ${f}/${TOTAL}\n${rank(f)}\nYour go: https://samey.uk/idiomy/ #sameyuk`;
+  const share=`Idiomy No. ${N+1}\n${sq} ${f}/${TOTAL}\n${rank(f)}\nYour go: https://samey.uk/idiomy/ #sameyuk`;
   const order=[...st.found,...B.a.map((_,i)=>i).filter(i=>!st.found.includes(i))];
   app.innerHTML=`<div class="card center">
     <div class="tag">${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})}</div>
