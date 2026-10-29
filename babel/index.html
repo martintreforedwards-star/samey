@@ -51,7 +51,11 @@ ul.how{padding-left:20px;margin:10px 0 0}ul.how li{margin-bottom:4px}
 .cell .w.mid{font-size:16px}.cell .w.long{font-size:14px}
 .cell .r{font-size:14px;color:var(--muted);margin-top:2px;font-style:italic}
 .cell .l{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--accent);margin-top:4px;min-height:14px}
-.cell.blank .w{color:var(--line);font-size:34px;font-family:var(--head)}
+.cell.blank{background:repeating-linear-gradient(180deg,transparent 0 13px,color-mix(in srgb,var(--line) 70%,transparent) 13px 17px);-webkit-mask:linear-gradient(transparent,#000 30%,#000 70%,transparent);mask:linear-gradient(transparent,#000 30%,#000 70%,transparent)}
+button.reel{display:block;width:100%;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:center}
+button.reel:hover{border-color:var(--accent)}
+button.reel:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.reel .cost{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;padding:5px 10px;border-radius:99px;background:var(--card);border:1.5px solid var(--accent);color:var(--accent);font-size:13px;font-weight:700;white-space:nowrap}
 .pts{display:flex;align-items:center;justify-content:space-between;margin:14px 0 4px;font-weight:600}
 .pips{display:flex;gap:5px}.pip{width:14px;height:14px;border-radius:50%;background:var(--accent)}.pip.off{background:var(--line)}
 .tools{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
@@ -205,9 +209,13 @@ function cellHTML(R,named){
   const longest=Math.max(...R.s.split(/[\s-]/).map(x=>x.length)),long=longest>10?' long':longest>7?' mid':'';
   return `<div class="cell"><span class="w${long}" lang="${R.c}">${esc(R.s)}</span>${R.r?`<span class="r">${esc(R.r)}</span>`:''}<span class="l">${named?esc(R.name):''}</span></div>`;
 }
-const blankCell=`<div class="cell blank"><span class="w">?</span></div>`;
+const blankCell=`<div class="cell blank"></div>`;
 function machineHTML(){
-  return `<div class="machine"><div class="reels">${REELS.map((R,i)=>`<div class="reel" id="reel${i}"><span class="num">${i+1}</span><div class="strip">${i<st.shown?cellHTML(R,st.named.includes(i)):blankCell}</div></div>`).join('')}</div></div>`;
+  // While playing, the next reel waiting to spin can be tapped (it costs a point). Later ones just wait their turn.
+  const playing=st.won===null&&st.shown>0;
+  return `<div class="machine"><div class="reels">${REELS.map((R,i)=>{
+    const next=playing&&i===st.shown,tag=next?'button':'div';
+    return `<${tag} class="reel" id="reel${i}"${next?' type="button" aria-label="Spin reel '+(i+1)+', costs 1 point"':''}><span class="num">${i+1}</span>${next?'<span class="cost">Tap to spin · −1</span>':''}<div class="strip">${i<st.shown?cellHTML(R,st.named.includes(i)):blankCell}</div></${tag}>`}).join('')}</div></div>`;
 }
 // Spin one reel: roll through random words and land on today's.
 function spin(i,done){
@@ -226,7 +234,7 @@ function intro(){
   app.innerHTML=`<div class="card"><div class="tag">${isArch||isTest?fmt(N,{weekday:'long',day:'numeric',month:'long'}):'Today'}</div>
   <div class="q">One word. Four mystery languages. What is it in English?</div>
   <ul class="how"><li>Spin the first reel to see the word in a language we don't name.</li>
-  <li>Stuck? Spin another reel, or ask which language a reel is.</li>
+  <li>Stuck? Tap the next reel to spin it, or ask which language a reel is.</li>
   <li>You start with ${MAX} points. Each extra reel, clue or wrong guess costs one.</li>
   <li>Then name the languages for bonus points.</li></ul>
   <p class="muted" style="margin:10px 0 0;font-size:15px">Easiest on Monday, hardest on Friday. Today is <b>${LEVEL.name.toLowerCase()}</b>.</p>
@@ -243,7 +251,9 @@ function play(spinFirst){
   <form class="guess" id="form" autocomplete="off"><input id="in" placeholder="Your guess in English" aria-label="Your guess in English" autocapitalize="off" spellcheck="false"><button>Guess</button></form>
   <p class="say" id="say" aria-live="polite"></p>${st.wrong.length?`<div class="tried">${st.wrong.map(w=>`<span>${esc(w)}</span>`).join('')}</div>`:''}</div>`;
   if(spinFirst){const i=st.shown-1;$('#reel'+i).querySelector('.strip').innerHTML=blankCell;spin(i)}
-  $('#more').onclick=()=>{if(st.shown>=4)return;if(points()<=1)return say('That would use your last point. Have a guess first.','bad');st.shown++;play(true)};
+  const more=()=>{if(st.shown>=4)return;if(points()<=1)return say('That would use your last point. Have a guess first.','bad');st.shown++;play(true)};
+  $('#more').onclick=more;
+  const nx=$('#reel'+st.shown);if(nx&&nx.tagName==='BUTTON')nx.onclick=more;
   $('#name').onclick=()=>{const i=[...Array(st.shown).keys()].find(k=>!st.named.includes(k));if(i==null)return;if(points()<=1)return say('That would use your last point. Have a guess first.','bad');st.named.push(i);play(false)};
   $('#form').onsubmit=e=>{e.preventDefault();guess($('#in').value)};
   $('#in').oninput=()=>say('');
