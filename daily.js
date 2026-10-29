@@ -47,13 +47,13 @@
        (window.SameySetQ = window.SameySetQ || []).push(["dotty", "2/4"]);
      (a queue, because the games run before this file loads). */
   var GAMES = [
-    { id: "samey", name: "Samey", href: "/" },
-    { id: "spinonym", name: "Spinonym", href: "/spinonym/" },
-    { id: "dotty", name: "Dotty", href: "/dotty/" },
-    { id: "syntaxed", name: "Syntaxed", href: "/syntaxed/" },
-    { id: "passe", name: "Passé", href: "/passe/" },
-    { id: "natter", name: "Natter", href: "/natter/" },
-    { id: "roots", name: "Roots", href: "/roots/" }
+    { id: "samey", name: "Samey", href: "/", blurb: "Find the word that means the same." },
+    { id: "spinonym", name: "Spinonym", href: "/spinonym/", blurb: "Spin the wheel for today's kind of word." },
+    { id: "dotty", name: "Dotty", href: "/dotty/", blurb: "Put the missing accents and punctuation back." },
+    { id: "syntaxed", name: "Syntaxed", href: "/syntaxed/", blurb: "Grammar puzzles that make you giggle, not wince." },
+    { id: "passe", name: "Passé", href: "/passe/", blurb: "Spot the real meaning of forgotten words." },
+    { id: "natter", name: "Natter", href: "/natter/", blurb: "Real local word, or made up?" },
+    { id: "roots", name: "Roots", href: "/roots/", blurb: "Where words come from, in four quick rounds.", isNew: true }
   ];
   var WORDS = ["", "", "", "", "four", "five", "six", "seven", "eight", "nine", "ten"];
   var here = (location.pathname.split("/")[1] || "samey").toLowerCase();
@@ -117,7 +117,90 @@
       box.append(btn);
     }
   }
-  function renderSets() { document.querySelectorAll(".sy-set").forEach(fillSet); }
+  /* ---------- Games bar (.sy-bar) and "Today's games" grid (.sy-grid) ----------
+     Put <nav class="sy-bar" aria-label="Games"></nav> or <section class="sy-grid" id="games"></section> on a page and these fill them. */
+  function tick(cls) {
+    var ns = "http://www.w3.org/2000/svg", svg = document.createElementNS(ns, "svg"), path = document.createElementNS(ns, "path");
+    svg.setAttribute("viewBox", "0 0 14 14"); svg.setAttribute("aria-hidden", "true"); svg.setAttribute("class", cls);
+    path.setAttribute("d", "M2.5 7.5l3 3 6-7"); svg.append(path); return svg;
+  }
+  var scoreText = function (sc) { return (sc === "✓" || sc === "✗") ? "Done" : sc; };
+  function fillBar(box) {
+    var s = readSet(); box.textContent = "";
+    GAMES.forEach(function (g) {
+      var sc = s.g[g.id], cur = g.id === here, a = el("a", "sy-bchip" + (cur ? " here" : "") + (sc ? " done" : ""));
+      a.href = g.href;
+      if (cur) a.setAttribute("aria-current", "page");
+      if (sc) a.append(tick("sy-tick"));
+      a.append(el("span", null, g.name));
+      if (g.isNew) a.append(el("span", "sy-newb", "New"));
+      a.setAttribute("aria-label", g.name + (cur ? ", this game" : "") + (sc ? ", played today" : ""));
+      box.append(a);
+    });
+    var cur = box.querySelector(".here");
+    if (cur && box.scrollWidth > box.clientWidth && !box.dataset.scrolled) { box.dataset.scrolled = "1"; box.scrollLeft = Math.max(0, cur.offsetLeft - box.clientWidth / 2 + cur.offsetWidth / 2); }
+  }
+  function fillGrid(box) {
+    var s = readSet(), n = GAMES.filter(function (g) { return s.g[g.id]; }).length;
+    box.textContent = "";
+    var head = el("div", "sy-ghead");
+    head.append(el("h2", null, "Today's games"), el("span", null, n === GAMES.length ? "All " + WORDS[GAMES.length] + " played 🏆" : n + " of " + GAMES.length + " played"));
+    var bar = el("div", "sy-gprog"), fillEl = el("span");
+    bar.setAttribute("role", "img"); bar.setAttribute("aria-label", n + " of " + GAMES.length + " played");
+    fillEl.style.width = (n / GAMES.length * 100) + "%"; bar.append(fillEl);
+    var grid = el("div", "sy-gcards");
+    GAMES.forEach(function (g) {
+      var sc = s.g[g.id], cur = g.id === here, card = el("a", "sy-gcard" + (sc ? " done" : "") + (cur ? " here" : ""));
+      card.href = g.href; if (cur) card.setAttribute("aria-current", "page");
+      var top = el("span", "sy-gtop"); top.append(el("span", "sy-gname", g.name));
+      if (g.isNew) top.append(el("span", "sy-newb", "New"));
+      var st = el("span", "sy-gst");
+      if (sc) { st.append(tick("sy-tick"), document.createTextNode(scoreText(sc))); }
+      else st.textContent = cur ? "Playing now" : "Play →";
+      card.append(top, el("span", "sy-gblurb", g.blurb), st);
+      grid.append(card);
+    });
+    box.append(head, bar, grid);
+  }
+  var navStyled = false;
+  function addNavStyle() {
+    if (navStyled) return; navStyled = true;
+    var T = "var(--teal,#1f7a6d)", TI = "var(--teal-ink,#fff)", S = "var(--surface,#fff)", L = "var(--line,#d5ddd8)", M = "var(--muted,#5e6b67)", I = "var(--ink,#1b2422)", A = "var(--amber,#d99a1e)", AI = "var(--amber-ink,#2a1d00)";
+    var css =
+      ".sy-bar{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:-6px -16px 0;padding:4px 16px 14px;border-bottom:1px solid " + L + "}" +
+      ".sy-bar::-webkit-scrollbar{display:none}" +
+      ".sy-bchip{flex:0 0 auto;display:flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:999px;border:1.5px solid " + L + ";background:" + S + ";color:" + I + ";font-weight:700;font-size:.95rem;text-decoration:none;white-space:nowrap}" +
+      "a.sy-bchip:hover{border-color:" + I + "}" +
+      ".sy-bchip.here{background:" + T + ";border-color:" + T + ";color:" + TI + "}" +
+      ".sy-tick{width:14px;height:14px;flex:none;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}" +
+      ".sy-bchip.done:not(.here) .sy-tick{stroke:" + T + "}" +
+      ".sy-newb{font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:" + A + ";color:" + AI + ";border-radius:6px;padding:2px 6px;line-height:1.3}" +
+      ".sy-grid{display:flex;flex-direction:column;gap:12px}" +
+      ".sy-ghead{display:flex;justify-content:space-between;align-items:baseline;gap:8px}" +
+      ".sy-ghead h2{margin:0;font-family:var(--display,inherit);font-weight:800;font-size:1.6rem;letter-spacing:-.01em;color:" + I + "}" +
+      ".sy-ghead span{font-weight:700;color:" + T + ";font-size:.95rem}" +
+      ".sy-gprog{height:8px;border-radius:999px;background:" + L + ";overflow:hidden}" +
+      ".sy-gprog span{display:block;height:100%;background:" + T + ";border-radius:999px;transition:width .4s}" +
+      ".sy-gcards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}" +
+      ".sy-gcard{display:flex;flex-direction:column;gap:6px;min-height:118px;padding:14px;border-radius:14px;border:1px solid " + L + ";background:" + S + ";color:" + I + ";text-decoration:none}" +
+      ".sy-gcard:hover{border-color:" + I + "}" +
+      ".sy-gcard.done{background:color-mix(in srgb," + T + " 10%," + S + ");border-color:color-mix(in srgb," + T + " 30%," + L + ")}" +
+      ".sy-gcard.here{border:2px solid " + T + ";padding:13px}" +
+      ".sy-gtop{display:flex;justify-content:space-between;align-items:center;gap:6px}" +
+      ".sy-gname{font-family:var(--display,inherit);font-weight:800;font-size:1.15rem}" +
+      ".sy-gblurb{flex:1 1 auto;font-size:.86rem;line-height:1.35;color:" + M + "}" +
+      ".sy-gst{display:flex;align-items:center;gap:5px;font-size:.85rem;font-weight:700}" +
+      ".sy-gcard.done .sy-gst{color:" + T + "}" +
+      "@media (min-width:480px){.sy-gcards{grid-template-columns:repeat(3,minmax(0,1fr))}}" +
+      "@media (prefers-reduced-motion:reduce){.sy-gprog span{transition:none}}";
+    var st = document.createElement("style"); st.textContent = css; document.head.append(st);
+  }
+  function renderNav() {
+    var bars = document.querySelectorAll(".sy-bar"), grids = document.querySelectorAll(".sy-grid");
+    if (!bars.length && !grids.length) return;
+    addNavStyle(); bars.forEach(fillBar); grids.forEach(fillGrid);
+  }
+  function renderSets() { document.querySelectorAll(".sy-set").forEach(fillSet); renderNav(); }
   var styled = false;
   function addStyle() {
     if (styled) return; styled = true;
@@ -149,6 +232,6 @@
   }
 
   new MutationObserver(function () { fill(); placeSets(); }).observe(document.documentElement, { childList: true, subtree: true });
-  function init() { fill(); placeSets(); }
+  function init() { fill(); placeSets(); renderNav(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
 })();

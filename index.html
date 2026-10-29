@@ -46,6 +46,11 @@ header{display:flex;align-items:center;justify-content:space-between;gap:12px;fl
 .brand{display:flex;align-items:center;gap:10px}
 .brand h1{font-family:var(--display);font-weight:800;font-size:2rem;letter-spacing:-.02em;margin:0;line-height:1}
 .logo{width:40px;height:28px;flex:none}
+.brand .friends{font-family:var(--display);font-weight:500;font-size:1.15rem;color:var(--muted);align-self:flex-end;margin-bottom:2px}
+.gamesbtn{margin-left:auto;width:44px;height:44px;flex:none;display:grid;place-items:center;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink)}
+.gamesbtn:hover{border-color:var(--ink)}
+.gamesbtn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8}
+#games{scroll-margin-top:16px}
 .pick{font-size:.85rem;color:var(--muted);display:flex;gap:8px;align-items:center}
 select,button,input{font:inherit}
 select{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:4px 8px}
@@ -179,9 +184,13 @@ body.arching main > :not(header):not(#archiveView){display:none !important}
     <div class="brand">
       <svg class="logo" viewBox="0 0 40 28" aria-hidden="true"><circle cx="14" cy="14" r="11" fill="var(--teal)" opacity=".85"/><circle cx="26" cy="14" r="11" fill="var(--amber)" opacity=".85"/></svg>
       <h1>Samey</h1>
+      <span class="friends">&amp; friends</span>
     </div>
     <label class="pick" id="pickWrap" for="puzzle" hidden>Puzzle <select id="puzzle"></select></label>
+    <a class="gamesbtn" href="#games" aria-label="All games"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="2" width="6" height="6" rx="1.5"/><rect x="12" y="2" width="6" height="6" rx="1.5"/><rect x="2" y="12" width="6" height="6" rx="1.5"/><rect x="12" y="12" width="6" height="6" rx="1.5"/></svg></a>
   </header>
+
+  <nav class="sy-bar" aria-label="Games"></nav>
 
   <p class="archline" id="archLine" hidden></p>
 
@@ -300,11 +309,9 @@ body.arching main > :not(header):not(#archiveView){display:none !important}
       <li>Stuck? A hint fills in part of the word, but uses up a go.</li>
     </ul>
   </details>
-  <p class="spn-foot">New: <a href="/spinonym/">Spinonym</a>, our daily wheel of words. Spin the nym.</p>
-  <p class="spn-foot" style="margin-top:8px">New: <a href="/dotty/">Dotty</a>, put the missing accents and punctuation back.</p>
-  <p class="spn-foot" style="margin-top:8px">New: <a href="/syntaxed/">Syntaxed</a>, grammar puzzles that make you giggle, not wince.</p>
-  <p class="spn-foot" style="margin-top:8px">New: <a href="/passe/">Passé</a>, spot the real meaning of forgotten words.</p>
-  <p class="spn-foot" style="margin-top:8px">Newest: <a href="/natter/">Natter</a>, real local word or made up? A daily dialect game.</p>
+  <section class="sy-grid" id="games" aria-label="Today's games">
+    <noscript><p class="spn-foot">More games: <a href="/spinonym/">Spinonym</a> · <a href="/dotty/">Dotty</a> · <a href="/syntaxed/">Syntaxed</a> · <a href="/passe/">Passé</a> · <a href="/natter/">Natter</a> · <a href="/roots/">Roots</a></p></noscript>
+  </section>
   <!-- Archive of earlier puzzles -->
   <section id="archiveView" hidden>
     <div class="archhead">
