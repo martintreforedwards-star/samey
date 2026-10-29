@@ -81,6 +81,17 @@ button.reel:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .opt.right{border-color:var(--good);background:var(--goodbg)}.opt.wrong{border-color:var(--bad);background:var(--badbg)}
 .opt.dim{opacity:.5}.opt[disabled]{cursor:default}
 
+/* Rounds after the reels */
+.prog{display:flex;gap:6px;margin:0 0 12px}.prog span{flex:1;height:6px;border-radius:3px;background:var(--line)}
+.prog span.ok{background:var(--good)}.prog span.no{background:var(--bad)}.prog span.cur{background:var(--accent)}
+.entry{border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:14px}
+.big{font-family:var(--head);font-weight:800;font-size:clamp(30px,9vw,42px);line-height:1.1;margin:6px 0 2px;overflow-wrap:anywhere}
+.big.lit{font-size:clamp(24px,7vw,30px)}
+.gloss{color:var(--muted);font-size:16px}.gloss i{color:var(--ink)}
+.opts.one{grid-template-columns:1fr}.opts.one .opt{text-align:left;padding:13px 15px;font-weight:500;font-size:16px}
+.opt.right::after{content:" ✓";font-weight:700}.opt.wrong::after{content:" ✗";font-weight:700}
+.opt .rw{display:block;font-weight:700;font-size:18px}.opt .rl{display:block;color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.5px}.opt .rm{display:block;font-size:15px}
+.reveal .more{display:block;margin-top:6px}
 /* Results */
 .center{text-align:center}
 .score{font-family:var(--head);font-weight:800;font-size:52px;margin:4px 0;line-height:1}
@@ -130,6 +141,7 @@ a.primary{text-align:center;text-decoration:none}
   <p class="muted" style="margin-top:10px"><span id="archFoot" hidden><a href="#" id="archLink">Earlier puzzles</a> · </span><a href="/feedback/?game=babel">Send feedback</a> · <a href="/support/?game=babel">Support us</a></p></footer>
 </main>
 <script src="data.js"></script>
+<script src="rounds.js"></script>
 <script>
 // ---- Schedule ----
 // Babel No. 1 is START. Each day takes the next word in data.js (and starts again from the top when they run out).
@@ -197,10 +209,43 @@ const CHOICES=REELS.map((R,i)=>{
   return shuffle([R.c,...near.concat(far).slice(0,3)],r);
 });
 
+// ---- Today's rounds after the reels ----
+// Nine round types take turns, four a day (so each comes up roughly every other day). Each type works through its
+// own list in rounds.js and starts again from the top when it runs out.
+const T={
+  noise:{name:'Animal noises',blurb:'Which animal makes this sound?',list:NOISE},
+  script:{name:'Spot the script',blurb:'Which writing system is it?',list:SCRIPT},
+  menu:{name:'On the menu',blurb:'What does the dish name really mean?',list:MENU},
+  false:{name:'False friends',blurb:'Looks English, but means something else',list:FALSE},
+  abroad:{name:'English abroad',blurb:'English word, foreign meaning',list:ABROAD},
+  home:{name:'Closer to home',blurb:'Words from Britain and Ireland',list:HOME},
+  idiom:{name:'Idioms, literally',blurb:'What does the saying really mean?',list:IDIOM},
+  lost:{name:'Lost in translation',blurb:"Words English doesn't have",list:LOST},
+  fakeb:{name:'Real or Babel?',blurb:'Spot the word we made up',list:FAKEB}
+};
+const PLAY_ORDER=['noise','script','menu','false','abroad','home','idiom','lost','fakeb'];   // lighter rounds first
+const CYCLE=['false','noise','lost','script','idiom','abroad','fakeb','menu','home'];
+const PER_DAY=4;
+function planRounds(n){
+  const seen={};let today;
+  for(let d=0;d<=n;d++){const keys=[];for(let i=0;i<PER_DAY;i++)keys.push(CYCLE[(d*PER_DAY+i)%CYCLE.length]);if(d===n)today=keys.map(k=>({k,c:seen[k]||0}));keys.forEach(k=>seen[k]=(seen[k]||0)+1)}
+  // Don't repeat a word that's already on screen today (in the reels or another round); use the next one in the list instead.
+  const used=new Set([...REELS.map(r=>norm(r.plain)),norm(WORD.en)]);
+  const wordsOf=(k,it)=>k==='fakeb'?[...it.r.map(x=>x[0]),it.k[0]]:[it.w];
+  const clash=(k,it)=>wordsOf(k,it).some(w=>used.has(norm(w)))||new RegExp('\\b'+WORD.en+'\\b','i').test(k==='fakeb'?'':it.a);
+  return today.sort((x,y)=>PLAY_ORDER.indexOf(x.k)-PLAY_ORDER.indexOf(y.k)).map(({k,c})=>{
+    const L=T[k].list;let it=L[c%L.length];
+    for(let j=1;j<L.length&&clash(k,it);j++)it=L[(c+j)%L.length];
+    wordsOf(k,it).forEach(w=>used.add(norm(w)));
+    return{key:k,...T[k],it};
+  });
+}
+const RNDS=planRounds(N);
+
 const $=s=>document.querySelector(s);
 const app=$('#app');
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-let st={shown:0,named:[],wrong:[],won:null,bonus:[null,null,null,null]};
+let st={shown:0,named:[],wrong:[],won:null,bonus:[null,null,null,null],rr:[]};
 const points=()=>Math.max(0,MAX-(st.shown-1)-st.named.length-st.wrong.length);
 
 $('#lvl').innerHTML=`${fmt(N,{weekday:'long'})}<b>${LEVEL.name}</b>`;
@@ -236,10 +281,11 @@ function intro(){
   <ul class="how"><li>Spin the first reel to see the word in a language we don't name.</li>
   <li>Stuck? Tap the next reel to spin it, or ask which language a reel is.</li>
   <li>You start with ${MAX} points. Each extra reel, clue or wrong guess costs one.</li>
-  <li>Then name the languages for bonus points.</li></ul>
+  <li>Then name the languages for bonus points.</li>
+  <li>After that, four quick rounds: ${RNDS.map(r=>`<b>${r.name}</b>`).join(', ').replace(/, ([^,]*)$/,' and $1')}.</li></ul>
   <p class="muted" style="margin:10px 0 0;font-size:15px">Easiest on Monday, hardest on Friday. Today is <b>${LEVEL.name.toLowerCase()}</b>.</p>
   <button class="primary" id="go">Spin the first reel</button></div>`;
-  $('#go').onclick=()=>{st={shown:1,named:[],wrong:[],won:null,bonus:[null,null,null,null]};play(true)};
+  $('#go').onclick=()=>{st={shown:1,named:[],wrong:[],won:null,bonus:[null,null,null,null],rr:[]};play(true)};
 }
 
 function play(spinFirst){
@@ -285,7 +331,7 @@ function finish(){
 }
 function bonus(){
   const ask=REELS.map((_,i)=>i).filter(i=>!st.named.includes(i));
-  if(!ask.length){results();return}
+  if(!ask.length){const b=document.createElement('button');b.className='primary';b.textContent='On to the rounds';b.onclick=()=>roundsFrom(0);$('#after').append(b);return}
   const box=document.createElement('div');
   box.innerHTML=`<div class="reveal"><b>Bonus: name the languages</b>A point for each one you get right.${ask.map(i=>{const R=REELS[i];return`<div class="bq" data-i="${i}"><div class="bw">${i+1}. ${esc(R.s)} ${R.r?`<i>${esc(R.r)}</i>`:''}</div><div class="opts">${CHOICES[i].map(c=>`<button class="opt" data-c="${c}">${esc(LANGS[c][0])}</button>`).join('')}</div></div>`}).join('')}</div>`;
   $('#after').append(box);
@@ -294,30 +340,67 @@ function bonus(){
     q.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(x.dataset.c===REELS[i].c)x.classList.add('right');else if(x!==b)x.classList.add('dim')});
     if(!ok)b.classList.add('wrong');
     const cell=$('#reel'+i+' .l');if(cell)cell.textContent=REELS[i].name;
-    if(ask.every(k=>st.bonus[k]!==null)){const btn=document.createElement('button');btn.className='primary';btn.textContent='See results';btn.onclick=save;box.append(btn);btn.scrollIntoView({behavior:'smooth',block:'nearest'})}
+    if(ask.every(k=>st.bonus[k]!==null)){const btn=document.createElement('button');btn.className='primary';btn.textContent='On to the rounds';btn.onclick=()=>roundsFrom(0);box.append(btn);btn.scrollIntoView({behavior:'smooth',block:'nearest'})}
   })});
 }
+function roundsFrom(i){
+  if(i>=RNDS.length){save();return}
+  const R=RNDS[i],k=R.key,it=R.it,r=rng(dateKey+'|round|'+k);
+  let head,q,opts,cls=' one';
+  if(k==='fakeb'){head='<span class="big">Real or <span style="color:var(--accent)">Babel</span>?</span>';q='Three of these are real. Which one did we make up?';
+    opts=[it.k,...it.r].map(x=>`<span class="rl">${esc(x[1])}</span><span class="rw">${esc(x[0])}</span><span class="rm">${esc(x[2])}</span>`)}
+  else{
+    opts=[it.a,...it.f].map(esc);
+    if(k==='idiom'){head=`<span class="big lit">“${esc(it.lit)}”</span>`;q='What does it really mean?'}
+    else head=`<span class="big">${esc(it.w)}</span>`;
+    if(k==='script'||k==='noise')cls='';
+    q=q||{noise:`In ${it.l}, which animal says this?`,script:'Which writing system is this?',menu:'What does the name literally mean?',false:`It looks English. What does it mean in ${it.l}?`,abroad:`What does it mean in ${it.l}?`,home:`What does this ${it.l} word mean?`,lost:`What does this ${it.l} word mean?`}[k];
+  }
+  const sub={idiom:`${esc(it.l)} · <i>${esc(it.w||'')}</i>`,script:'',fakeb:''}[k];
+  const gl=sub!==undefined?sub:esc(it.l||'');
+  const ord=shuffle([0,1,2,3],r);
+  app.innerHTML=`<div class="card"><div class="prog">${[0,1,2,3,4].map(p=>`<span class="${p===0?(st.won?'ok':'no'):p-1<i?(st.rr[p-1]?'ok':'no'):p-1===i?'cur':''}"></span>`).join('')}</div>
+  <div class="entry"><div class="tag">Round ${i+2} of 5 · ${R.name}</div><div>${head}</div>${gl?`<div class="gloss">${gl}</div>`:''}</div>
+  <div class="q">${q}</div><div class="opts${cls}">${ord.map(x=>`<button class="opt" data-k="${x}">${opts[x]}</button>`).join('')}</div><div id="after" aria-live="polite"></div></div>`;
+  window.scrollTo(0,0);
+  app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    const ok=+b.dataset.k===0;st.rr[i]=ok;
+    app.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(+x.dataset.k===0)x.classList.add('right');else if(x!==b)x.classList.add('dim')});
+    if(!ok)b.classList.add('wrong');
+    const story=k==='fakeb'?`We made up <i>${esc(it.k[0])}</i>. The other three are real.`:
+      k==='script'?`It's ${esc(it.a)}. <i>${esc(it.w)}</i> (${esc(it.r)}) means ‘${esc(it.g)}’.`:
+      k==='noise'?`<i>${esc(it.w)}</i> is a ${esc(it.a.toLowerCase())}. ${it.o}`:
+      k==='menu'?`<i>${esc(it.w)}</i> means ‘${esc(it.a.toLowerCase())}’. ${it.o}`:
+      k==='idiom'?`${esc(it.a)}. ${it.o}`:`<i>${esc(it.w)}</i>: ${esc(it.a.charAt(0).toLowerCase()+it.a.slice(1))}. ${it.o}`;
+    const last=i===RNDS.length-1;
+    $('#after').innerHTML=`<div class="reveal"><b>${k==='fakeb'?(ok?'Spotted it.':'Not quite. That one is real.'):ok?'Correct.':'Not quite. The right one is highlighted.'}</b>${story}</div><button class="primary" id="nx">${last?'See results':'Next round'}</button>`;
+    $('#nx').onclick=()=>roundsFrom(i+1);$('#nx').scrollIntoView({behavior:'smooth',block:'nearest'});
+  });
+}
 function save(){
-  const rec={won:st.won,p:st.final,shown:st.shown,named:st.named,wrong:st.wrong.length,bonus:st.bonus};
+  const rec={won:st.won,p:st.final,shown:st.shown,named:st.named,wrong:st.wrong.length,bonus:st.bonus,rr:st.rr};
   if(!isTest)store.set('babel-'+dateKey,rec);
   results(rec);
 }
 
-function rank(t){return['Tourist','Tourist','Phrasebook','Phrasebook','Exchange Student','Exchange Student','Interpreter','Interpreter','Polyglot','Polyglot'][t]}
+// Out of 13: word 5 + languages up to 4 + rounds 4
+function rank(t){return t>=12?'Polyglot':t>=10?'Interpreter':t>=7?'Exchange Student':t>=4?'Phrasebook':'Tourist'}
 function results(rec){
-  rec=rec||{won:st.won,p:st.final,shown:st.shown,named:st.named,wrong:st.wrong.length,bonus:st.bonus};
-  const asked=rec.bonus.filter(b=>b!==null).length,got=rec.bonus.filter(b=>b===true).length,total=rec.p+got;
-  if(!isTest&&!isArch)(window.SameySetQ=window.SameySetQ||[]).push(['babel',total+'/9']);
+  rec=rec||{won:st.won,p:st.final,shown:st.shown,named:st.named,wrong:st.wrong.length,bonus:st.bonus,rr:st.rr};
+  const rr=rec.rr||[],rg=rr.filter(Boolean).length;
+  const asked=rec.bonus.filter(b=>b!==null).length,got=rec.bonus.filter(b=>b===true).length,total=rec.p+got+rg;
+  if(!isTest&&!isArch)(window.SameySetQ=window.SameySetQ||[]).push(['babel',total+'/13']);
   const nice=fmt(N,{weekday:'short',day:'numeric',month:'short'});
   const reelLine=[0,1,2,3].map(i=>i<rec.shown?(rec.won?'🟧':'⬛'):'⬜').join('');
-  const share=`Babel No. ${N+1}${isArch?' (archive)':''} · ${LEVEL.name}\n${reelLine} ${rec.won?`word in ${rec.shown} reel${rec.shown===1?'':'s'}`:'word missed'}\n🌍 languages ${got}/${asked||0}\n${total}/9 · ${rank(total)}\nYour go: https://samey.uk/babel/ #sameyuk`;
+  const share=`Babel No. ${N+1}${isArch?' (archive)':''} · ${LEVEL.name}\n${reelLine} ${rec.won?`word in ${rec.shown} reel${rec.shown===1?'':'s'}`:'word missed'}\n🌍 languages ${got}/${asked||0}\n${rr.map(x=>x?'✅':'❌').join('')} rounds\n${total}/13 · ${rank(total)}\nYour go: https://samey.uk/babel/ #sameyuk`;
   app.innerHTML=`<div class="card center"><div class="tag">${isTest?'Test · No. '+(N+1)+' · '+nice:isArch?'No. '+(N+1)+' · '+nice:nice}</div>
-  <div class="score">${total}/9</div>
-  <div class="sub">Word: ${rec.p}/${MAX} · Languages: ${got}/${asked}</div>
+  <div class="score">${total}/13</div>
+  <div class="sub">Word: ${rec.p}/${MAX} · Languages: ${got}/${asked} · Rounds: ${rg}/${rr.length}</div>
   <div class="rank">${rank(total)}</div>
   <p class="muted">${isArch?`<a class="inl" href="#" id="moreArch">Play another earlier puzzle</a> or <a class="inl" href="./${ARCH_TAIL}">go back to today's puzzle</a>.`:'<span data-next="New reels in {t}.">New reels tomorrow.</span>'+(ARCH&&TODAY>=1&&!isTest?` Can't wait? <a class="inl" href="#" id="moreArch">Play earlier puzzles</a>.`:'')}</p>
   <button class="primary" id="share">Share</button><button class="ghost" id="copy">Copy result</button>
   <ul class="recap"><li><span>The word</span><span>${esc(WORD.en)}</span></li>${REELS.map(R=>`<li><span lang="${R.c}">${esc(R.s)}${R.r?` <i class="muted" style="font-weight:400">${esc(R.r)}</i>`:''}</span><span>${esc(R.name)}</span></li>`).join('')}
+  ${RNDS.map((R,i)=>`<li><span>${rr[i]?'✅':'❌'} ${esc(R.name)}</span><span>${esc(R.key==='fakeb'?R.it.k[0]:R.key==='idiom'?R.it.lit:R.it.w)}</span></li>`).join('')}
   <li class="flag"><a href="/feedback/?game=babel&type=puzzle&puzzle=${encodeURIComponent((isArch?'No. '+(N+1):nice)+' · '+WORD.en)}">Spotted a mistake in a translation?</a></li></ul></div>${document.getElementById('xgCards').innerHTML}`;
   $('#share').onclick=()=>{if(navigator.share){navigator.share({text:share}).catch(()=>{})}else{location.href='https://wa.me/?text='+encodeURIComponent(share)}};
   $('#copy').onclick=()=>{try{navigator.clipboard.writeText(share).then(()=>{$('#copy').textContent='Copied'},()=>{})}catch(e){}};
@@ -328,7 +411,7 @@ function openArchive(){
   const list=[];
   for(let k=TODAY-1;k>=0;k--){
     const r=store.get('babel-'+keyOf(k));
-    const stx=r?`<span class="st done">${r.p+r.bonus.filter(b=>b===true).length}/9</span>`:'<span class="st">Play →</span>';
+    const stx=r?`<span class="st done">${r.p+r.bonus.filter(b=>b===true).length+(r.rr||[]).filter(Boolean).length}/13</span>`:'<span class="st">Play →</span>';
     list.push(`<li><a href="?day=${k+1}${ARCH_TAIL}"><span>No. ${k+1} <span class="when">· ${fmt(k,{weekday:'short',day:'numeric',month:'short'})} · ${LEVELS[dayDate(k).getUTCDay()].name}</span></span>${stx}</a></li>`);
   }
   if(!list.length)list.push('<li class="muted">No earlier puzzles yet. Come back tomorrow.</li>');
