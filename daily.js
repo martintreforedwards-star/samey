@@ -165,15 +165,21 @@
   var navStyled = false;
   function addNavStyle() {
     if (navStyled) return; navStyled = true;
-    var T = "var(--teal,#1f7a6d)", TI = "var(--teal-ink,#fff)", S = "var(--surface,#fff)", L = "var(--line,#d5ddd8)", M = "var(--muted,#5e6b67)", I = "var(--ink,#1b2422)", A = "var(--amber,#d99a1e)", AI = "var(--amber-ink,#2a1d00)";
+    // Each game page has its own palette, so pick up whichever names it uses: Samey's teal, an --accent, or plain ink.
+    var I = "var(--ink,#1b2422)", L = "var(--line,#d5ddd8)", M = "var(--muted,#5e6b67)",
+      S = "var(--surface,var(--card,#fff))",
+      T = "var(--sy-accent,var(--teal,var(--accent,var(--ink,#1f7a6d))))",
+      TI = "var(--sy-accent-ink,var(--teal-ink,var(--on-accent,var(--bg,var(--paper,#fff)))))",
+      OK = "var(--teal,var(--good,var(--ok,currentColor)))",
+      A = "var(--amber,#d99a1e)", AI = "var(--amber-ink,#2a1d00)";
     var css =
-      ".sy-bar{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:-6px -16px 0;padding:4px 16px 14px;border-bottom:1px solid " + L + "}" +
+      ".sy-bar{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;font-family:var(--body,inherit);margin:var(--sy-bar-margin,0 0 4px);padding:var(--sy-bar-pad,2px 0 12px);border-bottom:1px solid " + L + "}" +
       ".sy-bar::-webkit-scrollbar{display:none}" +
       ".sy-bchip{flex:0 0 auto;display:flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:999px;border:1.5px solid " + L + ";background:" + S + ";color:" + I + ";font-weight:700;font-size:.95rem;text-decoration:none;white-space:nowrap}" +
       "a.sy-bchip:hover{border-color:" + I + "}" +
       ".sy-bchip.here{background:" + T + ";border-color:" + T + ";color:" + TI + "}" +
       ".sy-tick{width:14px;height:14px;flex:none;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}" +
-      ".sy-bchip.done:not(.here) .sy-tick{stroke:" + T + "}" +
+      ".sy-bchip.done:not(.here) .sy-tick{stroke:" + OK + "}" +
       ".sy-newb{font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:" + A + ";color:" + AI + ";border-radius:6px;padding:2px 6px;line-height:1.3}" +
       ".sy-grid{display:flex;flex-direction:column;gap:12px}" +
       ".sy-ghead{display:flex;justify-content:space-between;align-items:baseline;gap:8px}" +
@@ -190,7 +196,7 @@
       ".sy-gname{font-family:var(--display,inherit);font-weight:800;font-size:1.15rem}" +
       ".sy-gblurb{flex:1 1 auto;font-size:.86rem;line-height:1.35;color:" + M + "}" +
       ".sy-gst{display:flex;align-items:center;gap:5px;font-size:.85rem;font-weight:700}" +
-      ".sy-gcard.done .sy-gst{color:" + T + "}" +
+      ".sy-gcard.done .sy-gst{color:" + OK + "}" +
       "@media (min-width:480px){.sy-gcards{grid-template-columns:repeat(3,minmax(0,1fr))}}" +
       "@media (prefers-reduced-motion:reduce){.sy-gprog span{transition:none}}";
     var st = document.createElement("style"); st.textContent = css; document.head.append(st);
