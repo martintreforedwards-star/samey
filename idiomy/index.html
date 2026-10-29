@@ -70,6 +70,12 @@ a{color:var(--accent)}
 .test{background:var(--chip);border-radius:10px;padding:8px 12px;font-size:14px;margin-bottom:12px}
 .how{margin:14px 0 0;padding-left:20px;font-size:15px;color:var(--muted)}
 .how li{margin:3px 0}
+.ex{margin:10px 0 0;font-size:15px}.ex summary{cursor:pointer;color:var(--accent);font-weight:600}
+.ex-demo{display:flex;gap:4px;justify-content:center;margin:10px 0 6px}
+.mini{width:58px;height:66px;display:flex;align-items:center;justify-content:center;background:var(--chip);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);font-weight:600;font-size:14px}
+.mini.on{background:var(--accent);color:var(--on-accent)}
+.ex-res{text-align:center;margin:4px 0}.ex-res b{color:var(--accent)}
+.ex .how{margin-top:8px}
 footer{margin-top:18px;text-align:center}
 @media (prefers-reduced-motion:reduce){.hex,.bar i{transition:none}}
 </style>
@@ -111,6 +117,7 @@ const TOTAL=B.a.length,TARGET=B.t;
 
 let st=store.get(SKEY)||{found:[],miss:0,hints:[],done:false,tried:[]};
 let sel=[];
+let exOpen=!st.found.length&&!st.miss;   // example starts open for a fresh game, closes after the first check
 const $=s=>document.querySelector(s);
 const app=$('#app');
 
@@ -127,7 +134,12 @@ function play(msg,cls){
   const clue=st.hints.filter(i=>!st.found.includes(i)).map(i=>`<div class="clue"><b>Clue:</b> find an idiom that means “${esc(B.a[i].m)}”.</div>`).join('');
   app.innerHTML=`<div class="card">
     <div class="tag">${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'long',day:'numeric',month:'long'})}</div>
-    <p class="lead">Tap two or three words that belong to the same idiom. Words can be used more than once.</p>
+    <p class="lead">Tap two or three words from the hive that belong to the same idiom.</p>
+    <details class="ex"${exOpen?' open':''}><summary>How to play</summary>
+      <div class="ex-demo" aria-hidden="true"><span class="mini on">kick</span><span class="mini">pot</span><span class="mini on">bucket</span><span class="mini">rain</span></div>
+      <p class="ex-res">Tap <b>kick</b> + <b>bucket</b>, then Check.<br>You get “<b>kick</b> the <b>bucket</b>”, which means to die.</p>
+      <ol class="how"><li>The game fills in the little words, so you only tap the words from the hive.</li><li>Words can be used in more than one idiom. Today's hive has ${TOTAL}.</li><li>Misses cost a hexagon. Lose all ${LIVES} and the game ends.</li><li>Reach the target of ${TARGET}, then keep going for the rest.</li></ol>
+    </details>
     <div class="progress"><span><b>${f}</b> found · target ${TARGET}</span><span>${TOTAL} in today's hive</span></div>
     <div class="bar" aria-hidden="true"><i style="width:${pct}%"></i><span class="mark" style="left:calc(${mark}% - 1px)"></span></div>
     <div class="hive" role="group" aria-label="Today's words">${rows.map(r=>`<div class="row">${r.map(w=>`<button class="hex${sel.includes(w)?' on':''}" data-w="${esc(w)}" aria-pressed="${sel.includes(w)}">${esc(w)}</button>`).join('')}</div>`).join('')}</div>
@@ -137,9 +149,9 @@ function play(msg,cls){
     ${clue}
     <div class="links"><button id="hint"${unfound.length&&st.miss<LIVES-1?'':' disabled'}>Clue (costs a miss)</button><button id="fin">${f>=TARGET?'Finish':'Give up'}</button></div>
     ${f?`<ul class="found">${st.found.map(i=>`<li><div class="p">${phrase(B.a[i].p)}</div><div class="m">${esc(B.a[i].m)}</div></li>`).join('')}</ul>`:''}
-    ${!f&&!st.miss?`<ol class="how"><li>Tap the words, then Check. The game fills in the little words.</li><li>Misses cost a hexagon. Lose all ${LIVES} and the game ends.</li><li>Reach the target, then keep going for the rest.</li></ol>`:''}
   </div>`;
   app.querySelectorAll('.hex').forEach(b=>b.onclick=()=>{const w=b.dataset.w;sel=sel.includes(w)?sel.filter(x=>x!==w):sel.length<3?[...sel,w]:sel;play()});
+  $('.ex').ontoggle=e=>{exOpen=e.target.open};
   $('#clear').onclick=()=>{sel=[];play()};
   $('#go').onclick=check;
   $('#hint').onclick=()=>{const pool=unfound.filter(i=>!st.hints.includes(i));if(!pool.length)return play('You already have a clue for every idiom left.','meh');st.hints.push(pool[0]);st.miss++;save();play()};
@@ -147,6 +159,7 @@ function play(msg,cls){
 }
 
 function check(){
+  exOpen=false;
   const k=keyFor(sel);
   let msg,cls;
   if(k in ANS){
