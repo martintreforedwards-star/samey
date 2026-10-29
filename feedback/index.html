@@ -69,6 +69,7 @@
           <option value="Natter">Natter</option>
           <option value="Roots">Roots</option>
           <option value="Rizz">Rizz</option>
+          <option value="Babel">Babel</option>
           <option value="All / general">All / general</option>
         </select>
       </div>
@@ -130,6 +131,7 @@
   if (game === "natter") $("game").value = "Natter";
   if (game === "roots") $("game").value = "Roots";
   if (game === "rizz") $("game").value = "Rizz";
+  if (game === "babel") $("game").value = "Babel";
   const type = (q.get("type") || "").toLowerCase();
   const typeMap = { puzzle: "Puzzle issue", bug: "Bug", idea: "Idea", other: "Other" };
   if (typeMap[type]) $("type").value = typeMap[type];
@@ -141,6 +143,7 @@
   if (game === "natter") $("back").href = "/natter/";
   if (game === "roots") $("back").href = "/roots/";
   if (game === "rizz") $("back").href = "/rizz/";
+  if (game === "babel") $("back").href = "/babel/";
 
   $("fb").addEventListener("submit", async e => {
     e.preventDefault();

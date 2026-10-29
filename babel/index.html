@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Babel</title>
+<meta name="description" content="A daily language game. Spin the reels: one word in four mystery languages. What is it in English?">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/babel/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/babel/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://samey.uk/babel/">
+<meta property="og:site_name" content="Babel">
+<meta property="og:title" content="Babel: one word, four languages">
+<meta property="og:description" content="Spin the reels, read one word in four mystery languages, and guess it in English.">
+<meta property="og:image" content="https://samey.uk/babel/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;800&display=swap">
+<style>
+:root{--bg:#f7f3ee;--card:#fff;--ink:#1d1712;--muted:#6a5f55;--line:#e6dccf;--accent:#c2410c;--on-accent:#fff;--good:#2f7d32;--bad:#c92a2a;--goodbg:#ebf7ec;--badbg:#fff5f5;--chip:#f4ece2;--reel:#fffaf4;--head:"Outfit",system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root{--bg:#14110e;--card:#1f1a16;--ink:#f3ede6;--muted:#a89c90;--line:#3a322b;--accent:#fb923c;--on-accent:#1d1712;--good:#69d27a;--bad:#ff7b7b;--goodbg:#1c3121;--badbg:#3a1f22;--chip:#2a231d;--reel:#28211b}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+main{max-width:480px;margin:0 auto;padding:16px 16px 40px;min-height:100vh}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+h1{font-family:var(--head);font-weight:800;font-size:34px;margin:0;line-height:1;letter-spacing:-.5px}
+h1 svg{width:28px;height:28px;vertical-align:-4px;margin-right:6px}
+.lvl{font-size:14px;font-weight:600;color:var(--muted);text-align:right;line-height:1.2}
+.lvl b{display:block;color:var(--accent);font-size:15px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+.tag{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600}
+.q{font-size:19px;font-weight:600;margin:6px 0 4px}
+button{font:inherit;color:inherit;cursor:pointer}
+.primary{display:block;width:100%;margin-top:16px;padding:14px;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:600}
+.ghost{display:block;width:100%;margin-top:10px;padding:12px;border:1.5px solid var(--line);border-radius:12px;background:none;font-weight:600}
+.primary:focus-visible,.ghost:focus-visible,.opt:focus-visible,.tool:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.muted{color:var(--muted)}
+ul.how{padding-left:20px;margin:10px 0 0}ul.how li{margin-bottom:4px}
+
+/* The reels */
+.machine{background:var(--chip);border-radius:14px;padding:10px}
+.reels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+@media (max-width:430px){.reels{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.reel{position:relative;height:104px;overflow:hidden;border-radius:10px;background:var(--reel);border:1.5px solid var(--line)}
+.reel.live{border-color:var(--accent)}
+.reel .num{position:absolute;top:5px;left:8px;font-size:12px;font-weight:700;color:var(--muted);z-index:2}
+.strip{position:absolute;left:0;right:0;top:0;will-change:transform}
+.cell{height:104px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px 6px 6px}
+.cell .w{font-size:20px;font-weight:700;line-height:1.15;max-width:100%;hyphens:manual}
+.cell .w.mid{font-size:16px}.cell .w.long{font-size:14px}
+.cell .r{font-size:14px;color:var(--muted);margin-top:2px;font-style:italic}
+.cell .l{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--accent);margin-top:4px;min-height:14px}
+.cell.blank .w{color:var(--line);font-size:34px;font-family:var(--head)}
+.pts{display:flex;align-items:center;justify-content:space-between;margin:14px 0 4px;font-weight:600}
+.pips{display:flex;gap:5px}.pip{width:14px;height:14px;border-radius:50%;background:var(--accent)}.pip.off{background:var(--line)}
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.tool{padding:11px 8px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);font-weight:600;font-size:15px;line-height:1.25}
+.tool small{display:block;font-weight:500;color:var(--muted);font-size:13px}
+.tool[disabled]{opacity:.45;cursor:default}
+.guess{display:flex;gap:8px;margin-top:12px}
+.guess input{flex:1;min-width:0;font:inherit;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);color:var(--ink)}
+.guess input:focus{outline:3px solid var(--accent);outline-offset:1px}
+.guess button{padding:0 18px;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:600}
+.say{min-height:24px;margin:10px 0 0;font-size:15px}
+.say.bad{color:var(--bad)}.say.good{color:var(--good)}
+.tried{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.tried span{font-size:14px;padding:3px 10px;border-radius:99px;background:var(--badbg);color:var(--bad);text-decoration:line-through}
+
+/* Bonus: name the languages */
+.reveal{margin-top:16px;padding:14px 16px;border-radius:12px;background:var(--chip)}
+.reveal b{display:block;margin-bottom:4px}
+.bq{border-top:1px solid var(--line);padding-top:12px;margin-top:12px}
+.bq .bw{font-size:19px;font-weight:700}.bq .bw i{font-weight:400;color:var(--muted);font-size:15px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.opt{padding:10px 8px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);font-weight:600;font-size:15px}
+.opt:hover:not([disabled]){border-color:var(--accent)}
+.opt.right{border-color:var(--good);background:var(--goodbg)}.opt.wrong{border-color:var(--bad);background:var(--badbg)}
+.opt.dim{opacity:.5}.opt[disabled]{cursor:default}
+
+/* Results */
+.center{text-align:center}
+.score{font-family:var(--head);font-weight:800;font-size:52px;margin:4px 0;line-height:1}
+.sub{font-size:16px;color:var(--muted);margin:4px 0}
+.rank{font-size:20px;font-weight:700;color:var(--accent);margin-top:6px}
+.recap{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:8px;text-align:left;border-top:1px solid var(--line);padding-top:14px}
+.recap li{display:flex;justify-content:space-between;gap:10px;font-size:15px}
+.recap li span:first-child{font-weight:700}
+.recap .flag{font-size:13px;color:var(--muted);text-align:left}.recap .flag a{color:inherit}
+footer{margin-top:24px;text-align:center;font-size:15px}
+footer a{color:var(--accent);text-decoration:none;margin:0 6px}
+footer .games{display:flex;flex-wrap:wrap;justify-content:center;gap:2px 0;margin:0}
+footer .games .muted{flex-basis:100%}
+.test{font-size:13px;color:var(--bad);text-align:center;margin-bottom:8px}
+.archline{font-size:15px;color:var(--muted);margin:-4px 0 12px}
+.archline a,.card a.inl{color:var(--accent);font-weight:600}
+.archlist{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+.archlist a{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;min-height:52px;border:1.5px solid var(--line);border-radius:12px;color:inherit;text-decoration:none;font-weight:600}
+.archlist .when{font-weight:400;color:var(--muted);font-size:15px}
+.archlist .st{font-size:15px;white-space:nowrap;color:var(--muted)}.archlist .st.done{color:var(--good)}
+a.primary{text-align:center;text-decoration:none}
+
+/* Cross-game cards (same design as Samey's result cards) */
+.card + .xg{margin-top:14px}
+.xg{display:flex;flex-direction:column;gap:10px;text-align:left;--xg-s:var(--surface,var(--card,#fff))}
+.xg .xg-head{text-align:left;margin:4px 0 0;font-size:.92rem;font-weight:700;color:var(--muted)}
+.xg-card{--c:#1f7a6d;display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:10px;background:color-mix(in srgb,var(--c) 12%,var(--xg-s));border:2px solid var(--c);color:var(--ink);text-decoration:none;min-height:44px}
+.xg-card:hover .xg-arrow{transform:translateX(3px)}
+.xg-card:focus-visible{outline:3px solid var(--c);outline-offset:2px}
+.xg-icon{flex:none;width:48px;height:48px}
+.xg-text{display:flex;flex-direction:column;gap:1px;min-width:0}
+.xg-new{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:color-mix(in srgb,var(--c) 60%,var(--ink))}
+.xg-title{font-family:var(--display,inherit);font-weight:800;font-size:1.3rem;line-height:1.1}
+.xg-sub{font-size:.9rem;color:var(--muted)}
+.xg-arrow{margin-left:auto;font-size:1.4rem;font-weight:700;flex:none;color:color-mix(in srgb,var(--c) 60%,var(--ink));transition:transform .15s}
+.xg-samey{--c:#1f7a6d}.xg-spinonym{--c:#d99a1e}.xg-dotty{--c:#E2405A}.xg-syntaxed{--c:#3B5BDB}.xg-passe{--c:#7B3F73}.xg-natter{--c:#B0186A}.xg-roots{--c:#8A5A2B}
+@media (prefers-reduced-motion:no-preference){.reveal{animation:up .2s ease-out}@keyframes up{from{transform:translateY(6px);opacity:.4}to{transform:none;opacity:1}}}
+</style>
+</head>
+<body>
+<main>
+  <header><h1><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M22 54h20l-2-10H24zM24 42h16l-2-9H26zM26 31h12l-2-8h-8zM28 21h8l-4-11z" fill="var(--accent)"/></svg>Babel</h1><div class="lvl" id="lvl"></div></header>
+  <div id="test"></div>
+  <p class="archline" id="archLine" hidden></p>
+  <div id="app"></div>
+  <footer><p class="games"><span class="muted">More games:</span><a href="/">Samey</a><a href="/spinonym/">Spinonym</a><a href="/dotty/">Dotty</a><a href="/syntaxed/">Syntaxed</a><a href="/passe/">Passé</a><a href="/natter/">Natter</a><a href="/roots/">Roots</a></p>
+  <p class="muted" style="margin-top:10px"><span id="archFoot" hidden><a href="#" id="archLink">Earlier puzzles</a> · </span><a href="/feedback/?game=babel">Send feedback</a> · <a href="/support/?game=babel">Support us</a></p></footer>
+</main>
+<script src="data.js"></script>
+<script>
+// ---- Schedule ----
+// Babel No. 1 is START. Each day takes the next word in data.js (and starts again from the top when they run out).
+// The weekday sets how hard the four reels are. Each reel draws from a language tier, hardest reel first:
+//   1 familiar (French, Spanish...) · 2 fairly familiar (Dutch, Welsh...) · 3 harder (Finnish, Swahili...) · 4 another alphabet
+// Monday is the gentlest and it builds to Friday. Weekends sit in the middle, like Wednesday.
+// PREVIEW: set START to the launch day when Babel goes live.
+const START=Date.UTC(2026,9,29);
+const LEVELS=[ // by getUTCDay(): 0 Sunday ... 6 Saturday
+  {name:'Medium',tiers:[4,3,2,1]},
+  {name:'Gentle',tiers:[2,2,1,1]},
+  {name:'Steady',tiers:[3,2,2,1]},
+  {name:'Medium',tiers:[4,3,2,1]},
+  {name:'Tough',tiers:[4,3,3,2]},
+  {name:'Fiendish',tiers:[4,4,3,3]},
+  {name:'Medium',tiers:[4,3,2,1]}
+];
+const MAX=5;   // points to start with. Each extra reel, language clue or wrong guess costs one.
+const dayDate=n=>new Date(START+n*864e5);   // read with UTC getters
+const keyOf=n=>{const d=dayDate(n);return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0')};
+const fmt=(n,o)=>dayDate(n).toLocaleDateString('en-GB',Object.assign({timeZone:'UTC'},o));
+
+// ---- Which day is on screen ----
+// samey.uk/babel/#test plays today without saving; add ?day=N for Babel No. N (any day, past or future).
+// ?day=N on its own opens an earlier puzzle from the archive.
+const ARCHIVE_ON=true;
+addEventListener('hashchange',()=>location.reload());
+const params=new URLSearchParams(location.search);
+const now=new Date();
+const TODAY=Math.max(0,Math.round((Date.UTC(now.getFullYear(),now.getMonth(),now.getDate())-START)/864e5));
+const isTest=location.hash==='#test';
+const ARCH=ARCHIVE_ON||isTest||location.hash==='#archive';
+const ARCH_TAIL=ARCHIVE_ON?(isTest?'#test':''):(isTest?'#test':'#archive');
+const td=parseInt(params.get('day'),10);
+const N=Number.isInteger(td)&&td>=1&&(isTest||(ARCH&&td<=TODAY))?td-1:TODAY;
+const isArch=!isTest&&N<TODAY;
+const dateKey=keyOf(N);
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+// Seeded randomness so everyone gets the same languages and options on the same day
+function rng(seed){let h=1779033703^seed.length;for(let i=0;i<seed.length;i++){h=Math.imul(h^seed.charCodeAt(i),3432918353);h=h<<13|h>>>19}return function(){h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);h^=h>>>16;return(h>>>0)/4294967296}}
+function shuffle(a,r){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const norm=s=>String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z]/g,'');
+const split=v=>{const [s,r]=String(v).split('|');return{s,r:r||null,plain:r||s}};
+
+const WORD=WORDS[N%WORDS.length];
+const LEVEL=LEVELS[dayDate(N).getUTCDay()];
+// Pick today's four languages, one per reel. Skip any whose word is the same as another reel's, or as the English.
+const REELS=(()=>{
+  const r=rng(dateKey+'|babel'),used=new Set(WORD.ok.map(norm)),picked=[];
+  LEVEL.tiers.forEach(t=>{
+    let pool=shuffle(Object.keys(LANGS).filter(c=>LANGS[c][1]===t),r);
+    // If a tier has nothing left for this word, borrow from the next easier tier, then harder.
+    for(const alt of [t-1,t+1,t-2,t+2])if(!pool.some(c=>WORD.t[c]&&!used.has(norm(split(WORD.t[c]).plain))))pool=pool.concat(shuffle(Object.keys(LANGS).filter(c=>LANGS[c][1]===alt),r));
+    const c=pool.find(c=>WORD.t[c]&&!picked.includes(c)&&!used.has(norm(split(WORD.t[c]).plain)));
+    picked.push(c);used.add(norm(split(WORD.t[c]).plain));
+  });
+  return picked.map(c=>({c,name:LANGS[c][0],...split(WORD.t[c])}));
+})();
+// Four language choices for each reel's bonus question: the real one plus three, from the same tier where possible
+const CHOICES=REELS.map((R,i)=>{
+  const r=rng(dateKey+'|opts|'+i),tier=LANGS[R.c][1],others=REELS.map(x=>x.c);
+  const near=shuffle(Object.keys(LANGS).filter(c=>LANGS[c][1]===tier&&!others.includes(c)),r);
+  const far=shuffle(Object.keys(LANGS).filter(c=>Math.abs(LANGS[c][1]-tier)===1&&!others.includes(c)),r);
+  return shuffle([R.c,...near.concat(far).slice(0,3)],r);
+});
+
+const $=s=>document.querySelector(s);
+const app=$('#app');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let st={shown:0,named:[],wrong:[],won:null,bonus:[null,null,null,null]};
+const points=()=>Math.max(0,MAX-(st.shown-1)-st.named.length-st.wrong.length);
+
+$('#lvl').innerHTML=`${fmt(N,{weekday:'long'})}<b>${LEVEL.name}</b>`;
+
+function cellHTML(R,named){
+  const longest=Math.max(...R.s.split(/[\s-]/).map(x=>x.length)),long=longest>10?' long':longest>7?' mid':'';
+  return `<div class="cell"><span class="w${long}" lang="${R.c}">${esc(R.s)}</span>${R.r?`<span class="r">${esc(R.r)}</span>`:''}<span class="l">${named?esc(R.name):''}</span></div>`;
+}
+const blankCell=`<div class="cell blank"><span class="w">?</span></div>`;
+function machineHTML(){
+  return `<div class="machine"><div class="reels">${REELS.map((R,i)=>`<div class="reel" id="reel${i}"><span class="num">${i+1}</span><div class="strip">${i<st.shown?cellHTML(R,st.named.includes(i)):blankCell}</div></div>`).join('')}</div></div>`;
+}
+// Spin one reel: roll through random words and land on today's.
+function spin(i,done){
+  const reel=$('#reel'+i),strip=reel.querySelector('.strip'),r=Math.random;
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const n=reduce?0:12+Math.floor(r()*5);let h=blankCell;
+  for(let k=0;k<n;k++){const w=WORDS[Math.floor(r()*WORDS.length)],cs=Object.keys(w.t);h+=cellHTML({c:'x',name:'',...split(w.t[cs[Math.floor(r()*cs.length)]])},false)}
+  h+=cellHTML(REELS[i],false);strip.innerHTML=h;
+  const H=reel.clientHeight,t=reduce?0:1100;
+  strip.style.transition='none';strip.style.transform='translateY(0)';strip.offsetHeight;
+  strip.style.transition=`transform ${t}ms cubic-bezier(.12,.8,.2,1)`;strip.style.transform=`translateY(-${(n+1)*H}px)`;
+  setTimeout(()=>{strip.style.transition='none';strip.style.transform='none';strip.innerHTML=cellHTML(REELS[i],st.named.includes(i));reel.classList.add('live');done&&done()},t+30);
+}
+
+function intro(){
+  app.innerHTML=`<div class="card"><div class="tag">${isArch||isTest?fmt(N,{weekday:'long',day:'numeric',month:'long'}):'Today'}</div>
+  <div class="q">One word. Four mystery languages. What is it in English?</div>
+  <ul class="how"><li>Spin the first reel to see the word in a language we don't name.</li>
+  <li>Stuck? Spin another reel, or ask which language a reel is.</li>
+  <li>You start with ${MAX} points. Each extra reel, clue or wrong guess costs one.</li>
+  <li>Then name the languages for bonus points.</li></ul>
+  <p class="muted" style="margin:10px 0 0;font-size:15px">Easiest on Monday, hardest on Friday. Today is <b>${LEVEL.name.toLowerCase()}</b>.</p>
+  <button class="primary" id="go">Spin the first reel</button></div>`;
+  $('#go').onclick=()=>{st={shown:1,named:[],wrong:[],won:null,bonus:[null,null,null,null]};play(true)};
+}
+
+function play(spinFirst){
+  const p=points();
+  app.innerHTML=`<div class="card">${machineHTML()}
+  <div class="pts"><span>Points: ${p} of ${MAX}</span><span class="pips" aria-hidden="true">${Array.from({length:MAX},(_,k)=>`<span class="pip${k<p?'':' off'}"></span>`).join('')}</span></div>
+  <div class="tools"><button class="tool" id="more"${st.shown>=4?' disabled':''}>Spin another reel<small>costs 1 point</small></button>
+  <button class="tool" id="name"${st.named.length>=st.shown?' disabled':''}>Which language?<small>costs 1 point</small></button></div>
+  <form class="guess" id="form" autocomplete="off"><input id="in" placeholder="Your guess in English" aria-label="Your guess in English" autocapitalize="off" spellcheck="false"><button>Guess</button></form>
+  <p class="say" id="say" aria-live="polite"></p>${st.wrong.length?`<div class="tried">${st.wrong.map(w=>`<span>${esc(w)}</span>`).join('')}</div>`:''}</div>`;
+  if(spinFirst){const i=st.shown-1;$('#reel'+i).querySelector('.strip').innerHTML=blankCell;spin(i)}
+  $('#more').onclick=()=>{if(st.shown>=4)return;if(points()<=1)return say('That would use your last point. Have a guess first.','bad');st.shown++;play(true)};
+  $('#name').onclick=()=>{const i=[...Array(st.shown).keys()].find(k=>!st.named.includes(k));if(i==null)return;if(points()<=1)return say('That would use your last point. Have a guess first.','bad');st.named.push(i);play(false)};
+  $('#form').onsubmit=e=>{e.preventDefault();guess($('#in').value)};
+  $('#in').oninput=()=>say('');
+}
+function say(t,cls){const s=$('#say');s.textContent=t;s.className='say'+(cls?' '+cls:'')}
+
+// Typo distance: one letter added, missed, changed, or two letters swapped
+function lev(a,b){const D=[];for(let i=0;i<=a.length;i++){D[i]=[i];for(let j=1;j<=b.length;j++)D[i][j]=i?Math.min(D[i-1][j]+1,D[i][j-1]+1,D[i-1][j-1]+(a[i-1]===b[j-1]?0:1),i>1&&j>1&&a[i-1]===b[j-2]&&a[i-2]===b[j-1]?D[i-2][j-2]+1:99):j}return D[a.length][b.length]}
+function guess(raw){
+  const g=norm(String(raw).trim().replace(/^(a|an|the|to)\s+/i,''));
+  if(!g)return say('Type a word first.','bad');
+  if(WORD.ok.some(o=>norm(o)===g)){st.won=true;return finish()}
+  if(st.wrong.includes(raw.trim().toLowerCase()))return say("You've tried that one.",'bad');
+  if(g.length>=4&&WORD.ok.some(o=>lev(norm(o),g)===1))return say('So close! Check the spelling. That one was free.','bad');
+  st.wrong.push(raw.trim().toLowerCase());
+  if(points()<=0){st.won=false;return finish()}
+  play(false);say('Not that one. You lose a point.','bad');
+}
+
+// The word is solved (or the points ran out). Show every reel, then ask for the languages.
+function finish(){
+  const p=st.won?points():0;st.final=p;
+  const toSpin=[];for(let i=st.shown;i<4;i++)toSpin.push(i);
+  app.innerHTML=`<div class="card">${machineHTML()}<div id="after"></div></div>`;
+  let k=0;const next=()=>{if(k<toSpin.length)spin(toSpin[k++],next);else bonus()};
+  toSpin.forEach(i=>$('#reel'+i).querySelector('.strip').innerHTML=blankCell);
+  $('#after').innerHTML=`<div class="reveal"><b>${st.won?`Got it: <i>${esc(WORD.en)}</i>. ${p} point${p===1?'':'s'}.`:`Out of points. It was <i>${esc(WORD.en)}</i>.`}</b>${toSpin.length?'Here are the other reels.':''}</div>`;
+  next();
+}
+function bonus(){
+  const ask=REELS.map((_,i)=>i).filter(i=>!st.named.includes(i));
+  if(!ask.length){results();return}
+  const box=document.createElement('div');
+  box.innerHTML=`<div class="reveal"><b>Bonus: name the languages</b>A point for each one you get right.${ask.map(i=>{const R=REELS[i];return`<div class="bq" data-i="${i}"><div class="bw">${i+1}. ${esc(R.s)} ${R.r?`<i>${esc(R.r)}</i>`:''}</div><div class="opts">${CHOICES[i].map(c=>`<button class="opt" data-c="${c}">${esc(LANGS[c][0])}</button>`).join('')}</div></div>`}).join('')}</div>`;
+  $('#after').append(box);
+  box.querySelectorAll('.bq').forEach(q=>{const i=+q.dataset.i;q.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    const ok=b.dataset.c===REELS[i].c;st.bonus[i]=ok;
+    q.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(x.dataset.c===REELS[i].c)x.classList.add('right');else if(x!==b)x.classList.add('dim')});
+    if(!ok)b.classList.add('wrong');
+    const cell=$('#reel'+i+' .l');if(cell)cell.textContent=REELS[i].name;
+    if(ask.every(k=>st.bonus[k]!==null)){const btn=document.createElement('button');btn.className='primary';btn.textContent='See results';btn.onclick=save;box.append(btn);btn.scrollIntoView({behavior:'smooth',block:'nearest'})}
+  })});
+}
+function save(){
+  const rec={won:st.won,p:st.final,shown:st.shown,named:st.named,wrong:st.wrong.length,bonus:st.bonus};
+  if(!isTest)store.set('babel-'+dateKey,rec);
+  results(rec);
+}
+
+function rank(t){return['Tourist','Tourist','Phrasebook','Phrasebook','Exchange Student','Exchange Student','Interpreter','Interpreter','Polyglot','Polyglot'][t]}
+function results(rec){
+  rec=rec||{won:st.won,p:st.final,shown:st.shown,named:st.named,wrong:st.wrong.length,bonus:st.bonus};
+  const asked=rec.bonus.filter(b=>b!==null).length,got=rec.bonus.filter(b=>b===true).length,total=rec.p+got;
+  if(!isTest&&!isArch)(window.SameySetQ=window.SameySetQ||[]).push(['babel',total+'/9']);
+  const nice=fmt(N,{weekday:'short',day:'numeric',month:'short'});
+  const reelLine=[0,1,2,3].map(i=>i<rec.shown?(rec.won?'🟧':'⬛'):'⬜').join('');
+  const share=`Babel No. ${N+1}${isArch?' (archive)':''} · ${LEVEL.name}\n${reelLine} ${rec.won?`word in ${rec.shown} reel${rec.shown===1?'':'s'}`:'word missed'}\n🌍 languages ${got}/${asked||0}\n${total}/9 · ${rank(total)}\nYour go: https://samey.uk/babel/ #sameyuk`;
+  app.innerHTML=`<div class="card center"><div class="tag">${isTest?'Test · No. '+(N+1)+' · '+nice:isArch?'No. '+(N+1)+' · '+nice:nice}</div>
+  <div class="score">${total}/9</div>
+  <div class="sub">Word: ${rec.p}/${MAX} · Languages: ${got}/${asked}</div>
+  <div class="rank">${rank(total)}</div>
+  <p class="muted">${isArch?`<a class="inl" href="#" id="moreArch">Play another earlier puzzle</a> or <a class="inl" href="./${ARCH_TAIL}">go back to today's puzzle</a>.`:'<span data-next="New reels in {t}.">New reels tomorrow.</span>'+(ARCH&&TODAY>=1&&!isTest?` Can't wait? <a class="inl" href="#" id="moreArch">Play earlier puzzles</a>.`:'')}</p>
+  <button class="primary" id="share">Share</button><button class="ghost" id="copy">Copy result</button>
+  <ul class="recap"><li><span>The word</span><span>${esc(WORD.en)}</span></li>${REELS.map(R=>`<li><span lang="${R.c}">${esc(R.s)}${R.r?` <i class="muted" style="font-weight:400">${esc(R.r)}</i>`:''}</span><span>${esc(R.name)}</span></li>`).join('')}
+  <li class="flag"><a href="/feedback/?game=babel&type=puzzle&puzzle=${encodeURIComponent((isArch?'No. '+(N+1):nice)+' · '+WORD.en)}">Spotted a mistake in a translation?</a></li></ul></div>${document.getElementById('xgCards').innerHTML}`;
+  $('#share').onclick=()=>{if(navigator.share){navigator.share({text:share}).catch(()=>{})}else{location.href='https://wa.me/?text='+encodeURIComponent(share)}};
+  $('#copy').onclick=()=>{try{navigator.clipboard.writeText(share).then(()=>{$('#copy').textContent='Copied'},()=>{})}catch(e){}};
+  const more=$('#moreArch');if(more)more.onclick=e=>{e.preventDefault();openArchive()};
+}
+
+function openArchive(){
+  const list=[];
+  for(let k=TODAY-1;k>=0;k--){
+    const r=store.get('babel-'+keyOf(k));
+    const stx=r?`<span class="st done">${r.p+r.bonus.filter(b=>b===true).length}/9</span>`:'<span class="st">Play →</span>';
+    list.push(`<li><a href="?day=${k+1}${ARCH_TAIL}"><span>No. ${k+1} <span class="when">· ${fmt(k,{weekday:'short',day:'numeric',month:'short'})} · ${LEVELS[dayDate(k).getUTCDay()].name}</span></span>${stx}</a></li>`);
+  }
+  if(!list.length)list.push('<li class="muted">No earlier puzzles yet. Come back tomorrow.</li>');
+  $('#archLine').hidden=true;
+  app.innerHTML=`<div class="card"><div class="q" style="font-size:22px;margin-top:0">Earlier puzzles</div>
+  <p class="muted" style="margin:4px 0 0">Missed a day? Every past Babel is here.</p>
+  <ul class="archlist">${list.join('')}</ul><a class="primary" href="./${ARCH_TAIL}">Back to today's puzzle</a></div>`;
+  window.scrollTo(0,0);
+}
+
+if(isTest)$('#test').innerHTML=`<div class="test">Test mode: No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})} · results not saved</div>`;
+if(ARCH&&TODAY>=1){$('#archFoot').hidden=false;$('#archLink').onclick=e=>{e.preventDefault();openArchive()};}
+if(isArch){const l=$('#archLine');l.hidden=false;l.innerHTML=`Earlier puzzle · No. ${N+1} · <a href="./${ARCH_TAIL}">Today's puzzle</a>`;}
+const done=!isTest&&store.get('babel-'+dateKey);
+// Wait for the page to finish loading: the results screen uses the 'Fancy another?' cards further down.
+document.addEventListener('DOMContentLoaded',()=>{if(done&&done.bonus){st.won=done.won;results(done)}else intro();});
+</script>
+<template id="xgCards"><div class="xg"><p class="xg-head">Fancy another?</p><a class="xg-card xg-samey" href="/"><svg class="xg-icon" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><circle cx="25" cy="32" r="15" fill="#1f7a6d" fill-opacity=".95"/><circle cx="39" cy="32" r="15" fill="#d99a1e" fill-opacity=".85"/></svg><span class="xg-text"><span class="xg-new">Also from Samey</span><span class="xg-title">Play Samey</span><span class="xg-sub">Find the hidden word that means the same</span></span><span class="xg-arrow" aria-hidden="true">→</span></a><a class="xg-card xg-spinonym" href="/spinonym/"><svg class="xg-icon" viewBox="-32 -32 64 64" aria-hidden="true"><path d="M0 -30A30 30 0 0 1 25.98 15L0 0Z" fill="#2B5597"/><path d="M25.98 15A30 30 0 0 1 -25.98 15L0 0Z" fill="#A84F0C"/><path d="M-25.98 15A30 30 0 0 1 -25.98 -15L0 0Z" fill="#17796B"/><path d="M-25.98 -15A30 30 0 0 1 0 -30L0 0Z" fill="#6B3F99"/><circle r="10" fill="#16181D" stroke="#ffffff" stroke-width="2.5"/></svg><span class="xg-text"><span class="xg-new">Also from Samey</span><span class="xg-title">Play Spinonym</span><span class="xg-sub">Spin the wheel for today's kind of word</span></span><span class="xg-arrow" aria-hidden="true">→</span></a><a class="xg-card xg-dotty" href="/dotty/"><svg class="xg-icon" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><rect x="27" y="27" width="10" height="27" rx="5" fill="#fff"/><circle cx="21" cy="15" r="6" fill="#E2405A"/><circle cx="43" cy="15" r="6" fill="#E2405A"/></svg><span class="xg-text"><span class="xg-new">Also from Samey</span><span class="xg-title">Play Dotty</span><span class="xg-sub">Put the missing accents and punctuation back</span></span><span class="xg-arrow" aria-hidden="true">→</span></a><a class="xg-card xg-syntaxed" href="/syntaxed/"><svg class="xg-icon" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><rect x="10" y="14" width="26" height="10" rx="5" fill="#fff"/><rect x="40" y="14" width="14" height="10" rx="5" fill="#748FFC"/><rect x="10" y="29" width="14" height="10" rx="5" fill="#748FFC"/><rect x="28" y="29" width="26" height="10" rx="5" fill="#fff"/><rect x="10" y="44" width="34" height="10" rx="5" fill="#fff"/><circle cx="51" cy="49" r="4" fill="#3B5BDB"/></svg><span class="xg-text"><span class="xg-new">Also from Samey</span><span class="xg-title">Play Syntaxed</span><span class="xg-sub">Grammar puzzles that make you giggle, not wince</span></span><span class="xg-arrow" aria-hidden="true">→</span></a><a class="xg-card xg-passe" href="/passe/"><svg class="xg-icon" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><path d="M8 20C16 16 24 16 31 20V50C24 46 16 46 8 50Z" fill="#fff"/><path d="M33 20C40 16 48 16 56 20V50C48 46 40 46 33 50Z" fill="#fff"/><path d="M44 17H51V37L47.5 33.5L44 37Z" fill="#C77DBA"/></svg><span class="xg-text"><span class="xg-new">Also from Samey</span><span class="xg-title">Play Passé</span><span class="xg-sub">Spot the real meaning of forgotten words</span></span><span class="xg-arrow" aria-hidden="true">→</span></a><a class="xg-card xg-natter" href="/natter/"><svg class="xg-icon" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><path d="M10 14h44a4 4 0 0 1 4 4v22a4 4 0 0 1-4 4H28l-11 9v-9h-7a4 4 0 0 1-4-4V18a4 4 0 0 1 4-4z" fill="#fff"/><circle cx="22" cy="29" r="4" fill="#E0458F"/><circle cx="32" cy="29" r="4" fill="#E0458F"/><circle cx="42" cy="29" r="4" fill="#E0458F"/></svg><span class="xg-text"><span class="xg-new">Also from Samey</span><span class="xg-title">Play Natter</span><span class="xg-sub">Real local word, or made up? A daily dialect game</span></span><span class="xg-arrow" aria-hidden="true">→</span></a><a class="xg-card xg-roots" href="/roots/"><svg class="xg-icon" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><path d="M32 12v20" stroke="#fff" stroke-width="5" stroke-linecap="round"/><path d="M32 30c0 9-12 9-16 20M32 30c0 9 12 9 16 20M32 32v20" stroke="#E0A86A" stroke-width="4.5" fill="none" stroke-linecap="round"/><circle cx="32" cy="14" r="7" fill="#69D27A"/></svg><span class="xg-text"><span class="xg-new">Also from Samey</span><span class="xg-title">Play Roots</span><span class="xg-sub">Where words come from, in four quick rounds</span></span><span class="xg-arrow" aria-hidden="true">→</span></a></div></template>
+<script src="/daily.js"></script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "210d8562172a4416bc59877612814183"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
