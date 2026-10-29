@@ -76,6 +76,11 @@ a{color:var(--accent)}
 .mini.on{background:var(--accent);color:var(--on-accent)}
 .ex-res{text-align:center;margin:4px 0}.ex-res b{color:var(--accent)}
 .ex .how{margin-top:8px}
+.ex-list{list-style:none;padding:0;margin:6px 0}
+.ex-list li{display:grid;grid-template-columns:auto 1fr;column-gap:10px;padding:7px 0;border-top:1px solid var(--line)}
+.ex-list .tap{grid-row:span 2;align-self:center;font-size:13px;font-weight:600;padding:3px 8px;border-radius:8px;background:var(--chip);white-space:nowrap}
+.ex-list .got{font-family:var(--head);font-weight:600;font-size:17px}.ex-list .got b{color:var(--accent)}
+.ex-list .mean{color:var(--muted);font-size:14px}
 footer{margin-top:18px;text-align:center}
 @media (prefers-reduced-motion:reduce){.hex,.bar i{transition:none}}
 </style>
@@ -136,9 +141,14 @@ function play(msg,cls){
     <div class="tag">${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'long',day:'numeric',month:'long'})}</div>
     <p class="lead">Tap two or three words from the hive that belong to the same idiom.</p>
     <details class="ex"${exOpen?' open':''}><summary>How to play</summary>
-      <div class="ex-demo" aria-hidden="true"><span class="mini on">kick</span><span class="mini">pot</span><span class="mini on">bucket</span><span class="mini">rain</span></div>
-      <p class="ex-res">Tap <b>kick</b> + <b>bucket</b>, then Check.<br>You get “<b>kick</b> the <b>bucket</b>”, which means to die.</p>
-      <ol class="how"><li>The game fills in the little words, so you only tap the words from the hive.</li><li>Words can be used in more than one idiom. Today's hive has ${TOTAL}.</li><li>Misses cost a hexagon. Lose all ${LIVES} and the game ends.</li><li>Reach the target of ${TARGET}, then keep going for the rest.</li></ol>
+      <div class="ex-demo" aria-hidden="true"><span class="mini">pinch</span><span class="mini">worth</span><span class="mini on">salt</span><span class="mini">wound</span><span class="mini">kick</span></div>
+      <p class="ex-res">One word can open several idioms. In this mini hive, <b>salt</b> makes three:</p>
+      <ul class="ex-list">
+        <li><span class="tap">pinch + salt</span><span class="got">take it with a <b>pinch</b> of <b>salt</b></span><span class="mean">be doubtful about it</span></li>
+        <li><span class="tap">worth + salt</span><span class="got"><b>worth</b> your <b>salt</b></span><span class="mean">good at your job</span></li>
+        <li><span class="tap">salt + wound</span><span class="got">rub <b>salt</b> in the <b>wound</b></span><span class="mean">make a bad situation worse</span></li>
+      </ul>
+      <p class="ex-res muted">Tap the words, then Check. The game fills in the rest. <b>kick</b> doesn't fit any of them.</p>      <ol class="how"><li>Today's hive hides ${TOTAL} idioms.</li><li>Misses cost a hexagon. Lose all ${LIVES} and the game ends.</li><li>Reach the target of ${TARGET}, then keep going for the rest.</li></ol>
     </details>
     <div class="progress"><span><b>${f}</b> found · target ${TARGET}</span><span>${TOTAL} in today's hive</span></div>
     <div class="bar" aria-hidden="true"><i style="width:${pct}%"></i><span class="mark" style="left:calc(${mark}% - 1px)"></span></div>
