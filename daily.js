@@ -53,9 +53,13 @@
     { id: "syntaxed", name: "Syntaxed", href: "/syntaxed/", blurb: "Grammar puzzles that make you giggle, not wince." },
     { id: "passe", name: "Passé", href: "/passe/", blurb: "Spot the real meaning of forgotten words." },
     { id: "natter", name: "Natter", href: "/natter/", blurb: "Real local word, or made up?" },
-    { id: "roots", name: "Roots", href: "/roots/", blurb: "Where words come from, in four quick rounds.", isNew: true }
+    { id: "roots", name: "Roots", href: "/roots/", blurb: "Where words come from, in four quick rounds." },
+    { id: "rizz", name: "Rizz", href: "/rizz/", blurb: "The newest words in English, in five quick rounds.", isNew: true },
+    { id: "babel", name: "Babel", href: "/babel/", blurb: "One word in four mystery languages. What is it in English?", isNew: true },
+    { id: "rhymey", name: "Rhymey", href: "/rhymey/", blurb: "Rhyme and rhythm in quick daily rounds.", isNew: true },
+    { id: "phoney", name: "Phoney", href: "/phoney/", blurb: "How words really sound, from silent letters to glottal stops.", isNew: true }
   ];
-  var WORDS = ["", "", "", "", "four", "five", "six", "seven", "eight", "nine", "ten"];
+  var WORDS = ["", "", "", "", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"];
   var here = (location.pathname.split("/")[1] || "samey").toLowerCase();
   var SET_KEY = "samey-set";
   function getJSON(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }
@@ -69,7 +73,7 @@
     });
     var d = new Date(), pad = function (n) { return String(n).padStart(2, "0"); };
     var iso = d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
-    ["syntaxed", "passe"].forEach(function (id) {
+    ["syntaxed", "passe", "rizz", "rhymey", "phoney"].forEach(function (id) {
       var r = getJSON(id + "-" + iso);
       if (!s.g[id] && Array.isArray(r) && r.length) s.g[id] = r.filter(Boolean).length + "/" + r.length;
     });

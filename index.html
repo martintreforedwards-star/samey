@@ -140,6 +140,22 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
 .nat-card:hover .spn-arrow{transform:translateX(3px)}
 .nat-card:focus-visible{outline:3px solid #B0186A;outline-offset:2px}
 .nat-card .spn-new,.nat-card .spn-arrow{color:color-mix(in srgb,#B0186A 60%,var(--ink))}
+.phoney-card{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:10px;background:color-mix(in srgb,#6741d9 12%,var(--surface));border:2px solid #6741d9;color:var(--ink);text-decoration:none;min-height:44px}
+.phoney-card:hover .spn-arrow{transform:translateX(3px)}
+.phoney-card:focus-visible{outline:3px solid #6741d9;outline-offset:2px}
+.phoney-card .spn-new,.phoney-card .spn-arrow{color:color-mix(in srgb,#6741d9 60%,var(--ink))}
+.rhymey-card{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:10px;background:color-mix(in srgb,#0b7285 12%,var(--surface));border:2px solid #0b7285;color:var(--ink);text-decoration:none;min-height:44px}
+.rhymey-card:hover .spn-arrow{transform:translateX(3px)}
+.rhymey-card:focus-visible{outline:3px solid #0b7285;outline-offset:2px}
+.rhymey-card .spn-new,.rhymey-card .spn-arrow{color:color-mix(in srgb,#0b7285 60%,var(--ink))}
+.babel-card{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:10px;background:color-mix(in srgb,#c2410c 12%,var(--surface));border:2px solid #c2410c;color:var(--ink);text-decoration:none;min-height:44px}
+.babel-card:hover .spn-arrow{transform:translateX(3px)}
+.babel-card:focus-visible{outline:3px solid #c2410c;outline-offset:2px}
+.babel-card .spn-new,.babel-card .spn-arrow{color:color-mix(in srgb,#c2410c 60%,var(--ink))}
+.rizz-card{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:10px;background:color-mix(in srgb,#2b8a3e 12%,var(--surface));border:2px solid #2b8a3e;color:var(--ink);text-decoration:none;min-height:44px}
+.rizz-card:hover .spn-arrow{transform:translateX(3px)}
+.rizz-card:focus-visible{outline:3px solid #2b8a3e;outline-offset:2px}
+.rizz-card .spn-new,.rizz-card .spn-arrow{color:color-mix(in srgb,#2b8a3e 60%,var(--ink))}
 .roots-card{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:10px;background:color-mix(in srgb,#8A5A2B 12%,var(--surface));border:2px solid #8A5A2B;color:var(--ink);text-decoration:none;min-height:44px}
 .roots-card:hover .spn-arrow{transform:translateX(3px)}
 .roots-card:focus-visible{outline:3px solid #8A5A2B;outline-offset:2px}
@@ -237,10 +253,46 @@ body.arching main > :not(header):not(#archiveView){display:none !important}
     <p class="next" id="nextNote" hidden></p>
     <p class="next" id="archNote" hidden></p>
     <p class="next">Made by one person, with no ads. Enjoying it? <a href="https://ko-fi.com/playtheroute" target="_blank" rel="noopener" style="color:var(--ink);font-weight:700">☕ Buy me a coffee</a></p>
+    <a class="phoney-card" href="/phoney/">
+      <svg class="spn-wheel" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><circle cx="18" cy="32" r="7" fill="#fff"/><path d="M30 20a17 17 0 0 1 0 24" stroke="#9775FA" stroke-width="5.5" fill="none" stroke-linecap="round"/><path d="M40 11a29 29 0 0 1 0 42" stroke="#9775FA" stroke-width="5.5" fill="none" stroke-linecap="round"/></svg>
+      <span class="spn-text">
+        <span class="spn-new">Newest from Samey</span>
+        <span class="spn-title">Play Phoney</span>
+        <span class="spn-sub">How words really sound, from silent letters to glottal stops</span>
+      </span>
+      <span class="spn-arrow" aria-hidden="true">→</span>
+    </a>
+    <a class="rhymey-card" href="/rhymey/">
+      <svg class="spn-wheel" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><rect x="9" y="34" width="9" height="18" rx="4.5" fill="#fff"/><rect x="22" y="12" width="9" height="40" rx="4.5" fill="#3BC9DB"/><rect x="35" y="34" width="9" height="18" rx="4.5" fill="#fff"/><rect x="48" y="12" width="9" height="40" rx="4.5" fill="#3BC9DB"/></svg>
+      <span class="spn-text">
+        <span class="spn-new">Newest from Samey</span>
+        <span class="spn-title">Play Rhymey</span>
+        <span class="spn-sub">Rhyme and rhythm in quick daily rounds</span>
+      </span>
+      <span class="spn-arrow" aria-hidden="true">→</span>
+    </a>
+    <a class="babel-card" href="/babel/">
+      <svg class="spn-wheel" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><path d="M20 54h24l-2-10H22zM23 42h18l-2-9H25zM26 31h12l-2-8h-8zM28 21h8l-4-11z" fill="#FB923C"/></svg>
+      <span class="spn-text">
+        <span class="spn-new">Newest from Samey</span>
+        <span class="spn-title">Play Babel</span>
+        <span class="spn-sub">One word in four mystery languages. What is it in English?</span>
+      </span>
+      <span class="spn-arrow" aria-hidden="true">→</span>
+    </a>
+    <a class="rizz-card" href="/rizz/">
+      <svg class="spn-wheel" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><path d="M28 9c2 12 7 17 19 19-12 2-17 7-19 19-2-12-7-17-19-19 12-2 17-7 19-19z" fill="#A9E34B"/><path d="M46 36c1 5 3 7 8 8-5 1-7 3-8 8-1-5-3-7-8-8 5-1 7-3 8-8z" fill="#fff"/></svg>
+      <span class="spn-text">
+        <span class="spn-new">Newest from Samey</span>
+        <span class="spn-title">Play Rizz</span>
+        <span class="spn-sub">The newest words in English, in five quick rounds</span>
+      </span>
+      <span class="spn-arrow" aria-hidden="true">→</span>
+    </a>
     <a class="roots-card" href="/roots/">
       <svg class="spn-wheel" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><path d="M32 12v20" stroke="#fff" stroke-width="5" stroke-linecap="round"/><path d="M32 30c0 9-12 9-16 20M32 30c0 9 12 9 16 20M32 32v20" stroke="#E0A86A" stroke-width="4.5" fill="none" stroke-linecap="round"/><circle cx="32" cy="14" r="7" fill="#69D27A"/></svg>
       <span class="spn-text">
-        <span class="spn-new">Newest from Samey</span>
+        <span class="spn-new">New from Samey</span>
         <span class="spn-title">Play Roots</span>
         <span class="spn-sub">Where words come from, in four quick rounds</span>
       </span>
@@ -311,7 +363,7 @@ body.arching main > :not(header):not(#archiveView){display:none !important}
     </ul>
   </details>
   <section class="sy-grid" id="games" aria-label="Today's games">
-    <noscript><p class="spn-foot">More games: <a href="/spinonym/">Spinonym</a> · <a href="/dotty/">Dotty</a> · <a href="/syntaxed/">Syntaxed</a> · <a href="/passe/">Passé</a> · <a href="/natter/">Natter</a> · <a href="/roots/">Roots</a></p></noscript>
+    <noscript><p class="spn-foot">More games: <a href="/spinonym/">Spinonym</a> · <a href="/dotty/">Dotty</a> · <a href="/syntaxed/">Syntaxed</a> · <a href="/passe/">Passé</a> · <a href="/natter/">Natter</a> · <a href="/roots/">Roots</a> · <a href="/rizz/">Rizz</a> · <a href="/babel/">Babel</a> · <a href="/rhymey/">Rhymey</a> · <a href="/phoney/">Phoney</a></p></noscript>
   </section>
   <!-- Archive of earlier puzzles -->
   <section id="archiveView" hidden>
