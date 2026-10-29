@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rhymey</title>
+<meta name="description" content="A daily game of rhyme and rhythm: spot the odd rhyme, finish the line, mend the metre and tap the beat.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/rhymey/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/rhymey/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://samey.uk/rhymey/">
+<meta property="og:site_name" content="Rhymey">
+<meta property="og:title" content="Rhymey: the rhyme and rhythm game">
+<meta property="og:description" content="Quick daily rounds on rhyme and metre. Can you keep the beat?">
+<meta property="og:image" content="https://samey.uk/rhymey/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,500&display=swap">
+<style>
+:root{--bg:#f1f6f7;--card:#fff;--ink:#14171f;--muted:#5b6170;--line:#d7e2e4;--accent:#0b7285;--on-accent:#fff;--pop:#3bc9db;--good:#2b8a3e;--bad:#c92a2a;--goodbg:#ebfbee;--badbg:#fff5f5;--chip:#e6f2f4;--head:"Fraunces",Georgia,serif}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1214;--card:#181c20;--ink:#eef1ea;--muted:#9aa3a0;--line:#2c3336;--accent:#66d9e8;--on-accent:#0f1214;--pop:#3bc9db;--good:#8ce99a;--bad:#ff8787;--goodbg:#173022;--badbg:#3a1f22;--chip:#1e2a2d}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+main{max-width:480px;margin:0 auto;padding:16px 16px 40px;min-height:100vh}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+h1{font-family:var(--head);font-weight:800;font-size:34px;margin:0;line-height:1;letter-spacing:-.5px}
+h1 svg{width:28px;height:28px;vertical-align:-3px;margin-right:6px}
+.dots{display:flex;gap:6px}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--line)}
+.dot.cur{background:var(--ink)}.dot.ok{background:var(--good)}.dot.no{background:var(--bad)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+.tag{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600}
+.q{font-size:19px;font-weight:600;margin:6px 0 4px}
+.entry{border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:14px}
+.verse{font-family:var(--head);font-style:italic;font-weight:400;font-size:20px;line-height:1.5;margin:10px 0 6px}
+.verse .ln{display:flex;justify-content:space-between;gap:10px}
+.verse .lt{font-style:normal;font-weight:800;color:var(--accent);visibility:hidden;min-width:1ch}
+.verse.shown .lt{visibility:visible}
+.verse.big{font-size:22px}
+.gap{display:inline-block;min-width:3.2em;border-bottom:2.5px solid var(--accent);font-style:normal;color:var(--accent);font-weight:600;text-align:center}
+.bad{text-decoration:underline wavy var(--bad);text-decoration-thickness:2px;text-underline-offset:4px;font-style:normal;font-weight:500}
+.by{font-size:14px;color:var(--muted);margin-top:4px}
+.big-q{font-family:var(--head);font-weight:800;font-size:28px;line-height:1.15;margin:6px 0 2px}
+.opts{display:grid;gap:10px;margin-top:14px}
+.opts.two{grid-template-columns:1fr 1fr}
+button{font:inherit;color:inherit;cursor:pointer}
+.opt{text-align:left;padding:14px 16px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);min-height:52px}
+.opts.two .opt{text-align:center;font-family:var(--head);font-weight:600;font-size:22px}
+.opts.small .opt{font-size:19px}
+.opt:hover:not([disabled]){border-color:var(--accent)}
+.opt:focus-visible,.primary:focus-visible,.ghost:focus-visible,.syl:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.opt.right{border-color:var(--good);background:var(--goodbg)}
+.opt.wrong{border-color:var(--bad);background:var(--badbg)}
+.opt.right::after{content:" ✓";font-weight:700}.opt.wrong::after{content:" ✗";font-weight:700}
+.opt.dim{opacity:.55}
+.opt[disabled]{cursor:default}
+.opt .w{display:block;font-family:var(--head);font-weight:600;font-size:20px;line-height:1.2}
+.opt .m{display:block;color:var(--muted);font-size:15px;margin-top:2px;font-family:system-ui,sans-serif;font-weight:500;letter-spacing:.5px}
+.pat{font-family:var(--head);font-size:17px;letter-spacing:.3px;margin-top:8px;overflow-wrap:anywhere}
+.pat b,.reveal .pat b{display:inline;margin:0;color:var(--accent)}
+.reveal{margin-top:16px;padding:14px 16px;border-radius:12px;background:var(--chip)}
+.reveal b{display:block;margin-bottom:4px}
+.primary{display:block;width:100%;margin-top:16px;padding:14px;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:600}
+.primary[disabled]{opacity:.45;cursor:default}
+.ghost{display:block;width:100%;margin-top:10px;padding:12px;border:1.5px solid var(--line);border-radius:12px;background:none;font-weight:600}
+/* Tap the stress */
+.syls{display:flex;flex-wrap:wrap;gap:14px 12px;margin:22px 0 8px}
+.wd{display:flex;gap:3px}
+.syl{position:relative;font-family:var(--head);font-size:21px;font-weight:600;padding:10px 9px 8px;min-width:40px;min-height:48px;border-radius:10px;border:1.5px solid var(--line);background:var(--card)}
+.syl::before{content:"˘";position:absolute;left:0;right:0;top:-17px;text-align:center;font-size:16px;color:var(--muted);font-weight:400}
+.syl.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.syl.on::before{content:"/";color:var(--accent);font-weight:800}
+.syl[disabled]{cursor:default}
+.syl.hit{background:var(--goodbg);border-color:var(--good);color:var(--ink)}
+.syl.hit::before{content:"/";color:var(--good)}
+.syl.extra{background:var(--badbg);border-color:var(--bad);color:var(--ink)}
+.syl.extra::before{content:"˘";color:var(--bad)}
+.syl.miss{border:2px dashed var(--good)}
+.syl.miss::before{content:"/";color:var(--good);font-weight:800}
+.count{font-size:15px;color:var(--muted)}
+.center{text-align:center}
+.ticks{font-size:34px;letter-spacing:4px;margin:10px 0}
+.score{font-family:var(--head);font-weight:800;font-size:52px;margin:4px 0;line-height:1}
+.rank{font-size:20px;font-weight:700;color:var(--accent)}
+.muted{color:var(--muted)}
+ul.rounds{padding-left:20px;margin:10px 0 0}
+ul.rounds li{margin-bottom:4px}
+.recap{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:12px;text-align:left;border-top:1px solid var(--line);padding-top:14px}
+.recap li{display:grid;grid-template-columns:auto 1fr;gap:2px 10px}
+.recap .h{font-family:var(--head);font-weight:600;font-size:20px;line-height:1.2}
+.recap .m{grid-column:2;color:var(--muted);font-size:15px}
+.recap .flag{grid-column:2;font-size:13px;color:var(--muted)}
+.recap .flag a{color:inherit}
+footer{margin-top:24px;text-align:center;font-size:15px}
+footer a{color:var(--accent);text-decoration:none;margin:0 6px}
+footer .games{display:flex;flex-wrap:wrap;justify-content:center;gap:2px 0;margin:0}
+footer .games .muted{flex-basis:100%}
+.test{font-size:13px;color:var(--bad);text-align:center;margin-bottom:8px}
+.archline{font-size:15px;color:var(--muted);margin:-4px 0 12px}
+.archline a,.card a.inl{color:var(--accent);font-weight:600}
+.archlist{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+.archlist a{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;min-height:52px;border:1.5px solid var(--line);border-radius:12px;color:inherit;text-decoration:none;font-weight:600}
+.archlist a:hover{border-color:var(--ink)}
+.archlist .when{font-weight:400;color:var(--muted);font-size:15px}
+.archlist .st{font-size:15px;white-space:nowrap;color:var(--muted)}
+.archlist .st.done{color:var(--good)}
+a.primary{text-align:center;text-decoration:none}
+
+/* Cross-game cards (same design as Samey's result cards) */
+.card + .xg{margin-top:14px}
+.xg{display:flex;flex-direction:column;gap:10px;text-align:left;--xg-s:var(--surface,var(--card,#fff))}
+.xg .xg-head{text-align:left;margin:4px 0 0;font-size:.92rem;font-weight:700;color:var(--muted)}
+.xg-card{--c:#1f7a6d;display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:10px;background:color-mix(in srgb,var(--c) 12%,var(--xg-s));border:2px solid var(--c);color:var(--ink);text-decoration:none;min-height:44px}
+.xg-card:hover .xg-arrow{transform:translateX(3px)}
+.xg-card:focus-visible{outline:3px solid var(--c);outline-offset:2px}
+.xg-icon{flex:none;width:48px;height:48px}
+.xg-text{display:flex;flex-direction:column;gap:1px;min-width:0}
+.xg-new{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:color-mix(in srgb,var(--c) 60%,var(--ink))}
+.xg-title{font-family:var(--display,inherit);font-weight:800;font-size:1.3rem;line-height:1.1}
+.xg-sub{font-size:.9rem;color:var(--muted)}
+.xg-arrow{margin-left:auto;font-size:1.4rem;font-weight:700;flex:none;color:color-mix(in srgb,var(--c) 60%,var(--ink));transition:transform .15s}
+.xg-samey{--c:#1f7a6d}.xg-spinonym{--c:#d99a1e}.xg-dotty{--c:#E2405A}.xg-syntaxed{--c:#3B5BDB}.xg-passe{--c:#7B3F73}.xg-natter{--c:#B0186A}.xg-roots{--c:#8A5A2B}
+@media (prefers-reduced-motion:no-preference){.reveal{animation:up .2s ease-out}@keyframes up{from{transform:translateY(6px);opacity:.4}to{transform:none;opacity:1}}}
+</style>
+</head>
+<body>
+<main>
+  <header><h1><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="34" width="10" height="16" rx="5" fill="currentColor"/><rect x="20" y="12" width="10" height="38" rx="5" fill="var(--pop)"/><rect x="34" y="34" width="10" height="16" rx="5" fill="currentColor"/><rect x="48" y="12" width="10" height="38" rx="5" fill="var(--pop)"/></svg>Rhymey</h1><div class="dots" id="dots"></div></header>
+  <div id="test"></div>
+  <p class="archline" id="archLine" hidden></p>
+  <div id="app"></div>
+  <footer><p class="games"><span class="muted">More games:</span><a href="/">Samey</a><a href="/spinonym/">Spinonym</a><a href="/dotty/">Dotty</a><a href="/syntaxed/">Syntaxed</a><a href="/passe/">Passé</a><a href="/natter/">Natter</a><a href="/roots/">Roots</a></p>
+  <p class="muted" style="margin-top:10px"><span id="archFoot" hidden><a href="#" id="archLink">Earlier puzzles</a> · </span><a href="/feedback/?game=rhymey">Send feedback</a> · <a href="/support/?game=rhymey">Support us</a></p></footer>
+</main>
+<script src="data.js"></script>
+<script>
+// ---- Schedule ----
+// Rhymey No. 1 is START. Monday to Saturday: four of the five everyday rounds (they take turns, so a different one
+// sits out each day). Sunday: four of them, then Tap the stress as the boss round.
+// Each round type works through its own list in data.js and starts again from the top when it runs out.
+// PREVIEW: set START to the launch day when Rhymey goes live.
+const START=Date.UTC(2026,9,29);
+const dayDate=n=>new Date(START+n*864e5);   // read with UTC getters
+const keyOf=n=>{const d=dayDate(n);return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0')};
+const fmt=(n,o)=>dayDate(n).toLocaleDateString('en-GB',Object.assign({timeZone:'UTC'},o));
+const T={
+  odd:{name:'Odd one out',blurb:"Three of them rhyme. Which one doesn't?",list:ODD},
+  couplet:{name:'Finish the line',blurb:'Pick the word that rhymes and keeps the beat',list:COUPLET},
+  scheme:{name:'Spot the scheme',blurb:'Which lines rhyme with which?',list:SCHEME},
+  fix:{name:'Fix the line',blurb:'One word breaks the rhythm. Mend it',list:FIX},
+  metre:{name:'Name the metre',blurb:'da-DUM, DUM-da, or something bouncier?',list:METRE},
+  stress:{name:'Tap the stress',blurb:'Sunday special: mark every beat in a line',list:STRESS}
+};
+const PLAY_ORDER=['odd','couplet','scheme','fix','metre','stress'];   // easier rounds first
+const CYCLE=['odd','couplet','fix','scheme','metre'];
+const isSunday=n=>dayDate(n).getUTCDay()===0;
+const roundsOn=n=>isSunday(n)?5:4;
+function plan(n){
+  let p=0;const seen={};let today=null;
+  for(let d=0;d<=n;d++){
+    const keys=[];
+    for(let i=0;i<4;i++)keys.push(CYCLE[(p+i)%CYCLE.length]);
+    p+=4;if(isSunday(d))keys.push('stress');
+    if(d===n)today=keys.map(k=>({k,c:seen[k]||0}));
+    keys.forEach(k=>seen[k]=(seen[k]||0)+1);
+  }
+  return today.sort((x,y)=>PLAY_ORDER.indexOf(x.k)-PLAY_ORDER.indexOf(y.k)).map(({k,c})=>{const L=T[k].list;return{key:k,...T[k],it:L[c%L.length]}});
+}
+
+// ---- Which day is on screen ----
+// samey.uk/rhymey/#test plays today without saving; add ?day=N for Rhymey No. N (any day, past or future).
+// ?day=N on its own opens an earlier puzzle from the archive.
+const ARCHIVE_ON=true;
+addEventListener('hashchange',()=>location.reload());
+const params=new URLSearchParams(location.search);
+const now=new Date();
+const TODAY=Math.max(0,Math.round((Date.UTC(now.getFullYear(),now.getMonth(),now.getDate())-START)/864e5));
+const isTest=location.hash==='#test';
+const ARCH=ARCHIVE_ON||isTest||location.hash==='#archive';
+const ARCH_TAIL=ARCHIVE_ON?(isTest?'#test':''):(isTest?'#test':'#archive');
+const td=parseInt(params.get('day'),10);
+const N=Number.isInteger(td)&&td>=1&&(isTest||(ARCH&&td<=TODAY))?td-1:TODAY;
+const isArch=!isTest&&N<TODAY;
+const dateKey=keyOf(N);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ROUNDS=plan(N);
+const items=ROUNDS.map(r=>r.it);
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+// Seeded shuffle so everyone sees the same option order on the same day
+function rng(seed){let h=1779033703^seed.length;for(let i=0;i<seed.length;i++){h=Math.imul(h^seed.charCodeAt(i),3432918353);h=h<<13|h>>>19}return function(){h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);h^=h>>>16;return(h>>>0)/4294967296}}
+function order(n,seed){const r=rng(seed),a=[...Array(n).keys()];for(let i=n-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+const $=s=>document.querySelector(s);
+const app=$('#app');
+let st={i:0,res:[]};
+
+function dots(){$('#dots').innerHTML=items.map((_,k)=>`<div class="dot ${st.res[k]===true?'ok':st.res[k]===false?'no':k===st.i?'cur':''}"></div>`).join('')}
+
+function intro(){
+  app.innerHTML=`<div class="card"><div class="tag">${isArch||isTest?fmt(N,{weekday:'long',day:'numeric',month:'long'}):'Today'}</div>
+  <div class="q">Quick rounds on rhyme and rhythm. Read them aloud: your ear knows more than you think.</div>
+  <p class="muted" style="margin:6px 0 0">One go at each. The rounds change every day${isSunday(N)?', and Sundays end with a special':''}. Here's today's mix:</p>
+  <ul class="rounds">${ROUNDS.map(r=>`<li><b>${r.name}</b> · ${r.blurb}</li>`).join('')}</ul>
+  <button class="primary" id="go">Play</button></div>`;
+  $('#go').onclick=()=>{st={i:0,res:[]};round()};
+  dots();
+}
+
+// Verse helpers
+const by=it=>`<div class="by">— ${esc(it.by)}</div>`;
+const gapLine=s=>esc(s).replace('___','<span class="gap">?</span>');
+const badLine=s=>esc(s).replace(/\[(.+?)\]/,'<span class="bad">$1</span>');
+const caps=p=>p.split(/([\s\-,.?!;:]+)/).map(x=>/[A-Z]/.test(x)&&!/[a-z]/.test(x)?`<b>${esc(x)}</b>`:esc(x)).join('');   // bold the stressed (capitalised) syllables
+const lc=s=>s.charAt(0).toLowerCase()+s.slice(1);
+
+function round(){
+  const R=ROUNDS[st.i],k=R.key,it=R.it;dots();
+  if(k==='stress')return stressRound(R,it);
+  // Option 0 is always the right answer; the order on screen is shuffled (fixed order for schemes and metres).
+  let opts,head,q,cls='two',fixed=false;
+  if(k==='odd'){opts=it.w.map(esc);head=`<div class="big-q">Which one doesn't rhyme?</div>`;q='Say them out loud. Spelling may lie to you.'}
+  else if(k==='couplet'){opts=[it.a,...it.f].map(esc);head=`<div class="verse">${it.l.map(l=>`<div>${gapLine(l)}</div>`).join('')}</div>${by(it)}`;q='Which word rhymes and keeps the beat?'}
+  else if(k==='fix'){opts=[it.a,...it.f].map(esc);head=`<div class="verse big">${badLine(it.l)}</div>${by(it)}<div id="pat"></div>`;q='The wavy word breaks the rhythm. Which one mends it?';cls='two small'}
+  else if(k==='scheme'){const ai=SCHEMES.indexOf(it.a);opts=[it.a,...SCHEMES.filter(s=>s!==it.a)].map(esc);fixed=SCHEMES.map(s=>s===it.a?0:1+SCHEMES.filter(x=>x!==it.a).indexOf(s));
+    head=`<div class="verse" id="vs">${it.l.map((l,i)=>`<div class="ln"><span>${esc(l)}</span><span class="lt">${it.a[i]}</span></div>`).join('')}</div>${by(it)}`;q='What is the rhyme scheme? (Matching letters rhyme.)'}
+  else if(k==='metre'){const M=[METRES.find(m=>m[0]===it.a),...METRES.filter(m=>m[0]!==it.a)];opts=M.map(m=>`<span class="w">${m[0]}</span><span class="m">${m[1]}</span>`);fixed=METRES.map(m=>m[0]===it.a?0:1+METRES.filter(x=>x[0]!==it.a).findIndex(x=>x[0]===m[0]));
+    head=`<div class="verse big">${esc(it.l)}</div>${by(it)}<div id="pat"></div>`;q='Which beat does this line march to?';cls='two small'}
+  const ord=fixed||order(opts.length,dateKey+'|'+k+'|'+(it.a||it.w[0]));
+  app.innerHTML=`<div class="card"><div class="entry"><div class="tag">Round ${st.i+1} · ${R.name}</div>${head}</div><div class="q">${q}</div>
+  <div class="opts ${cls}">${ord.map(x=>`<button class="opt" data-k="${x}">${opts[x]}</button>`).join('')}</div><div id="after" aria-live="polite"></div></div>`;
+  app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    const ok=+b.dataset.k===0;
+    app.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(+x.dataset.k===0)x.classList.add('right');else if(x!==b)x.classList.add('dim')});
+    if(!ok)b.classList.add('wrong');
+    if(k==='couplet')app.querySelector('.gap').textContent=it.a;
+    if(k==='scheme')$('#vs').classList.add('shown');
+    if(k==='fix'){app.querySelector('.bad').outerHTML=`<span class="gap">${esc(it.a)}</span>`}
+    if(it.p)$('#pat').innerHTML=`<div class="pat">${caps(it.p)}</div>`;
+    after(ok,it.o);
+  });
+}
+
+function stressRound(R,it){
+  const words=it.t.split(' ').map(w=>w.split('·'));
+  const need=[...it.b].filter(c=>c==='1').length;
+  let i=0;
+  const html=words.map(w=>`<span class="wd">${w.map(s=>`<button class="syl" data-i="${i++}" aria-pressed="false">${esc(s)}</button>`).join('')}</span>`).join('');
+  app.innerHTML=`<div class="card"><div class="entry"><div class="tag">Round ${st.i+1} · ${R.name}</div>
+  <div class="big-q">Where do the beats fall?</div><div class="muted" style="font-size:15px">Read it aloud and tap every syllable you lean on. There are <b>${need}</b>.</div>
+  <div class="syls">${html}</div>${by(it)}</div>
+  <div class="count" id="cnt">0 of ${need} tapped</div><button class="primary" id="check" disabled>Check</button><div id="after" aria-live="polite"></div></div>`;
+  const on=new Set();
+  app.querySelectorAll('.syl').forEach(b=>b.onclick=()=>{
+    const j=+b.dataset.i;if(on.has(j))on.delete(j);else on.add(j);
+    b.classList.toggle('on',on.has(j));b.setAttribute('aria-pressed',on.has(j));
+    $('#cnt').textContent=`${on.size} of ${need} tapped`;$('#check').disabled=on.size!==need;
+  });
+  $('#check').onclick=()=>{
+    let ok=true;
+    app.querySelectorAll('.syl').forEach(b=>{const j=+b.dataset.i,want=it.b[j]==='1',got=on.has(j);b.disabled=true;b.classList.remove('on');
+      if(want&&got)b.classList.add('hit');else if(got){b.classList.add('extra');ok=false}else if(want){b.classList.add('miss');ok=false}});
+    $('#check').remove();$('#cnt').remove();
+    let j=0;const pat=words.map(w=>w.map(s=>it.b[j++]==='1'?`<b>${esc(s.toUpperCase())}</b>`:esc(s.toLowerCase())).join('-')).join(' ');
+    after(ok,`<div class="pat" style="margin:0 0 6px">${pat}</div>${esc(it.m)}.${ok?'':' Dashed boxes are the beats you missed.'}`);
+  };
+}
+
+function after(ok,html){
+  st.res[st.i]=ok;dots();
+  const last=st.i===items.length-1;
+  $('#after').innerHTML=`<div class="reveal"><b>${ok?'Correct.':'Not quite. The right one is highlighted.'}</b>${html}</div><button class="primary" id="next">${last?'See results':'Next round'}</button>`;
+  if(!ok&&ROUNDS[st.i].key==='stress')$('#after b').textContent='Not quite. The stresses are marked.';
+  const nx=$('#next');
+  nx.onclick=()=>{if(last){if(!isTest)store.set('rhymey-'+dateKey,st.res);results()}else{st.i++;round();window.scrollTo(0,0)}};
+  nx.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function rank(s,n){return['Doggerel','Greeting Card','Jingle Writer','Bard in Training','Sonneteer','Poet Laureate'][Math.round(s/n*5)]}
+function recapLine(k,it){
+  if(k==='odd')return[it.w[0],"didn't rhyme with "+it.w.slice(1).join(', ')];
+  if(k==='stress')return['Sunday special',lc(it.m)];
+  if(k==='metre')return[it.a,it.by];
+  if(k==='scheme')return[it.a,it.by];
+  return[it.a,it.by];
+}
+
+function results(){
+  st.i=items.length;dots();
+  const s=st.res.filter(Boolean).length,n=items.length;
+  const ticks=st.res.map(x=>x?'✅':'❌').join('');
+  if(!isTest&&!isArch)(window.SameySetQ=window.SameySetQ||[]).push(['rhymey',s+'/'+n]);
+  const nice=fmt(N,{weekday:'short',day:'numeric',month:'short'});
+  const share=`Rhymey No. ${N+1}${isArch?' (archive)':''}\n${s}/${n} ${ticks}\n${rank(s,n)}\nYour go: https://samey.uk/rhymey/ #sameyuk`;
+  app.innerHTML=`<div class="card center"><div class="tag">${isTest?'Test · No. '+(N+1)+' · '+nice:isArch?'No. '+(N+1)+' · '+nice:nice}</div>
+  <div class="score">${s}/${n}</div><div class="ticks">${ticks}</div><div class="rank">${rank(s,n)}</div>
+  <p class="muted">${isArch?`<a class="inl" href="#" id="moreArch">Play another earlier puzzle</a> or <a class="inl" href="./${ARCH_TAIL}">go back to today's puzzle</a>.`:'<span data-next="A new mix of rounds in {t}.">A new mix of rounds tomorrow.</span>'+(ARCH&&TODAY>=1&&!isTest?` Can't wait? <a class="inl" href="#" id="moreArch">Play earlier puzzles</a>.`:'')}</p>
+  <button class="primary" id="share">Share</button><button class="ghost" id="copy">Copy result</button>
+  <ul class="recap">${items.map((it,k)=>{const [h,m]=recapLine(ROUNDS[k].key,it);return`<li><span>${st.res[k]?'✅':'❌'}</span><span class="h">${esc(h)}</span><span class="m">${esc(m)}</span><span class="flag"><a href="/feedback/?game=rhymey&type=puzzle&puzzle=${encodeURIComponent((isArch?'No. '+(N+1):nice)+' · '+ROUNDS[k].name+' · '+h)}">Wrong?</a></span></li>`}).join('')}</ul></div>${document.getElementById('xgCards').innerHTML}`;
+  $('#share').onclick=()=>{if(navigator.share){navigator.share({text:share}).catch(()=>{})}else{location.href='https://wa.me/?text='+encodeURIComponent(share)}};
+  $('#copy').onclick=()=>{try{navigator.clipboard.writeText(share).then(()=>{$('#copy').textContent='Copied'},()=>{})}catch(e){}};
+  const more=$('#moreArch');if(more)more.onclick=e=>{e.preventDefault();openArchive()};
+}
+
+function openArchive(){
+  const list=[];
+  for(let k=TODAY-1;k>=0;k--){
+    const r=store.get('rhymey-'+keyOf(k)),n=roundsOn(k);
+    const stx=r&&r.length===n?`<span class="st done">${r.filter(Boolean).length}/${n}</span>`:'<span class="st">Play →</span>';
+    list.push(`<li><a href="?day=${k+1}${ARCH_TAIL}"><span>No. ${k+1} <span class="when">· ${fmt(k,{weekday:'short',day:'numeric',month:'short'})}</span></span>${stx}</a></li>`);
+  }
+  if(!list.length)list.push('<li class="muted">No earlier puzzles yet. Come back tomorrow.</li>');
+  $('#archLine').hidden=true;$('#dots').innerHTML='';
+  app.innerHTML=`<div class="card"><div class="q" style="font-size:22px;margin-top:0">Earlier puzzles</div>
+  <p class="muted" style="margin:4px 0 0">Missed a day? Every past Rhymey is here.</p>
+  <ul class="archlist">${list.join('')}</ul><a class="primary" href="./${ARCH_TAIL}">Back to today's puzzle</a></div>`;
+  window.scrollTo(0,0);
+}
+
+if(isTest)$('#test').innerHTML=`<div class="test">Test mode: No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})} · results not saved</div>`;
+if(ARCH&&TODAY>=1){$('#archFoot').hidden=false;$('#archLink').onclick=e=>{e.preventDefault();openArchive()};}
+if(isArch){const l=$('#archLine');l.hidden=false;l.innerHTML=`Earlier puzzle · No. ${N+1} · <a href="./${ARCH_TAIL}">Today's puzzle</a>`;}
+const done=!isTest&&store.get('rhymey-'+dateKey);
+// Wait for the page to finish loading: the results screen uses the 'Fancy another?' cards further down.
+document.addEventListener('DOMContentLoaded',()=>{if(done&&done.length===items.length){st.res=done;results()}else intro();});
+</script>
+<template id="xgCards"><div class="xg"><p class="xg-head">Fancy another?</p><a class="xg-card xg-samey" href="/"><svg class="xg-icon" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><circle cx="25" cy="32" r="15" fill="#1f7a6d" fill-opacity=".95"/><circle cx="39" cy="32" r="15" fill="#d99a1e" fill-opacity=".85"/></svg><span class="xg-text"><span class="xg-new">Also from Samey</span><span class="xg-title">Play Samey</span><span class="xg-sub">Find the hidden word that means the same</span></span><span class="xg-arrow" aria-hidden="true">→</span></a><a class="xg-card xg-spinonym" href="/spinonym/"><svg class="xg-icon" viewBox="-32 -32 64 64" aria-hidden="true"><path d="M0 -30A30 30 0 0 1 25.98 15L0 0Z" fill="#2B5597"/><path d="M25.98 15A30 30 0 0 1 -25.98 15L0 0Z" fill="#A84F0C"/><path d="M-25.98 15A30 30 0 0 1 -25.98 -15L0 0Z" fill="#17796B"/><path d="M-25.98 -15A30 30 0 0 1 0 -30L0 0Z" fill="#6B3F99"/><circle r="10" fill="#16181D" stroke="#ffffff" stroke-width="2.5"/></svg><span class="xg-text"><span class="xg-new">Also from Samey</span><span class="xg-title">Play Spinonym</span><span class="xg-sub">Spin the wheel for today's kind of word</span></span><span class="xg-arrow" aria-hidden="true">→</span></a><a class="xg-card xg-dotty" href="/dotty/"><svg class="xg-icon" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><rect x="27" y="27" width="10" height="27" rx="5" fill="#fff"/><circle cx="21" cy="15" r="6" fill="#E2405A"/><circle cx="43" cy="15" r="6" fill="#E2405A"/></svg><span class="xg-text"><span class="xg-new">Also from Samey</span><span class="xg-title">Play Dotty</span><span class="xg-sub">Put the missing accents and punctuation back</span></span><span class="xg-arrow" aria-hidden="true">→</span></a><a class="xg-card xg-syntaxed" href="/syntaxed/"><svg class="xg-icon" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><rect x="10" y="14" width="26" height="10" rx="5" fill="#fff"/><rect x="40" y="14" width="14" height="10" rx="5" fill="#748FFC"/><rect x="10" y="29" width="14" height="10" rx="5" fill="#748FFC"/><rect x="28" y="29" width="26" height="10" rx="5" fill="#fff"/><rect x="10" y="44" width="34" height="10" rx="5" fill="#fff"/><circle cx="51" cy="49" r="4" fill="#3B5BDB"/></svg><span class="xg-text"><span class="xg-new">Also from Samey</span><span class="xg-title">Play Syntaxed</span><span class="xg-sub">Grammar puzzles that make you giggle, not wince</span></span><span class="xg-arrow" aria-hidden="true">→</span></a><a class="xg-card xg-passe" href="/passe/"><svg class="xg-icon" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><path d="M8 20C16 16 24 16 31 20V50C24 46 16 46 8 50Z" fill="#fff"/><path d="M33 20C40 16 48 16 56 20V50C48 46 40 46 33 50Z" fill="#fff"/><path d="M44 17H51V37L47.5 33.5L44 37Z" fill="#C77DBA"/></svg><span class="xg-text"><span class="xg-new">Also from Samey</span><span class="xg-title">Play Passé</span><span class="xg-sub">Spot the real meaning of forgotten words</span></span><span class="xg-arrow" aria-hidden="true">→</span></a><a class="xg-card xg-natter" href="/natter/"><svg class="xg-icon" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><path d="M10 14h44a4 4 0 0 1 4 4v22a4 4 0 0 1-4 4H28l-11 9v-9h-7a4 4 0 0 1-4-4V18a4 4 0 0 1 4-4z" fill="#fff"/><circle cx="22" cy="29" r="4" fill="#E0458F"/><circle cx="32" cy="29" r="4" fill="#E0458F"/><circle cx="42" cy="29" r="4" fill="#E0458F"/></svg><span class="xg-text"><span class="xg-new">Also from Samey</span><span class="xg-title">Play Natter</span><span class="xg-sub">Real local word, or made up? A daily dialect game</span></span><span class="xg-arrow" aria-hidden="true">→</span></a><a class="xg-card xg-roots" href="/roots/"><svg class="xg-icon" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#17203A"/><path d="M32 12v20" stroke="#fff" stroke-width="5" stroke-linecap="round"/><path d="M32 30c0 9-12 9-16 20M32 30c0 9 12 9 16 20M32 32v20" stroke="#E0A86A" stroke-width="4.5" fill="none" stroke-linecap="round"/><circle cx="32" cy="14" r="7" fill="#69D27A"/></svg><span class="xg-text"><span class="xg-new">Also from Samey</span><span class="xg-title">Play Roots</span><span class="xg-sub">Where words come from, in four quick rounds</span></span><span class="xg-arrow" aria-hidden="true">→</span></a></div></template>
+<script src="/daily.js"></script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "210d8562172a4416bc59877612814183"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
