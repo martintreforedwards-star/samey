@@ -103,6 +103,10 @@ a{color:var(--ink);font-weight:700}
     const b = document.getElementById("back");
     b.href = "/rhymey/"; b.textContent = "← Back to Rhymey";
   }
+  if (new URLSearchParams(location.search).get("game") === "phoney") {
+    const b = document.getElementById("back");
+    b.href = "/phoney/"; b.textContent = "← Back to Phoney";
+  }
   if (new URLSearchParams(location.search).get("game") === "babel") {
     const b = document.getElementById("back");
     b.href = "/babel/"; b.textContent = "← Back to Babel";
