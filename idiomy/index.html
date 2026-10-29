@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Idiomy</title>
+<meta name="description" content="A daily honeycomb of words. Tap them together to make idioms.">
+<link rel="icon" href="/idiomy/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,500&display=swap">
+<style>
+:root{--bg:#fbf6ec;--card:#fff;--ink:#14171f;--muted:#5b6170;--line:#eadfc8;--accent:#b45309;--on-accent:#fff;--pop:#f5b83d;--good:#2b8a3e;--bad:#c92a2a;--goodbg:#ebfbee;--badbg:#fff5f5;--chip:#fbefd5;--head:"Fraunces",Georgia,serif}
+@media (prefers-color-scheme:dark){:root{--bg:#121110;--card:#1b1a17;--ink:#f1eee6;--muted:#a39d90;--line:#36322a;--accent:#f5b83d;--on-accent:#1b1a17;--pop:#f5b83d;--good:#8ce99a;--bad:#ff8787;--goodbg:#173022;--badbg:#3a1f22;--chip:#2d2719}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+main{max-width:480px;margin:0 auto;padding:16px 16px 40px;min-height:100vh}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+h1{font-family:var(--head);font-weight:800;font-size:34px;margin:0;line-height:1;letter-spacing:-.5px}
+h1 svg{width:28px;height:28px;vertical-align:-3px;margin-right:6px}
+.lives{display:flex;gap:6px;align-items:center}
+.life{width:14px;height:16px;background:var(--pop);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+.life.used{background:var(--line)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+.tag{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600}
+.lead{margin:6px 0 2px;font-size:16px}
+.progress{display:flex;justify-content:space-between;align-items:baseline;margin:10px 0 4px;font-size:15px;color:var(--muted)}
+.progress b{color:var(--ink);font-size:17px}
+.bar{height:8px;border-radius:4px;background:var(--line);overflow:hidden;position:relative}
+.bar i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.bar .mark{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--ink)}
+.hive{--hw:min(86px,calc((100vw - 90px)/4));margin:18px auto 6px;width:max-content}
+.row{display:flex;justify-content:center;gap:6px}
+.row+.row{margin-top:calc(var(--hw)*-0.29 + 5px)}
+.hex{width:var(--hw);height:calc(var(--hw)*1.1547);border:0;padding:0 4px;background:var(--chip);color:var(--ink);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);font:600 15px/1.1 system-ui,-apple-system,sans-serif;cursor:pointer;transition:background .15s,transform .1s;overflow-wrap:anywhere}
+.hex:hover{background:color-mix(in srgb,var(--pop) 40%,var(--chip))}
+.hex:active{transform:scale(.96)}
+.hex.on{background:var(--accent);color:var(--on-accent)}
+.hex:focus-visible{outline:none;box-shadow:inset 0 0 0 4px var(--ink)}
+.hex[disabled]{cursor:default}
+.tray{min-height:44px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;margin:10px 0 4px;font-family:var(--head);font-weight:600;font-size:20px}
+.tray .plus{color:var(--muted);font-family:system-ui,sans-serif;font-size:16px}
+.tray .hint0{font-family:system-ui,sans-serif;font-weight:400;font-size:15px;color:var(--muted)}
+.msg{min-height:24px;text-align:center;font-size:15px;margin:2px 0 10px}
+.msg.good{color:var(--good)}.msg.bad{color:var(--bad)}.msg.meh{color:var(--muted)}
+.btns{display:flex;gap:10px}
+button{font:inherit;color:inherit;cursor:pointer}
+.primary{flex:1;padding:14px;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;min-height:50px}
+.primary[disabled]{opacity:.4;cursor:default}
+.ghost{padding:14px 16px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);font-weight:600;min-height:50px}
+.primary:focus-visible,.ghost:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.found{list-style:none;padding:0;margin:16px 0 0}
+.found li{padding:10px 0;border-top:1px solid var(--line)}
+.found .p{font-family:var(--head);font-size:19px;font-weight:600}
+.found .p b{color:var(--accent);font-weight:800}
+.found .m{color:var(--muted);font-size:15px}
+.found li.miss .p{color:var(--muted);font-weight:400}
+.found li.miss .p b{color:var(--muted)}
+.found li .flag{font-size:13px;margin-left:6px}
+.clue{margin-top:12px;padding:12px 14px;border-radius:12px;background:var(--chip);font-size:15px}
+.links{display:flex;justify-content:space-between;margin-top:14px;font-size:15px}
+.links button{background:none;border:0;padding:6px 0;color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.links button[disabled]{color:var(--muted);text-decoration:none;cursor:default}
+.center{text-align:center}
+.rank{font-family:var(--head);font-weight:800;font-size:30px;margin:6px 0}
+.squares{font-size:22px;letter-spacing:2px;margin:6px 0 4px}
+.muted{color:var(--muted);font-size:15px}
+a{color:var(--accent)}
+.test{background:var(--chip);border-radius:10px;padding:8px 12px;font-size:14px;margin-bottom:12px}
+.how{margin:14px 0 0;padding-left:20px;font-size:15px;color:var(--muted)}
+.how li{margin:3px 0}
+footer{margin-top:18px;text-align:center}
+@media (prefers-reduced-motion:reduce){.hex,.bar i{transition:none}}
+</style>
+</head>
+<body>
+<main>
+  <header><h1><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M22 6l12 7v13l-12 7-12-7V13z" fill="var(--pop)"/><path d="M44 6l12 7v13l-12 7-12-7V13z" fill="currentColor"/><path d="M33 31l12 7v13l-12 7-12-7V38z" fill="var(--pop)"/></svg>Idiomy</h1><div class="lives" id="lives" aria-label="Misses left"></div></header>
+  <nav class="sy-bar" aria-label="Games"></nav>
+  <div id="test"></div>
+  <div id="app"></div>
+  <footer><p class="muted">Preview · not linked from the other games yet · <a href="/feedback/?game=idiomy">Send feedback</a></p></footer>
+</main>
+<script src="data.js"></script>
+<script>
+// ---- Which day is on screen ----
+// Preview: board N comes from BOARDS in order. ?day=N plays Idiomy No. N; #test plays without saving.
+const START=Date.UTC(2026,9,29);
+const LIVES=5;
+const dayDate=n=>new Date(START+n*864e5);
+const fmt=(n,o)=>dayDate(n).toLocaleDateString('en-GB',Object.assign({timeZone:'UTC'},o));
+const keyOf=n=>{const d=dayDate(n);return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0')};
+addEventListener('hashchange',()=>location.reload());
+const params=new URLSearchParams(location.search);
+const now=new Date();
+const TODAY=Math.max(0,Math.round((Date.UTC(now.getFullYear(),now.getMonth(),now.getDate())-START)/864e5));
+const isTest=location.hash==='#test';
+const td=parseInt(params.get('day'),10);
+const N=Number.isInteger(td)&&td>=1?td-1:TODAY;
+const B=BOARDS[N%BOARDS.length];
+const SKEY='idiomy-'+keyOf(N);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const keyFor=a=>[...a].sort().join('|');
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){if(isTest)return;try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+// Lookups: every accepted tap set points at its idiom's index
+const ANS={};B.a.forEach((a,i)=>{ANS[keyFor(a.k)]=i;(a.alt||[]).forEach(x=>ANS[keyFor(x)]=i)});
+const NEAR={};(B.near||[]).forEach(x=>NEAR[keyFor(x.k)]=x.say);
+const TOTAL=B.a.length,TARGET=B.t;
+
+let st=store.get(SKEY)||{found:[],miss:0,hints:[],done:false,tried:[]};
+let sel=[];
+const $=s=>document.querySelector(s);
+const app=$('#app');
+
+const phrase=p=>esc(p).replace(/\*([^*]+)\*/g,'<b>$1</b>');
+function rank(f){if(f>=TOTAL)return'Cream of the crop';if(f>TARGET)return'Ahead of the game';if(f===TARGET)return'Up to scratch';if(f>=TARGET-2)return'Getting the hang of it';return'Learning the ropes'}
+function lives(){$('#lives').innerHTML=Array.from({length:LIVES},(_,i)=>`<span class="life${i<st.miss?' used':''}"></span>`).join('');$('#lives').setAttribute('aria-label',(LIVES-st.miss)+' misses left')}
+function save(){store.set(SKEY,st)}
+
+function play(msg,cls){
+  lives();
+  const rows=[B.w.slice(0,3),B.w.slice(3,7),B.w.slice(7,10)];
+  const f=st.found.length,pct=Math.min(100,f/TOTAL*100),mark=TARGET/TOTAL*100;
+  const unfound=B.a.map((_,i)=>i).filter(i=>!st.found.includes(i));
+  const clue=st.hints.filter(i=>!st.found.includes(i)).map(i=>`<div class="clue"><b>Clue:</b> find an idiom that means “${esc(B.a[i].m)}”.</div>`).join('');
+  app.innerHTML=`<div class="card">
+    <div class="tag">${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'long',day:'numeric',month:'long'})}</div>
+    <p class="lead">Tap two or three words that belong to the same idiom. Words can be used more than once.</p>
+    <div class="progress"><span><b>${f}</b> found · target ${TARGET}</span><span>${TOTAL} in today's hive</span></div>
+    <div class="bar" aria-hidden="true"><i style="width:${pct}%"></i><span class="mark" style="left:calc(${mark}% - 1px)"></span></div>
+    <div class="hive" role="group" aria-label="Today's words">${rows.map(r=>`<div class="row">${r.map(w=>`<button class="hex${sel.includes(w)?' on':''}" data-w="${esc(w)}" aria-pressed="${sel.includes(w)}">${esc(w)}</button>`).join('')}</div>`).join('')}</div>
+    <div class="tray" aria-live="polite">${sel.length?sel.map(w=>`<span>${esc(w)}</span>`).join('<span class="plus">+</span>'):'<span class="hint0">Pick your words</span>'}</div>
+    <div class="msg ${cls||''}" role="status">${msg||''}</div>
+    <div class="btns"><button class="ghost" id="clear"${sel.length?'':' disabled'}>Clear</button><button class="primary" id="go"${sel.length>=2?'':' disabled'}>Check</button></div>
+    ${clue}
+    <div class="links"><button id="hint"${unfound.length&&st.miss<LIVES-1?'':' disabled'}>Clue (costs a miss)</button><button id="fin">${f>=TARGET?'Finish':'Give up'}</button></div>
+    ${f?`<ul class="found">${st.found.map(i=>`<li><div class="p">${phrase(B.a[i].p)}</div><div class="m">${esc(B.a[i].m)}</div></li>`).join('')}</ul>`:''}
+    ${!f&&!st.miss?`<ol class="how"><li>Tap the words, then Check. The game fills in the little words.</li><li>Misses cost a hexagon. Lose all ${LIVES} and the game ends.</li><li>Reach the target, then keep going for the rest.</li></ol>`:''}
+  </div>`;
+  app.querySelectorAll('.hex').forEach(b=>b.onclick=()=>{const w=b.dataset.w;sel=sel.includes(w)?sel.filter(x=>x!==w):sel.length<3?[...sel,w]:sel;play()});
+  $('#clear').onclick=()=>{sel=[];play()};
+  $('#go').onclick=check;
+  $('#hint').onclick=()=>{const pool=unfound.filter(i=>!st.hints.includes(i));if(!pool.length)return play('You already have a clue for every idiom left.','meh');st.hints.push(pool[0]);st.miss++;save();play()};
+  $('#fin').onclick=()=>{if(f<TARGET&&!confirm('Give up and see all of today\'s idioms?'))return;st.done=true;save();end()};
+}
+
+function check(){
+  const k=keyFor(sel);
+  let msg,cls;
+  if(k in ANS){
+    const i=ANS[k];
+    if(st.found.includes(i)){msg='Already found that one.';cls='meh'}
+    else{st.found.push(i);msg=st.found.length===TARGET?'Target reached! Keep going or finish.':['Nice one.','Spot on.','Got it.','Lovely.'][st.found.length%4];cls='good'}
+  }else if(k in NEAR){msg=NEAR[k];cls='meh'}
+  else if(Object.keys(ANS).some(a=>sel.every(w=>a.split('|').includes(w))&&a.split('|').length>sel.length)){msg="You're onto something. Add another word.";cls='meh'}
+  else if(st.tried.includes(k)){msg='You tried that one already. No charge.';cls='meh'}
+  else{st.tried.push(k);st.miss++;msg='Not one of today\'s idioms.';cls='bad'}
+  sel=[];
+  if(st.found.length===TOTAL||st.miss>=LIVES){st.done=true;save();return end()}
+  save();play(msg,cls);
+}
+
+function end(){
+  lives();
+  const f=st.found.length;
+  const sq=B.a.map((_,i)=>st.found.includes(i)?(st.hints.includes(i)?'🟨':'🟩'):'⬜').join('');
+  const share=`Idiomy No. ${N+1} (preview)\n${sq} ${f}/${TOTAL}\n${rank(f)}\nYour go: https://samey.uk/idiomy/ #sameyuk`;
+  const order=[...st.found,...B.a.map((_,i)=>i).filter(i=>!st.found.includes(i))];
+  app.innerHTML=`<div class="card center">
+    <div class="tag">${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})}</div>
+    <div class="rank">${rank(f)}</div>
+    <div class="squares" aria-label="${f} of ${TOTAL} found">${sq}</div>
+    <p class="muted">${f} of ${TOTAL} found · target ${TARGET}${st.miss>=LIVES?' · out of misses':''}</p>
+    <div class="btns" style="margin-top:12px"><button class="primary" id="share">Share</button></div>
+    <p class="muted"><span data-next="Next hive in {t}.">A new hive tomorrow.</span></p>
+  </div>
+  <div class="card" style="margin-top:14px"><div class="tag">Today's idioms</div>
+    <ul class="found">${order.map(i=>{const a=B.a[i],got=st.found.includes(i);return`<li class="${got?'':'miss'}"><div class="p">${got?'':'Missed: '}${phrase(a.p)}</div><div class="m">${esc(a.m)}<a class="flag" href="/feedback/?game=idiomy&type=puzzle&puzzle=${encodeURIComponent('No. '+(N+1)+' · '+a.p.replace(/\*/g,''))}">Wrong?</a></div></li>`}).join('')}</ul>
+    <p class="muted" style="margin-top:12px">Found a real idiom we didn't count? <a href="/feedback/?game=idiomy&type=puzzle&puzzle=${encodeURIComponent('No. '+(N+1)+' · missing idiom')}">Tell us</a>.</p>
+  </div>`;
+  $('#share').onclick=()=>{if(navigator.share){navigator.share({text:share}).catch(()=>{});return}try{navigator.clipboard.writeText(share).then(()=>{$('#share').textContent='Copied'})}catch(e){}};
+}
+
+if(isTest)$('#test').innerHTML=`<div class="test">Test mode: No. ${N+1} · results not saved · <a href="?day=${(N+1)%BOARDS.length+1}#test">Next board</a></div>`;
+st.done?end():play();
+</script>
+<script src="/daily.js"></script>
+</body>
+</html>
