@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Incipit</title>
+<meta name="description" content="A daily game of first lines. Read the opening line and name the book.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/incipit/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,500&display=swap">
+<style>
+:root{--bg:#f8f3e8;--card:#fffdf8;--ink:#1c1712;--muted:#6a6155;--line:#e6dcc6;--accent:#8c2f1b;--on-accent:#fff;--gold:#b8901f;--good:#2b8a3e;--bad:#c92a2a;--goodbg:#ebfbee;--badbg:#fff5f5;--chip:#f3ead6;--head:"Fraunces",Georgia,serif}
+@media (prefers-color-scheme:dark){:root{--bg:#14110e;--card:#1d1915;--ink:#f1ebe0;--muted:#a89e8e;--line:#3a3329;--accent:#e8a87c;--on-accent:#1d1915;--gold:#e0bc55;--good:#8ce99a;--bad:#ff8787;--goodbg:#173022;--badbg:#3a1f22;--chip:#2b2419}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+main{max-width:480px;margin:0 auto;padding:16px 16px 40px;min-height:100vh}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+h1{font-family:var(--head);font-weight:800;font-size:34px;margin:0;line-height:1;letter-spacing:-.5px}
+h1 svg{width:30px;height:30px;vertical-align:-4px;margin-right:6px}
+.pips{display:flex;gap:5px}
+.pip{width:9px;height:20px;border-radius:2px;background:var(--line)}
+.pip.g{background:var(--good)}.pip.h{background:var(--gold)}.pip.x{background:var(--bad)}.pip.now{background:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+.tag{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600}
+.kind{font-family:var(--head);font-weight:800;font-size:22px;margin:4px 0 0}
+.quote{position:relative;margin:16px 0 14px;padding:4px 0 4px 18px;border-left:3px solid var(--gold);font-family:var(--head);font-style:italic;font-weight:400;font-size:21px;line-height:1.4}
+.quote .cut{color:var(--muted)}
+.from{font-size:15px;color:var(--muted);margin:10px 0 0}
+.from b{color:var(--ink);font-weight:600}
+.clues{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.clue{font-size:14px;padding:5px 10px;border-radius:999px;background:var(--chip)}
+.opts{display:grid;gap:8px}
+.opt{display:block;width:100%;text-align:left;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);font:600 16px/1.3 system-ui,-apple-system,sans-serif;color:var(--ink);cursor:pointer;min-height:50px}
+.opt.end{font:italic 400 18px/1.35 var(--head)}
+.opt:hover:not([disabled]){border-color:var(--accent)}
+.opt:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.opt[disabled]{cursor:default}
+.opt.right{border-color:var(--good);background:var(--goodbg)}
+.opt.wrong{border-color:var(--bad);background:var(--badbg)}
+.opt.dim{opacity:.55}
+.reveal{margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--chip);font-size:15px}
+.reveal .t{font-family:var(--head);font-weight:800;font-size:19px}
+.reveal .pts{float:right;font-weight:700}
+.btns{display:flex;gap:10px;margin-top:14px}
+button{font:inherit;color:inherit;cursor:pointer}
+.primary{flex:1;padding:14px;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;min-height:50px}
+.links{display:flex;justify-content:space-between;margin-top:14px;font-size:15px}
+.links button{background:none;border:0;padding:6px 0;color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.links button[disabled]{color:var(--muted);text-decoration:none;cursor:default}
+.center{text-align:center}
+.rank{font-family:var(--head);font-weight:800;font-size:30px;margin:6px 0}
+.squares{font-size:26px;letter-spacing:3px;margin:6px 0 4px}
+.muted{color:var(--muted);font-size:15px}
+a{color:var(--accent)}
+.test{background:var(--chip);border-radius:10px;padding:8px 12px;font-size:14px;margin-bottom:12px}
+.ex{margin:10px 0 0;font-size:15px}.ex summary{cursor:pointer;color:var(--accent);font-weight:600}
+.how{margin:8px 0 0;padding-left:20px;color:var(--muted)}
+.how li{margin:3px 0}
+.lines{list-style:none;padding:0;margin:8px 0 0}
+.lines li{padding:12px 0;border-top:1px solid var(--line)}
+.lines .q{font-family:var(--head);font-style:italic;font-size:17px;line-height:1.4}
+.lines .s{font-size:14px;color:var(--muted);margin-top:4px}
+.lines .s b{color:var(--ink);font-weight:600}
+.lines .flag{margin-left:6px}
+footer{margin-top:18px;text-align:center}
+</style>
+</head>
+<body>
+<main>
+  <header><h1><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="56" height="56" rx="10" fill="#8c2f1b"/><rect x="11" y="11" width="42" height="42" rx="4" fill="none" stroke="#d9b445" stroke-width="2.5"/><path d="M24 18h16v5h-5v18h5v5H24v-5h5V23h-5z" fill="#d9b445"/></svg>Incipit</h1><div class="pips" id="pips" aria-hidden="true"></div></header>
+  <nav class="sy-bar" aria-label="Games"></nav>
+  <div id="test"></div>
+  <div id="app"></div>
+  <footer><p class="muted"><a href="/feedback/?game=incipit">Send feedback</a> · <a href="/support/?game=incipit">Support us</a></p></footer>
+</main>
+<script src="data.js"></script>
+<script>
+// ---- Which day is on screen ----
+// Preview: day N comes from DAYS in order. ?day=N plays Incipit No. N; #test plays without saving.
+const START=Date.UTC(2026,9,31);
+const dayDate=n=>new Date(START+n*864e5);
+const fmt=(n,o)=>dayDate(n).toLocaleDateString('en-GB',Object.assign({timeZone:'UTC'},o));
+const keyOf=n=>{const d=dayDate(n);return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0')};
+addEventListener('hashchange',()=>location.reload());
+const params=new URLSearchParams(location.search);
+const now=new Date();
+const TODAY=Math.max(0,Math.round((Date.UTC(now.getFullYear(),now.getMonth(),now.getDate())-START)/864e5));
+const isTest=location.hash==='#test';
+const td=parseInt(params.get('day'),10);
+const N=Number.isInteger(td)&&td>=1?td-1:TODAY;
+const D=DAYS[N%DAYS.length];
+const SKEY='incipit-'+keyOf(N);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){if(isTest)return;try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+// Same shuffle for everyone on the same day
+function shuffled(arr,seed){const a=[...arr];let s=seed*9301+49297;for(let i=a.length-1;i>0;i--){s=(s*9301+49297)%233280;const j=Math.floor(s/233280*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+// Five rounds: four "Which book?", then "Finish the line"
+const ROUNDS=D.q.map((q,i)=>({kind:'book',q,opts:shuffled([q.t,...q.o],N*7+i+1),right:q.t})).concat([{kind:'end',q:D.f,opts:shuffled([D.f.e,...D.f.x],N*7+9),right:D.f.e}]);
+const MAX=ROUNDS.length*3;
+
+let st=store.get(SKEY)||{r:0,pick:[],hints:[],done:false};
+const $=s=>document.querySelector(s);
+const app=$('#app');
+function save(){store.set(SKEY,st)}
+const hintsAt=i=>st.hints[i]||0;
+const got=i=>st.pick[i]!=null&&ROUNDS[i].opts[st.pick[i]]===ROUNDS[i].right;
+const pts=i=>got(i)?3-hintsAt(i):0;
+const total=()=>ROUNDS.reduce((s,_,i)=>s+pts(i),0);
+const credit=q=>`<b>${esc(q.t)}</b> · ${esc(q.a)}, ${q.y}${q.tr?` <span class="muted">(tr. ${esc(q.tr)})</span>`:''}`;
+const fullLine=q=>q.l!=null?q.l:q.s+' '+q.e;
+const showLine=s=>esc(s).replace(/…$/,'<span class="cut">…</span>');
+const initials=a=>a.split(/\s+/).filter(w=>/^[A-Z]/.test(w)).map(w=>w[0]+'.').join(' ');
+function rank(t){if(t>=MAX)return'First edition';if(t>=12)return'Page-turner';if(t>=8)return'Well thumbed';if(t>=4)return'Bookworm in training';return'Still in the stacks'}
+const mark=i=>st.pick[i]==null?'':got(i)?(hintsAt(i)?'h':'g'):'x';
+function pips(cur){$('#pips').innerHTML=ROUNDS.map((_,i)=>`<span class="pip ${mark(i)||(i===cur?'now':'')}"></span>`).join('')}
+
+function play(){
+  const i=st.r,R=ROUNDS[i],q=R.q,answered=st.pick[i]!=null,h=hintsAt(i);
+  pips(i);
+  const clues=[];
+  if(R.kind==='book'){if(h>=1)clues.push(`First published ${q.y}`);if(h>=2)clues.push(`Author's initials: ${initials(q.a)}`)}
+  const optCls=j=>{if(!answered)return'';const o=R.opts[j];if(o===R.right)return' right';if(j===st.pick[i])return' wrong';return' dim'};
+  app.innerHTML=`<div class="card">
+    <div class="tag">${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})} · Round ${i+1} of ${ROUNDS.length}</div>
+    <div class="kind">${R.kind==='book'?'Which book opens like this?':'Finish the line'}</div>
+    ${i===0&&!answered?`<details class="ex" open><summary>How to play</summary><ol class="how">
+      <li>Four famous first lines. Pick the book each one opens.</li>
+      <li>Stuck? A hint shows the year, then the author's initials. Each hint costs a point.</li>
+      <li>Round five: pick the real ending of a famous first line.</li>
+      <li>3 points a round, ${MAX} in all.</li></ol></details>`:''}
+    ${R.kind==='end'?`<p class="from">From ${credit(q)}</p>`:''}
+    <blockquote class="quote">${R.kind==='book'?showLine(q.l):esc(q.s)+' <span class="cut">…</span>'}</blockquote>
+    ${clues.length?`<div class="clues">${clues.map(c=>`<span class="clue">${esc(c)}</span>`).join('')}</div>`:''}
+    <div class="opts" role="group" aria-label="Choices">${R.opts.map((o,j)=>`<button class="opt${R.kind==='end'?' end':''}${optCls(j)}" data-j="${j}"${answered?' disabled':''}>${esc(o)}</button>`).join('')}</div>
+    ${answered?`<div class="reveal" role="status"><span class="pts">${got(i)?'+'+pts(i):'0'}</span>${got(i)?'Yes!':'Not this time.'}${R.kind==='book'?`<div class="t">${esc(q.t)}</div><div>${esc(q.a)}, ${q.y}${q.tr?` · translated by ${esc(q.tr)}`:''}</div>`:`<div style="margin-top:6px;font-family:var(--head);font-style:italic">${esc(fullLine(q))}</div>`}</div>
+      <div class="btns"><button class="primary" id="next">${i+1<ROUNDS.length?'Next line':'See how you did'}</button></div>`
+    :R.kind==='book'?`<div class="links"><button id="hint"${h>=2?' disabled':''}>${h===0?'Hint: year (−1 point)':h===1?"Hint: author's initials (−1 point)":'No more hints'}</button><span></span></div>`:''}
+  </div>`;
+  app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{if(st.pick[i]!=null)return;st.pick[i]=+b.dataset.j;save();play()});
+  const hb=$('#hint');if(hb)hb.onclick=()=>{st.hints[i]=Math.min(2,hintsAt(i)+1);save();play()};
+  const nb=$('#next');if(nb){nb.onclick=()=>{if(st.r+1<ROUNDS.length){st.r++;save();play()}else{st.done=true;save();end()}};nb.focus({preventScroll:true})}
+}
+
+function end(){
+  pips(-1);
+  const t=total();
+  const sq=ROUNDS.map((_,i)=>got(i)?(hintsAt(i)?'📒':'📗'):'📕').join('');
+  const share=`Incipit No. ${N+1}\n${sq} ${t}/${MAX}\n${rank(t)}\nYour go: https://samey.uk/incipit/ #sameyuk`;
+  app.innerHTML=`<div class="card center">
+    <div class="tag">${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})}</div>
+    <div class="rank">${rank(t)}</div>
+    <div class="squares" aria-label="${t} out of ${MAX}">${sq}</div>
+    <p class="muted">${t} of ${MAX} points · 📗 no hints · 📒 with hints · 📕 missed</p>
+    <div class="btns"><button class="primary" id="share">Share</button></div>
+    <p class="muted"><span data-next="Next first lines in {t}.">New first lines tomorrow.</span></p>
+  </div>
+  <div class="card" style="margin-top:14px"><div class="tag">Today's first lines</div>
+    <ul class="lines">${ROUNDS.map((R,i)=>`<li><div class="q">${showLine(fullLine(R.q))}</div><div class="s">${got(i)?'✓':'✗'} ${credit(R.q)}<a class="flag" href="/feedback/?game=incipit&type=puzzle&puzzle=${encodeURIComponent('No. '+(N+1)+' · '+R.q.t)}">Wrong?</a></div></li>`).join('')}</ul>
+    <p class="muted" style="margin-top:12px">Every book here is out of copyright. Read them free at <a href="https://www.gutenberg.org/" rel="noopener">Project Gutenberg</a>.</p>
+  </div>`;
+  $('#share').onclick=()=>{if(navigator.share){navigator.share({text:share}).catch(()=>{});return}try{navigator.clipboard.writeText(share).then(()=>{$('#share').textContent='Copied'})}catch(e){}};
+}
+
+if(isTest)$('#test').innerHTML=`<div class="test">Test mode: No. ${N+1} · results not saved · <a href="?day=${(N+1)%DAYS.length+1}#test">Next day</a></div>`;
+st.done?end():play();
+</script>
+<script src="/daily.js"></script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "210d8562172a4416bc59877612814183"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
