@@ -72,5 +72,68 @@ const DAYS = [
       {l: "A Saturday afternoon in November was approaching the time of twilight…", t: "The Return of the Native", a: "Thomas Hardy", y: 1878, o: ["Far from the Madding Crowd", "The Mayor of Casterbridge", "Silas Marner"]}
     ],
     f: {s: "Emma Woodhouse, handsome, clever, and rich, with a comfortable home and happy disposition,", e: "seemed to unite some of the best blessings of existence;", x: ["had never once been told that she was wrong;", "was the envy of every family in Highbury;"], t: "Emma", a: "Jane Austen", y: 1815}
+  },
+  {
+    q: [
+      {l: "The first place that I can well remember was a large pleasant meadow with a pond of clear water in it.", t: "Black Beauty", a: "Anna Sewell", y: 1877, o: ["The Call of the Wild", "White Fang", "The Wind in the Willows"]},
+      {l: "I will begin the story of my adventures with a certain morning early in the month of June, the year of grace 1751, when I took the key for the last time out of the door of my father's house.", t: "Kidnapped", a: "Robert Louis Stevenson", y: 1886, o: ["Treasure Island", "Rob Roy", "The Count of Monte Cristo"]},
+      {l: "About thirty years ago Miss Maria Ward, of Huntingdon, with only seven thousand pounds, had the good luck to captivate Sir Thomas Bertram…", t: "Mansfield Park", a: "Jane Austen", y: 1814, o: ["Persuasion", "Emma", "Cranford"]},
+      {l: "He sat, in defiance of municipal orders, astride the gun Zam-Zammeh on her brick platform opposite the old Ajaib-Gher…", t: "Kim", a: "Rudyard Kipling", y: 1901, o: ["The Jungle Book", "A Passage to India", "Lord Jim"]}
+    ],
+    f: {s: "They were not railway children", e: "to begin with.", x: ["for very long.", "at first, nor did they wish to be."], t: "The Railway Children", a: "E. Nesbit", y: 1906}
+  },
+  {
+    q: [
+      {l: "There were four of us—George, and William Samuel Harris, and myself, and Montmorency.", t: "Three Men in a Boat", a: "Jerome K. Jerome", y: 1889, o: ["Three Men on the Bummel", "The Diary of a Nobody", "The Pickwick Papers"]},
+      {l: "While the present century was in its teens, and on one sunshiny morning in June, there drove up to the great iron gate of Miss Pinkerton's academy for young ladies, on Chiswick Mall, a large family coach…", t: "Vanity Fair", a: "William Makepeace Thackeray", y: 1848, o: ["Cranford", "Middlemarch", "The Pickwick Papers"]},
+      {l: "I returned from the City about three o'clock on that May afternoon pretty well disgusted with life.", t: "The Thirty-Nine Steps", a: "John Buchan", y: 1915, o: ["The Riddle of the Sands", "The Prisoner of Zenda", "The Secret Agent"]},
+      {l: "This is the story of what a Woman's patience can endure, and what a Man's resolution can achieve.", t: "The Woman in White", a: "Wilkie Collins", y: 1860, o: ["The Moonstone", "Lady Audley's Secret", "East Lynne"]}
+    ],
+    f: {s: "Mrs. Dalloway said", e: "she would buy the flowers herself.", x: ["she would not go to the party after all.", "she would walk to Bond Street alone."], t: "Mrs Dalloway", a: "Virginia Woolf", y: 1925}
+  },
+  {
+    q: [
+      {l: "I was born in the Year 1632, in the City of York, of a good Family, though not of that Country…", t: "Robinson Crusoe", a: "Daniel Defoe", y: 1719, o: ["Gulliver's Travels", "Tom Jones", "Moll Flanders"]},
+      {l: "It was seven o'clock of a very warm evening in the Seeonee hills when Father Wolf woke up from his day's rest…", t: "The Jungle Book", a: "Rudyard Kipling", y: 1894, o: ["Just So Stories", "Kim", "The Call of the Wild"]},
+      {l: "In the days when the spinning-wheels hummed busily in the farmhouses…", t: "Silas Marner", a: "George Eliot", y: 1861, o: ["Adam Bede", "Far from the Madding Crowd", "Cranford"]},
+      {l: "‘The Bottoms’ succeeded to ‘Hell Row’.", t: "Sons and Lovers", a: "D. H. Lawrence", y: 1913, o: ["Women in Love", "The Rainbow", "Jude the Obscure"]}
+    ],
+    f: {s: "The Time Traveller (for so it will be convenient to speak of him)", e: "was expounding a recondite matter to us.", x: ["was late for dinner again that Thursday.", "had invited six of us to his house that evening."], t: "The Time Machine", a: "H. G. Wells", y: 1895}
+  },
+  {
+    q: [
+      {l: "Mrs. Rachel Lynde lived just where the Avonlea main road dipped down into a little hollow…", t: "Anne of Green Gables", a: "L. M. Montgomery", y: 1908, o: ["Pollyanna", "Little Women", "What Katy Did"]},
+      {l: "My Father had a small Estate in Nottinghamshire; I was the Third of five Sons.", t: "Gulliver's Travels", a: "Jonathan Swift", y: 1726, o: ["Robinson Crusoe", "Tristram Shandy", "Candide"]},
+      {l: "You will rejoice to hear that no disaster has accompanied the commencement of an enterprise which you have regarded with such evil forebodings.", t: "Frankenstein", a: "Mary Shelley", y: 1818, o: ["Dracula", "The Vampyre", "Wuthering Heights"]},
+      {l: "On an evening in the latter part of May a middle-aged man was walking homeward from Shaston to the village of Marlott…", t: "Tess of the d'Urbervilles", a: "Thomas Hardy", y: 1891, o: ["Jude the Obscure", "The Woodlanders", "Adam Bede"]}
+    ],
+    f: {s: "Once upon a time and a very good time it was", e: "there was a moocow coming down along the road", x: ["there lived a boy in a house by the sea", "a king's son went walking in the green wood"], t: "A Portrait of the Artist as a Young Man", a: "James Joyce", y: 1916}
+  },
+  {
+    q: [
+      {l: "Once on a dark winter's day, when the yellow fog hung so thick and heavy in the streets of London that the lamps were lighted…", t: "A Little Princess", a: "Frances Hodgson Burnett", y: 1905, o: ["The Secret Garden", "A Christmas Carol", "Oliver Twist"]},
+      {l: "Among other public buildings in a certain town, which for many reasons it will be prudent to refrain from mentioning…", t: "Oliver Twist", a: "Charles Dickens", y: 1838, o: ["Nicholas Nickleby", "Little Dorrit", "Hard Times"]},
+      {l: "‘Edith!’ said Margaret, gently, ‘Edith!’", t: "North and South", a: "Elizabeth Gaskell", y: 1855, o: ["Cranford", "Mary Barton", "Persuasion"]},
+      {l: "Well, Prince, so Genoa and Lucca are now just family estates of the Buonapartes.", t: "War and Peace", a: "Leo Tolstoy", y: 1869, tr: "Louise and Aylmer Maude", o: ["Anna Karenina", "Crime and Punishment", "Dead Souls"]}
+    ],
+    f: {s: "London. Michaelmas term lately over,", e: "and the Lord Chancellor sitting in Lincoln's Inn Hall.", x: ["and the courts as idle as the river.", "and the lawyers gone home to their dinners."], t: "Bleak House", a: "Charles Dickens", y: 1853}
+  },
+  {
+    q: [
+      {l: "The cold passed reluctantly from the earth, and the retiring fogs revealed an army stretched out on the hills, resting.", t: "The Red Badge of Courage", a: "Stephen Crane", y: 1895, o: ["The Last of the Mohicans", "Uncle Tom's Cabin", "The Call of the Wild"]},
+      {l: "Sir Walter Elliot, of Kellynch Hall, in Somersetshire, was a man who, for his own amusement, never took up any book but the Baronetage;", t: "Persuasion", a: "Jane Austen", y: 1817, o: ["Mansfield Park", "Vanity Fair", "Northanger Abbey"]},
+      {l: "Mr. Phileas Fogg lived, in 1872, at No. 7, Saville Row, Burlington Gardens, the house in which Sheridan died in 1814.", t: "Around the World in Eighty Days", a: "Jules Verne", y: 1872, tr: "George Makepeace Towle", o: ["Twenty Thousand Leagues Under the Sea", "The Thirty-Nine Steps", "Journey to the Centre of the Earth"]},
+      {l: "I am a sick man.... I am a spiteful man.", t: "Notes from Underground", a: "Fyodor Dostoevsky", y: 1864, tr: "Constance Garnett", o: ["Crime and Punishment", "The Idiot", "Dead Souls"]}
+    ],
+    f: {s: "Squire Trelawney, Dr. Livesey, and the rest of these gentlemen having asked me to write down", e: "the whole particulars about Treasure Island,", x: ["the true history of the Hispaniola,", "my account of Captain Flint's gold,"], t: "Treasure Island", a: "Robert Louis Stevenson", y: 1883}
+  },
+  {
+    q: [
+      {l: "The schoolmaster was leaving the village, and everybody seemed sorry.", t: "Jude the Obscure", a: "Thomas Hardy", y: 1895, o: ["Tess of the d'Urbervilles", "Adam Bede", "The Mill on the Floss"]},
+      {l: "There was no hope for him this time: it was the third stroke.", t: "Dubliners", a: "James Joyce", y: 1914, o: ["Ulysses", "Sons and Lovers", "Mrs Dalloway"]},
+      {l: "The story had held us, round the fire, sufficiently breathless…", t: "The Turn of the Screw", a: "Henry James", y: 1898, o: ["The Woman in White", "Dracula", "The Portrait of a Lady"]},
+      {l: "He was an inch, perhaps two, under six feet, powerfully built…", t: "Lord Jim", a: "Joseph Conrad", y: 1900, o: ["Heart of Darkness", "Kim", "The Secret Agent"]}
+    ],
+    f: {s: "As I walk'd through the wilderness of this world,", e: "I lighted on a certain place where was a Den;", x: ["I came upon a narrow gate that stood ajar;", "I heard a voice that called me by my name;"], t: "The Pilgrim's Progress", a: "John Bunyan", y: 1678}
   }
 ];

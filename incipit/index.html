@@ -5,8 +5,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Incipit</title>
 <meta name="description" content="A daily game of first lines. Read the opening line and name the book.">
-<meta name="robots" content="noindex">
 <link rel="icon" href="/incipit/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://samey.uk/incipit/">
+<meta property="og:site_name" content="Incipit">
+<meta property="og:title" content="Incipit: name the book from its first line">
+<meta property="og:description" content="A daily game of famous first lines. Read the opening line and name the book.">
+<meta property="og:image" content="https://samey.uk/incipit/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,500&display=swap">
@@ -78,7 +86,7 @@ footer{margin-top:18px;text-align:center}
 <script src="data.js"></script>
 <script>
 // ---- Which day is on screen ----
-// Preview: day N comes from DAYS in order. ?day=N plays Incipit No. N; #test plays without saving.
+// Day N comes from DAYS in order (cycles when it runs out). ?day=N plays Incipit No. N; #test plays without saving.
 const START=Date.UTC(2026,9,31);
 const dayDate=n=>new Date(START+n*864e5);
 const fmt=(n,o)=>dayDate(n).toLocaleDateString('en-GB',Object.assign({timeZone:'UTC'},o));
@@ -148,6 +156,7 @@ function play(){
 function end(){
   pips(-1);
   const t=total();
+  if(!isTest&&N===TODAY)(window.SameySetQ=window.SameySetQ||[]).push(['incipit',t+'/'+MAX]);
   const sq=ROUNDS.map((_,i)=>got(i)?(hintsAt(i)?'📒':'📗'):'📕').join('');
   const share=`Incipit No. ${N+1}\n${sq} ${t}/${MAX}\n${rank(t)}\nYour go: https://samey.uk/incipit/ #sameyuk`;
   app.innerHTML=`<div class="card center">

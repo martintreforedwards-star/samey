@@ -58,9 +58,10 @@
     { id: "babel", name: "Babel", href: "/babel/", blurb: "One word in four mystery languages. What is it in English?", isNew: true },
     { id: "rhymey", name: "Rhymey", href: "/rhymey/", blurb: "Rhyme and rhythm in quick daily rounds.", isNew: true },
     { id: "phoney", name: "Phoney", href: "/phoney/", blurb: "How words really sound, from silent letters to glottal stops.", isNew: true },
-    { id: "idiomy", name: "Idiomy", href: "/idiomy/", blurb: "Tap words together to make idioms from today's hive.", isNew: true }
+    { id: "idiomy", name: "Idiomy", href: "/idiomy/", blurb: "Tap words together to make idioms from today's hive.", isNew: true },
+    { id: "incipit", name: "Incipit", href: "/incipit/", blurb: "Name the book from its famous first line.", isNew: true }
   ];
-  var WORDS = ["", "", "", "", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"];
+  var WORDS = ["", "", "", "", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen"];
   var here = (location.pathname.split("/")[1] || "samey").toLowerCase();
   var SET_KEY = "samey-set";
   function getJSON(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }
