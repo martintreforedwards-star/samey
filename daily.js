@@ -145,6 +145,24 @@
     });
     var cur = box.querySelector(".here");
     if (cur && box.scrollWidth > box.clientWidth && !box.dataset.scrolled) { box.dataset.scrolled = "1"; box.scrollLeft = Math.max(0, cur.offsetLeft - box.clientWidth / 2 + cur.offsetWidth / 2); }
+    addMeta(box);
+  }
+  /* Feedback / Support links, a slim row just under the games bar. Added once per bar. */
+  function icon(d) {
+    var ns = "http://www.w3.org/2000/svg", svg = document.createElementNS(ns, "svg"), path = document.createElementNS(ns, "path");
+    svg.setAttribute("viewBox", "0 0 24 24"); svg.setAttribute("aria-hidden", "true");
+    path.setAttribute("d", d); svg.append(path); return svg;
+  }
+  function addMeta(box) {
+    var nx = box.nextElementSibling;
+    if (nx && nx.classList.contains("sy-meta")) return;
+    var row = el("div", "sy-meta"), g = encodeURIComponent(here);
+    var fb = el("a"); fb.href = "/feedback/?game=" + g;
+    fb.append(icon("M4 5h16v11H9l-5 4z"), el("span", null, "Feedback"));
+    var sp = el("a", "sy-support"); sp.href = "/support/?game=" + g;
+    sp.append(icon("M12 20s-7-4.4-9.2-8.6A4.8 4.8 0 0 1 12 6.6a4.8 4.8 0 0 1 9.2 4.8C19 15.6 12 20 12 20z"), el("span", null, "Support us"));
+    row.append(fb, sp);
+    box.parentNode.insertBefore(row, box.nextSibling);
   }
   function fillGrid(box) {
     var s = readSet(), n = GAMES.filter(function (g) { return s.g[g.id]; }).length;
@@ -181,6 +199,11 @@
     var css =
       ".sy-bar{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;font-family:var(--body,inherit);margin:var(--sy-bar-margin,0 0 4px);padding:var(--sy-bar-pad,2px 0 12px);border-bottom:1px solid " + L + "}" +
       ".sy-bar::-webkit-scrollbar{display:none}" +
+      ".sy-meta{display:flex;justify-content:flex-end;gap:14px;margin:2px 0 6px;font-family:var(--body,inherit);font-size:.85rem}" +
+      ".sy-meta a{display:inline-flex;align-items:center;gap:5px;padding:6px 2px;color:" + M + ";text-decoration:none;font-weight:600}" +
+      ".sy-meta a:hover,.sy-meta a:focus-visible{color:" + I + "}" +
+      ".sy-meta svg{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round}" +
+      ".sy-meta .sy-support svg{stroke:" + A + "}" +
       ".sy-bchip{flex:0 0 auto;display:flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:999px;border:1.5px solid " + L + ";background:" + S + ";color:" + I + ";font-weight:700;font-size:.95rem;text-decoration:none;white-space:nowrap}" +
       "a.sy-bchip:hover{border-color:" + I + "}" +
       ".sy-bchip.here{background:" + T + ";border-color:" + T + ";color:" + TI + "}" +
