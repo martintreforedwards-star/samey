@@ -156,6 +156,7 @@
   function addMeta(box) {
     var nx = box.nextElementSibling;
     if (nx && nx.classList.contains("sy-meta")) return;
+    if (document.querySelector(".navlinks a[href^='/support/']")) return; // page has its own Feedback / Support us menu (Dotty, Spinonym)
     var row = el("div", "sy-meta"), g = encodeURIComponent(here);
     var fb = el("a"); fb.href = "/feedback/?game=" + g;
     fb.append(icon("M4 5h16v11H9l-5 4z"), el("span", null, "Feedback"));

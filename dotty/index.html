@@ -72,8 +72,8 @@ header { display: flex; align-items: baseline; justify-content: space-between; g
   content: ""; position: absolute; left: 50%; top: -0.08em; width: 0.2em; height: 0.2em;
   background: var(--dot); border-radius: 50%; transform: translateX(-50%);
 }
-.navlinks { display: flex; gap: 12px; margin-top: -6px; }
-.navlink { color: var(--ink); font-weight: 700; font-size: 0.95rem; min-height: 44px; display: inline-flex; align-items: center; padding: 0 4px; text-decoration: underline; text-underline-offset: 3px; }
+.navlinks { display: flex; flex-wrap: wrap; column-gap: 10px; margin-top: -6px; }
+.navlink { color: var(--ink); font-weight: 700; font-size: 0.88rem; min-height: 40px; display: inline-flex; align-items: center; padding: 0 2px; text-decoration: underline; text-underline-offset: 3px; }
 .strap { color: var(--muted); font-size: 0.9rem; margin: 6px 0 0; }
 .date { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; }
 
@@ -215,7 +215,7 @@ details ul { padding-left: 1.2rem; margin: 0.5rem 0 0; display: flex; flex-direc
     <span class="date" id="date"></span>
   </header>
   <nav class="sy-bar" aria-label="Games"></nav>
-  <nav class="navlinks" aria-label="Dotty pages"><a class="navlink" id="archLink" href="#" hidden>Earlier puzzles</a><a class="navlink" href="glossary.html">Glossary</a></nav>
+  <nav class="navlinks" aria-label="Dotty pages"><a class="navlink" id="archLink" href="#" hidden>Archive</a><a class="navlink" href="glossary.html">Glossary</a><a class="navlink" href="/feedback/?game=dotty">Feedback</a><a class="navlink" href="/support/?game=dotty">Support us</a></nav>
   <p class="archline" id="archLine" hidden></p>
   <div class="twist" id="twist"></div>
   <section class="panel" id="panel" aria-live="polite"></section>

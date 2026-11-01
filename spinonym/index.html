@@ -60,8 +60,8 @@ header{display:flex;align-items:center;justify-content:space-between;gap:12px;fl
 .brand h1{font-family:var(--display);font-weight:800;font-size:2rem;letter-spacing:-.02em;margin:0;line-height:1}
 .brand small{display:block;font-size:.85rem;color:var(--muted);font-weight:700;letter-spacing:.01em}
 .logo{width:34px;height:34px;flex:none}
-.navlinks{display:flex;gap:12px}
-.navlink{font-weight:700;font-size:.95rem;min-height:44px;display:inline-flex;align-items:center;padding:0 4px}
+.navlinks{display:flex;flex-wrap:wrap;column-gap:10px}
+.navlink{font-weight:700;font-size:.88rem;min-height:40px;display:inline-flex;align-items:center;padding:0 2px}
 .pick{font-size:.85rem;color:var(--muted);display:flex;gap:8px;align-items:center;width:100%}
 select,button,input{font:inherit}
 select{flex:1;min-width:0;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:6px 8px}
@@ -233,7 +233,7 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
       <svg class="logo" viewBox="-32 -32 64 64" aria-hidden="true"><path d="M0 -30A30 30 0 0 1 25.98 15L0 0Z" fill="#2B5597"/><path d="M25.98 15A30 30 0 0 1 -25.98 15L0 0Z" fill="#A84F0C"/><path d="M-25.98 15A30 30 0 0 1 -25.98 -15L0 0Z" fill="#17796B"/><path d="M-25.98 -15A30 30 0 0 1 0 -30L0 0Z" fill="#6B3F99"/><circle r="10" fill="#16181D" stroke="var(--bg)" stroke-width="3"/></svg>
       <span><h1>Spinonym</h1><small>Spin the nym</small></span>
     </a>
-    <span class="navlinks"><a class="navlink" id="archLink" href="#" hidden>Archive</a><a class="navlink" href="glossary.html">Glossary</a></span>
+    <span class="navlinks"><a class="navlink" id="archLink" href="#" hidden>Archive</a><a class="navlink" href="glossary.html">Glossary</a><a class="navlink" href="/feedback/?game=spinonym">Feedback</a><a class="navlink" href="/support/?game=spinonym">Support us</a></span>
     <label class="pick" id="pickWrap" for="puzzle" hidden>Test puzzle <select id="puzzle"></select></label>
   </header>
   <nav class="sy-bar" aria-label="Games"></nav>
