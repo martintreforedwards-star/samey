@@ -1,0 +1,24 @@
+// Mispelt days. One day per puzzle (preview cycles through these in order).
+// Five rounds a day, always in this order:
+//   pick  = Which is right?   c = correct spelling, x = wrong spellings
+//   spot  = Spot the mistake  s = sentence, w = the misspelled word as it appears, c = how it should be spelt
+//   uk    = British or American?  b = British spelling, a = American spelling, ctx (optional) = which meaning
+//   fix   = Fix it (type it)  w = shown misspelled, c = correct spelling
+//   hard  = Which is right? (harder, four choices)  c, x as for pick
+// Every wrong option should be wrong in British dictionaries too, not an accepted variant.
+const DAYS = [
+  {pick: {c: "separate", x: ["seperate", "separete"]}, spot: {s: "I'll definately be there on Friday.", w: "definately", c: "definitely"}, uk: {b: "colour", a: "color"}, fix: {w: "recieve", c: "receive"}, hard: {c: "accommodate", x: ["accomodate", "acommodate", "accommadate"]}},
+  {pick: {c: "necessary", x: ["neccessary", "necesary"]}, spot: {s: "The restaraunt was fully booked for weeks.", w: "restaraunt", c: "restaurant"}, uk: {b: "centre", a: "center"}, fix: {w: "tommorow", c: "tomorrow"}, hard: {c: "millennium", x: ["millenium", "milennium", "millenneum"]}},
+  {pick: {c: "weird", x: ["wierd", "weerd"]}, spot: {s: "She was too embarassed to sing in front of everyone.", w: "embarassed", c: "embarrassed"}, uk: {b: "travelled", a: "traveled"}, fix: {w: "calender", c: "calendar"}, hard: {c: "questionnaire", x: ["questionaire", "questionnair", "questionnare"]}},
+  {pick: {c: "believe", x: ["beleive", "belive"]}, spot: {s: "The cemetary is at the end of the lane.", w: "cemetary", c: "cemetery"}, uk: {b: "aluminium", a: "aluminum"}, fix: {w: "goverment", c: "government"}, hard: {c: "fluorescent", x: ["flourescent", "florescent", "fluorecent"]}},
+  {pick: {c: "beginning", x: ["begining", "beggining"]}, spot: {s: "We need to liase with the other team before Monday.", w: "liase", c: "liaise"}, uk: {b: "jewellery", a: "jewelry"}, fix: {w: "occurence", c: "occurrence"}, hard: {c: "bureaucracy", x: ["beaurocracy", "bureacracy", "bureaucrasy"]}},
+  {pick: {c: "Wednesday", x: ["Wensday", "Wednsday"]}, spot: {s: "He took a deep breath and stepped over the threshhold.", w: "threshhold", c: "threshold"}, uk: {b: "pyjamas", a: "pajamas"}, fix: {w: "rythm", c: "rhythm"}, hard: {c: "mischievous", x: ["mischievious", "mischevious", "mischeivous"]}},
+  {pick: {c: "February", x: ["Febuary", "Feburary"]}, spot: {s: "It's a real priviledge to be here tonight.", w: "priviledge", c: "privilege"}, uk: {b: "manoeuvre", a: "maneuver"}, fix: {w: "harrass", c: "harass"}, hard: {c: "idiosyncrasy", x: ["idiosyncracy", "idiosyncrisy", "idiosincrasy"]}},
+  {pick: {c: "library", x: ["libary", "librery"]}, spot: {s: "The weather this summer has been truely awful.", w: "truely", c: "truly"}, uk: {b: "defence", a: "defense"}, fix: {w: "seige", c: "siege"}, hard: {c: "pharaoh", x: ["pharoah", "pharaoe", "pharoh"]}},
+  {pick: {c: "surprise", x: ["suprise", "surprize"]}, spot: {s: "The comittee will meet again next month.", w: "comittee", c: "committee"}, uk: {b: "sceptical", a: "skeptical"}, fix: {w: "independant", c: "independent"}, hard: {c: "Fahrenheit", x: ["Farenheit", "Fahrenhiet", "Farenhite"]}},
+  {pick: {c: "address", x: ["adress", "addres"]}, spot: {s: "I didn't realise the shop was shut untill I got there.", w: "untill", c: "until"}, uk: {b: "programme", a: "program", ctx: "on TV"}, fix: {w: "arguement", c: "argument"}, hard: {c: "Mediterranean", x: ["Mediteranean", "Meditteranean", "Mediterannean"]}},
+  {pick: {c: "vacuum", x: ["vaccum", "vacum"]}, spot: {s: "Her pronounciation of French words is excellent.", w: "pronounciation", c: "pronunciation"}, uk: {b: "tyre", a: "tire", ctx: "on a car"}, fix: {w: "noticable", c: "noticeable"}, hard: {c: "connoisseur", x: ["connoiseur", "conoisseur", "connoissuer"]}},
+  {pick: {c: "guarantee", x: ["garantee", "guarentee"]}, spot: {s: "We had broccolli and roast potatoes for tea.", w: "broccolli", c: "broccoli"}, uk: {b: "moustache", a: "mustache"}, fix: {w: "persistant", c: "persistent"}, hard: {c: "onomatopoeia", x: ["onomatopeia", "onomatopoea", "onamatopoeia"]}},
+  {pick: {c: "occasion", x: ["ocassion", "occassion"]}, spot: {s: "The heirarchy at work is very confusing.", w: "heirarchy", c: "hierarchy"}, uk: {b: "practise", a: "practice", ctx: "the verb, as in to ___ the piano"}, fix: {w: "Carribean", c: "Caribbean"}, hard: {c: "desiccated", x: ["dessicated", "desicated", "dessiccated"]}},
+  {pick: {c: "misspell", x: ["mispell", "misspel"]}, spot: {s: "The play was written by a famous playwrite from Dublin.", w: "playwrite", c: "playwright"}, uk: {b: "cheque", a: "check", ctx: "for paying"}, fix: {w: "concensus", c: "consensus"}, hard: {c: "sacrilegious", x: ["sacreligious", "sacrilegeous", "sacriligious"]}}
+];
