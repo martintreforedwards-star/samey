@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gaggle</title>
+<meta name="description" content="A daily game of collective nouns. A murder of crows, a parliament of owls, a business of ferrets: which are real?">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/gaggle/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&display=swap">
+<style>
+:root{--bg:#f5f6ef;--card:#fff;--ink:#17201a;--muted:#5a665d;--line:#dfe4d8;--accent:#2f6b3f;--on-accent:#fff;--pop:#e07b24;--good:#2b8a3e;--bad:#c92a2a;--goodbg:#ebfbee;--badbg:#fff5f5;--chip:#eef2e7;--head:"Fraunces",Georgia,serif}
+@media (prefers-color-scheme:dark){:root{--bg:#111512;--card:#19201b;--ink:#eef2ea;--muted:#a0aba3;--line:#2e3830;--accent:#8fd19e;--on-accent:#19201b;--pop:#f4a261;--good:#8ce99a;--bad:#ff8787;--goodbg:#173022;--badbg:#3a1f22;--chip:#243028}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+main{max-width:480px;margin:0 auto;padding:16px 16px 40px;min-height:100vh}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+h1{font-family:var(--head);font-weight:800;font-size:34px;margin:0;line-height:1;letter-spacing:-.5px}
+h1 svg{width:32px;height:32px;vertical-align:-5px;margin-right:6px}
+.pips{display:flex;gap:5px}
+.pip{width:12px;height:12px;border-radius:50%;background:var(--line)}
+.pip.g{background:var(--good)}.pip.x{background:var(--bad)}.pip.now{background:var(--pop)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+.tag{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600}
+.kind{font-family:var(--head);font-weight:800;font-size:22px;margin:4px 0 2px}
+.sub{color:var(--muted);font-size:15px;margin:0 0 12px}
+.phrase{font:600 28px/1.25 var(--head);text-align:center;margin:10px 0 16px}
+.phrase .gap{display:inline-block;min-width:3.2em;border-bottom:3px solid var(--pop);color:var(--pop)}
+.opts{display:grid;gap:8px}
+.opts.two{grid-template-columns:1fr 1fr}
+.opt{display:block;width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);font:600 18px/1.3 system-ui,-apple-system,sans-serif;color:var(--ink);cursor:pointer;min-height:54px}
+.opt:hover:not([disabled]){border-color:var(--accent)}
+.opt:focus-visible,.primary:focus-visible,.mt:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.opt[disabled]{cursor:default}
+.opt.right{border-color:var(--good);background:var(--goodbg)}
+.opt.wrong{border-color:var(--bad);background:var(--badbg)}
+.opt.dim{opacity:.5}
+.match{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px}
+.col{display:grid;gap:8px}
+.mt{position:relative;width:100%;padding:12px 10px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);font:600 16px/1.25 system-ui,-apple-system,sans-serif;color:var(--ink);cursor:pointer;min-height:50px}
+.mt.sel{border-color:var(--pop);box-shadow:0 0 0 2px var(--pop) inset}
+.mt[data-c]::after{content:attr(data-c);position:absolute;top:-8px;right:-6px;width:20px;height:20px;border-radius:50%;background:var(--accent);color:var(--on-accent);font-size:12px;line-height:20px;text-align:center}
+.mt.right{border-color:var(--good);background:var(--goodbg)}
+.mt.wrong{border-color:var(--bad);background:var(--badbg)}
+.mt[disabled]{cursor:default}
+.reveal{margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--chip);font-size:15px}
+.reveal ul{margin:6px 0 0;padding-left:18px}
+.btns{display:flex;gap:10px;margin-top:14px}
+button{font:inherit;color:inherit;cursor:pointer}
+.primary{flex:1;padding:14px;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;min-height:50px}
+.primary[disabled]{opacity:.4;cursor:default}
+.ghost{padding:14px 16px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);font-weight:600;min-height:50px}
+.center{text-align:center}
+.rank{font-family:var(--head);font-weight:800;font-size:30px;margin:6px 0}
+.squares{font-size:24px;letter-spacing:3px;margin:6px 0 4px}
+.muted{color:var(--muted);font-size:15px}
+a{color:var(--accent)}
+.test{background:var(--chip);border-radius:10px;padding:8px 12px;font-size:14px;margin-bottom:12px}
+.ex{margin:0 0 12px;font-size:15px}.ex summary{cursor:pointer;color:var(--accent);font-weight:600}
+.how{margin:8px 0 0;padding-left:20px;color:var(--muted)}
+.how li{margin:3px 0}
+.recap{list-style:none;padding:0;margin:8px 0 0}
+.recap li{padding:10px 0;border-top:1px solid var(--line)}
+.recap .v{font:600 18px/1.3 var(--head)}
+.recap .n{font-size:14px;color:var(--muted);margin-top:2px}
+footer{margin-top:18px;text-align:center}
+</style>
+</head>
+<body>
+<main>
+  <header><h1><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="56" height="56" rx="14" fill="#2f6b3f"/><circle cx="20" cy="24" r="7" fill="#f5f6ef"/><circle cx="44" cy="24" r="7" fill="#f5f6ef"/><circle cx="32" cy="42" r="7" fill="#e07b24"/></svg>Gaggle</h1><div class="pips" id="pips" aria-hidden="true"></div></header>
+  <nav class="sy-bar" aria-label="Games"></nav>
+  <div id="test"></div>
+  <div id="app"></div>
+  <footer><p class="muted"><a href="/feedback/?game=gaggle">Send feedback</a> · <a href="/support/?game=gaggle">Support us</a></p></footer>
+</main>
+<script src="data.js"></script>
+<script>
+// ---- Which day is on screen ----
+// Preview: today's puzzle depends on the weekday (see data.js). ?day=N plays Gaggle No. N; #test plays without saving.
+const START=Date.UTC(2026,10,1);
+const dayDate=n=>new Date(START+n*864e5);
+const fmt=(n,o)=>dayDate(n).toLocaleDateString('en-GB',Object.assign({timeZone:'UTC'},o));
+const keyOf=n=>{const d=dayDate(n);return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0')};
+addEventListener('hashchange',()=>location.reload());
+const params=new URLSearchParams(location.search);
+const now=new Date();
+const TODAY=Math.max(0,Math.round((Date.UTC(now.getFullYear(),now.getMonth(),now.getDate())-START)/864e5));
+const isTest=location.hash==='#test';
+const td=parseInt(params.get('day'),10);
+const N=Number.isInteger(td)&&td>=1?td-1:TODAY;
+const EPOCH=Math.round(dayDate(N)/864e5)+3; // 1 Jan 1970 was a Thursday; Monday = 0
+const WD=EPOCH%7, WEEKS=DAYS.length/7;
+const D=DAYS[(Math.floor(EPOCH/7)%WEEKS)*7+WD];
+const THEME=WD===6?'People and jobs':'';
+const SKEY='gaggle-'+keyOf(N);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){if(isTest)return;try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function shuffled(arr,seed){const a=[...arr];let s=seed*9301+49297;for(let i=a.length-1;i>0;i--){s=(s*9301+49297)%233280;const j=Math.floor(s/233280*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const art=w=>/^[aeiou]/i.test(w)?'an':'a';
+
+const ROUNDS=[
+  {type:'group',name:'Which group?',d:D.g1,opts:shuffled([D.g1.c,...D.g1.o],N*13+1)},
+  {type:'real',name:'Real or made up?',d:D.r1},
+  {type:'group',name:'Which group?',d:D.g2,opts:shuffled([D.g2.c,...D.g2.o],N*13+2)},
+  {type:'real',name:'Real or made up?',d:D.r2},
+  {type:'match',name:'Match them',d:D.m,right:shuffled(D.m.map(p=>p[1]),N*13+3)}
+];
+const MAX=ROUNDS.length;
+
+let st=store.get(SKEY)||{r:0,ans:[],ok:[],done:false};
+let pairs={},pickL=null; // match round, while playing
+const $=s=>document.querySelector(s);
+const app=$('#app');
+function save(){store.set(SKEY,st)}
+const score=()=>st.ok.filter(Boolean).length;
+function rank(t){return['Lone wolf','Lone wolf','Fledgling','Part of the flock','Leader of the pack','Top of the pecking order'][t]}
+function pips(cur){$('#pips').innerHTML=ROUNDS.map((_,i)=>`<span class="pip ${st.ok[i]===true?'g':st.ok[i]===false?'x':i===cur?'now':''}"></span>`).join('')}
+
+function play(){
+  const i=st.r,R=ROUNDS[i],answered=st.ok[i]!=null;
+  pips(i);
+  let body='',sub='',note='';
+  if(R.type==='group'){
+    sub='Pick the collective noun.';
+    body=`<div class="phrase">${answered?`${art(R.d.c)} <span class="gap">${esc(R.d.c)}</span> of ${esc(R.d.a)}`:`a <span class="gap">?</span> of ${esc(R.d.a)}`}</div>
+    <div class="opts two" role="group" aria-label="Choices">${R.opts.map(o=>`<button class="opt${!answered?'':o===R.d.c?' right':o===st.ans[i]?' wrong':' dim'}" data-o="${esc(o)}"${answered?' disabled':''}>${esc(o)}</button>`).join('')}</div>`;
+    note=R.d.n;
+  }else if(R.type==='real'){
+    sub='Is this a real collective noun?';
+    const cls=v=>!answered?'':v===R.d.real?' right':v===st.ans[i]?' wrong':' dim';
+    body=`<div class="phrase">${esc(R.d.p)}</div>
+    <div class="opts two" role="group" aria-label="Choices"><button class="opt${cls(true)}" data-v="1"${answered?' disabled':''}>Real</button><button class="opt${cls(false)}" data-v="0"${answered?' disabled':''}>Made up</button></div>`;
+    note=R.d.n;
+  }else{
+    sub='Tap one on the left, then its partner on the right.';
+    const L=R.d.map(p=>p[0]);
+    const done=answered?st.ans[i]:pairs;
+    const num=w=>{const k=L.indexOf(w);return k+1};
+    const leftCls=w=>{if(answered){return done[w]===R.d.find(p=>p[0]===w)[1]?' right':' wrong'}return pickL===w?' sel':''};
+    const owner=noun=>Object.keys(done).find(k=>done[k]===noun);
+    body=`<div class="match"><div class="col">${L.map(w=>`<button class="mt${leftCls(w)}" data-l="${esc(w)}"${done[w]?` data-c="${num(w)}"`:''}${answered?' disabled':''}>${esc(w)}</button>`).join('')}</div>
+      <div class="col">${R.right.map(n=>{const o=owner(n);return`<button class="mt" data-r="${esc(n)}"${o?` data-c="${num(o)}"`:''}${answered?' disabled':''}>${esc(n)}</button>`}).join('')}</div></div>
+      ${answered?'':`<div class="btns"><button class="ghost" id="clr"${Object.keys(pairs).length?'':' disabled'}>Clear</button><button class="primary" id="chk"${Object.keys(pairs).length===4?'':' disabled'}>Check</button></div>`}`;
+    if(answered){const wrong=R.d.filter(p=>done[p[0]]!==p[1]);note=wrong.length?`The right pairs: ${R.d.map(p=>`${art(p[1])} ${p[1]} of ${p[0]}`).join(', ')}.`:'All four right!'}
+  }
+  const reveal=answered?`<div class="reveal" role="status"><b>${st.ok[i]?'Yes!':'Not quite.'}</b> ${esc(note)}</div>
+    <div class="btns"><button class="primary" id="next">${i+1<MAX?'Next round':'See how you did'}</button></div>`:'';
+  app.innerHTML=`<div class="card">
+    <div class="tag">${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})}${THEME?' · '+THEME:''} · Round ${i+1} of ${MAX}</div>
+    <div class="kind">${R.name}</div>
+    <p class="sub">${sub}</p>
+    ${i===0&&!answered?`<details class="ex"><summary>How to play</summary><ol class="how">
+      <li>Five quick rounds on collective nouns, one point each.</li>
+      <li>Pick the right group name, spot real ones from made-up ones, then match four pairs.</li>
+      <li>Sundays are people and jobs, from a list written in 1486.</li></ol></details>`:''}
+    ${body}${reveal}
+  </div>`;
+  if(!answered){
+    if(R.type==='group')app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{st.ans[i]=b.dataset.o;st.ok[i]=b.dataset.o===R.d.c;save();play()});
+    if(R.type==='real')app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const v=b.dataset.v==='1';st.ans[i]=v;st.ok[i]=v===R.d.real;save();play()});
+    if(R.type==='match'){
+      app.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{const w=b.dataset.l;delete pairs[w];pickL=w;play()});
+      app.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{if(!pickL)return;const n=b.dataset.r;for(const k in pairs)if(pairs[k]===n)delete pairs[k];pairs[pickL]=n;pickL=null;play()});
+      $('#clr').onclick=()=>{pairs={};pickL=null;play()};
+      $('#chk').onclick=()=>{st.ans[i]={...pairs};st.ok[i]=R.d.every(p=>pairs[p[0]]===p[1]);save();play()};
+    }
+  }
+  const nb=$('#next');if(nb){nb.onclick=()=>{if(st.r+1<MAX){st.r++;save();play()}else{st.done=true;save();end()}};nb.focus({preventScroll:true})}
+}
+
+function end(){
+  pips(-1);
+  const t=score();
+  const sq=ROUNDS.map((_,i)=>st.ok[i]?'🟩':'⬜').join('');
+  const share=`Gaggle No. ${N+1}\n${sq} ${t}/${MAX}\n${rank(t)}\nYour go: https://samey.uk/gaggle/ #sameyuk`;
+  const items=ROUNDS.map((R,i)=>{const mk=st.ok[i]?'✓':'✗';
+    if(R.type==='group')return`<li><div class="v">${mk} ${art(R.d.c)} ${esc(R.d.c)} of ${esc(R.d.a)}</div><div class="n">${esc(R.d.n)}</div></li>`;
+    if(R.type==='real')return`<li><div class="v">${mk} ${esc(R.d.p)}: ${R.d.real?'real':'made up'}</div><div class="n">${esc(R.d.n)}</div></li>`;
+    return`<li><div class="v">${mk} ${R.d.map(p=>`${art(p[1])} ${esc(p[1])} of ${esc(p[0])}`).join(' · ')}</div></li>`}).join('');
+  app.innerHTML=`<div class="card center">
+    <div class="tag">${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})}</div>
+    <div class="rank">${rank(t)}</div>
+    <div class="squares" aria-label="${t} out of ${MAX}">${sq}</div>
+    <p class="muted">${t} of ${MAX} correct</p>
+    <div class="btns"><button class="primary" id="share">Share</button></div>
+    <p class="muted"><span data-next="Next Gaggle in {t}.">New groups tomorrow.</span></p>
+  </div>
+  <div class="card" style="margin-top:14px"><div class="tag">Today's groups</div>
+    <ul class="recap">${items}</ul>
+    <p class="muted" style="margin-top:12px">Know a better one, or think one's wrong? <a href="/feedback/?game=gaggle&type=puzzle&puzzle=${encodeURIComponent('No. '+(N+1))}">Tell us</a>.</p>
+  </div>`;
+  $('#share').onclick=()=>{if(navigator.share){navigator.share({text:share}).catch(()=>{});return}try{navigator.clipboard.writeText(share).then(()=>{$('#share').textContent='Copied'})}catch(e){}};
+}
+
+if(isTest)$('#test').innerHTML=`<div class="test">Test mode: No. ${N+1} · results not saved · <a href="?day=${N+2}#test">Next day</a></div>`;
+st.done?end():play();
+</script>
+<script src="/daily.js"></script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "210d8562172a4416bc59877612814183"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
