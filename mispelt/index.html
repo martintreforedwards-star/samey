@@ -80,7 +80,7 @@ footer{margin-top:18px;text-align:center}
 <script src="data.js"></script>
 <script>
 // ---- Which day is on screen ----
-// Preview: day N comes from DAYS in order. ?day=N plays Mispelt No. N; #test plays without saving.
+// Preview: today's puzzle depends on the weekday (see data.js). ?day=N plays Mispelt No. N; #test plays without saving.
 const START=Date.UTC(2026,10,1);
 const dayDate=n=>new Date(START+n*864e5);
 const fmt=(n,o)=>dayDate(n).toLocaleDateString('en-GB',Object.assign({timeZone:'UTC'},o));
@@ -92,7 +92,10 @@ const TODAY=Math.max(0,Math.round((Date.UTC(now.getFullYear(),now.getMonth(),now
 const isTest=location.hash==='#test';
 const td=parseInt(params.get('day'),10);
 const N=Number.isInteger(td)&&td>=1?td-1:TODAY;
-const D=DAYS[N%DAYS.length];
+// Pick by the real weekday (Monday first), cycling through the weeks in DAYS
+const EPOCH=Math.round(dayDate(N)/864e5)+3; // 1 Jan 1970 was a Thursday
+const WD=EPOCH%7, WEEKS=DAYS.length/7;
+const D=DAYS[(Math.floor(EPOCH/7)%WEEKS)*7+WD], LEVEL=LEVELS[WD];
 const SKEY='mispelt-'+keyOf(N);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){if(isTest)return;try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
@@ -145,13 +148,14 @@ function play(){
     <div class="btns"><button class="primary" id="next">${i+1<MAX?'Next round':'See how you did'}</button></div>`;
   }
   app.innerHTML=`<div class="card">
-    <div class="tag">${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})} · Round ${i+1} of ${MAX}</div>
+    <div class="tag">${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})} · ${LEVEL} · Round ${i+1} of ${MAX}</div>
     <div class="kind">${R.name}</div>
     <p class="sub">${R.sub}</p>
     ${i===0&&!answered?`<details class="ex"><summary>How to play</summary><ol class="how">
       <li>Five quick rounds, one point each.</li>
       <li>Pick the right spelling, spot the mistake in a sentence, choose the British spelling, then type a word correctly.</li>
       <li>The last round is the tricky one.</li>
+      <li>It gets harder through the week: gentle on Monday, fiendish on Friday.</li>
       <li>British spellings throughout. One go per round.</li></ol></details>`:''}
     ${body}
     ${reveal}
@@ -169,10 +173,10 @@ function end(){
   pips(-1);
   const t=score();
   const sq=ROUNDS.map((_,i)=>st.ok[i]?'🟩':'🟥').join('');
-  const share=`Mispelt No. ${N+1}\n${sq} ${t}/${MAX}\n${rank(t)}\nYour go: https://samey.uk/mispelt/ #sameyuk`;
+  const share=`Mispelt No. ${N+1} (${LEVEL})\n${sq} ${t}/${MAX}\n${rank(t)}\nYour go: https://samey.uk/mispelt/ #sameyuk`;
   const wrongOf=(R,i)=>R.type==='choice'?(st.ok[i]?'':st.ans[i]):R.type==='spot'?R.d.w:R.d.w;
   app.innerHTML=`<div class="card center">
-    <div class="tag">${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})}</div>
+    <div class="tag">${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})} · ${LEVEL}</div>
     <div class="rank">${rank(t)}</div>
     <div class="squares" aria-label="${t} out of ${MAX}">${sq}</div>
     <p class="muted">${t} of ${MAX} correct</p>
@@ -186,7 +190,7 @@ function end(){
   $('#share').onclick=()=>{if(navigator.share){navigator.share({text:share}).catch(()=>{});return}try{navigator.clipboard.writeText(share).then(()=>{$('#share').textContent='Copied'})}catch(e){}};
 }
 
-if(isTest)$('#test').innerHTML=`<div class="test">Test mode: No. ${N+1} · results not saved · <a href="?day=${(N+1)%DAYS.length+1}#test">Next day</a></div>`;
+if(isTest)$('#test').innerHTML=`<div class="test">Test mode: No. ${N+1} · results not saved · <a href="?day=${N+2}#test">Next day</a></div>`;
 st.done?end():play();
 </script>
 <script src="/daily.js"></script>
