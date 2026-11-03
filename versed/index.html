@@ -132,14 +132,14 @@ function poetRound(){
     <div class="kind">${BOSS?'Who am I? Clues only today':'Who wrote this line?'}</div>
     ${st.s===0&&!st.w.length?`<details class="ex" open><summary>How to play</summary><ol class="how">
       ${BOSS?'<li>Sunday boss round: no line, just clues about the poet.</li>':'<li>Name the poet from a single line.</li>'}
-      <li>Stuck? Take a clue. Each clue or wrong guess costs a point.</li>
+      <li>Stuck? Show a clue for −1 point.</li><li>A wrong guess also costs a point, and brings up the next clue.</li>
       <li>Then a bonus point for guessing which country they're from.</li>
       <li>${MAX} points in all.</li></ol></details>`:''}
     ${BOSS?'':`<blockquote class="quote">${esc(D.l)}</blockquote>`}
     ${clues.length?`<ol class="clues">${clues.map((c,i)=>`<li><span>${i+1}</span>${esc(c)}</li>`).join('')}</ol>`:''}
-    <p class="worth">Worth <b>${5-st.s}</b> point${5-st.s===1?'':'s'} now${st.s<LAST?' · next clue or wrong guess −1':' · last chance'}</p>
+    <p class="worth">Worth <b>${5-st.s}</b> point${5-st.s===1?'':'s'}${st.s<LAST?'':' · last guess'}</p>
     <div class="opts" role="group" aria-label="Poets">${POETS.map(p=>`<button class="opt${st.w.includes(p)?' wrong':''}" data-p="${esc(p)}"${st.w.includes(p)?' disabled':''}>${esc(p)}</button>`).join('')}</div>
-    ${st.s<LAST?`<div class="links"><button id="clue">Show the next clue (−1)</button><span></span></div>`:''}`;
+    ${st.s<LAST?`<div class="links"><button id="clue">Show a clue (−1 point)</button><span></span></div>`:''}`;
 }
 
 function poetReveal(){
