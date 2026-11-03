@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Versed</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="A daily poetry game. Read the line and name the poet, then guess where they're from.">
+<link rel="icon" href="/versed/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://samey.uk/versed/">
+<meta property="og:site_name" content="Versed">
+<meta property="og:title" content="Versed: name the poet from a line">
+<meta property="og:description" content="A daily poetry game. Read the line, name the poet, then guess where they're from.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,500&display=swap">
+<style>
+:root{--bg:#f1f5f2;--card:#fdfefd;--ink:#14201d;--muted:#5c6b66;--line:#d6e2dc;--accent:#21585a;--on-accent:#fff;--gold:#b8901f;--good:#2b8a3e;--bad:#c92a2a;--goodbg:#ebfbee;--badbg:#fff5f5;--chip:#e5eee9;--head:"Fraunces",Georgia,serif}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1514;--card:#17201e;--ink:#e8f0ec;--muted:#9aaba4;--line:#2d3b37;--accent:#7cc7c0;--on-accent:#0f1514;--gold:#e0bc55;--good:#8ce99a;--bad:#ff8787;--goodbg:#173022;--badbg:#3a1f22;--chip:#22302c}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+main{max-width:480px;margin:0 auto;padding:16px 16px 40px;min-height:100vh}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+h1{font-family:var(--head);font-weight:800;font-size:34px;margin:0;line-height:1;letter-spacing:-.5px}
+h1 svg{width:30px;height:30px;vertical-align:-4px;margin-right:6px}
+.pips{display:flex;gap:5px}
+.pip{width:9px;height:20px;border-radius:2px;background:var(--line)}
+.pip.on{background:var(--accent)}.pip.g{background:var(--good)}.pip.b{background:var(--gold)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+.tag{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600}
+.kind{font-family:var(--head);font-weight:800;font-size:22px;margin:4px 0 0}
+.quote{margin:16px 0 14px;padding:4px 0 4px 18px;border-left:3px solid var(--gold);font-family:var(--head);font-style:italic;font-weight:400;font-size:22px;line-height:1.4}
+.worth{font-size:14px;color:var(--muted);margin:0 0 10px}
+.worth b{color:var(--ink)}
+.clues{list-style:none;padding:0;margin:0 0 14px;display:grid;gap:6px}
+.clues li{font-size:15px;padding:8px 12px;border-radius:10px;background:var(--chip)}
+.clues li span{font-weight:700;color:var(--muted);margin-right:6px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opts.flags{grid-template-columns:1fr 1fr}
+.opt{display:block;width:100%;text-align:left;padding:11px 12px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);font:600 15px/1.25 system-ui,-apple-system,sans-serif;color:var(--ink);cursor:pointer;min-height:50px}
+.flags .opt{text-align:center;font-size:16px}
+.flags .opt .f{display:block;font-size:26px;line-height:1.2}
+.opt:hover:not([disabled]){border-color:var(--accent)}
+.opt:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.opt[disabled]{cursor:default}
+.opt.right{border-color:var(--good);background:var(--goodbg)}
+.opt.wrong{border-color:var(--bad);background:var(--badbg);text-decoration:line-through;opacity:.7}
+.opt.dim{opacity:.5}
+.reveal{margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--chip);font-size:15px}
+.reveal .t{font-family:var(--head);font-weight:800;font-size:20px}
+.reveal .pts{float:right;font-weight:700}
+.bonus{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.btns{display:flex;gap:10px;margin-top:14px}
+button{font:inherit;color:inherit;cursor:pointer}
+.primary{flex:1;padding:14px;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font-weight:700;min-height:50px}
+.links{display:flex;justify-content:space-between;margin-top:14px;font-size:15px}
+.links button{background:none;border:0;padding:6px 0;color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.center{text-align:center}
+.rank{font-family:var(--head);font-weight:800;font-size:30px;margin:6px 0}
+.squares{font-size:26px;letter-spacing:3px;margin:6px 0 4px}
+.muted{color:var(--muted);font-size:15px}
+a{color:var(--accent)}
+.test{background:var(--chip);border-radius:10px;padding:8px 12px;font-size:14px;margin-bottom:12px}
+.ex{margin:10px 0 0;font-size:15px}.ex summary{cursor:pointer;color:var(--accent);font-weight:600}
+.how{margin:8px 0 0;padding-left:20px;color:var(--muted)}
+.how li{margin:3px 0}
+.res .q{font-family:var(--head);font-style:italic;font-size:18px;line-height:1.4;margin:8px 0}
+.res .s{font-size:15px;color:var(--muted)}
+.res .s b{color:var(--ink)}
+.res .read{margin-left:8px;font-weight:600}
+.res .read::after{content:' ↗';font-weight:400}
+footer{margin-top:18px;text-align:center}
+</style>
+</head>
+<body>
+<main>
+  <header><h1><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="56" height="56" rx="10" fill="#21585a"/><path d="M47 13c-14 3-24 13-28 30l-3 9 3-1 3-8c5 0 10-2 13-6l-6-1 9-3c3-5 6-11 9-20z" fill="#e0bc55"/></svg>Versed</h1><div class="pips" id="pips" aria-hidden="true"></div></header>
+  <nav class="sy-bar" aria-label="Games"></nav>
+  <div id="test"></div>
+  <div id="app"></div>
+  <footer><p class="muted"><a href="/feedback/?game=versed">Send feedback</a> · <a href="/support/?game=versed">Support us</a></p></footer>
+</main>
+<script src="data.js"></script>
+<script>
+// ---- Which day is on screen ----
+// Day 0 is Monday 2 Nov 2026 (so Sundays line up with the boss rounds). ?day=N plays Versed No. N; #test plays without saving.
+const START=Date.UTC(2026,10,2);
+const dayDate=n=>new Date(START+n*864e5);
+const fmt=(n,o)=>dayDate(n).toLocaleDateString('en-GB',Object.assign({timeZone:'UTC'},o));
+const keyOf=n=>{const d=dayDate(n);return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0')};
+addEventListener('hashchange',()=>location.reload());
+const params=new URLSearchParams(location.search);
+const now=new Date();
+const TODAY=Math.max(0,Math.round((Date.UTC(now.getFullYear(),now.getMonth(),now.getDate())-START)/864e5));
+const isTest=location.hash==='#test';
+const td=parseInt(params.get('day'),10);
+const N=Number.isInteger(td)&&td>=1?td-1:TODAY;
+const D=DAYS[N%DAYS.length];
+const SKEY='versed-'+keyOf(N);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){if(isTest)return;try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+// Same shuffle for everyone on the same day
+function shuffled(arr,seed){const a=[...arr];let s=seed*9301+49297;for(let i=a.length-1;i>0;i--){s=(s*9301+49297)%233280;const j=Math.floor(s/233280*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+const BOSS=!D.l;
+const LAST=4;                         // stages 0..4, worth 5..1 points
+const POETS=shuffled([D.p,...D.o],N*7+1);
+const LANDS=shuffled([D.n[0],...D.x],N*7+5);
+const MAX=6;
+
+// st.s = stage (clues used + wrong guesses), st.w = wrong poets picked, st.ok = true/false once the poet round is over,
+// st.c = country picked, st.done = finished
+let st=store.get(SKEY)||{s:0,w:[],ok:null,c:null,done:false};
+const $=s=>document.querySelector(s);
+const app=$('#app');
+function save(){store.set(SKEY,st)}
+const shown=()=>BOSS?st.s+1:st.s;    // clues on screen
+const poetPts=()=>st.ok?5-st.s:0;
+const landOk=()=>st.c!=null&&D.n.includes(st.c);
+const total=()=>poetPts()+(landOk()?1:0);
+const flag=c=>FLAGS[c]||'';
+function rank(t){if(t>=6)return'Poet Laureate';if(t>=5)return'Bard';if(t>=3)return'Versifier';if(t>=1)return'Rhymester';return'Lost for words'}
+function pips(){const left=st.ok===null?5-st.s:poetPts();$('#pips').innerHTML=[0,1,2,3,4].map(i=>`<span class="pip ${i<left?(st.ok?'g':'on'):''}"></span>`).join('')+`<span class="pip ${landOk()?'b':''}" style="margin-left:4px"></span>`}
+const gut=()=>'https://www.gutenberg.org/ebooks/search/?query='+encodeURIComponent(D.p);
+const tagLine=()=>`${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})}`;
+
+function poetRound(){
+  const clues=D.c.slice(0,shown());
+  return `<div class="tag">${tagLine()}${BOSS?' · Boss round':''}</div>
+    <div class="kind">${BOSS?'Who am I? Clues only today':'Who wrote this line?'}</div>
+    ${st.s===0&&!st.w.length?`<details class="ex" open><summary>How to play</summary><ol class="how">
+      ${BOSS?'<li>Sunday boss round: no line, just clues about the poet.</li>':'<li>Name the poet from a single line.</li>'}
+      <li>Stuck? Take a clue. Each clue or wrong guess costs a point.</li>
+      <li>Then a bonus point for guessing which country they're from.</li>
+      <li>${MAX} points in all.</li></ol></details>`:''}
+    ${BOSS?'':`<blockquote class="quote">${esc(D.l)}</blockquote>`}
+    ${clues.length?`<ol class="clues">${clues.map((c,i)=>`<li><span>${i+1}</span>${esc(c)}</li>`).join('')}</ol>`:''}
+    <p class="worth">Worth <b>${5-st.s}</b> point${5-st.s===1?'':'s'} now${st.s<LAST?' · next clue or wrong guess −1':' · last chance'}</p>
+    <div class="opts" role="group" aria-label="Poets">${POETS.map(p=>`<button class="opt${st.w.includes(p)?' wrong':''}" data-p="${esc(p)}"${st.w.includes(p)?' disabled':''}>${esc(p)}</button>`).join('')}</div>
+    ${st.s<LAST?`<div class="links"><button id="clue">Show the next clue (−1)</button><span></span></div>`:''}`;
+}
+
+function poetReveal(){
+  return `<div class="tag">${tagLine()}${BOSS?' · Boss round':''}</div>
+    ${BOSS?'':`<blockquote class="quote">${esc(D.l)}</blockquote>`}
+    <div class="reveal" role="status"><span class="pts">${st.ok?'+'+poetPts():'0'}</span>${st.ok?'Yes!':'Not this time.'}
+      <div class="t">${esc(D.p)}</div>${BOSS?'':`<div>${esc(D.t)}, ${D.y}</div>`}</div>
+    <div class="bonus"><div class="kind" style="font-size:19px">Bonus: where ${BOSS?'was this poet':'were they'} from?</div>
+      <p class="worth">${st.c==null?'One point for the right country.':''}</p>
+      <div class="opts flags" role="group" aria-label="Countries">${LANDS.map(c=>{const cls=st.c==null?'':D.n.includes(c)?' right':c===st.c?' wrong':' dim';return `<button class="opt${cls}" data-c="${esc(c)}"${st.c!=null?' disabled':''}><span class="f">${flag(c)}</span>${esc(c)}</button>`}).join('')}</div>
+      ${st.c!=null?`<div class="reveal" role="status"><span class="pts">${landOk()?'+1':'0'}</span>${landOk()?'Right!':`It was ${esc(D.n[0])}.`}</div>
+      <div class="btns"><button class="primary" id="next">See how you did</button></div>`:''}
+    </div>`;
+}
+
+function play(){
+  pips();
+  app.innerHTML=`<div class="card">${st.ok===null?poetRound():poetReveal()}</div>`;
+  app.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{
+    if(st.ok!==null)return;const p=b.dataset.p;
+    if(p===D.p){st.ok=true}else{st.w.push(p);if(st.s>=LAST)st.ok=false;else st.s++}
+    save();play()});
+  const cb=$('#clue');if(cb)cb.onclick=()=>{if(st.s<LAST){st.s++;save();play()}};
+  app.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{if(st.c!=null)return;st.c=b.dataset.c;save();play()});
+  const nb=$('#next');if(nb){nb.onclick=()=>{st.done=true;save();end()};nb.focus({preventScroll:true})}
+}
+
+function end(){
+  pips();
+  const t=total();
+  if(!isTest&&N===TODAY)(window.SameySetQ=window.SameySetQ||[]).push(['versed',t+'/'+MAX]);
+  const sq='🪶'.repeat(poetPts())+'▫️'.repeat(5-poetPts());
+  const fl=flag(D.n[0])+(landOk()?'✅':'❌');
+  const share=`Versed No. ${N+1}\n${sq} ${fl} ${t}/${MAX}\n${rank(t)}\nYour go: https://samey.uk/versed/ #sameyuk`;
+  app.innerHTML=`<div class="card center">
+    <div class="tag">${tagLine()}</div>
+    <div class="rank">${rank(t)}</div>
+    <div class="squares" aria-label="${t} out of ${MAX}">${sq} ${fl}</div>
+    <p class="muted">${t} of ${MAX} points · 🪶 poet points · flag for the country bonus</p>
+    <div class="btns"><button class="primary" id="share">Share</button></div>
+    <p class="muted"><span data-next="Next poet in {t}.">A new poet tomorrow.</span></p>
+  </div>
+  <div class="card res" style="margin-top:14px"><div class="tag">Today's poet</div>
+    <div class="kind">${esc(D.p)} ${flag(D.n[0])}</div>
+    ${BOSS?`<ol class="clues" style="margin-top:10px">${D.c.map((c,i)=>`<li><span>${i+1}</span>${esc(c)}</li>`).join('')}</ol>`:`<div class="q">${esc(D.l)}</div>`}
+    <div class="s">${BOSS?'':`<b>${esc(D.t)}</b>, ${D.y}`}${D.pd===false?'':`<a class="read" href="${gut()}" target="_blank" rel="noopener">Read it free</a>`}<a style="margin-left:10px;font-weight:600" href="/feedback/?game=versed&type=puzzle&puzzle=${encodeURIComponent('No. '+(N+1)+' · '+D.p)}">Wrong?</a></div>
+    <p class="muted" style="margin-top:12px">Lines are only ever taken from poems out of copyright. Sunday boss rounds use clues instead, so any poet can appear.</p>
+  </div>`;
+  $('#share').onclick=()=>{if(navigator.share){navigator.share({text:share}).catch(()=>{});return}try{navigator.clipboard.writeText(share).then(()=>{$('#share').textContent='Copied'})}catch(e){}};
+}
+
+if(isTest)$('#test').innerHTML=`<div class="test">Test mode: No. ${N+1} · results not saved · <a href="?day=${(N+1)%DAYS.length+1}#test">Next day</a></div>`;
+st.done?end():play();
+</script>
+<script src="/daily.js"></script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "210d8562172a4416bc59877612814183"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
