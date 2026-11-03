@@ -115,6 +115,10 @@ a{color:var(--ink);font-weight:700}
     const b = document.getElementById("back");
     b.href = "/incipit/"; b.textContent = "← Back to Incipit";
   }
+  if (new URLSearchParams(location.search).get("game") === "versed") {
+    const b = document.getElementById("back");
+    b.href = "/versed/"; b.textContent = "← Back to Versed";
+  }
   if (new URLSearchParams(location.search).get("game") === "babel") {
     const b = document.getElementById("back");
     b.href = "/babel/"; b.textContent = "← Back to Babel";

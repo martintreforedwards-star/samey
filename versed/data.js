@@ -12,7 +12,7 @@
 //   x = three wrong countries for the bonus buttons
 //   pd = false for a poet who is still in copyright (no "Read it free" link)
 const FLAGS = {
-  "Australia": "🇦🇺", "Barbados": "🇧🇧", "Canada": "🇨🇦", "England": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Grenada": "🇬🇩",
+  "Australia": "🇦🇺", "Ghana": "🇬🇭", "Kenya": "🇰🇪", "Nepal": "🇳🇵", "Pakistan": "🇵🇰", "Sri Lanka": "🇱🇰", "Barbados": "🇧🇧", "Canada": "🇨🇦", "England": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Grenada": "🇬🇩",
   "Guyana": "🇬🇾", "India": "🇮🇳", "Ireland": "🇮🇪", "Jamaica": "🇯🇲", "New Zealand": "🇳🇿",
   "Nigeria": "🇳🇬", "Scotland": "🏴󠁧󠁢󠁳󠁣󠁴󠁿", "South Africa": "🇿🇦", "St Lucia": "🇱🇨", "Trinidad": "🇹🇹",
   "USA": "🇺🇸", "UK": "🇬🇧", "Wales": "🏴󠁧󠁢󠁷󠁬󠁳󠁿"
@@ -60,5 +60,47 @@ const DAYS = [
     c: ["Born in 1930; his twin brother became a playwright", "Taught for many years at Boston University", "Founded the Trinidad Theatre Workshop", "Won the Nobel Prize in Literature in 1992", "Wrote Omeros, a Caribbean reworking of Homer"],
     o: ["Kamau Brathwaite", "V. S. Naipaul", "Wole Soyinka", "Seamus Heaney", "Les Murray", "Claude McKay", "Louise Bennett"],
     n: ["St Lucia"], x: ["Jamaica", "Barbados", "Grenada"]
+  },
+  { // Mon
+    p: "Rabindranath Tagore", l: "Where the mind is without fear and the head is held high;", t: "Gitanjali 35", y: 1912,
+    c: ["From his own English versions of songs first written in Bengali", "Founded a university at Santiniketan", "The first non-European to win the Nobel Prize in Literature, in 1913", "Wrote the national anthems of two countries"],
+    o: ["Sarojini Naidu", "Rudyard Kipling", "Kahlil Gibran", "Toru Dutt", "Muhammad Iqbal", "W. B. Yeats", "Aurobindo Ghose"],
+    n: ["India"], x: ["Sri Lanka", "Pakistan", "Nepal"]
+  },
+  { // Tue
+    p: "Robert Burns", l: "Wee, sleekit, cowrin, tim'rous beastie,", t: "To a Mouse", y: 1786,
+    c: ["First published in 1786, in a dialect of its own", "Worked a farm, and wrote much of his verse at the plough", "Later took a job as an exciseman, collecting taxes", "Wrote ‘Auld Lang Syne’"],
+    o: ["Walter Scott", "James Hogg", "William Blake", "John Clare", "Robert Louis Stevenson", "William Wordsworth", "Thomas Moore"],
+    n: ["Scotland", "UK"], x: ["Ireland", "England", "Wales"]
+  },
+  { // Wed
+    p: "Pauline Johnson", l: "West wind, blow from your prairie nest,", t: "The Song My Paddle Sings", y: 1892,
+    c: ["Toured theatres reciting her poems on stage", "Her father was a Mohawk chief, her mother English-born", "Also known by her Mohawk name, Tekahionwake", "Her collected poems were called Flint and Feather"],
+    o: ["John McCrae", "Emily Dickinson", "Christina Rossetti", "Sara Teasdale", "Bliss Carman", "Jessie Mackay", "Ella Wheeler Wilcox"],
+    n: ["Canada"], x: ["USA", "New Zealand", "Australia"]
+  },
+  { // Thu
+    p: "Paul Laurence Dunbar", l: "We wear the mask that grins and lies,", t: "We Wear the Mask", y: 1895,
+    c: ["First published in 1895", "Worked as a lift operator while he wrote his first books", "A school friend of Orville Wright, who printed his early newspaper", "His poem ‘Sympathy’ gave us the line ‘I know why the caged bird sings’"],
+    o: ["Claude McKay", "Langston Hughes", "Walt Whitman", "Countee Cullen", "James Weldon Johnson", "Edgar Allan Poe", "Robert Frost"],
+    n: ["USA"], x: ["Jamaica", "Canada", "England"]
+  },
+  { // Fri
+    p: "Thomas Moore", l: "The Minstrel Boy to the war is gone,", t: "The Minstrel Boy", y: 1813,
+    c: ["From a series of song lyrics set to old airs", "Lord Byron's friend, who burned Byron's memoirs after his death", "His Irish Melodies were sung in drawing rooms across Britain", "Wrote ‘The Last Rose of Summer’"],
+    o: ["Robert Burns", "W. B. Yeats", "Lord Byron", "Percy Bysshe Shelley", "Oliver Goldsmith", "Walter Scott", "Thomas Hood"],
+    n: ["Ireland"], x: ["Scotland", "Wales", "England"]
+  },
+  { // Sat
+    p: "Christina Rossetti", l: "Remember me when I am gone away,", t: "Remember", y: 1862,
+    c: ["A Victorian sonnet, written when she was nineteen", "Her brother was a Pre-Raphaelite painter", "Wrote the long fairy-tale poem ‘Goblin Market’", "Wrote ‘In the Bleak Midwinter’"],
+    o: ["Elizabeth Barrett Browning", "Emily Brontë", "Emily Dickinson", "George Eliot", "Alice Meynell", "Felicia Hemans", "Pauline Johnson"],
+    n: ["England", "UK"], x: ["Scotland", "Wales", "Ireland"]
+  },
+  { // Sun boss
+    p: "Wole Soyinka", pd: false,
+    c: ["Born in 1934; studied English at the University of Leeds", "Held in solitary confinement for almost two years during a civil war", "Wrote the poem ‘Telephone Conversation’, about a landlady's questions", "The first African to win the Nobel Prize in Literature, in 1986", "Wrote the play Death and the King's Horseman"],
+    o: ["Chinua Achebe", "Derek Walcott", "Ngũgĩ wa Thiong'o", "Ben Okri", "Kofi Awoonor", "Christopher Okigbo", "Dennis Brutus"],
+    n: ["Nigeria"], x: ["Ghana", "Kenya", "South Africa"]
   }
 ];

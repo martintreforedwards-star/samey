@@ -59,7 +59,8 @@
     { id: "rhymey", name: "Rhymey", href: "/rhymey/", blurb: "Rhyme and rhythm in quick daily rounds.", isNew: true },
     { id: "phoney", name: "Phoney", href: "/phoney/", blurb: "How words really sound, from silent letters to glottal stops.", isNew: true },
     { id: "idiomy", name: "Idiomy", href: "/idiomy/", blurb: "Tap words together to make idioms from today's hive.", isNew: true },
-    { id: "incipit", name: "Incipit", href: "/incipit/", blurb: "Name the book from its famous first line.", isNew: true }
+    { id: "incipit", name: "Incipit", href: "/incipit/", blurb: "Name the book from its famous first line.", isNew: true },
+    { id: "versed", name: "Versed", href: "/versed/", blurb: "Name the poet from a single line, then guess their country.", isNew: true }
   ];
   var WORDS = ["", "", "", "", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen"];
   var here = (location.pathname.split("/")[1] || "samey").toLowerCase();
