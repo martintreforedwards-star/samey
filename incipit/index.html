@@ -72,6 +72,8 @@ a{color:var(--accent)}
 .lines .s{font-size:14px;color:var(--muted);margin-top:4px}
 .lines .s b{color:var(--ink);font-weight:600}
 .lines .flag{margin-left:6px}
+.lines .read{margin-left:8px;font-weight:600}
+.lines .read::after{content:' ↗';font-weight:400}
 footer{margin-top:18px;text-align:center}
 </style>
 </head>
@@ -118,6 +120,7 @@ const hintsAt=i=>st.hints[i]||0;
 const got=i=>st.pick[i]!=null&&ROUNDS[i].opts[st.pick[i]]===ROUNDS[i].right;
 const pts=i=>got(i)?3-hintsAt(i):0;
 const total=()=>ROUNDS.reduce((s,_,i)=>s+pts(i),0);
+const gut=q=>'https://www.gutenberg.org/ebooks/search/?query='+encodeURIComponent(q.t+' '+q.a.split(' ').pop());
 const credit=q=>`<b>${esc(q.t)}</b> · ${esc(q.a)}, ${q.y}${q.tr?` <span class="muted">(tr. ${esc(q.tr)})</span>`:''}`;
 const fullLine=q=>q.l!=null?q.l:q.s+' '+q.e;
 const showLine=s=>esc(s).replace(/…$/,'<span class="cut">…</span>');
@@ -168,7 +171,7 @@ function end(){
     <p class="muted"><span data-next="Next first lines in {t}.">New first lines tomorrow.</span></p>
   </div>
   <div class="card" style="margin-top:14px"><div class="tag">Today's first lines</div>
-    <ul class="lines">${ROUNDS.map((R,i)=>`<li><div class="q">${showLine(fullLine(R.q))}</div><div class="s">${got(i)?'✓':'✗'} ${credit(R.q)}<a class="flag" href="/feedback/?game=incipit&type=puzzle&puzzle=${encodeURIComponent('No. '+(N+1)+' · '+R.q.t)}">Wrong?</a></div></li>`).join('')}</ul>
+    <ul class="lines">${ROUNDS.map((R,i)=>`<li><div class="q">${showLine(fullLine(R.q))}</div><div class="s">${got(i)?'✓':'✗'} ${credit(R.q)}<a class="read" href="${gut(R.q)}" target="_blank" rel="noopener">Read it free</a><a class="flag" href="/feedback/?game=incipit&type=puzzle&puzzle=${encodeURIComponent('No. '+(N+1)+' · '+R.q.t)}">Wrong?</a></div></li>`).join('')}</ul>
     <p class="muted" style="margin-top:12px">Every book here is out of copyright. Read them free at <a href="https://www.gutenberg.org/" rel="noopener">Project Gutenberg</a>.</p>
   </div>`;
   $('#share').onclick=()=>{if(navigator.share){navigator.share({text:share}).catch(()=>{});return}try{navigator.clipboard.writeText(share).then(()=>{$('#share').textContent='Copied'})}catch(e){}};
