@@ -201,11 +201,15 @@
     var css =
       ".sy-bar{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;font-family:var(--body,inherit);margin:var(--sy-bar-margin,0 0 4px);padding:var(--sy-bar-pad,2px 0 12px);border-bottom:1px solid " + L + "}" +
       ".sy-bar::-webkit-scrollbar{display:none}" +
-      ".sy-meta{display:flex;justify-content:flex-end;gap:14px;margin:2px 0 6px;font-family:var(--body,inherit);font-size:.85rem}" +
-      ".sy-meta a{display:inline-flex;align-items:center;gap:5px;padding:6px 2px;color:" + M + ";text-decoration:none;font-weight:600}" +
-      ".sy-meta a:hover,.sy-meta a:focus-visible{color:" + I + "}" +
-      ".sy-meta svg{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round}" +
-      ".sy-meta .sy-support svg{stroke:" + A + "}" +
+      ".sy-meta{display:flex;justify-content:flex-end;gap:8px;margin:4px 0 10px;font-family:var(--body,inherit);font-size:.9rem}" +
+      ".sy-meta a{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 14px;border-radius:999px;border:1.5px solid " + L + ";background:" + S + ";color:" + I + ";text-decoration:none;font-weight:700}" +
+      ".sy-meta a:hover,.sy-meta a:focus-visible{border-color:" + I + "}" +
+      ".sy-meta svg{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round}" +
+      ".sy-meta a.sy-support{background:" + A + ";border-color:" + A + ";color:" + AI + ";box-shadow:0 2px 8px color-mix(in srgb," + A + " 35%,transparent)}" +
+      ".sy-meta a.sy-support:hover,.sy-meta a.sy-support:focus-visible{border-color:" + AI + "}" +
+      ".sy-meta .sy-support svg{fill:#c92a2a;stroke:#c92a2a;transform-origin:center;animation:sy-beat 1.6s ease-in-out .6s 2}" +
+      "@keyframes sy-beat{0%,100%{transform:scale(1)}15%{transform:scale(1.25)}30%{transform:scale(1)}45%{transform:scale(1.18)}}" +
+      "@media (prefers-reduced-motion:reduce){.sy-meta .sy-support svg{animation:none}}" +
       ".sy-bchip{flex:0 0 auto;display:flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:999px;border:1.5px solid " + L + ";background:" + S + ";color:" + I + ";font-weight:700;font-size:.95rem;text-decoration:none;white-space:nowrap}" +
       "a.sy-bchip:hover{border-color:" + I + "}" +
       ".sy-bchip.here{background:" + T + ";border-color:" + T + ";color:" + TI + "}" +
