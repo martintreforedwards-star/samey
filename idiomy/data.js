@@ -42,7 +42,8 @@ const BOARDS = [
       {k: ["over", "eye"], p: "pull the wool *over* someone's *eyes*", m: "deceive someone"}
     ],
     near: [
-      {k: ["eye", "ball"], say: "Eyeball is a word, not an idiom. Try adding something."}
+      {k: ["eye", "ball"], say: "Eyeball is a word, not an idiom. Try adding something."},
+      {k: ["ball", "fist"], say: "You can ball your fist, but it's not quite an idiom. No charge."}
     ]
   },
   {
@@ -55,11 +56,11 @@ const BOARDS = [
       {k: ["bark", "tree"], p: "*barking* up the wrong *tree*", m: "looking in the wrong place or blaming the wrong person"},
       {k: ["dog", "day"], p: "every *dog* has its *day*", m: "everyone gets their moment of luck"},
       {k: ["rain", "cat", "dog"], p: "*raining* *cats* and *dogs*", m: "pouring with rain"},
-      {k: ["rain", "day"], p: "save it for a *rainy* *day*", m: "keep something for when you'll need it"}
+      {k: ["rain", "day"], p: "save it for a *rainy* *day*", m: "keep something for when you'll need it"},
+      {k: ["dog", "bark"], p: "why keep a *dog* and *bark* yourself?", m: "don't do a job you've already got someone else to do (also: don't have a dog and bark yourself)"}
     ],
     near: [
-      {k: ["dog", "bag"], say: "A doggy bag is real, but it's not on today's list."},
-      {k: ["dog", "bark"], say: "Dogs do bark, but that's not today's idiom."}
+      {k: ["dog", "bag"], say: "A doggy bag is real, but it's not on today's list."}
     ]
   },
   {
