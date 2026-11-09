@@ -75,7 +75,7 @@ footer{margin-top:18px;text-align:center}
   <nav class="sy-bar" aria-label="Games"></nav>
   <div id="test"></div>
   <div id="app"></div>
-  <footer><p class="muted"><a href="/feedback/?game=mispelt">Send feedback</a> · <a href="/support/?game=mispelt">Support us</a></p></footer>
+  <footer><p class="muted"><a href="/feedback/?game=mispelt">Send feedback</a> · <a href="/support/?game=mispelt">Support the games</a></p></footer>
 </main>
 <script src="data.js"></script>
 <script>
@@ -182,6 +182,7 @@ function end(){
     <p class="muted">${t} of ${MAX} correct</p>
     <div class="btns"><button class="primary" id="share">Share</button></div>
     <p class="muted"><span data-next="Next Mispelt in {t}.">New spellings tomorrow.</span></p>
+    <p class="muted">All the games are free and ad-free, made by one librarian in Canterbury. Enjoyed today's? <a href="https://ko-fi.com/playtheroute" target="_blank" rel="noopener" style="font-weight:700;white-space:nowrap">☕ Buy me a coffee</a></p>
   </div>
   <div class="card" style="margin-top:14px"><div class="tag">Today's spellings</div>
     <ul class="recap">${ROUNDS.map((R,i)=>{const w=wrongOf(R,i);return`<li><span class="k">${st.ok[i]?'✓':'✗'} ${esc(R.name.replace(' (tricky)',''))}</span><span class="v">${w?`<s>${esc(w)}</s>`:''}${esc(answerOf(R))}</span></li>`}).join('')}</ul>

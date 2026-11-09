@@ -99,7 +99,7 @@ footer{margin-top:18px;text-align:center}
   <nav class="sy-bar" aria-label="Games"></nav>
   <div id="test"></div>
   <div id="app"></div>
-  <footer><p class="muted"><a href="/feedback/?game=idiomy">Send feedback</a> · <a href="/support/?game=idiomy">Support us</a></p></footer>
+  <footer><p class="muted"><a href="/feedback/?game=idiomy">Send feedback</a> · <a href="/support/?game=idiomy">Support the games</a></p></footer>
 </main>
 <script src="data.js"></script>
 <script>
@@ -207,6 +207,7 @@ function end(){
     <p class="muted">${f} of ${TOTAL} found · target ${TARGET}${st.miss>=LIVES?' · out of misses':''}</p>
     <div class="btns" style="margin-top:12px"><button class="primary" id="share">Share</button></div>
     <p class="muted"><span data-next="Next hive in {t}.">A new hive tomorrow.</span></p>
+    <p class="muted">All the games are free and ad-free, made by one librarian in Canterbury. Enjoyed today's? <a href="https://ko-fi.com/playtheroute" target="_blank" rel="noopener" style="font-weight:700;white-space:nowrap">☕ Buy me a coffee</a></p>
   </div>
   <div class="card" style="margin-top:14px"><div class="tag">Today's idioms</div>
     <ul class="found">${order.map(i=>{const a=B.a[i],got=st.found.includes(i);return`<li class="${got?'':'miss'}"><div class="p">${got?'':'Missed: '}${phrase(a.p)}</div><div class="m">${esc(a.m)}<a class="flag" href="/feedback/?game=idiomy&type=puzzle&puzzle=${encodeURIComponent('No. '+(N+1)+' · '+a.p.replace(/\*/g,''))}">Wrong?</a></div></li>`}).join('')}</ul>

@@ -83,7 +83,7 @@ footer{margin-top:18px;text-align:center}
   <nav class="sy-bar" aria-label="Games"></nav>
   <div id="test"></div>
   <div id="app"></div>
-  <footer><p class="muted"><a href="/feedback/?game=incipit">Send feedback</a> · <a href="/support/?game=incipit">Support us</a></p></footer>
+  <footer><p class="muted"><a href="/feedback/?game=incipit">Send feedback</a> · <a href="/support/?game=incipit">Support the games</a></p></footer>
 </main>
 <script src="data.js"></script>
 <script>
@@ -169,6 +169,7 @@ function end(){
     <p class="muted">${t} of ${MAX} points · 📗 no hints · 📒 with hints · 📕 missed</p>
     <div class="btns"><button class="primary" id="share">Share</button></div>
     <p class="muted"><span data-next="Next first lines in {t}.">New first lines tomorrow.</span></p>
+    <p class="muted">All the games are free and ad-free, made by one librarian in Canterbury. Enjoyed today's? <a href="https://ko-fi.com/playtheroute" target="_blank" rel="noopener" style="font-weight:700;white-space:nowrap">☕ Buy me a coffee</a></p>
   </div>
   <div class="card" style="margin-top:14px"><div class="tag">Today's first lines</div>
     <ul class="lines">${ROUNDS.map((R,i)=>`<li><div class="q">${showLine(fullLine(R.q))}</div><div class="s">${got(i)?'✓':'✗'} ${credit(R.q)}<a class="read" href="${gut(R.q)}" target="_blank" rel="noopener">Read it free</a><a class="flag" href="/feedback/?game=incipit&type=puzzle&puzzle=${encodeURIComponent('No. '+(N+1)+' · '+R.q.t)}">Wrong?</a></div></li>`).join('')}</ul>

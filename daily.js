@@ -123,6 +123,13 @@
       };
       box.append(btn);
     }
+    // Tip-jar line on the result screen, unless the game already shows its own (Samey, Spinonym, Dotty).
+    if (!document.querySelector("a[href*='ko-fi.com']")) {
+      var tip = el("p", "sy-coffee", "All the games are free and ad-free, made by one librarian in Canterbury. Enjoyed today's? ");
+      var k = el("a", null, "☕ Buy me a coffee");
+      k.href = "https://ko-fi.com/playtheroute"; k.target = "_blank"; k.rel = "noopener";
+      tip.append(k); box.append(tip);
+    }
   }
   /* ---------- Games bar (.sy-bar) and "Today's games" grid (.sy-grid) ----------
      Put <nav class="sy-bar" aria-label="Games"></nav> or <section class="sy-grid" id="games"></section> on a page and these fill them. */
@@ -162,7 +169,7 @@
     var fb = el("a"); fb.href = "/feedback/?game=" + g;
     fb.append(icon("M4 5h16v11H9l-5 4z"), el("span", null, "Feedback"));
     var sp = el("a", "sy-support"); sp.href = "/support/?game=" + g;
-    sp.append(icon("M12 20s-7-4.4-9.2-8.6A4.8 4.8 0 0 1 12 6.6a4.8 4.8 0 0 1 9.2 4.8C19 15.6 12 20 12 20z"), el("span", null, "Support us"));
+    sp.append(icon("M12 20s-7-4.4-9.2-8.6A4.8 4.8 0 0 1 12 6.6a4.8 4.8 0 0 1 9.2 4.8C19 15.6 12 20 12 20z"), el("span", null, "Support the games"));
     row.append(fb, sp);
     box.parentNode.insertBefore(row, box.nextSibling);
   }
@@ -256,6 +263,7 @@
       ".sy-chip.done .sy-chip-score::before{content:'✓ '}" +
       ".sy-chip.here{outline:2px solid currentColor;outline-offset:1px}.sy-chip.done.here{outline-color:#1f7a6d}" +
       "a.sy-chip:not(.done):hover{border-color:currentColor}" +
+      ".sy-coffee{margin:12px 0 0;font-size:14px;line-height:1.45;text-align:center;opacity:.85}.sy-coffee a{color:inherit;font-weight:700;white-space:nowrap}" +
       ".sy-set-share{display:block;width:100%;margin-top:10px;padding:10px;border-radius:10px;border:0;background:#1f7a6d;color:#fff;font:inherit;font-weight:700;cursor:pointer}" +
       "";
     var st = document.createElement("style"); st.textContent = css; document.head.append(st);
