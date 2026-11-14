@@ -276,6 +276,45 @@ const NEW_GARDEN = [
 // Syntaxed No. 1 was launch day, Sat 17 Oct 2026. The first week replays the original Mon–Sun puzzles from that Saturday,
 // then the new ones follow. Sundays add a Garden Path boss round. When a list runs out it starts again from the top,
 // so add more to the NEW_ lists above before then. As written they last 35 days, to Fri 20 Nov 2026.
+// Red herrings for the Shuffle round: two extra tiles per proverb that don't belong. Keyed by answer.
+// Keep them plausible but never a genuine variant (so not "brave" for "Fortune favours the bold").
+const DECOYS={
+  'Too many cooks spoil the broth':['chefs','ruin'],
+  'The early bird catches the worm':['late','gets'],
+  "Don't count your chickens before they hatch":['eggs','until'],
+  'A watched pot never boils':['kettle','always'],
+  'Every cloud has a silver lining':['golden','sky'],
+  "It's no use crying over spilt milk":['tears','cream'],
+  'All that glitters is not gold':['shines','silver'],
+  'Actions speak louder than words':['deeds','quieter'],
+  "Rome wasn't built in a day":['Paris','week'],
+  'Birds of a feather flock together':['fly','wing'],
+  'Absence makes the heart grow fonder':['love','distance'],
+  'Every dog has its day':['cat','night'],
+  'A stitch in time saves nine':['ten','needle'],
+  'Many hands make light work':['few','heavy'],
+  "Beggars can't be choosers":['buyers',"won't"],
+  'The pen is mightier than the sword':['stronger','ink'],
+  "You can't judge a book by its cover":['tell','page'],
+  "Two wrongs don't make a right":['rights','three'],
+  'Fortune favours the bold':['luck','lucky'],
+  'Honesty is the best policy':['truth','only'],
+  'Curiosity killed the cat':['dog','cured'],
+  "Don't put all your eggs in one basket":['chickens','box'],
+  'An apple a day keeps the doctor away':['orange','nurse'],
+  'When in Rome, do as the Romans do':['Greeks','Paris'],
+  'Great minds think alike':['fools','small'],
+  'The grass is always greener on the other side':['never','field'],
+  'Laughter is the best medicine':['worst','cure'],
+  'Blood is thicker than water':['wine','thinner'],
+  'Let sleeping dogs lie':['cats','sleep'],
+  'All good things must come to an end':['bad','finish'],
+  'Necessity is the mother of invention':['father','discovery'],
+  'Still waters run deep':['rivers','shallow'],
+  'Make hay while the sun shines':['rain','when'],
+  "There's no place like home":['house','nowhere'],
+  'A rolling stone gathers no moss':['rock','collects']
+};
 const LAUNCH_ORDER=[6,7,1,2,3,4,5];
 const TYPES=['sneaked','eggcorn','shuffle','danglers'];
 const POOL={};
@@ -336,7 +375,8 @@ function round(){
   let h=`<div class="card"><div class="tag ${r.type==='garden'?'boss':''}">Round ${st.i+1} · ${LABEL[r.type]}</div><div class="q">${ASK[r.type]}</div>`;
   if(r.sentence)h+=`<div class="sentence">“${r.sentence}”</div>`;
   if(r.type==='shuffle'){
-    h+=`<div class="line" id="line"></div><div class="pool" id="pool">${r.words.map((w,k)=>`<button class="w" data-k="${k}">${w}</button>`).join('')}</div><button class="primary" id="check" disabled>Check</button>`;
+    r.tiles=[...r.words,...(DECOYS[r.answer]||[])];   // real words first, then the red herrings
+    h+=`<div class="line" id="line"></div><div class="pool" id="pool">${tileOrder(r).map(k=>`<button class="w" data-k="${k}">${r.tiles[k]}</button>`).join('')}</div><p class="muted" style="margin:10px 0 0;font-size:14px">${r.tiles.length>r.words.length?`${r.tiles.length-r.words.length} words don't belong.`:''}</p><button class="primary" id="check" disabled>Check</button>`;
   }else{
     h+=`<div class="opts">${order(r.opts.length,dateKey+dayNum+st.i).map(k=>`<button class="opt" data-k="${k}">${r.opts[k]}</button>`).join('')}</div>`;
   }
@@ -354,10 +394,18 @@ function pickRound(r){
   });
 }
 
+// Shuffle the tiles by the day's seed, and never show them in the right order or exactly backwards
+function tileOrder(r){
+  const n=r.tiles.length,ans=r.answer.toLowerCase().replace(/[^a-z' ]/g,'').split(/\s+/);
+  const bad=a=>{const w=a.filter(k=>k<r.words.length).map(k=>r.tiles[k].toLowerCase());const j=w.join(' ');return j===ans.join(' ')||j===[...ans].reverse().join(' ')};
+  for(let t=0;t<20;t++){const a=order(n,dateKey+dayNum+st.i+'tiles'+t);if(!bad(a))return a}
+  return order(n,dateKey+dayNum+st.i+'tiles');
+}
+
 function shuffleRound(r){
   const placed=[];const line=$('#line'),check=$('#check');
   function draw(){
-    line.innerHTML=placed.map((k,p)=>`<button class="w" data-p="${p}">${r.words[k]}</button>`).join('');
+    line.innerHTML=placed.map((k,p)=>`<button class="w" data-p="${p}">${r.tiles[k]}</button>`).join('');
     app.querySelectorAll('#pool .w').forEach(b=>b.classList.toggle('used',placed.includes(+b.dataset.k)));
     line.querySelectorAll('.w').forEach(b=>b.onclick=()=>{placed.splice(+b.dataset.p,1);draw()});
     check.disabled=placed.length!==r.words.length;
@@ -365,7 +413,7 @@ function shuffleRound(r){
   app.querySelectorAll('#pool .w').forEach(b=>b.onclick=()=>{const k=+b.dataset.k;if(!placed.includes(k)){placed.push(k);draw()}});
   check.onclick=()=>{
     const norm=x=>x.toLowerCase().replace(/[^a-z' ]/g,'').replace(/\s+/g,' ').trim();   // ignore commas and capitals
-    const ok=norm(placed.map(k=>r.words[k]).join(' '))===norm(r.answer);
+    const ok=norm(placed.map(k=>r.tiles[k]).join(' '))===norm(r.answer);
     line.classList.add(ok?'right':'wrong');
     line.querySelectorAll('.w').forEach(b=>b.onclick=null);
     $('#pool').remove();check.remove();
