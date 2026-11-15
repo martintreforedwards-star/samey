@@ -106,5 +106,155 @@ const DAYS = [
     x: {f: "Knitting", w: ["purl", "cast on", "tink"], odd: "crimp", n: "A crimp is a tiny climbing hold. Tink is “knit” backwards: undoing stitches one at a time."},
     q: {ask: "Fewest to most bells, in bell ringing", i: [["Minimus", "4 bells"], ["Doubles", "5 bells"], ["Minor", "6 bells"], ["Major", "8 bells"]], n: "Triples is 7 bells, and Royal 10."},
     m: [["muggle", "Geocaching"], ["beta", "Climbing"], ["leather-hard", "Pottery"], ["dummy", "Bridge"]]
+  },
+  /* ---------- Week 3 ---------- */
+  /* Mon */ {
+    p: {t: "red zone", h: "The last 20 yards before the end zone.", c: "American football", o: ["Rugby league", "Ice hockey", "Lacrosse"], n: "Inside the opponent's 20-yard line, where scoring chances are best. Teams are judged on how often they score from there."},
+    s: {t: "throw in the towel", c: "Boxing", o: ["Swimming", "Tennis", "Cricket"], n: "A boxer's corner throws a towel into the ring to stop the fight. Now giving up on anything."},
+    x: {f: "Tennis", w: ["tweener", "moonball", "foot fault"], odd: "fried egg", n: "A fried egg is golf: a ball half-buried in a bunker. A tweener is a tennis shot hit between the legs."},
+    q: {ask: "Lowest to highest point score in a game of tennis", i: [["love", "0"], ["fifteen", "1 point"], ["thirty", "2 points"], ["forty", "3 points"]], n: "Nobody's sure why. One idea is a clock face, with 45 later shortened to 40. “Love” may come from “nothing”, as in playing for love."},
+    m: [["buzzer-beater", "Basketball"], ["catch a crab", "Rowing"], ["follow-on", "Cricket"], ["telemark", "Skiing"]]
+  },
+  /* Tue */ {
+    p: {t: "cant", h: "Chanting the game's name, in one breath, while you raid.", c: "Kabaddi", o: ["Sepak takraw", "Polo", "Cricket"], n: "Traditionally a raider chants “kabaddi, kabaddi” to show they're still holding one breath. Stop chanting and you're out."},
+    s: {t: "touché", c: "Fencing", o: ["Tennis", "Chess", "Rugby union"], n: "French for “touched”: what a fencer says on being hit. Now an admission that someone's made a good point."},
+    x: {f: "Cricket", w: ["Nelson", "rabbit", "a pair"], odd: "Brooklyn", n: "A Brooklyn is ten-pin bowling: hitting the pocket on the wrong side. In cricket a pair is two ducks in one match, a rabbit is a hopeless batter, and Nelson is a score of 111."},
+    q: {ask: "Cheapest to dearest on a London Monopoly board", i: [["Old Kent Road", "£60"], ["The Angel Islington", "£100"], ["Pall Mall", "£140"], ["Mayfair", "£400"]], n: "Prices from the classic UK board."},
+    m: [["empty-netter", "Ice hockey"], ["Cruyff turn", "Football"], ["eggbeater", "Water polo"], ["hoop", "Croquet"]]
+  },
+  /* Wed */ {
+    p: {t: "puck-out", h: "The goalkeeper's restart after a wide or a score.", c: "Hurling", o: ["Ice hockey", "Lacrosse", "Shinty"], n: "In hurling, striking the ball with the hurley is “pucking” it."},
+    s: {t: "a dark horse", c: "Horse racing", o: ["Chess", "Polo", "Poker"], n: "A little-known horse that surprises everyone. Benjamin Disraeli used it in an 1831 novel."},
+    x: {f: "Baseball", w: ["hot corner", "Baltimore chop", "Uncle Charlie"], odd: "checkside", n: "A checkside is an Aussie rules kick that curls off the outside of the boot. Uncle Charlie is a curveball, and the hot corner is third base."},
+    q: {ask: "First to last on day one of a decathlon", i: [["100 m", "event 1"], ["long jump", "event 2"], ["shot put", "event 3"], ["high jump", "event 4"]], n: "Day one ends with the 400 m. Day two is 110 m hurdles, discus, pole vault, javelin and 1500 m."},
+    m: [["crosse", "Lacrosse"], ["kickflip", "Skateboarding"], ["no-trump", "Bridge"], ["Yurchenko", "Gymnastics"]]
+  },
+  /* Thu */ {
+    p: {t: "chanko", h: "A hearty stew eaten to bulk up.", c: "Sumo", o: ["Judo", "Kendo", "Karate"], n: "Chanko-nabe is cooked and eaten in the wrestlers' stables. Plenty of retired wrestlers open chanko restaurants."},
+    s: {t: "knocked for six", c: "Cricket", o: ["Baseball", "Boxing", "Golf"], n: "Hitting the ball over the boundary without a bounce scores six. Being knocked for six is being hit hard by bad news."},
+    x: {f: "Football", w: ["rabona", "offside trap", "VAR"], odd: "penhold", n: "Penhold is a table tennis grip. A rabona is a kick with your leg wrapped behind your standing one."},
+    q: {ask: "Earliest to latest in the men's golf year", i: [["The Masters", "April"], ["PGA Championship", "May"], ["US Open", "June"], ["The Open", "July"]], n: "Together they're golf's four majors."},
+    m: [["chicane", "Motor racing"], ["flick serve", "Badminton"], ["blindside", "Rugby union"], ["uchi mata", "Judo"]]
+  },
+  /* Fri */ {
+    p: {t: "flèche", h: "A running attack, launched in one burst.", c: "Fencing", o: ["Archery", "Ballet", "Gymnastics"], n: "French for “arrow”. It's been banned in sabre since 1994."},
+    s: {t: "move the goalposts", c: "Football", o: ["Golf", "Tennis", "Cricket"], n: "Changing the rules or target halfway through, as if the goal had been shifted mid-match."},
+    x: {f: "American football", w: ["audible", "blitz", "end zone"], odd: "the T", n: "The T is the spot in the middle of a squash court. An audible is a quarterback changing the play at the line."},
+    q: {ask: "Corner to centre on White's back row, starting on the queen's side", i: [["rook", "a1"], ["knight", "b1"], ["bishop", "c1"], ["queen", "d1"]], n: "“Queen on her own colour”: the white queen starts on a light square."},
+    m: [["maillot jaune", "Cycling"], ["seven-metre throw", "Handball"], ["tokin", "Shogi"], ["the going", "Horse racing"]]
+  },
+  /* Sat */ {
+    p: {t: "golden set", h: "Winning a set without losing a single point.", c: "Tennis", o: ["Volleyball", "Darts", "Squash"], n: "Yaroslava Shvedova played one at Wimbledon in 2012, the first at a Grand Slam in the Open era."},
+    s: {t: "go to the mat", c: "Wrestling", o: ["Judo", "Yoga", "Gymnastics"], n: "To fight hard for something, like wrestlers grappling it out on the mat."},
+    x: {f: "Golf", w: ["gimme", "Texas wedge", "tee"], odd: "baulk", n: "Baulk is snooker: the end of the table you break from. A Texas wedge is a putter used from off the green."},
+    q: {ask: "Weakest to strongest poker hand", i: [["one pair", "two cards of a rank"], ["straight", "five in a row"], ["flush", "five of one suit"], ["full house", "three plus a pair"]], n: "Above a full house come four of a kind, a straight flush and the royal flush."},
+    m: [["Sicilian", "Chess"], ["duck dive", "Surfing"], ["wood", "Bowls"], ["TKO", "Boxing"]]
+  },
+  /* Sun */ {
+    p: {t: "gricer", h: "A dedicated railway enthusiast.", c: "Trainspotting", o: ["Birdwatching", "Plane spotting", "Ham radio"], n: "Nobody's quite sure where it comes from. One theory links it to grouse shooting."},
+    s: {t: "level pegging", c: "Cribbage", o: ["Golf", "Croquet", "Darts"], n: "Cribbage scores are kept with pegs on a board, so level pegging means neck and neck."},
+    x: {f: "Knitting", w: ["stash", "UFO", "swatch"], odd: "fat quarter", n: "A fat quarter is a quilter's piece of fabric. To knitters a UFO is an unfinished object."},
+    q: {ask: "Finest to thickest knitting yarn", i: [["lace", "the finest"], ["4-ply", "sock weight"], ["double knitting", "DK, the all-rounder"], ["chunky", "quick to knit"]], n: "Beyond chunky comes super chunky."},
+    m: [["bokeh", "Photography"], ["chitting", "Gardening"], ["proving", "Baking"], ["plié", "Ballet"]]
+  },
+  /* ---------- Week 4 ---------- */
+  /* Mon */ {
+    p: {t: "posterize", h: "Dunking over a defender so hard it belongs on a poster.", c: "Basketball", o: ["Volleyball", "Netball", "Handball"], n: "The defender ends up as the unlucky background on someone's bedroom wall."},
+    s: {t: "the ball's in your court", c: "Tennis", o: ["Football", "Golf", "Cricket"], n: "Your opponent has hit it to your side, so now it's your move."},
+    x: {f: "Rugby league", w: ["dummy half", "play-the-ball", "State of Origin"], odd: "lineout", n: "Lineouts belong to rugby union; league has none. State of Origin is New South Wales against Queensland."},
+    q: {ask: "Lowest to highest traditional shirt number in football", i: [["goalkeeper", "1"], ["right-back", "2"], ["centre-half", "5"], ["centre-forward", "9"]], n: "From the days when the starting eleven wore 1 to 11 by position."},
+    m: [["walk-off", "Baseball"], ["solo", "Gaelic football"], ["nick", "Squash"], ["épée", "Fencing"]]
+  },
+  /* Tue */ {
+    p: {t: "ferret", h: "A batter even worse than a rabbit, sent in after them.", c: "Cricket", o: ["Baseball", "Rounders", "Croquet"], n: "A ferret “goes in after the rabbits”, so it's the very last batter, usually a hopeless one."},
+    s: {t: "turn the tables", c: "Backgammon", o: ["Snooker", "Chess", "Bridge"], n: "Backgammon used to be called tables. Turning them round meant swapping places with your opponent."},
+    x: {f: "Ice hockey", w: ["Zamboni", "enforcer", "Stanley Cup"], odd: "the Ashes", n: "The Ashes is cricket's England v Australia series. A Zamboni is the machine that resurfaces the ice."},
+    q: {ask: "Shortest to longest British horse race", i: [["Nunthorpe Stakes", "5 furlongs"], ["2,000 Guineas", "1 mile"], ["The Derby", "about 1½ miles"], ["Grand National", "about 4¼ miles"]], n: "A furlong is an eighth of a mile, about 200 metres."},
+    m: [["kumite", "Karate"], ["caman", "Shinty"], ["boneyard", "Dominoes"], ["Annie's room", "Darts"]]
+  },
+  /* Wed */ {
+    p: {t: "lanterne rouge", h: "The rider in last place overall.", c: "Cycling", o: ["Motor racing", "Sailing", "Horse racing"], n: "French for “red lantern”, after the light on the back of a train's last carriage."},
+    s: {t: "Monday-morning quarterback", c: "American football", o: ["Baseball", "Basketball", "Ice hockey"], n: "Someone who knows exactly what should have been done, once the weekend's game is over."},
+    x: {f: "Darts", w: ["arrows", "three in a bed", "checkout"], odd: "carreau", n: "A carreau is pétanque: knocking an opponent's boule away and leaving yours in its place. Three in a bed is three darts in the same segment."},
+    q: {ask: "Lowest to highest suit in bridge", i: [["clubs", "♣"], ["diamonds", "♦"], ["hearts", "♥"], ["spades", "♠"]], n: "No-trumps outranks them all."},
+    m: [["shepherd", "Aussie rules"], ["tack", "Sailing"], ["kote", "Kendo"], ["split", "Ten-pin bowling"]]
+  },
+  /* Thu */ {
+    p: {t: "dyno", h: "A flying leap from one hold to the next.", c: "Climbing", o: ["Gymnastics", "Trampolining", "Diving"], n: "Short for dynamic move, when you can't reach the next hold any other way."},
+    s: {t: "poker face", c: "Poker", o: ["Bridge", "Chess", "Snooker"], n: "Card players keep a blank face to give nothing away."},
+    x: {f: "Cycling", w: ["domestique", "bonk", "echelon"], odd: "marbles", n: "Marbles are motor racing's bits of tyre rubber off the racing line. A cyclist who bonks has run out of energy."},
+    q: {ask: "First to last in an individual medley swim", i: [["butterfly", "1st leg"], ["backstroke", "2nd leg"], ["breaststroke", "3rd leg"], ["freestyle", "4th leg"]], n: "In a medley relay the order changes: backstroke goes first, because it starts in the water."},
+    m: [["Mankad", "Cricket"], ["hane", "Go"], ["photo finish", "Horse racing"], ["fletching", "Archery"]]
+  },
+  /* Fri */ {
+    p: {t: "box, box", h: "A radio call telling the driver to come in.", c: "Motor racing", o: ["Boxing", "Cycling", "Sailing"], n: "From the German “Boxenstopp” for a pit stop. It's also short and clear over a noisy radio."},
+    s: {t: "rain check", c: "Baseball", o: ["Cricket", "Tennis", "Golf"], n: "Fans at a rained-off game got a ticket stub, a rain check, to come back another day."},
+    x: {f: "Chess", w: ["j'adoube", "patzer", "fork"], odd: "tesuji", n: "Tesuji is Go: a clever, sharp move. J'adoube is French for “I adjust”, said when you touch a piece only to straighten it."},
+    q: {ask: "Lowest to highest letter value in English Scrabble", i: [["E", "1 point"], ["D", "2 points"], ["K", "5 points"], ["Z", "10 points"]], n: "Q is also worth 10."},
+    m: [["rikishi", "Sumo"], ["double fault", "Tennis"], ["gammon", "Backgammon"], ["baton", "Athletics"]]
+  },
+  /* Sat */ {
+    p: {t: "cochonnet", h: "The little ball everyone aims at.", c: "Pétanque", o: ["Bowls", "Croquet", "Curling"], n: "French for “piglet”. In bowls it would be the jack."},
+    s: {t: "take the wind out of someone's sails", c: "Sailing", o: ["Gliding", "Golf", "Archery"], n: "Sailing upwind of another boat steals its wind and slows it down."},
+    x: {f: "Poker", w: ["the nuts", "the river", "tell"], odd: "ruff", n: "A ruff is bridge: trumping a trick. In poker the nuts is the best possible hand and the river is the last card dealt."},
+    q: {ask: "Earliest to latest in the cycling year", i: [["Paris–Roubaix", "April"], ["Giro d'Italia", "May"], ["Tour de France", "July"], ["Vuelta a España", "late August"]], n: "The Giro, Tour and Vuelta are cycling's three Grand Tours."},
+    m: [["suplex", "Wrestling"], ["shuttlecock", "Badminton"], ["centre pass", "Netball"], ["zwischenzug", "Chess"]]
+  },
+  /* Sun */ {
+    p: {t: "sally", h: "The striped woollen grip on a rope.", c: "Bell ringing", o: ["Sailing", "Knitting", "Weaving"], n: "Ringers pull the sally on the handstroke and the rope's tail end on the backstroke."},
+    s: {t: "life isn't all beer and skittles", c: "Skittles", o: ["Bowls", "Darts", "Shove ha'penny"], n: "Beer and skittles meant an easy, fun time at the pub. Life isn't all that."},
+    x: {f: "Birdwatching", w: ["patch", "stringer", "gripped"], odd: "gricer", n: "A gricer is a railway enthusiast. Birders are gripped when someone sees a bird they missed; a stringer claims birds they didn't really see."},
+    q: {ask: "Easiest to hardest traditional British climbing grade", i: [["Moderate", "M"], ["Difficult", "D"], ["Very Difficult", "VD"], ["Severe", "S"]], n: "After Severe come Hard Severe, Very Severe and the E grades. The names have aged oddly."},
+    m: [["amigurumi", "Crochet"], ["bisque", "Pottery"], ["TFTC", "Geocaching"], ["speedrun", "Video games"]]
+  },
+  /* ---------- Week 5 ---------- */
+  /* Mon */ {
+    p: {t: "Panenka", h: "A penalty chipped gently down the middle.", c: "Football", o: ["Rugby union", "Hockey", "Water polo"], n: "Named after Antonín Panenka, who won Czechoslovakia the 1976 European Championship with one."},
+    s: {t: "a slam dunk", c: "Basketball", o: ["Volleyball", "Tennis", "Baseball"], n: "A shot that can't miss, so something certain to succeed."},
+    x: {f: "Volleyball", w: ["pancake", "dig", "libero"], odd: "tekong", n: "The tekong serves in sepak takraw, Southeast Asia's kick volleyball. A pancake is a save with your hand flat on the floor."},
+    q: {ask: "Earliest to latest men's football World Cup host", i: [["England", "1966"], ["Mexico", "1986"], ["Japan and South Korea", "2002"], ["Qatar", "2022"]], n: "2002 was the first World Cup shared by two countries."},
+    m: [["raider", "Kabaddi"], ["seventh-inning stretch", "Baseball"], ["box kick", "Rugby union"], ["Fair Isle", "Knitting"]]
+  },
+  /* Tue */ {
+    p: {t: "a cup of coffee", h: "A brief spell in the top league before being sent back down.", c: "Baseball", o: ["Cricket", "Rugby union", "Golf"], n: "Just long enough to drink a cup of coffee."},
+    s: {t: "an opening gambit", c: "Chess", o: ["Poker", "Bridge", "Fencing"], n: "A gambit is an opening that gives up a pawn for an advantage, from an Italian word for tripping someone up."},
+    x: {f: "Bridge", w: ["finesse", "rubber", "slam"], odd: "muggins", n: "Muggins is a cribbage rule: if you miss points, your opponent can claim them. In bridge a rubber is a best-of-three set of games."},
+    q: {ask: "Earliest to latest Summer Olympics", i: [["Seoul", "1988"], ["Sydney", "2000"], ["Beijing", "2008"], ["Paris", "2024"]], n: "Los Angeles is next, in 2028."},
+    m: [["quarterback sneak", "American football"], ["hurley", "Hurling"], ["riposte", "Fencing"], ["all in", "Poker"]]
+  },
+  /* Wed */ {
+    p: {t: "riichi", h: "Declaring you're one tile away from winning.", c: "Mahjong", o: ["Shogi", "Go", "Bridge"], n: "In Japanese mahjong you bet a 1,000-point stick on it, and can't change your hand after."},
+    s: {t: "at full tilt", c: "Jousting", o: ["Horse racing", "Fencing", "Archery"], n: "To tilt was to charge at an opponent with a lance. Full tilt was a charge at top speed."},
+    x: {f: "Croquet", w: ["roquet", "peel", "pegging out"], odd: "toucher", n: "A toucher is a bowl that touches the jack. In croquet a roquet is hitting another ball with yours."},
+    q: {ask: "Shortest to longest odds at the bookies", i: [["1/2", "odds-on"], ["evens", "double your money"], ["5/1", "a decent chance"], ["100/1", "a rank outsider"]], n: "At odds-on you win less than you stake."},
+    m: [["the 19th hole", "Golf"], ["gutter ball", "Ten-pin bowling"], ["six again", "Rugby league"], ["valley fold", "Origami"]]
+  },
+  /* Thu */ {
+    p: {t: "blot", h: "A single piece left alone on a point, open to attack.", c: "Backgammon", o: ["Draughts", "Dominoes", "Chess"], n: "Hit a blot and it goes back to the bar to start again."},
+    s: {t: "follow suit", c: "Card games", o: ["Darts", "Horse racing", "Sailing"], n: "In whist and bridge you must play a card of the suit that was led if you can. Now doing what others have just done."},
+    x: {f: "Sumo", w: ["kinboshi", "mono-ii", "chonmage"], odd: "shinai", n: "A shinai is kendo's bamboo sword. A kinboshi (gold star) is won by beating a yokozuna from the ranks; a chonmage is the topknot."},
+    q: {ask: "Centre to edge of an archery target", i: [["gold", "10 and 9"], ["red", "8 and 7"], ["blue", "6 and 5"], ["black", "4 and 3"]], n: "The outer ring is white, worth 2 and 1."},
+    m: [["chin music", "Cricket"], ["intarsia", "Knitting"], ["the wall", "Mahjong"], ["slalom", "Skiing"]]
+  },
+  /* Fri */ {
+    p: {t: "boast", h: "A shot hit into a side wall first.", c: "Squash", o: ["Tennis", "Badminton", "Table tennis"], n: "The ball angles off the side wall to the front, often catching an opponent at the back."},
+    s: {t: "stumped", c: "Cricket", o: ["Baseball", "Chess", "Golf"], n: "A batter out of their ground is stumped when the keeper breaks the wicket. Now completely baffled."},
+    x: {f: "Skiing", w: ["mogul", "schuss", "piste"], odd: "kook", n: "A kook is a surfing beginner. A schuss is skiing straight down at full speed."},
+    q: {ask: "Order of the round winds in mahjong", i: [["East", "1st round"], ["South", "2nd round"], ["West", "3rd round"], ["North", "4th round"]], n: "Not the order on a compass: going anticlockwise round a mahjong table, east is followed by south."},
+    m: [["send", "Climbing"], ["furlong", "Horse racing"], ["sin bin", "Rugby league"], ["tumble turn", "Swimming"]]
+  },
+  /* Sat */ {
+    p: {t: "his nobs", h: "The jack of the same suit as the turned-up card.", c: "Cribbage", o: ["Bridge", "Whist", "Poker"], n: "Holding it scores “one for his nob”."},
+    s: {t: "neck and neck", c: "Horse racing", o: ["Motor racing", "Rowing", "Athletics"], n: "Two horses so close their necks are level."},
+    x: {f: "Basketball", w: ["airball", "sixth man", "swish"], odd: "cradle", n: "Cradling is lacrosse: rocking the stick to keep the ball in its net. An airball misses everything, rim included."},
+    q: {ask: "Closest to furthest from the batter, in cricket", i: [["silly point", "almost on the bat"], ["gully", "close catcher"], ["cover", "saving one"], ["long-off", "on the boundary"]], n: "“Silly” fielders stand near enough to be in real danger."},
+    m: [["pike", "Diving"], ["rope-a-dope", "Boxing"], ["no-ball", "Cricket"], ["gybe", "Sailing"]]
+  },
+  /* Sun */ {
+    p: {t: "wedging", h: "Kneading clay to push out the air bubbles.", c: "Pottery", o: ["Baking", "Gardening", "Woodwork"], n: "Trapped air can make a pot crack or burst in the kiln."},
+    s: {t: "the one that got away", c: "Angling", o: ["Hunting", "Horse racing", "Birdwatching"], n: "Every angler has a story about a huge fish that slipped the hook. Now any lost chance."},
+    x: {f: "Crosswords", w: ["setter", "anagrind", "nina"], odd: "bingo", n: "A bingo is Scrabble: using all seven tiles in one go. An anagrind is a word that signals an anagram; a nina is a message hidden in the grid."},
+    q: {ask: "Widest to narrowest lens opening in photography", i: [["f/2", "widest"], ["f/4", "wide"], ["f/8", "narrow"], ["f/16", "narrowest"]], n: "Bigger numbers mean smaller openings, letting in less light."},
+    m: [["pishing", "Birdwatching"], ["touch", "Bell ringing"], ["downward dog", "Yoga"], ["respawn", "Video games"]]
   }
 ];

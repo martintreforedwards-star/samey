@@ -5,7 +5,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Gamey</title>
 <meta name="description" content="A daily game of words from sports, games and pastimes around the world. Birdie, doosra, five-hole, frogging: where do they belong?">
-<meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://samey.uk/gamey/">
+<meta property="og:site_name" content="Gamey">
+<meta property="og:title" content="Gamey: the language of sports and pastimes">
+<meta property="og:description" content="A daily word game. Birdie, doosra, five-hole, frogging: where do they belong?">
+<meta property="og:image" content="https://samey.uk/gamey/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/gamey/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -102,7 +110,8 @@ const td=parseInt(params.get('day'),10);
 const N=Number.isInteger(td)&&td>=1?td-1:TODAY;
 const EPOCH=Math.round(dayDate(N)/864e5)+3; // 1 Jan 1970 was a Thursday; Monday = 0
 const WD=EPOCH%7, WEEKS=DAYS.length/7;
-const D=DAYS[(Math.floor(EPOCH/7)%WEEKS)*7+WD];
+const WK=((Math.floor(EPOCH/7)-2966)%WEEKS+WEEKS)%WEEKS; // week of 15 Nov 2026 (launch) plays data week 2; new weeks follow
+const D=DAYS[WK*7+WD];
 const THEME=WD===6?'Hobbies and pastimes':'';
 const SKEY='gamey-'+keyOf(N);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -205,6 +214,7 @@ function end(){
   pips(-1);
   const t=score();
   const sq=ROUNDS.map((_,i)=>st.ok[i]?'🟩':'⬜').join('');
+  if(!isTest&&N===TODAY)(window.SameySetQ=window.SameySetQ||[]).push(['gamey',t+'/'+MAX]);
   const share=`Gamey No. ${N+1}\n${sq} ${t}/${MAX}\n${rank(t)}\nYour go: https://samey.uk/gamey/ #sameyuk`;
   const items=ROUNDS.map((R,i)=>{const mk=st.ok[i]?'✓':'✗';
     if(R.type==='pick')return`<li><div class="v">${mk} ${esc(R.d.t)}: ${esc(R.d.c.toLowerCase())}</div><div class="n">${esc(R.d.n)}</div></li>`;
