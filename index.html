@@ -162,6 +162,12 @@ details ul{padding-left:1.2rem;margin:.5rem 0 0}
 .roots-card .spn-new,.roots-card .spn-arrow{color:color-mix(in srgb,#8A5A2B 60%,var(--ink))}
 .spn-foot{text-align:center;font-size:.92rem;color:var(--muted);margin:0}
 .spn-foot a{color:var(--ink);font-weight:700}
+.dles-badge{display:block;text-align:center;margin:14px 0 0}
+.dles-badge img{display:inline-block;vertical-align:middle}
+.dles-badge .dark{display:none}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .dles-badge .light{display:none}:root:not([data-theme="light"]) .dles-badge .dark{display:inline-block}}
+:root[data-theme="dark"] .dles-badge .light{display:none}
+:root[data-theme="dark"] .dles-badge .dark{display:inline-block}
 /* Share modal: opens once a game ends, and again from the Share result button */
 .modal{border:0;border-radius:14px;padding:22px 20px 20px;width:min(380px,calc(100vw - 32px));background:var(--surface);color:var(--ink);box-shadow:0 18px 50px rgba(0,0,0,.28)}
 .modal::backdrop{background:rgba(10,16,14,.55)}
@@ -377,6 +383,7 @@ body.arching main > :not(header):not(#archiveView){display:none !important}
     <a class="btn" id="archToday" href="./">Back to today's puzzle</a>
   </section>
   <p class="spn-foot" style="margin-top:8px"><span id="archFoot" hidden><a href="#" id="archLink">Earlier puzzles</a> · </span><a href="/feedback/?game=samey">Send feedback</a> · <a href="/support/">Support the games</a></p>
+  <a class="dles-badge" href="https://allthedles.com/games/samey/" target="_blank" rel="noopener"><img class="light" src="https://allthedles.com/badge/listed-light.svg" alt="Listed on All the Dles" width="200" height="48" loading="lazy"><img class="dark" src="https://allthedles.com/badge/listed-dark.svg" alt="Listed on All the Dles" width="200" height="48" loading="lazy"></a>
 </main>
 
 <dialog class="modal" id="shareModal" aria-labelledby="shTitle">
