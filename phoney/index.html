@@ -83,6 +83,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .score{font-family:var(--head);font-weight:800;font-size:52px;margin:4px 0;line-height:1}
 .rank{font-size:20px;font-weight:700;color:var(--accent)}
 .muted{color:var(--muted)}
+.note{background:#FFF4D6;border:1px solid #F0D58A;color:#5A4500;border-radius:12px;padding:10px 12px;margin:0 0 14px;font-size:15px;line-height:1.4}
 ul.rounds{padding-left:20px;margin:10px 0 0}
 ul.rounds li{margin-bottom:4px}
 .recap{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:12px;text-align:left;border-top:1px solid var(--line);padding-top:14px}
@@ -152,6 +153,10 @@ const T={
   stop:{name:'Spot the stop',blurb:"Which t's turn into a glottal stop?",list:STOP},
   ipa:{name:'Sound it out',blurb:'Sunday special: read the phonetic spelling',list:IPA}
 };
+// Corrections shown on a given day's puzzle (intro and results), keyed by date.
+const NOTES={
+  '2026-11-20':'<b>Correction:</b> today\'s Odd sound out round had the wrong answer. <i>Pressure</i> (with an <i>sh</i> sound) is the odd one out, not measure. Thanks to the player who spotted it!'
+};
 const PLAY_ORDER=['silent','odd','stress','place','stop','ipa'];   // easier rounds first
 const CYCLE=['silent','place','stress','odd','stop'];
 const isSunday=n=>dayDate(n).getUTCDay()===0;
@@ -185,6 +190,7 @@ const isArch=!isTest&&N<TODAY;
 const dateKey=keyOf(N);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const ROUNDS=plan(N);
+const noteHTML=()=>NOTES[dateKey]?`<div class="note" role="note">${NOTES[dateKey]}</div>`:'';
 const items=ROUNDS.map(r=>r.it);
 const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 
@@ -199,7 +205,7 @@ let st={i:0,res:[]};
 function dots(){$('#dots').innerHTML=items.map((_,k)=>`<div class="dot ${st.res[k]===true?'ok':st.res[k]===false?'no':k===st.i?'cur':''}"></div>`).join('')}
 
 function intro(){
-  app.innerHTML=`<div class="card"><div class="tag">${isArch||isTest?fmt(N,{weekday:'long',day:'numeric',month:'long'}):'Today'}</div>
+  app.innerHTML=`${noteHTML()}<div class="card"><div class="tag">${isArch||isTest?fmt(N,{weekday:'long',day:'numeric',month:'long'}):'Today'}</div>
   <div class="q">Quick rounds on how words really sound. Say them out loud: spelling is a terrible guide.</div>
   <p class="muted" style="margin:6px 0 0">One go at each. The rounds change every day${isSunday(N)?', and Sundays end with a special':''}. Here's today's mix:</p>
   <ul class="rounds">${ROUNDS.map(r=>`<li><b>${r.name}</b> · ${r.blurb}</li>`).join('')}</ul>
@@ -313,7 +319,7 @@ function results(){
   if(!isTest&&!isArch)(window.SameySetQ=window.SameySetQ||[]).push(['phoney',s+'/'+n]);
   const nice=fmt(N,{weekday:'short',day:'numeric',month:'short'});
   const share=`Phoney No. ${N+1}${isArch?' (archive)':''}\n${s}/${n} ${ticks}\n${rank(s,n)}\nYour go: https://samey.uk/phoney/ #sameyuk`;
-  app.innerHTML=`<div class="card center"><div class="tag">${isTest?'Test · No. '+(N+1)+' · '+nice:isArch?'No. '+(N+1)+' · '+nice:nice}</div>
+  app.innerHTML=`${noteHTML()}<div class="card center"><div class="tag">${isTest?'Test · No. '+(N+1)+' · '+nice:isArch?'No. '+(N+1)+' · '+nice:nice}</div>
   <div class="score">${s}/${n}</div><div class="ticks">${ticks}</div><div class="rank">${rank(s,n)}</div>
   <p class="muted">${isArch?`<a class="inl" href="#" id="moreArch">Play another earlier puzzle</a> or <a class="inl" href="./${ARCH_TAIL}">go back to today's puzzle</a>.`:'<span data-next="A new mix of rounds in {t}.">A new mix of rounds tomorrow.</span>'+(ARCH&&TODAY>=1&&!isTest?` Can't wait? <a class="inl" href="#" id="moreArch">Play earlier puzzles</a>.`:'')}</p>
   <button class="primary" id="share">Share</button><button class="ghost" id="copy">Copy result</button>

@@ -103,7 +103,7 @@ const ODD=[
   {t:'gh',w:['thou[gh]','lau[gh]','cou[gh]','enou[gh]'],o:'In laugh, cough and enough, gh says <i>f</i>. In though it\'s silent.'},
   {t:'th',w:['[th]ose','[th]umb','[th]ick','[th]ought'],o:'Those has the buzzing, voiced <i>th</i>. Thumb, thick and thought don\'t buzz.'},
   {t:'c',w:['o[c]ean','[c]ar','[c]up','[c]ake'],o:'Ocean\'s c says <i>sh</i>. The others are a plain hard <i>k</i>.'},
-  {t:'s',w:['mea[s]ure','pre[ss]ure','trea[s]ure','plea[s]ure'],o:'Pressure has an <i>sh</i>. Measure, treasure and pleasure have the rarer <i>zh</i> sound, as in vision.'},
+  {t:'s',w:['pre[ss]ure','mea[s]ure','trea[s]ure','plea[s]ure'],o:'Pressure has an <i>sh</i>. Measure, treasure and pleasure have the rarer <i>zh</i> sound, as in vision.'},
   {t:'ch',w:['[ch]ain','[ch]ampagne','[ch]alet','[ch]ute'],o:'Champagne, chalet and chute are French and say <i>sh</i>. Chain has the English <i>ch</i>.'},
   {t:'s',w:['[s]ugar','[s]un','[s]it','[s]ad'],o:'Sugar starts with an <i>sh</i> sound, like sure. The others are a plain <i>s</i>.'}
 ];
