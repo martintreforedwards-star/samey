@@ -128,6 +128,10 @@ a{color:var(--ink);font-weight:700}
     const b = document.getElementById("back");
     b.href = "/dodo/"; b.textContent = "← Back to Dodo";
   }
+  if (new URLSearchParams(location.search).get("game") === "inkling") {
+    const b = document.getElementById("back");
+    b.href = "/inkling/"; b.textContent = "← Back to Inkling";
+  }
   if (new URLSearchParams(location.search).get("game") === "babel") {
     const b = document.getElementById("back");
     b.href = "/babel/"; b.textContent = "← Back to Babel";
