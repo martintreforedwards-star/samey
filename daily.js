@@ -285,7 +285,69 @@
     });
   }
 
-  new MutationObserver(function () { fill(); placeSets(); }).observe(document.documentElement, { childList: true, subtree: true });
-  function init() { fill(); placeSets(); renderNav(); }
+  /* ---------- "Install Samey & friends" (adds the whole set to the home screen; see /sw.js) ----------
+     Goes just under the "Enjoyed today's? Buy me a coffee" line on every game's result screen.
+     Hidden if already installed, if "Not now" was tapped in the last 30 days, or if the browser can't install.
+     Android/desktop Chrome and Edge get the browser's own install prompt; iPhone/iPad get the two-step instructions. */
+  var HIDE_KEY = "sy-install-hide", deferredPrompt = null;
+  var isInstalled = function () {
+    return (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;
+  };
+  var isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  var hidden = function () {
+    var t = 0; try { t = +localStorage.getItem(HIDE_KEY) || 0; } catch (e) {}
+    return Date.now() - t < 30 * 864e5;
+  };
+  var instStyled = false;
+  function installStyle() {
+    if (instStyled) return; instStyled = true;
+    var st = document.createElement("style");
+    st.textContent = ".sy-install{margin:12px auto 0;max-width:420px;text-align:center;font-size:14px;line-height:1.45}" +
+      ".sy-install-btn{display:block;width:100%;padding:10px;border-radius:10px;border:2px solid currentColor;background:transparent;color:inherit;font:inherit;font-size:15px;font-weight:700;cursor:pointer}" +
+      ".sy-install-sub{margin:6px 0 0;opacity:.75}" +
+      ".sy-install-how{margin:8px 0 0;padding:10px 12px;border-radius:10px;border:1px solid rgba(127,127,127,.35);text-align:left}" +
+      ".sy-install-no{margin-top:4px;padding:4px 8px;border:0;background:none;color:inherit;font:inherit;font-size:13px;opacity:.65;text-decoration:underline;cursor:pointer}";
+    document.head.append(st);
+  }
+  function removeInstall() { document.querySelectorAll(".sy-install").forEach(function (n) { n.remove(); }); }
+  function makeInstall() {
+    var box = el("div", "sy-install"), btn = el("button", "sy-install-btn", "📲 Install Samey & friends");
+    btn.type = "button";
+    var sub = el("p", "sy-install-sub", "All the games on your home screen, and they work offline too.");
+    var no = el("button", "sy-install-no", "Not now"); no.type = "button";
+    no.onclick = function () { try { localStorage.setItem(HIDE_KEY, String(Date.now())); } catch (e) {} removeInstall(); };
+    btn.onclick = function () {
+      if (deferredPrompt) {
+        var p = deferredPrompt; deferredPrompt = null;
+        p.prompt();
+        p.userChoice.then(function (c) { if (c && c.outcome === "accepted") removeInstall(); }).catch(function () {});
+        return;
+      }
+      if (isIOS && !box.querySelector(".sy-install-how")) {
+        var how = el("p", "sy-install-how");
+        how.append("1. Tap the Share button ", el("b", null, "⬆"), " (the square with an arrow, at the bottom or top of the screen).",
+          document.createElement("br"), "2. Scroll down and tap ", el("b", null, "Add to Home Screen"), ".");
+        sub.after(how);
+      }
+    };
+    box.append(btn, sub, no);
+    return box;
+  }
+  function placeInstall() {
+    if (isInstalled() || hidden() || !(deferredPrompt || isIOS)) return;
+    document.querySelectorAll("a[href*='ko-fi.com']").forEach(function (a) {
+      var p = a.closest("p");
+      if (!p || p.textContent.indexOf("Enjoyed today") === -1) return;
+      var next = p.nextElementSibling;
+      if (next && next.classList.contains("sy-install")) return;
+      installStyle();
+      p.after(makeInstall());
+    });
+  }
+  window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); deferredPrompt = e; placeInstall(); });
+  window.addEventListener("appinstalled", function () { deferredPrompt = null; removeInstall(); });
+
+  new MutationObserver(function () { fill(); placeSets(); placeInstall(); }).observe(document.documentElement, { childList: true, subtree: true });
+  function init() { fill(); placeSets(); renderNav(); placeInstall(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
 })();
