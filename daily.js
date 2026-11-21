@@ -5,6 +5,10 @@
      if they are looking at it, it offers a "new puzzle ready" bar rather than yanking them out of a game.
    Archive (?day=N) and preview (#test) pages are left alone. */
 (function () {
+  // Lets players install the games as an app and keep playing with a poor signal (see /sw.js).
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () { navigator.serviceWorker.register("/sw.js").catch(function () {}); });
+  }
   var dayKey = function (d) { return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); };
   var loaded = dayKey(new Date());
   var onToday = function () { return !new URLSearchParams(location.search).has("day") && location.hash !== "#test"; };
