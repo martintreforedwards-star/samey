@@ -8,7 +8,7 @@
    You don't need to touch this file when you edit a game. Bump VERSION only if you add a
    new game you want saved for offline play on install (add it to PRECACHE too), or if you
    ever want to wipe everyone's offline copy. */
-const VERSION = "v1";
+const VERSION = "v2";
 const CACHE = "samey-" + VERSION;
 const FONT_CACHE = "samey-fonts";
 const NETWORK_TIMEOUT = 4000;
