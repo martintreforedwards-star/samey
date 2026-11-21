@@ -118,7 +118,7 @@ const ORDER=D.q.i.map(p=>p[0]);
 const ROUNDS=[
   {type:'pick',name:'What did it mean?',d:D.p,opts:shuffled([D.p.c,...D.p.o],N*13+1)},
   {type:'odd',name:'Odd one out',d:D.x,opts:shuffled([...D.x.w,D.x.odd],N*13+3)},
-  {type:'match',name:'What do we say now?',d:D.m,right:shuffled(D.m.map(p=>p[1]),N*13+5)},
+  {type:'match',name:'Match them',d:D.m,right:shuffled(D.m.map(p=>p[1]),N*13+5)},
   {type:'order',name:'Put in order',d:D.q,items:jumbled(ORDER,N*13+4)},
   {type:'saying',name:'Living fossil',d:D.s,opts:shuffled([D.s.c,...D.s.o],N*13+2)}
 ];
@@ -164,7 +164,7 @@ function play(){
       ${answered?'':`<div class="btns"><button class="ghost" id="clr"${seq.length?'':' disabled'}>Clear</button><button class="primary" id="chk"${seq.length===ORDER.length?'':' disabled'}>Check</button></div>`}`;
     if(answered)note=(st.ok[i]?'':'That’s the right order above. ')+R.d.n;
   }else{
-    sub='Tap an old word on the left, then what we say now on the right.';
+    sub='Tap a word on the left, then its match on the right.';
     const L=R.d.map(p=>p[0]);
     const done=answered?st.ans[i]:pairs;
     const num=w=>L.indexOf(w)+1;
@@ -183,7 +183,7 @@ function play(){
     <p class="sub">${sub}</p>
     ${i===0&&!answered?`<details class="ex"><summary>How to play</summary><ol class="how">
       <li>Five quick rounds on words that are dying out, one point each.</li>
-      <li>Say what a fading word meant, spot the odd one out, match old words to what we say now, put four things in order, then find what a “living fossil” phrase came from.</li>
+      <li>Say what a fading word meant, spot the odd one out, match four pairs, put four things in order, then find what a “living fossil” phrase came from.</li>
       <li>At the end you get a word to save: try to use it today.</li></ol></details>`:''}
     ${body}${reveal}
   </div>`;
