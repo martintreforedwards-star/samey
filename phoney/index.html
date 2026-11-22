@@ -160,18 +160,23 @@ const NOTES={
 };
 const PLAY_ORDER=['silent','odd','stress','place','stop','ipa'];   // easier rounds first
 const CYCLE=['silent','place','stress','odd','stop'];
+// Lists grew on 23 Nov 2026. Days before then keep the list lengths they were played with, so the archive doesn't change;
+// from 23 Nov each list carries on from its first new item, then cycles through the whole list.
+const NEWFROM=Math.round((Date.UTC(2026,10,23)-START)/864e5);
+const OLDLEN={silent:23,odd:20,stress:20,place:25,stop:16,ipa:11};
 const isSunday=n=>dayDate(n).getUTCDay()===0;
 const roundsOn=n=>isSunday(n)?5:4;
 function plan(n){
-  let p=0;const seen={};let today=null;
+  let p=0;const seen={},base={};let today=null;
   for(let d=0;d<=n;d++){
     const keys=[];
     for(let i=0;i<4;i++)keys.push(CYCLE[(p+i)%CYCLE.length]);
     p+=4;if(isSunday(d))keys.push('ipa');
+    if(d===NEWFROM)Object.assign(base,seen);
     if(d===n)today=keys.map(k=>({k,c:seen[k]||0}));
     keys.forEach(k=>seen[k]=(seen[k]||0)+1);
   }
-  return today.sort((x,y)=>PLAY_ORDER.indexOf(x.k)-PLAY_ORDER.indexOf(y.k)).map(({k,c})=>{const L=T[k].list;return{key:k,...T[k],it:L[c%L.length]}});
+  return today.sort((x,y)=>PLAY_ORDER.indexOf(x.k)-PLAY_ORDER.indexOf(y.k)).map(({k,c})=>{const L=T[k].list,i=n<NEWFROM?c%OLDLEN[k]:(OLDLEN[k]+c-(base[k]||0))%L.length;return{key:k,...T[k],it:L[i]}});
 }
 
 // ---- Which day is on screen ----
