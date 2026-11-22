@@ -585,6 +585,67 @@ const PUZZLES = [
    close:"happy jolly sunny bright upbeat merry chirpy jovial perky optimistic"},
   {clue:"Present", tier:3, kind:"thing word",      answer:"offering", hint:"_____ing",
    close:"gift donation bonus prize treat contribution handout reward tip souvenir token"},
+  // ---- More Medium puzzles (Nov 2026) ----
+  {clue:"Small", tier:3, kind:"describing word", answer:"petite", hint:"___ite",
+   close:"little tiny mini minute wee compact slight diminutive"},
+  {clue:"Big", tier:3, kind:"describing word", answer:"bulky", hint:"__lky",
+   close:"large huge giant enormous massive vast immense hefty"},
+  {clue:"Boast", tier:3, kind:"doing word", answer:"brag", hint:"__ag",
+   close:"crow swagger gloat flaunt show"},
+  {clue:"Tired", tier:3, kind:"describing word", answer:"drained", hint:"___ined",
+   close:"weary sleepy exhausted fatigued spent shattered knackered drowsy worn"},
+  {clue:"Walk", tier:3, kind:"doing word", answer:"stroll", hint:"___oll",
+   close:"wander amble saunter stride march hike trek pace plod"},
+  {clue:"Laugh", tier:3, kind:"doing word", answer:"chuckle", hint:"____kle",
+   close:"giggle chortle snigger titter guffaw cackle howl"},
+  {clue:"Shine", tier:3, kind:"doing word", answer:"glint", hint:"__int",
+   close:"gleam glow glitter sparkle twinkle shimmer flash glisten"},
+  {clue:"Jump", tier:3, kind:"doing word", answer:"vault", hint:"__ult",
+   close:"leap hop spring bound skip hurdle"},
+  {clue:"Clean", tier:3, kind:"doing word", answer:"scrub", hint:"__rub",
+   close:"wash wipe rinse polish scour cleanse mop"},
+  {clue:"Fight", tier:3, kind:"thing word", answer:"brawl", hint:"__awl",
+   close:"scrap tussle scuffle fray clash battle row"},
+  {clue:"Smell", tier:3, kind:"thing word", answer:"whiff", hint:"__iff",
+   close:"odour scent aroma stink stench pong niff"},
+  {clue:"Fear", tier:3, kind:"thing word", answer:"dread", hint:"__ead",
+   close:"terror fright horror panic alarm anxiety"},
+  {clue:"Rush", tier:3, kind:"doing word", answer:"hasten", hint:"___ten",
+   close:"hurry dash race speed run hurtle bolt scurry"},
+  {clue:"Cross", tier:3, kind:"describing word", answer:"irate", hint:"__ate",
+   close:"angry annoyed livid furious mad vexed grumpy irked"},
+  {clue:"Wealth", tier:3, kind:"thing word", answer:"fortune", hint:"____une",
+   close:"riches money assets means treasure capital"},
+  {clue:"Shake", tier:3, kind:"doing word", answer:"tremble", hint:"____ble",
+   close:"quiver shiver quake shudder wobble vibrate jiggle"},
+  {clue:"Soaked", tier:3, kind:"describing word", answer:"sodden", hint:"___den",
+   close:"wet drenched soggy saturated sopping waterlogged"},
+  {clue:"Smart", tier:3, kind:"describing word", answer:"dapper", hint:"___per",
+   close:"stylish elegant natty spruce chic sharp snazzy clever bright intelligent"},
+  {clue:"Fault", tier:3, kind:"thing word", answer:"flaw", hint:"__aw",
+   close:"defect blemish error imperfection snag weakness"},
+  {clue:"Weak", tier:3, kind:"describing word", answer:"feeble", hint:"___ble",
+   close:"frail puny flimsy fragile faint delicate weedy"},
+  {clue:"Ugly", tier:3, kind:"describing word", answer:"hideous", hint:"____ous",
+   close:"unsightly grotesque plain gross monstrous horrid"},
+  {clue:"Hold", tier:3, kind:"doing word", answer:"grasp", hint:"__asp",
+   close:"grip clutch clasp clench seize keep"},
+  {clue:"Cut", tier:3, kind:"doing word", answer:"slice", hint:"__ice",
+   close:"chop snip trim carve sever slash clip"},
+  {clue:"Polite", tier:3, kind:"describing word", answer:"courteous", hint:"_____eous",
+   close:"civil respectful gracious mannerly"},
+  {clue:"Boring", tier:3, kind:"describing word", answer:"humdrum", hint:"___drum",
+   close:"dull tedious monotonous mundane dreary bland tiresome"},
+  {clue:"Enemy", tier:3, kind:"thing word", answer:"foe", hint:"f__",
+   close:"rival opponent adversary nemesis"},
+  {clue:"Vain", tier:3, kind:"describing word", answer:"conceited", hint:"_____ited",
+   close:"proud arrogant smug boastful egotistical haughty"},
+  {clue:"Thirsty", tier:3, kind:"describing word", answer:"parched", hint:"___ched",
+   close:"dry dehydrated arid gasping"},
+  {clue:"Stop", tier:3, kind:"doing word", answer:"halt", hint:"__lt",
+   close:"cease end pause quit stay freeze"},
+  {clue:"Help", tier:3, kind:"doing word", answer:"assist", hint:"___ist",
+   close:"aid support back serve"}
 ].map(p=>({...p, close:new Set(p.close.split(" "))}));
 const MAX = 4;
 const LAUNCH = Date.UTC(2026,9,9);   // Fri 9 Oct 2026 = Samey No. 1
@@ -602,6 +663,8 @@ function reveal(answer, guess, known){
 const mask = arr => arr.map(c=>c||"_").join(" ");
 
 const TIERS = ["","Gentle","Easy","Medium","Tricky","Toughest"];
+const OLDCOUNT = 90;   // puzzles before the 23 Nov 2026 additions
+const NEWFROM = Math.round((Date.UTC(2026,10,23)-LAUNCH)/864e5);
 // Mon=1 ... Fri=5; weekends sit in the middle.
 const tierOf = w => (w===0||w===6) ? 3 : w;
 const dayDate = n => new Date(2026,9,9+n);   // Samey No. n+1
@@ -614,12 +677,17 @@ function puzzleForDay(days){
   LAUNCH_OVERRIDE=null;
   // Launch day (Fri 9 Oct 2026) keeps the puzzle it went out with, at its original Toughest level.
   if(days===0){ const li=PUZZLES.findIndex(p=>p.clue==="Present"); if(li>=0){ LAUNCH_OVERRIDE={i:li, tier:5}; return li; } }
-  const pool=PUZZLES.map((p,i)=>p.tier===tier?i:-1).filter(i=>i>=0);
+  const all=PUZZLES.map((p,i)=>p.tier===tier?i:-1).filter(i=>i>=0), old=all.filter(i=>i<OLDCOUNT);
   // Each level works through its own list: count how many earlier days (after launch day) used this level.
   // Medium is used Wed, Sat and Sun, so it moves on three times a week rather than once.
   let n=0;
   for(let k=1;k<days;k++){ if(tierOf(dayDate(k).getDay())===tier) n++; }
-  return pool[n % pool.length];
+  // The Medium list grew on 23 Nov 2026. Earlier days keep the old list, so the archive doesn't change;
+  // from 23 Nov a grown list carries on from its first new puzzle, then cycles through the whole list.
+  if(days<NEWFROM || all.length===old.length){ const pool=days<NEWFROM?old:all; return pool[n % pool.length]; }
+  let n0=0;
+  for(let k=1;k<NEWFROM;k++){ if(tierOf(dayDate(k).getDay())===tier) n0++; }
+  return all[(old.length + n - n0) % all.length];
 }
 
 function start(i){
