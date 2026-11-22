@@ -171,7 +171,7 @@ function plan(n){
     if(d===n)today=keys.map(k=>({k,c:seen[k]||0}));
     keys.forEach(k=>seen[k]=(seen[k]||0)+1);
   }
-  return today.sort((x,y)=>PLAY_ORDER.indexOf(x.k)-PLAY_ORDER.indexOf(y.k)).map(({k,c})=>{const L=T[k].list,i=n<NEWFROM?c%OLDLEN[k]:(OLDLEN[k]+c-(base[k]||0))%L.length;return{key:k,...T[k],it:L[i]}});
+  return today.sort((x,y)=>PLAY_ORDER.indexOf(x.k)-PLAY_ORDER.indexOf(y.k)).map(({k,c})=>{const L=T[k].list,i=n<NEWFROM||L.length===OLDLEN[k]?c%L.length:(OLDLEN[k]+c-(base[k]||0))%L.length;return{key:k,...T[k],it:L[i]}});
 }
 
 // ---- Which day is on screen ----
