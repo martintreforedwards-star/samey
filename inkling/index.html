@@ -116,7 +116,10 @@ const WD=EPOCH%7, WEEKS=DAYS.length/7;
 const WN=Math.floor(EPOCH/7), WS=2969; // WS = week of 23 Nov 2026
 const ORDER=[1,2,0];
 const WK=WN<WS?0:ORDER[(WN-WS)%ORDER.length];
-const D=DAYS[WK*7+WD];
+const BASE=DAYS[WK*7+WD];
+// From the second time through, every other round slides one place per pass, so the same set of rounds never comes back together.
+const mixPick=(j,L,r)=>(j%L+Math.floor(j/L)*(r%2))%L;
+const D=WN<WS?BASE:Object.fromEntries(Object.keys(BASE).map((key,r)=>[key,DAYS[ORDER[mixPick(WN-WS,ORDER.length,r)]*7+WD][key]]));
 const THEME=WD===5?'Science fiction':'';
 const SKEY='inkling-'+keyOf(N);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
