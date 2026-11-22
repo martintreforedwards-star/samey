@@ -57,5 +57,55 @@ const DAYS = [
     m: [["Room 101", "Nineteen Eighty-Four"], ["Shangri-La", "Lost Horizon"], ["galumph", "Through the Looking-Glass"], ["gaslighting", "Gas Light"]],
     q: {ask: "Oldest to newest coinage", i: [["pandemonium", "1667"], ["freelance", "1819"], ["pollyanna", "1913"], ["Catch-22", "1961"]], n: "Pollyanna, in Eleanor H. Porter's novel, plays “the glad game”, finding something to be glad about in everything."},
     s: {t: "quark", c: "Finnegans Wake", o: ["Ulysses", "A Portrait of the Artist as a Young Man", "Dubliners"], n: "All four are James Joyce. “Three quarks for Muster Mark!” is in Finnegans Wake (1939); the physicist Murray Gell-Mann borrowed it in 1963."}
+  },
+  /* ---------- Week 2 ---------- */
+  /* Mon */ {
+    p: {t: "Mrs Grundy", h: "A narrow-minded, prudish busybody.", c: "Thomas Morton", o: ["Richard Brinsley Sheridan", "Oliver Goldsmith", "Henry Fielding"], n: "In Morton's play Speed the Plough (1798), characters keep asking “What will Mrs Grundy say?” She never appears."},
+    x: {f: "words coined in fiction", w: ["Brobdingnagian", "Pickwickian", "Ruritanian"], odd: "bowdlerise", n: "Bowdlerise comes from a real man, Thomas Bowdler, whose Family Shakespeare cut out anything rude."},
+    m: [["Man Friday", "Robinson Crusoe"], ["Uriah Heep", "David Copperfield"], ["Rip Van Winkle", "The Sketch Book"], ["Lady Bountiful", "The Beaux' Stratagem"]],
+    q: {ask: "Oldest to newest coinage", i: [["Gradgrind", "1854"], ["Jekyll and Hyde", "1886"], ["time machine", "1895"], ["Stepford wife", "1972"]], n: "Thomas Gradgrind, in Dickens's Hard Times, wants “nothing but Facts”."},
+    s: {t: "the Artful Dodger", c: "Oliver Twist", o: ["Nicholas Nickleby", "Great Expectations", "Bleak House"], n: "Jack Dawkins, the Artful Dodger, is Fagin's star pickpocket. Now a dodger is anyone slippery."}
+  },
+  /* Tue */ {
+    p: {t: "Babbitt", h: "A smug, conformist businessman.", c: "Sinclair Lewis", o: ["F. Scott Fitzgerald", "Sherwood Anderson", "Theodore Dreiser"], n: "George F. Babbitt sells houses in the city of Zenith in Lewis's 1922 novel Babbitt."},
+    x: {f: "words coined in fiction", w: ["triffid", "Newspeak", "Sherlock"], odd: "quisling", n: "Quisling comes from a real man, Vidkun Quisling, who ran Norway for the Nazis."},
+    m: [["Gradgrind", "Hard Times"], ["Pecksniffian", "Martin Chuzzlewit"], ["Micawber", "David Copperfield"], ["bumbledom", "Oliver Twist"]],
+    q: {ask: "Oldest to newest coinage", i: [["Lady Bountiful", "1707"], ["Man Friday", "1719"], ["Brobdingnagian", "1726"], ["Mrs Grundy", "1798"]], n: "Robinson Crusoe names his companion Friday after the day they met."},
+    s: {t: "Ruritanian", c: "The Prisoner of Zenda", o: ["King Solomon's Mines", "The Thirty-Nine Steps", "Kidnapped"], n: "Anthony Hope's 1894 adventure is set in Ruritania, a made-up European kingdom. Any comic-opera little state is now Ruritanian."}
+  },
+  /* Wed */ {
+    p: {t: "frabjous", h: "Splendid and joyful, as in “O frabjous day!”", c: "Lewis Carroll", o: ["Edward Lear", "Hilaire Belloc", "Spike Milligan"], n: "From Jabberwocky in Through the Looking-Glass (1871): “O frabjous day! Callooh! Callay!”"},
+    x: {f: "words coined in fiction", w: ["Gradgrind", "Babbitt", "Svengali"], odd: "guillotine", n: "Guillotine comes from a real man, Dr Joseph-Ignace Guillotin, who argued for a quicker, kinder execution. He didn't invent it."},
+    m: [["atomic bomb", "The World Set Free"], ["triffid", "The Day of the Triffids"], ["Newspeak", "Nineteen Eighty-Four"], ["Stepford wife", "The Stepford Wives"]],
+    q: {ask: "Oldest to newest coinage", i: [["Rip Van Winkle", "1819"], ["Pickwickian", "1837"], ["Uriah Heep", "1850"], ["Sherlock", "1887"]], n: "Uriah Heep, the “ever so 'umble” clerk, is the creepiest of Dickens's hypocrites."},
+    s: {t: "mimsy", c: "Through the Looking-Glass", o: ["Alice's Adventures in Wonderland", "The Hunting of the Snark", "Sylvie and Bruno"], n: "All four are Carroll. “All mimsy were the borogoves”: Humpty Dumpty explains it's flimsy and miserable rolled into one."}
+  },
+  /* Thu */ {
+    p: {t: "Rip Van Winkle", h: "Someone hopelessly behind the times, as if they'd slept for years.", c: "Washington Irving", o: ["Nathaniel Hawthorne", "Edgar Allan Poe", "Mark Twain"], n: "In Irving's 1819 story, Rip sleeps for 20 years in the Catskills and misses the whole American Revolution."},
+    x: {f: "words coined in fiction", w: ["Pecksniffian", "Micawber", "Lady Bountiful"], odd: "dunce", n: "Dunce comes from a real man, the medieval scholar John Duns Scotus, whose followers were later mocked as dunces."},
+    m: [["Mrs Grundy", "Speed the Plough"], ["Ruritanian", "The Prisoner of Zenda"], ["Gradgrind", "Hard Times"], ["Brobdingnagian", "Gulliver's Travels"]],
+    q: {ask: "Oldest to newest coinage", i: [["time machine", "1895"], ["atomic bomb", "1914"], ["robot", "1920"], ["triffid", "1951"]], n: "John Wyndham's triffids are walking, stinging plants that take over a blinded Britain."},
+    s: {t: "Sherlock", c: "A Study in Scarlet", o: ["The Hound of the Baskervilles", "The Sign of the Four", "The Valley of Fear"], n: "All four are Holmes stories. He first appeared in A Study in Scarlet (1887)."}
+  },
+  /* Fri */ {
+    p: {t: "Pickwickian", h: "Meant in a special sense, not literally or as an insult.", c: "Charles Dickens", o: ["William Makepeace Thackeray", "Anthony Trollope", "Wilkie Collins"], n: "In The Pickwick Papers (1837), a row is settled when an insult turns out to have been meant “in a Pickwickian sense”."},
+    x: {f: "words coined in fiction", w: ["Rip Van Winkle", "Uriah Heep", "the Artful Dodger"], odd: "mesmerise", n: "Mesmerise comes from a real man, Franz Mesmer, an 18th-century doctor who claimed to heal with “animal magnetism”."},
+    m: [["Svengali", "Trilby"], ["Pooh-Bah", "The Mikado"], ["Shangri-La", "Lost Horizon"], ["Mrs Grundy", "Speed the Plough"]],
+    q: {ask: "Oldest to newest coinage", i: [["Lady Bountiful", "1707"], ["Mrs Grundy", "1798"], ["Gradgrind", "1854"], ["Babbitt", "1922"]], n: "Lady Bountiful is a generous country lady in George Farquhar's comedy The Beaux' Stratagem."},
+    s: {t: "Micawber", c: "David Copperfield", o: ["Little Dorrit", "Dombey and Son", "Our Mutual Friend"], n: "All four are Dickens. Mr Micawber, sure that “something will turn up”, was partly based on Dickens's own father, jailed for debt."}
+  },
+  /* Sat: science fiction */ {
+    p: {t: "atomic bomb", h: "A bomb powered by splitting atoms.", c: "H. G. Wells", o: ["Jules Verne", "Arthur Conan Doyle", "Olaf Stapledon"], n: "Wells's The World Set Free (1914) imagined atomic bombs decades before they existed. The physicist Leo Szilard read it."},
+    x: {f: "words coined in fiction", w: ["triffid", "terraforming", "time machine"], odd: "doublespeak", n: "Doublespeak sounds like Orwell but isn't in Nineteen Eighty-Four. He gave us Newspeak and doublethink; doublespeak was blended from them later."},
+    m: [["robotics", "I, Robot"], ["grok", "Stranger in a Strange Land"], ["metaverse", "Snow Crash"], ["Newspeak", "Nineteen Eighty-Four"]],
+    q: {ask: "Oldest to newest coinage", i: [["credit card", "1888"], ["robot", "1920"], ["Stepford wife", "1972"], ["cyberspace", "1982"]], n: "Ira Levin's Stepford wives turn out to be robots built by their husbands."},
+    s: {t: "unperson", c: "Nineteen Eighty-Four", o: ["Brave New World", "Fahrenheit 451", "We"], n: "In Orwell's Oceania, an unperson has been wiped from every record, as if they'd never lived."}
+  },
+  /* Sun */ {
+    p: {t: "Lady Bountiful", h: "A woman who makes a show of her charity.", c: "George Farquhar", o: ["William Congreve", "Aphra Behn", "Oliver Goldsmith"], n: "Lady Bountiful is a kindly country lady, always doctoring her neighbours, in Farquhar's comedy The Beaux' Stratagem (1707)."},
+    x: {f: "words coined in fiction", w: ["Mrs Grundy", "Babbitt", "Micawber"], odd: "fifth column", n: "Fifth column came from the Spanish Civil War: a general boasted of four columns marching on Madrid and a fifth of supporters already inside."},
+    m: [["Uriah Heep", "David Copperfield"], ["the Artful Dodger", "Oliver Twist"], ["Pickwickian", "The Pickwick Papers"], ["Gradgrind", "Hard Times"]],
+    q: {ask: "Oldest to newest coinage", i: [["Brobdingnagian", "1726"], ["Rip Van Winkle", "1819"], ["Sherlock", "1887"], ["Stepford wife", "1972"]], n: "Gulliver lands in Brobdingnag, the land of giants, on his second voyage."},
+    s: {t: "Brobdingnagian", c: "Gulliver's Travels", o: ["Robinson Crusoe", "A Tale of a Tub", "Tristram Shandy"], n: "A Tale of a Tub is Swift's too. Brobdingnag comes straight after tiny Lilliput in Gulliver's voyages."}
   }
 ];

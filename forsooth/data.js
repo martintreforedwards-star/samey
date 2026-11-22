@@ -57,5 +57,55 @@ const DAYS = [
     p: {t: "buxom", h: "Used by Chaucer of a good wife", c: "Obedient, humble", o: ["Plump", "Clumsy", "Bossy"], n: "Buxom meant easily bent, so obedient. It drifted to cheerful, then healthy, then plump."},
     m: [["The play's the thing", "Hamlet"], ["Shall I compare thee to a summer's day?", "Sonnet 18"], ["I come to bury Caesar, not to praise him", "Julius Caesar"], ["Now is the winter of our discontent", "Richard III"]],
     q: {ask: "Earliest to latest born", i: [["Philip Sidney", "1554"], ["Christopher Marlowe", "Feb 1564"], ["William Shakespeare", "Apr 1564"], ["John Donne", "1572"]], n: "Marlowe was baptised in Canterbury on 26 February 1564, Shakespeare in Stratford exactly two months later."}
+  },
+  /* ---------- Week 2 ---------- */
+  /* Mon */ {
+    s: {t: "Why, this is hell, nor am I out of it.", c: "Christopher Marlowe", o: ["William Shakespeare", "John Webster", "Ben Jonson"], n: "Mephistopheles says it in Doctor Faustus: a damned soul carries hell wherever it goes."},
+    x: {f: "lines exactly as Shakespeare wrote them", w: ["What's in a name? That which we call a rose", "Some are born great, some achieve greatness, and some have greatness thrust upon 'em", "The rest is silence"], odd: "Discretion is the better part of valour", n: "Falstaff says “The better part of valour is discretion.” The popular version turns it round."},
+    p: {t: "wight", h: "A Middle English word Chaucer uses often", c: "A person, a creature", o: ["A knight", "A ghost", "A white horse"], n: "Wight simply meant a person or creature. Fantasy writers later made it something ghostly and undead."},
+    m: [["Fair is foul, and foul is fair", "Macbeth"], ["O Romeo, Romeo! wherefore art thou Romeo?", "Romeo and Juliet"], ["Full fathom five thy father lies", "The Tempest"], ["Love all, trust a few, do wrong to none", "All's Well That Ends Well"]],
+    q: {ask: "Earliest to latest born", i: [["John Lyly", "c. 1553"], ["Thomas Kyd", "1558"], ["Thomas Dekker", "c. 1572"], ["John Fletcher", "1579"]], n: "Fletcher co-wrote Henry VIII and The Two Noble Kinsmen with Shakespeare."}
+  },
+  /* Tue */ {
+    s: {t: "I have been a stranger in a strange land", c: "The King James Bible", o: ["William Shakespeare", "Christopher Marlowe", "Edmund Spenser"], n: "Moses says it in Exodus 2:22, in the King James Bible of 1611. Heinlein borrowed it for a novel title."},
+    x: {f: "lines exactly as Shakespeare wrote them", w: ["Cowards die many times before their deaths", "The fault, dear Brutus, is not in our stars", "Lay on, Macduff"], odd: "Pride comes before a fall", n: "Not Shakespeare: it's boiled down from the Bible, Proverbs 16:18, “Pride goeth before destruction”."},
+    p: {t: "gat-tothed", h: "How Chaucer describes the Wife of Bath", c: "With a gap between the front teeth", o: ["Missing several teeth", "With crooked teeth", "With goat-like teeth"], n: "A gap in the teeth was thought a sign of a bold, lusty nature. The Wife of Bath had five husbands."},
+    m: [["This above all: to thine own self be true", "Hamlet"], ["I will wear my heart upon my sleeve", "Othello"], ["The lunatic, the lover and the poet", "A Midsummer Night's Dream"], ["Out, out, brief candle!", "Macbeth"]],
+    q: {ask: "Earliest to latest written", i: [["Gorboduc", "1561"], ["The Spanish Tragedy", "c. 1587"], ["Hamlet", "c. 1600"], ["The Revenger's Tragedy", "c. 1606"]], n: "Gorboduc was the first English tragedy in blank verse, the line Shakespeare and Marlowe made famous."}
+  },
+  /* Wed */ {
+    s: {t: "Come, Sleep! O Sleep, the certain knot of peace", c: "Philip Sidney", o: ["William Shakespeare", "Edmund Spenser", "Samuel Daniel"], n: "Sonnet 39 of Sidney's Astrophel and Stella, the sequence that set off the 1590s craze for sonnets."},
+    x: {f: "lines exactly as Shakespeare wrote them", w: ["Good night, sweet prince", "How sharper than a serpent's tooth it is To have a thankless child!", "The milk of human kindness"], odd: "Blood is thicker than water", n: "An old proverb, not Shakespeare. Walter Scott put it in Guy Mannering (1815)."},
+    p: {t: "gentil", h: "As in “a verray, parfit gentil knyght”", c: "Noble, well-born", o: ["Gentle, mild", "Not Jewish", "Elegant"], n: "Chaucer's perfect gentil knight is noble in birth and behaviour. He isn't soft: he's fought in fifteen battles."},
+    m: [["O, that this too too solid flesh would melt", "Hamlet"], ["Ill met by moonlight, proud Titania", "A Midsummer Night's Dream"], ["Put out the light, and then put out the light", "Othello"], ["Uneasy lies the head that wears a crown", "Henry IV, Part 2"]],
+    q: {ask: "Earliest to latest born", i: [["Edmund Spenser", "c. 1552"], ["Philip Sidney", "1554"], ["George Peele", "1556"], ["Thomas Kyd", "1558"]], n: "Four writers born in six years. Sidney died at 31 from a battle wound in the Netherlands."}
+  },
+  /* Thu */ {
+    s: {t: "Our revels now are ended.", c: "William Shakespeare", o: ["Ben Jonson", "John Fletcher", "Francis Beaumont"], n: "Prospero, in The Tempest, as he breaks off the masque. Jonson wrote real court masques, which makes him the tempting guess."},
+    x: {f: "lines exactly as Shakespeare wrote them", w: ["Tomorrow, and tomorrow, and tomorrow", "Though this be madness, yet there is method in 't", "Make assurance double sure"], odd: "Ignorance is bliss", n: "Thomas Gray, in his ode on Eton College (1742): “where ignorance is bliss, 'Tis folly to be wise.”"},
+    p: {t: "wood", h: "A Middle English word, nothing to do with trees", c: "Mad, furious", o: ["Stiff, wooden", "Hungry", "Timid"], n: "Wood meant mad or raging, from the same old root as the god Woden. It lived on in Scots as wud."},
+    m: [["The rest is silence", "Hamlet"], ["What light through yonder window breaks?", "Romeo and Juliet"], ["Once more unto the breach, dear friends", "Henry V"], ["If you prick us, do we not bleed?", "The Merchant of Venice"]],
+    q: {ask: "Earliest to latest died", i: [["Christopher Marlowe", "1593"], ["Thomas Kyd", "1594"], ["Edmund Spenser", "1599"], ["John Donne", "1631"]], n: "Kyd was arrested and tortured in 1593 over papers he said were Marlowe's. He died the next year."}
+  },
+  /* Fri */ {
+    s: {t: "Death, be not proud", c: "John Donne", o: ["George Herbert", "Ben Jonson", "William Shakespeare"], n: "Donne's Holy Sonnet 10, which ends with Death itself dying: “Death, thou shalt die.”"},
+    x: {f: "lines exactly as Shakespeare wrote them", w: ["All's well that ends well", "The be-all and the end-all", "Off with his head!"], odd: "So much for Buckingham", n: "Colley Cibber added it in his 1700 rewrite of Richard III, which actors used for 150 years. “Off with his head!” is really Shakespeare's."},
+    p: {t: "clerk", h: "As in “a Clerk ther was of Oxenford”", c: "A scholar, a student", o: ["An office worker", "A shopkeeper", "A judge"], n: "Chaucer's Clerk is a thin, poor Oxford student who spends everything on books. Clerks were clerics, the people who could read."},
+    m: [["Good night, sweet prince", "Hamlet"], ["Something wicked this way comes", "Macbeth"], ["My salad days, when I was green in judgment", "Antony and Cleopatra"], ["O, I am fortune's fool!", "Romeo and Juliet"]],
+    q: {ask: "Earliest to latest published", i: [["Venus and Adonis", "1593"], ["The Rape of Lucrece", "1594"], ["Shakespeare's Sonnets", "1609"], ["The First Folio", "1623"]], n: "With the theatres shut by plague, Shakespeare's long poems were his first big hits in print."}
+  },
+  /* Sat: Chaucer day */ {
+    s: {t: "And gladly wolde he lerne and gladly teche", c: "Geoffrey Chaucer", o: ["John Gower", "William Langland", "John Lydgate"], n: "The last line of Chaucer's portrait of the Clerk in the General Prologue. Still a fine motto for a teacher."},
+    x: {f: "lines by Chaucer", w: ["Whan Zephirus eek with his sweete breeth", "The bisy larke, messager of day", "Ful weel she soong the service dyvyne"], odd: "Of hem that writen ous tofore", n: "That's John Gower, Chaucer's friend, opening his Confessio Amantis."},
+    p: {t: "daungerous", h: "A Middle English word we still use, in a new sense", c: "Hard to please, standoffish", o: ["Risky", "Violent", "Poisonous"], n: "Dangerous first meant domineering or aloof, from the Latin for lordship. The risky sense came later."},
+    m: [["ywis", "certainly"], ["anon", "straight away"], ["sith", "since"], ["fayn", "gladly"]],
+    q: {ask: "In the order Chaucer introduces them in the General Prologue", i: [["the Knight", "opens the parade"], ["the Prioress", "after the Yeoman"], ["the Clerk", "after the Merchant"], ["the Wife of Bath", "after the Physician"]], n: "Twenty-nine pilgrims set off from the Tabard Inn in Southwark, bound for Canterbury."}
+  },
+  /* Sun */ {
+    s: {t: "I could be bounded in a nutshell and count myself a king of infinite space", c: "William Shakespeare", o: ["Christopher Marlowe", "John Donne", "Francis Bacon"], n: "Hamlet says it to Rosencrantz and Guildenstern, adding: “were it not that I have bad dreams.”"},
+    x: {f: "lines exactly as Shakespeare wrote them", w: ["Exit, pursued by a bear", "O brave new world, That has such people in't", "A horse! a horse! my kingdom for a horse!"], odd: "Hoist by his own petard", n: "Hamlet says “hoist with his own petard”, blown up by his own bomb. By is the later version."},
+    p: {t: "chapman", h: "A Middle English trade", c: "A trader, a dealer", o: ["A churchman", "A chaplain", "A chapter of a book"], n: "Chapman comes from an old word for buying and selling, which also gave us cheap and Cheapside."},
+    m: [["Thus conscience does make cowards of us all", "Hamlet"], ["At one fell swoop?", "Macbeth"], ["Why, then the world's mine oyster", "The Merry Wives of Windsor"], ["The devil can cite Scripture for his purpose", "The Merchant of Venice"]],
+    q: {ask: "Earliest to latest written", i: [["The Comedy of Errors", "c. 1594"], ["A Midsummer Night's Dream", "c. 1595"], ["As You Like It", "c. 1599"], ["The Winter's Tale", "c. 1610"]], n: "The Winter's Tale gives us Shakespeare's most famous stage direction: “Exit, pursued by a bear.”"}
   }
 ];
