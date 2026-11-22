@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Fixy</title>
+<title>Antepostee</title>
 <meta name="description" content="A daily game of prefixes and suffixes. Illegal or unlegal? Is gruntled a word?">
 <meta name="robots" content="noindex">
 <link rel="icon" href="/fixy/favicon.svg" type="image/svg+xml">
@@ -74,7 +74,7 @@ footer{margin-top:18px;text-align:center}
 </head>
 <body>
 <main>
-  <header><h1><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="56" height="56" rx="14" fill="#5b3c96"/><rect x="12" y="27" width="12" height="10" rx="3" fill="#d9822b"/><rect x="26" y="27" width="12" height="10" rx="3" fill="#f4f2f8"/><rect x="40" y="27" width="12" height="10" rx="3" fill="#d9822b"/></svg>Fixy</h1><div class="pips" id="pips" aria-hidden="true"></div></header>
+  <header><h1><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="56" height="56" rx="14" fill="#5b3c96"/><rect x="12" y="27" width="12" height="10" rx="3" fill="#d9822b"/><rect x="26" y="27" width="12" height="10" rx="3" fill="#f4f2f8"/><rect x="40" y="27" width="12" height="10" rx="3" fill="#d9822b"/></svg>Antepostee</h1><div class="pips" id="pips" aria-hidden="true"></div></header>
   <nav class="sy-bar" aria-label="Games"></nav>
   <div id="test"></div>
   <div id="app"></div>
@@ -83,7 +83,7 @@ footer{margin-top:18px;text-align:center}
 <script src="data.js"></script>
 <script>
 // ---- Which day is on screen ----
-// Preview: ?day=N plays Fixy No. N; #test plays without saving. Numbering will restart on launch day.
+// Preview: ?day=N plays Antepostee No. N (it lives at /fixy/); #test plays without saving. Numbering will restart on launch day.
 const START=Date.UTC(2026,10,23);
 const dayDate=n=>new Date(START+n*864e5);
 const fmt=(n,o)=>dayDate(n).toLocaleDateString('en-GB',Object.assign({timeZone:'UTC'},o));
@@ -165,7 +165,7 @@ function end(){
   pips(-1);
   const t=score();
   const sq=ROUNDS.map((_,i)=>st.ok[i]?'🟩':'⬜').join('');
-  const share=`Fixy No. ${N+1}\n${sq} ${t}/${MAX}\n${rank(t)}\nYour go: https://samey.uk/fixy/ #sameyuk`;
+  const share=`Antepostee No. ${N+1}\n${sq} ${t}/${MAX}\n${rank(t)}\nYour go: https://samey.uk/fixy/ #sameyuk`;
   const lines=[
     `${P.c}${P.s}`,
     `${M.a} means ${M.c}`,
@@ -180,7 +180,7 @@ function end(){
     <div class="squares" aria-label="${t} out of ${MAX}">${sq}</div>
     <p class="muted">${t} of ${MAX} correct</p>
     <div class="btns"><button class="primary" id="share">Share</button></div>
-    <p class="muted"><span data-next="Next Fixy in {t}.">New words tomorrow.</span></p>
+    <p class="muted"><span data-next="Next Antepostee in {t}.">New words tomorrow.</span></p>
     <p class="muted">All the games are free and ad-free, made by one librarian in Canterbury. Enjoyed today's? <a href="https://ko-fi.com/playtheroute" target="_blank" rel="noopener" style="font-weight:700;white-space:nowrap">☕ Buy me a coffee</a></p>
   </div>
   <div class="card" style="margin-top:14px"><div class="tag">Today's answers</div>
