@@ -86,7 +86,7 @@ const DAYS = [
     p: {t: "gazunder", h: "“Fetch the gazunder from Gran's room, would you?”", c: "A chamber pot", o: ["A bed warmer", "A draught excluder", "A footstool"], n: "It “goes under” the bed. Handy when the only toilet was down the yard."},
     x: {f: "sailors' slang for drunk", w: ["half seas over", "three sheets to the wind", "groggy"], odd: "all at sea", n: "All at sea means confused. Groggy comes from grog, the navy's watered rum. With the sheets (ropes) loose, a ship's sails flap and it lurches like a drunk."},
     m: [["talkies", "sound films"], ["wireless", "radio"], ["gramophone", "record player"], ["picture house", "cinema"]],
-    q: {ask: "Oldest to newest way to store music", i: [["phonograph cylinder", "1870s"], ["78 rpm record", "1890s"], ["LP", "1948"], ["cassette", "1963"]], n: "Edison's phonograph of 1877 recorded on tinfoil wrapped round a cylinder."},
+    q: {ask: "Oldest to newest way to store music", i: [["phonograph cylinder", "1870s"], ["shellac disc", "1890s"], ["LP", "1948"], ["cassette", "1963"]], n: "Edison's phonograph of 1877 recorded on tinfoil wrapped round a cylinder."},
     s: {t: "tune in", c: "Radio dials", o: ["Tuning a piano", "Tuning forks", "Choir practice"], n: "Old radios had a knob you turned slowly until the station came through clearly. We tune in to podcasts with no dial in sight."}
   },
   /* Fri */ {
