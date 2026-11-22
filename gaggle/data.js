@@ -1,9 +1,8 @@
-// Gaggle puzzles, by day of the week (Monday first). Sunday is people and jobs.
-// DAYS is a run of whole weeks; the game picks today's weekday, cycling through the weeks.
-// Five rounds a day:
+// Gaggle's collective nouns (rounds 1 and 2; rounds 3 to 5 are in themes.js).
+// Each entry gives two days' worth: g1/g2 and r1/r2. Every seventh entry (Sun) is people and jobs, used on Sundays.
 //   g1, g2 = "Which group?"   a = who, c = the right collective noun, o = three wrong ones, n = a note shown after
 //   r1, r2 = "Real or made up?"   p = the phrase, real = true/false, n = note
-//   m      = "Match them": four [who, noun] pairs
+//   m      = four [who, noun] pairs, from the old Match round: not used now, kept as a source for new rounds
 // Many of the old ones come from the Book of St Albans (1486), a hunting and hawking manual
 // that listed "terms of venery". Fakes are made up for this game.
 const DAYS = [

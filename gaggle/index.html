@@ -5,7 +5,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Gaggle</title>
 <meta name="description" content="A daily game of collective nouns and the names for things: a murder of crows, a parliament of owls, a tarn, a tombolo. Which are real?">
-<meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://samey.uk/gaggle/">
+<meta property="og:site_name" content="Gaggle">
+<meta property="og:title" content="Gaggle: collective nouns and the names for things">
+<meta property="og:description" content="A daily word game. A parliament of owls, a tarn, a tombolo: which are real?">
+<meta property="og:image" content="https://samey.uk/gaggle/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/gaggle/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -83,8 +91,8 @@ footer{margin-top:18px;text-align:center}
 <script src="themes.js"></script>
 <script>
 // ---- Which day is on screen ----
-// Preview: today's puzzle depends on the weekday (see data.js). ?day=N plays Gaggle No. N; #test plays without saving.
-const START=Date.UTC(2026,10,1);
+// Today's puzzle depends on the date (see data.js and themes.js). ?day=N plays Gaggle No. N; #test plays without saving.
+const START=Date.UTC(2026,10,23);
 const dayDate=n=>new Date(START+n*864e5);
 const fmt=(n,o)=>dayDate(n).toLocaleDateString('en-GB',Object.assign({timeZone:'UTC'},o));
 const keyOf=n=>{const d=dayDate(n);return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0')};
@@ -97,27 +105,14 @@ const td=parseInt(params.get('day'),10);
 const N=Number.isInteger(td)&&td>=1?td-1:TODAY;
 const EPOCH=Math.round(dayDate(N)/864e5)+3; // 1 Jan 1970 was a Thursday; Monday = 0
 const WD=EPOCH%7, WEEKS=DAYS.length/7;
-// Every day before 23 Nov 2026 played Week 1; from then on the weeks rotate, starting with Week 2.
-const W0=Math.floor((Date.UTC(2026,10,23)/864e5+3)/7), WN=Math.floor(EPOCH/7);
-const BASE=DAYS[(WN<W0?0:(WN-W0+1)%WEEKS)*7+WD];
-// From the second time through, each round slides along at its own pace (round r moves r/R places per pass, never more than one),
-// so rounds come back in new combinations rather than as the same day, and each item still stays almost a full list apart.
-const mixPick=(j,L,r,R)=>(j%L+Math.ceil(Math.floor(j/L)*r/R))%L;
-// Once mixing starts (second pass on), a round that would repeat a word already used today takes the next week's version instead.
-const SUBJ={g1:it=>[it.a,it.c],g2:it=>[it.a,it.c],r1:it=>it.p.replace(/^an? /,'').split(' of '),r2:it=>it.p.replace(/^an? /,'').split(' of '),m:it=>it.flat()};
-const words=(key,it)=>(SUBJ[key]?SUBJ[key](it):[]).map(s=>String(s).toLowerCase());
-const OLD_D=()=>WN<W0?BASE:(()=>{const used=new Set(),out={};Object.keys(BASE).forEach((key,r)=>{let first=null,pick=null;
-  for(let t=0;t<(Math.floor((WN-W0)/WEEKS)?WEEKS:1)&&!pick;t++){const i=(mixPick(WN-W0,WEEKS,r,5)+t)%WEEKS;const it=DAYS[((i+1)%WEEKS)*7+WD][key];if(!first)first=it;if(!words(key,it).some(s=>used.has(s)))pick=it;}
-  pick=pick||first;words(key,pick).forEach(s=>used.add(s));out[key]=pick;});return out;})();
-// From 23 Nov 2026 (No. 23) a day is two collective-noun rounds, then three on a theme (themes.js).
+// A day is two collective-noun rounds, then three on a theme (themes.js). No. 1 is 23 Nov 2026, launch day.
 // Collective nouns: weekdays draw from the Mon to Sat entries' g1/g2 and r1/r2, Sundays from the people and jobs entries,
-// starting after Week 1 (which every earlier day played). Themes take turns, a day each, each theme taking its next set.
-const NEW0=22, isNew=N>=NEW0;
+// skipping Week 1 (which the unlisted preview played in November). Themes take turns, a day each, each taking its next set.
 const CN={g:[],r:[],pg:[],pr:[]};DAYS.forEach((d,i)=>{const sun=i%7===6;(sun?CN.pg:CN.g).push(d.g1,d.g2);(sun?CN.pr:CN.r).push(d.r1,d.r2)});
-const K=N-NEW0, KW=Math.floor(K/7);
+const K=N, KW=Math.floor(K/7);
 const pickCN=(arr,skip,idx)=>arr[(skip+idx)%arr.length];
-const TH=isNew?THEMES[K%THEMES.length]:null, TS=isNew?TH.sets[Math.floor(K/THEMES.length)%TH.sets.length]:null;
-const D=isNew?(WD===6?{g:pickCN(CN.pg,2,KW),r:pickCN(CN.pr,2,KW)}:{g:pickCN(CN.g,12,KW*6+WD),r:pickCN(CN.r,12,KW*6+WD)}):OLD_D();
+const TH=THEMES[K%THEMES.length], TS=TH.sets[Math.floor(K/THEMES.length)%TH.sets.length];
+const D=WD===6?{g:pickCN(CN.pg,2,KW),r:pickCN(CN.pr,2,KW)}:{g:pickCN(CN.g,12,KW*6+WD),r:pickCN(CN.r,12,KW*6+WD)};
 const THEME=WD===6?'People and jobs':'';
 const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
 const SKEY='gaggle-'+keyOf(N);
@@ -126,18 +121,12 @@ const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){retu
 function shuffled(arr,seed){const a=[...arr];let s=seed*9301+49297;for(let i=a.length-1;i>0;i--){s=(s*9301+49297)%233280;const j=Math.floor(s/233280*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 const art=w=>/^[aeiou]/i.test(w)?'an':'a';
 
-const ROUNDS=isNew?[
+const ROUNDS=[
   {type:'group',name:'Which group?',d:D.g,opts:shuffled([D.g.c,...D.g.o],N*13+1),lab:THEME||'Collective nouns'},
   {type:'real',name:'Real or made up?',d:D.r,lab:THEME||'Collective nouns'},
   {type:'pick',name:'Which word?',d:TS.k,opts:shuffled([TS.k.c,...TS.k.o],N*13+2),lab:TH.name},
   {type:'wreal',name:'Real or made up?',d:TS.r,lab:TH.name},
   {type:'match',name:'Match them',d:TS.m,right:shuffled(TS.m.map(p=>p[1]),N*13+3),lab:TH.name,th:true}
-]:[
-  {type:'group',name:'Which group?',d:D.g1,opts:shuffled([D.g1.c,...D.g1.o],N*13+1)},
-  {type:'real',name:'Real or made up?',d:D.r1},
-  {type:'group',name:'Which group?',d:D.g2,opts:shuffled([D.g2.c,...D.g2.o],N*13+2)},
-  {type:'real',name:'Real or made up?',d:D.r2},
-  {type:'match',name:'Match them',d:D.m,right:shuffled(D.m.map(p=>p[1]),N*13+3)}
 ];
 const MAX=ROUNDS.length;
 
@@ -195,12 +184,10 @@ function play(){
     <div class="kind">${R.name}</div>
     <p class="sub">${sub}</p>
     ${i===0&&!answered?`<details class="ex"><summary>How to play</summary><ol class="how">
-      ${isNew?`<li>Five quick rounds, one point each.</li>
+      <li>Five quick rounds, one point each.</li>
       <li>Two on collective nouns, then three on today's theme: ${esc(TH.name.toLowerCase())}.</li>
       <li>Pick the right word, spot real ones from made-up ones, then match four pairs.</li>
-      <li>Sunday's collective nouns are people and jobs, from a list written in 1486.</li>`:`<li>Five quick rounds on collective nouns, one point each.</li>
-      <li>Pick the right group name, spot real ones from made-up ones, then match four pairs.</li>
-      <li>Sundays are people and jobs, from a list written in 1486.</li>`}</ol></details>`:''}
+      <li>Sunday's collective nouns are people and jobs, from a list written in 1486.</li></ol></details>`:''}
     ${body}${reveal}
   </div>`;
   if(!answered){
@@ -219,6 +206,7 @@ function play(){
 function end(){
   pips(-1);
   const t=score();
+  if(!isTest&&N===TODAY)(window.SameySetQ=window.SameySetQ||[]).push(['gaggle',t+'/'+MAX]);
   const sq=ROUNDS.map((_,i)=>st.ok[i]?'🟩':'⬜').join('');
   const share=`Gaggle No. ${N+1}\n${sq} ${t}/${MAX}\n${rank(t)}\nYour go: https://samey.uk/gaggle/ #sameyuk`;
   const items=ROUNDS.map((R,i)=>{const mk=st.ok[i]?'✓':'✗';
@@ -237,7 +225,7 @@ function end(){
     <p class="muted"><span data-next="Next Gaggle in {t}.">New groups tomorrow.</span></p>
     <p class="muted">All the games are free and ad-free, made by one librarian in Canterbury. Enjoyed today's? <a href="https://ko-fi.com/playtheroute" target="_blank" rel="noopener" style="font-weight:700;white-space:nowrap">☕ Buy me a coffee</a></p>
   </div>
-  <div class="card" style="margin-top:14px"><div class="tag">${isNew?"Today's answers":"Today's groups"}</div>
+  <div class="card" style="margin-top:14px"><div class="tag">Today's answers</div>
     <ul class="recap">${items}</ul>
     <p class="muted" style="margin-top:12px">Know a better one, or think one's wrong? <a href="/feedback/?game=gaggle&type=puzzle&puzzle=${encodeURIComponent('No. '+(N+1))}">Tell us</a>.</p>
   </div>`;
