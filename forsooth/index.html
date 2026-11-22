@@ -111,8 +111,16 @@ const td=parseInt(params.get('day'),10);
 const N=Number.isInteger(td)&&td>=1?td-1:TODAY;
 const EPOCH=Math.round(dayDate(N)/864e5)+3; // 1 Jan 1970 was a Thursday; Monday = 0
 const WD=EPOCH%7, WEEKS=DAYS.length/7;
-const WK=((Math.floor(EPOCH/7)-2968)%WEEKS+WEEKS)%WEEKS; // week of 16 Nov 2026 (launch) plays data week 1; new weeks follow
-const D=DAYS[WK*7+WD];
+// Days before 23 Nov 2026 (launch weekend) keep Week 1. From then on, WEEKS_ORDER says which data week plays:
+// the new Weeks 2 and 3 first, then Week 1. Add new weeks to WEEKS_ORDER.
+const WN=Math.floor(EPOCH/7), WS=2969; // WS = week of 23 Nov 2026
+const WEEKS_ORDER=[1,2,0];
+const WK=WN<WS?0:WEEKS_ORDER[(WN-WS)%WEEKS_ORDER.length];
+const BASE=DAYS[WK*7+WD];
+// From the second time through, each round slides along at its own pace (round r moves r/R places per pass, never more than one),
+// so rounds come back in new combinations rather than as the same day, and each item still stays almost a full list apart.
+const mixPick=(j,L,r,R)=>(j%L+Math.ceil(Math.floor(j/L)*r/R))%L;
+const D=WN<WS?BASE:Object.fromEntries(Object.keys(BASE).map((key,r)=>[key,DAYS[WEEKS_ORDER[mixPick(WN-WS,WEEKS_ORDER.length,r,5)]*7+WD][key]]));
 const THEME=WD===5?'Chaucer day':'';
 const SKEY='forsooth-'+keyOf(N);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
