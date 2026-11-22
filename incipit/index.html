@@ -103,7 +103,10 @@ const td=parseInt(params.get('day'),10);
 const N=Number.isInteger(td)&&td>=1?td-1:TODAY;
 // Days before 23 Nov 2026 cycled through the first 14 days; from then on all days rotate, new ones first.
 const NEWFROM=Math.round((Date.UTC(2026,10,23)-START)/864e5);
-const D=N<NEWFROM?DAYS[N%14]:DAYS[(14+N-NEWFROM)%DAYS.length];
+// From the second time through, every other round slides one place per pass, so the same set of rounds never comes back together.
+const mixPick=(j,L,r)=>(j%L+Math.floor(j/L)*(r%2))%L;
+const dayAt=(r)=>DAYS[(14+mixPick(N-NEWFROM,DAYS.length,r))%DAYS.length];
+const D=N<NEWFROM?DAYS[N%14]:{q:[0,1,2,3].map(i=>dayAt(i).q[i]),f:dayAt(4).f};
 const SKEY='incipit-'+keyOf(N);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){if(isTest)return;try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
