@@ -102,5 +102,89 @@ const DAYS = [
     c: ["Born in 1934; studied English at the University of Leeds", "Held in solitary confinement for almost two years during a civil war", "Wrote the poem ‘Telephone Conversation’, about a landlady's questions", "The first African to win the Nobel Prize in Literature, in 1986", "Wrote the play Death and the King's Horseman"],
     o: ["Chinua Achebe", "Derek Walcott", "Ngũgĩ wa Thiong'o", "Ben Okri", "Kofi Awoonor", "Christopher Okigbo", "Dennis Brutus"],
     n: ["Nigeria"], x: ["Ghana", "Kenya", "South Africa"]
+  },
+  { // Mon
+    p: "Rupert Brooke", l: "If I should die, think only this of me:", t: "The Soldier", y: 1915,
+    c: ["A sonnet written in 1914, published the next year", "He died of an infected mosquito bite on his way to Gallipoli", "Buried on the Greek island of Skyros", "His most famous poem imagines a corner of a foreign field that is for ever England"],
+    o: ["Wilfred Owen", "Siegfried Sassoon", "Edward Thomas", "Isaac Rosenberg", "John McCrae", "Laurence Binyon", "Ivor Gurney"],
+    n: ["England", "UK"], x: ["Scotland", "Wales", "Ireland"]
+  },
+  { // Tue
+    p: "Walt Whitman", l: "O Captain! my Captain! our fearful trip is done,", t: "O Captain! My Captain!", y: 1865,
+    c: ["Written after a death in April 1865", "A rare rhyming poem from a poet famous for free verse", "He nursed wounded soldiers in Washington during the Civil War", "Wrote Leaves of Grass, and kept revising it for nearly forty years"],
+    o: ["Emily Dickinson", "Henry Wadsworth Longfellow", "Robert Frost", "Paul Laurence Dunbar", "Edgar Allan Poe", "Carl Sandburg", "Herman Melville"],
+    n: ["USA"], x: ["Canada", "England", "Ireland"]
+  },
+  { // Wed
+    p: "Henry Lawson", l: "Our fathers toiled for bitter bread", t: "Freedom on the Wallaby", y: 1891,
+    c: ["Written in 1891, in support of striking shearers", "His mother Louisa was a pioneering feminist publisher", "He fought a famous war in verse with Banjo Paterson in The Bulletin", "He appeared on his country's first ten-dollar note"],
+    o: ["Banjo Paterson", "C. J. Dennis", "Adam Lindsay Gordon", "Dorothea Mackellar", "Les Murray", "Judith Wright", "Katherine Mansfield"],
+    n: ["Australia"], x: ["New Zealand", "South Africa", "Scotland"]
+  },
+  { // Thu
+    p: "Gerard Manley Hopkins", l: "Glory be to God for dappled things—", t: "Pied Beauty", y: 1918,
+    c: ["Published 29 years after its author died", "He invented what he called sprung rhythm", "A Jesuit priest who taught Greek in Dublin", "His friend Robert Bridges published his poems in 1918"],
+    o: ["Christina Rossetti", "Thomas Hardy", "Alfred, Lord Tennyson", "Matthew Arnold", "Francis Thompson", "A. E. Housman", "Robert Browning"],
+    n: ["England", "UK"], x: ["Ireland", "Wales", "Scotland"]
+  },
+  { // Fri
+    p: "W. H. Davies", l: "What is this life if, full of care,", t: "Leisure", y: 1911,
+    c: ["First published in 1911", "He lost a leg jumping a train in Canada", "Wrote The Autobiography of a Super-Tramp", "Born in Newport, Monmouthshire; his poem asks for time to stand and stare"],
+    o: ["Edward Thomas", "Dylan Thomas", "John Masefield", "W. B. Yeats", "Walter de la Mare", "R. S. Thomas", "Rupert Brooke"],
+    n: ["Wales", "UK"], x: ["England", "Scotland", "Ireland"]
+  },
+  { // Sat
+    p: "Sarojini Naidu", l: "What do you sell, O ye merchants?", t: "In the Bazaars of Hyderabad", y: 1912,
+    c: ["From her 1912 collection The Bird of Time", "She presided over the Indian National Congress in 1925", "After independence she became governor of Uttar Pradesh", "Gandhi called her the Nightingale of India"],
+    o: ["Rabindranath Tagore", "Toru Dutt", "Kamala Das", "Nissim Ezekiel", "A. K. Ramanujan", "Aurobindo Ghose", "Rudyard Kipling"],
+    n: ["India"], x: ["Pakistan", "Sri Lanka", "Nepal"]
+  },
+  { // Sun: boss round
+    p: "Seamus Heaney", pd: false,
+    c: ["Born on a farm in County Derry in 1939", "Taught at Harvard and was Oxford Professor of Poetry", "His translation of Beowulf was a surprise bestseller in 1999", "His last words, texted to his wife, were Noli timere: don't be afraid", "Won the Nobel Prize in Literature in 1995; his first collection was Death of a Naturalist"],
+    o: ["W. B. Yeats", "Paul Muldoon", "Derek Mahon", "Patrick Kavanagh", "Ted Hughes", "Louis MacNeice", "Michael Longley"],
+    n: ["Ireland", "UK"], x: ["Scotland", "Wales", "England"]
+  },
+  { // Mon
+    p: "Robert Louis Stevenson", l: "Under the wide and starry sky,", t: "Requiem", y: 1887,
+    c: ["Written as his own epitaph, and carved on his grave", "He died in Samoa, where people called him Tusitala, teller of tales", "Also wrote A Child's Garden of Verses", "Better known for Treasure Island"],
+    o: ["Robert Burns", "Walter Scott", "Rudyard Kipling", "A. E. Housman", "John Masefield", "Hugh MacDiarmid", "Thomas Hardy"],
+    n: ["Scotland", "UK"], x: ["England", "Ireland", "Wales"]
+  },
+  { // Tue
+    p: "Edgar Allan Poe", l: "Once upon a midnight dreary, while I pondered, weak and weary,", t: "The Raven", y: 1845,
+    c: ["Published in 1845, and an instant sensation", "He also invented the detective story, with The Murders in the Rue Morgue", "He died in Baltimore in 1849, after being found delirious in the street", "Baltimore's American football team is named after this poem"],
+    o: ["Walt Whitman", "Henry Wadsworth Longfellow", "Emily Dickinson", "Ralph Waldo Emerson", "Herman Melville", "Edgar Lee Masters", "Paul Laurence Dunbar"],
+    n: ["USA"], x: ["England", "Canada", "Ireland"]
+  },
+  { // Wed
+    p: "Rudyard Kipling", l: "If you can keep your head when all about you", t: "If—", y: 1910,
+    c: ["First published in 1910, in Rewards and Fairies", "Born in Bombay in 1865", "He turned down a knighthood and the Poet Laureateship", "The first writer in English to win the Nobel Prize in Literature, in 1907"],
+    o: ["Henry Newbolt", "John Masefield", "Alfred, Lord Tennyson", "Robert Service", "Rupert Brooke", "Thomas Hardy", "W. E. Henley"],
+    n: ["England", "UK"], x: ["Scotland", "Ireland", "Australia"]
+  },
+  { // Thu
+    p: "Elizabeth Barrett Browning", l: "How do I love thee? Let me count the ways.", t: "Sonnets from the Portuguese 43", y: 1850,
+    c: ["Published in 1850, in a sequence that pretended to be a translation", "She eloped to Italy in 1846", "Her spaniel Flush got a biography of his own, by Virginia Woolf", "Her husband was the poet Robert Browning"],
+    o: ["Christina Rossetti", "Emily Brontë", "Robert Browning", "Alfred, Lord Tennyson", "Felicia Hemans", "Emily Dickinson", "Letitia Elizabeth Landon"],
+    n: ["England", "UK"], x: ["Scotland", "Ireland", "Wales"]
+  },
+  { // Fri
+    p: "A. E. Housman", l: "Loveliest of trees, the cherry now", t: "A Shropshire Lad II", y: 1896,
+    c: ["From a collection he paid to have published in 1896", "He never lived in the county his famous book is named after", "By day he was a Cambridge professor of Latin", "Wrote A Shropshire Lad"],
+    o: ["Thomas Hardy", "Edward Thomas", "Rupert Brooke", "John Betjeman", "Walter de la Mare", "Gerard Manley Hopkins", "W. H. Davies"],
+    n: ["England", "UK"], x: ["Wales", "Scotland", "Ireland"]
+  },
+  { // Sat
+    p: "Henry Wadsworth Longfellow", l: "Listen, my children, and you shall hear", t: "Paul Revere's Ride", y: 1860,
+    c: ["Written in 1860, on the eve of the Civil War", "Also wrote The Song of Hiawatha", "The first American honoured with a bust in Poets' Corner, Westminster Abbey", "His most famous poem is about a midnight ride in 1775"],
+    o: ["Walt Whitman", "Edgar Allan Poe", "John Greenleaf Whittier", "Ralph Waldo Emerson", "Oliver Wendell Holmes", "Emily Dickinson", "Robert Frost"],
+    n: ["USA"], x: ["Canada", "England", "Ireland"]
+  },
+  { // Sun: boss round
+    p: "Maya Angelou", pd: false,
+    c: ["Born Marguerite Johnson in St Louis in 1928", "Worked as a dancer, a journalist in Ghana and a civil rights organiser", "Read a poem at Bill Clinton's first inauguration in 1993", "Her poem Still I Rise became an anthem of resilience", "Wrote I Know Why the Caged Bird Sings"],
+    o: ["Langston Hughes", "Gwendolyn Brooks", "Rita Dove", "Nikki Giovanni", "Toni Morrison", "Lucille Clifton", "Audre Lorde"],
+    n: ["USA"], x: ["Jamaica", "Canada", "England"]
   }
 ];
