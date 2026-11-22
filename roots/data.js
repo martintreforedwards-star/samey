@@ -32,7 +32,21 @@ const FROM = [
  {w:"mammoth",a:"Russian",f:["Polish","Norwegian","German"],o:"From Russian <i>mammot’</i>, probably from Ostyak, another language spoken in Russia."},
  {w:"berserk",a:"Old Norse",f:["Old English","Gaelic","Dutch"],o:"From Old Norse <i>berserkr</i>, a frenzied warrior, probably ‘bear-shirt’."},
  {w:"wok",a:"Cantonese",f:["Japanese","Korean","Vietnamese"],o:"From Cantonese <i>wok</i>, a cooking pan."},
- {w:"coach",a:"Hungarian",f:["French","German","Czech"],o:"Named after Kocs, a Hungarian village where the carriages were made. The ‘tutor’ sense started as Oxford student slang around 1830."}
+ {w:"coach",a:"Hungarian",f:["French","German","Czech"],o:"Named after Kocs, a Hungarian village where the carriages were made. The ‘tutor’ sense started as Oxford student slang around 1830."},
+ {w:"tea",a:"Chinese",f:["Japanese","Hindi","Persian"],o:"From <i>te</i> in the Min Chinese of Amoy (Xiamen), brought west by Dutch traders. Places that got it overland say a version of <i>cha</i> instead."},
+ {w:"chocolate",a:"Nahuatl",f:["Portuguese","Arabic","Taíno"],o:"From Nahuatl, the Aztec language, via Spanish. It first meant a bitter drink."},
+ {w:"sofa",a:"Arabic",f:["Persian","Hindi","Greek"],o:"Arabic <i>ṣuffa</i> was a raised, cushioned platform. It came to English through Turkish and French."},
+ {w:"bazaar",a:"Persian",f:["Arabic","Hindi","Malay"],o:"Persian <i>bāzār</i>, a market. It reached English through Italian in the 1590s."},
+ {w:"tsunami",a:"Japanese",f:["Chinese","Malay","Hawaiian"],o:"Japanese <i>tsu</i>, ‘harbour’, and <i>nami</i>, ‘wave’: the wave that hits the harbour."},
+ {w:"shamrock",a:"Irish",f:["Scottish Gaelic","Welsh","Cornish"],o:"Irish <i>seamróg</i>, ‘little clover’."},
+ {w:"cafeteria",a:"Spanish",f:["Italian","French","Portuguese"],o:"From American Spanish <i>cafetería</i>, ‘coffee shop’. It took on its self-service meaning in the USA in the 1890s."},
+ {w:"yogurt",a:"Turkish",f:["Greek","Bulgarian","Persian"],o:"Turkish <i>yoğurt</i>, from a verb meaning ‘to knead’ or ‘to thicken’."},
+ {w:"landscape",a:"Dutch",f:["German","Danish","Swedish"],o:"Dutch <i>landschap</i> was a painter's term. English borrowed it with the Dutch art craze around 1600."},
+ {w:"kangaroo",a:"Guugu Yimithirr",f:["Māori","Hawaiian","Malay"],o:"Recorded by Captain Cook's crew in 1770 from <i>gangurru</i> in Guugu Yimithirr, a language of north Queensland."},
+ {w:"taboo",a:"Tongan",f:["Māori","Hawaiian","Malay"],o:"Captain Cook heard <i>tabu</i>, ‘forbidden’, in Tonga in 1777."},
+ {w:"muesli",a:"Swiss German",f:["Swedish","Dutch","Danish"],o:"Swiss German, a little <i>Mus</i> (mush). Created by the doctor Maximilian Bircher-Benner around 1900."},
+ {w:"jaguar",a:"Tupi",f:["Nahuatl","Quechua","Taíno"],o:"From Tupi, a language of Brazil, by way of Portuguese."},
+ {w:"ski",a:"Norwegian",f:["Swedish","Finnish","Danish"],o:"Norwegian <i>ski</i>, from Old Norse <i>skíð</i>, a split length of wood."}
 ];
 
 // Round 2 · Then and now. m = three meanings, oldest first (the game shuffles them), o = the story.
@@ -60,7 +74,21 @@ const THEN = [
  {w:"fond",m:["foolish","foolishly doting","affectionate"],o:"From Middle English <i>fonne</i>, ‘a fool’. ‘Fond hopes’ keeps the foolish sense."},
  {w:"starve",m:["to die","to die of hunger","to suffer from hunger"],o:"Old English <i>steorfan</i>, ‘to die’. German <i>sterben</i> still means to die."},
  {w:"meat",m:["food of any kind","animal flesh as food","the main substance of something"],o:"Old English <i>mete</i>, ‘food’. ‘Sweetmeats’ are sweets, not meat."},
- {w:"flirt",m:["to flick with the fingers","to dart about, flutter","to play at love"],o:"Probably imitating a quick flick. People flirted fans, snapping them open, long before they flirted with each other."}
+ {w:"flirt",m:["to flick with the fingers","to dart about, flutter","to play at love"],o:"Probably imitating a quick flick. People flirted fans, snapping them open, long before they flirted with each other."},
+ {w:"buxom",m:["obedient, humble","cheerful, lively","plump and full-figured"],o:"Middle English <i>buhsum</i>, ‘easily bent’. Obedience became cheerful good health, then curves."},
+ {w:"nervous",m:["sinewy, strong","of the nerves","anxious and jumpy"],o:"Latin <i>nervosus</i>, ‘sinewy’. A nervous arm was a strong one."},
+ {w:"egregious",m:["outstanding, distinguished","remarkable","shockingly bad"],o:"Latin <i>e grege</i>, ‘out of the flock’. It used to be a compliment."},
+ {w:"sad",m:["full, satisfied","steadfast, serious","unhappy"],o:"Old English <i>sæd</i>, ‘sated’. Being full became being settled, then heavy-hearted."},
+ {w:"artificial",m:["skilfully made","man-made","fake, insincere"],o:"From Latin <i>artificium</i>, craftsmanship. It began as praise for skill."},
+ {w:"crafty",m:["strong, powerful","skilful","cunning"],o:"Old English <i>cræftig</i>: <i>cræft</i> meant strength before it meant skill."},
+ {w:"fantastic",m:["existing only in the imagination","wildly fanciful","excellent"],o:"From Greek <i>phantastikos</i>, ‘able to imagine’. ‘Brilliant’ arrived in the 1930s."},
+ {w:"awesome",m:["full of awe, fearful","inspiring awe","really good"],o:"First used of the person feeling the awe. The cheerful modern sense took off in 1980s American slang."},
+ {w:"clever",m:["quick to grab","nimble with the hands","intelligent"],o:"First recorded in the 1590s, perhaps from a dialect word for grabbing. Quick hands became a quick mind."},
+ {w:"sophisticated",m:["adulterated, impure","worldly-wise","complex and advanced"],o:"From Latin <i>sophisticare</i>, ‘to tamper with’. Sophisticated wine had been watered down."},
+ {w:"decimate",m:["to kill one in every ten","to destroy a large part of","to badly weaken"],o:"Roman armies punished mutinies by killing every tenth soldier, from Latin <i>decimus</i>, ‘tenth’."},
+ {w:"fathom",m:["the span of outstretched arms","a depth of six feet","to understand"],o:"Old English <i>fæþm</i>, ‘embrace’. Sailors measured rope between their hands; getting to the bottom of something became understanding it."},
+ {w:"hearse",m:["a frame for candles over a coffin","the platform a coffin rests on","the car that carries a coffin"],o:"From Latin <i>hirpex</i>, a harrow: the spiky candle frame looked like one."},
+ {w:"lady",m:["loaf-kneader","mistress of a household","a well-mannered woman"],o:"Old English <i>hlǣfdīge</i>: <i>hlāf</i>, ‘loaf’, and a word for kneading. Lord was the ‘loaf-ward’."}
 ];
 
 // Round 3 · Root family. r = the root, g = what it means and where from, y = three words that come from it,
@@ -92,7 +120,21 @@ const FAMILY = [
  {r:"nau",g:"ship (Greek <i>naus</i>)",y:["nautical","astronaut","nausea"],n:"naughty",o:"<i>Naughty</i> comes from <i>naught</i>, ‘nothing’. <i>Nausea</i> first meant seasickness."},
  {r:"cent",g:"hundred (Latin <i>centum</i>)",y:["century","percent","centipede"],n:"centre",o:"<i>Centre</i> comes from Greek <i>kentron</i>, a sharp point, like a compass point."},
  {r:"aqu",g:"water (Latin <i>aqua</i>)",y:["aquarium","aqueduct","aquatic"],n:"acquaint",o:"<i>Acquaint</i> comes from Latin <i>cognitus</i>, ‘known’."},
- {r:"lum",g:"light (Latin <i>lumen</i>)",y:["luminous","illuminate","luminary"],n:"lumber",o:"Nobody is sure where <i>lumber</i> comes from. It may be linked to Lombard pawnbrokers, whose rooms were full of junk."}
+ {r:"lum",g:"light (Latin <i>lumen</i>)",y:["luminous","illuminate","luminary"],n:"lumber",o:"Nobody is sure where <i>lumber</i> comes from. It may be linked to Lombard pawnbrokers, whose rooms were full of junk."},
+ {r:"tele",g:"far (Greek <i>tēle</i>)",y:["telephone","telescope","television"],n:"tell",o:"<i>Tell</i> is Old English <i>tellan</i>, ‘to count or relate’. Nothing to do with distance."},
+ {r:"bio",g:"life (Greek <i>bios</i>)",y:["biology","biography","antibiotic"],n:"bias",o:"<i>Bias</i> comes from French <i>biais</i>, ‘slant’, as in cutting cloth on the bias."},
+ {r:"geo",g:"earth (Greek <i>gē</i>)",y:["geography","geology","geometry"],n:"gecko",o:"<i>Gecko</i> is from Malay <i>gekok</i>, imitating the lizard's call."},
+ {r:"micro",g:"small (Greek <i>mikros</i>)",y:["microscope","microphone","microbe"],n:"mica",o:"<i>Mica</i>, the glittery mineral, is from Latin <i>mica</i>, ‘crumb’, influenced by <i>micare</i>, ‘to glitter’."},
+ {r:"scrib",g:"to write (Latin <i>scribere</i>)",y:["scribble","describe","manuscript"],n:"scrimp",o:"<i>Scrimp</i> is probably Scandinavian, related to words for shrinking."},
+ {r:"duc",g:"to lead (Latin <i>ducere</i>)",y:["conduct","educate","aqueduct"],n:"duck",o:"<i>Duck</i> is Old English <i>dūce</i>, ‘the diver’."},
+ {r:"tract",g:"to pull (Latin <i>trahere</i>)",y:["tractor","attract","distract"],n:"track",o:"<i>Track</i> comes from Old French <i>trac</i>, a trail of footprints."},
+ {r:"rupt",g:"to break (Latin <i>rumpere</i>)",y:["erupt","interrupt","bankrupt"],n:"rupee",o:"<i>Rupee</i> is from Sanskrit <i>rūpya</i>, ‘wrought silver’."},
+ {r:"mit",g:"to send (Latin <i>mittere</i>)",y:["transmit","admit","emit"],n:"mitten",o:"<i>Mitten</i> is from French <i>mitaine</i>, of uncertain origin, but not from sending."},
+ {r:"struct",g:"to build (Latin <i>struere</i>)",y:["construct","structure","destruction"],n:"strut",o:"<i>Strut</i> is Old English <i>strūtian</i>, ‘to stick out stiffly’."},
+ {r:"jur",g:"law (Latin <i>ius, iuris</i>)",y:["jury","justice","injury"],n:"juice",o:"A sneaky one: <i>juice</i> is from a different Latin <i>ius</i>, meaning ‘broth’."},
+ {r:"vid",g:"to see (Latin <i>videre</i>)",y:["video","evidence","provide"],n:"vixen",o:"<i>Vixen</i> is Old English <i>fyxen</i>, a female fox."},
+ {r:"pend",g:"to hang (Latin <i>pendere</i>)",y:["pendant","suspend","pendulum"],n:"penguin",o:"<i>Penguin</i> is of uncertain origin, possibly Welsh <i>pen gwyn</i>, ‘white head’. It doesn't hang anywhere."},
+ {r:"bene",g:"well (Latin <i>bene</i>)",y:["benefit","benevolent","benign"],n:"bench",o:"<i>Bench</i> is Old English <i>benc</i>, related to bank."}
 ];
 
 // Round 4 · Long-lost twins. w = the word, a = its twin (same ancestor, different route), f = three unrelated words, o = the story.
@@ -123,5 +165,19 @@ const TWINS = [
  {w:"grammar",a:"glamour",f:["clamour","gleam","grandmother"],o:"Learning was once thought to include magic, so <i>grammar</i> became a Scots word for a spell."},
  {w:"clock",a:"cloak",f:["clack","croak","clog"],o:"Both from Latin <i>clocca</i>, ‘bell’. A bell-shaped cape, and a bell that told the time."},
  {w:"particle",a:"parcel",f:["parsley","partridge","pasture"],o:"Both from Latin <i>particula</i>, ‘a small part’."},
- {w:"fantasy",a:"fancy",f:["fanfare","infancy","fan"],o:"<i>Fancy</i> is a shortened <i>fantasy</i>, from the 1400s."}
+ {w:"fantasy",a:"fancy",f:["fanfare","infancy","fan"],o:"<i>Fancy</i> is a shortened <i>fantasy</i>, from the 1400s."},
+ {w:"ditch",a:"dike",f:["itch","dish","dock"],o:"The same Germanic word. <i>Ditch</i> is the southern form, <i>dike</i> the northern, often via Norse."},
+ {w:"church",a:"kirk",f:["chirp","cork","perch"],o:"Both from Greek <i>kuriakon</i>, ‘the Lord's house’. Scots kept the hard k."},
+ {w:"catch",a:"chase",f:["crash","hatch","patch"],o:"Both from Latin <i>captare</i>, ‘to try to seize’. <i>Catch</i> came through Norman French, <i>chase</i> through Parisian French."},
+ {w:"warden",a:"guardian",f:["garden","wander","warble"],o:"Norman French kept the w; Parisian French turned it into gu. Same Germanic ancestor."},
+ {w:"warranty",a:"guarantee",f:["quarantine","warrior","carpenter"],o:"The same w/gu split as warden and guardian."},
+ {w:"canal",a:"channel",f:["candle","cancel","chapel"],o:"Both from Latin <i>canalis</i>, ‘pipe, groove’. <i>Channel</i> came via Old French."},
+ {w:"balm",a:"balsam",f:["palm","calm","bomb"],o:"Both from Latin <i>balsamum</i>. <i>Balm</i> was worn down by French; <i>balsam</i> came straight from Latin."},
+ {w:"aptitude",a:"attitude",f:["altitude","amplitude","appetite"],o:"Both from Late Latin <i>aptitudo</i>, ‘fitness’. <i>Attitude</i> came through Italian, where it described a pose in a painting."},
+ {w:"compute",a:"count",f:["commute","compose","county"],o:"Both from Latin <i>computare</i>, ‘to reckon’. <i>Count</i> came through French."},
+ {w:"redemption",a:"ransom",f:["random","remnant","reckon"],o:"Both from Latin <i>redemptio</i>, ‘buying back’. French wore it down to <i>ranson</i>."},
+ {w:"species",a:"spice",f:["spike","spade","spine"],o:"Latin <i>species</i>, ‘kind’. Medieval merchants used it for ‘goods of a particular kind’, which became spices."},
+ {w:"abbreviate",a:"abridge",f:["abroad","abrupt","bridge"],o:"Both from Late Latin <i>abbreviare</i>, ‘to shorten’. <i>Abridge</i> came via Old French."},
+ {w:"poor",a:"pauper",f:["pour","power","pepper"],o:"Both from Latin <i>pauper</i>. <i>Poor</i> came through French; <i>pauper</i> is the Latin borrowed straight."},
+ {w:"reason",a:"ration",f:["raisin","region","reckon"],o:"Both from Latin <i>ratio</i>, ‘reckoning’. <i>Reason</i> came through French."}
 ];

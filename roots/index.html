@@ -132,7 +132,11 @@ const ROUNDS=[
   {key:'family',name:'Root family',blurb:"Spot the lookalike that isn't related",list:FAMILY},
   {key:'twins',name:'Long-lost twins',blurb:'Find the word with the same ancestor',list:TWINS}
 ];
-const itemsFor=n=>ROUNDS.map(r=>r.list[n%r.list.length]);
+// Lists grew on 23 Nov 2026. Days before then keep the old list lengths, so the archive doesn't change;
+// from 23 Nov each list carries on from its first new item, then cycles through the whole list.
+const NEWFROM=Math.round((Date.UTC(2026,10,23)-START)/864e5);
+const OLDLEN={from:28,then:24,family:27,twins:27};
+const itemsFor=n=>ROUNDS.map(r=>r.list[n<NEWFROM?n%OLDLEN[r.key]:(OLDLEN[r.key]+n-NEWFROM)%r.list.length]);
 
 // ---- Which day is on screen ----
 // samey.uk/roots/#test plays today without saving; add ?day=N for Roots No. N (any day, past or future).
