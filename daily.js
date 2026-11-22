@@ -67,9 +67,10 @@
     { id: "versed", name: "Versed", href: "/versed/", blurb: "Name the poet from a single line, then guess their country.", isNew: true },
     { id: "gamey", name: "Gamey", href: "/gamey/", blurb: "Words from sports, games and pastimes around the world.", isNew: true },
     { id: "dodo", name: "Dodo", href: "/dodo/", blurb: "Words on their way out. Can you save them?", isNew: true },
-    { id: "inkling", name: "Inkling", href: "/inkling/", blurb: "Words first coined in novels, plays and science fiction.", isNew: true }
+    { id: "inkling", name: "Inkling", href: "/inkling/", blurb: "Words first coined in novels, plays and science fiction.", isNew: true },
+    { id: "forsooth", name: "Forsooth", href: "/forsooth/", blurb: "Shakespeare, Chaucer and their rivals, plus a red herring.", isNew: true }
   ];
-  var WORDS = ["", "", "", "", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen"];
+  var WORDS = ["", "", "", "", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen"];
   var here = (location.pathname.split("/")[1] || "samey").toLowerCase();
   var SET_KEY = "samey-set";
   function getJSON(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }
