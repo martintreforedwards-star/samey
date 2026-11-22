@@ -1,4 +1,5 @@
-// Fixy (working name): a daily game of prefixes and suffixes. Unlisted preview.
+// Antepostee (at samey.uk/fixy/): a daily game of prefixes and suffixes. Unlisted preview.
+// The name is ante- (before) + post (after) + -ee: a prefix, a root and a suffix.
 // Each list is one round. Day N takes item N of each list, starting again from the top when a list runs out.
 // Round 5 alternates: even days are Lost positives, odd days are Which came first?
 // Please check new etymologies on Etymonline before they go in, as for Roots.
