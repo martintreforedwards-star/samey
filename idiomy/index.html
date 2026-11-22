@@ -118,7 +118,9 @@ const TODAY=Math.max(0,Math.round((Date.UTC(now.getFullYear(),now.getMonth(),now
 const isTest=location.hash==='#test';
 const td=parseInt(params.get('day'),10);
 const N=Number.isInteger(td)&&td>=1?td-1:TODAY;
-const B=BOARDS[N%BOARDS.length];
+// Days before 23 Nov 2026 cycled through the first 7 boards; from then on all boards rotate, new ones first.
+const NEWFROM=Math.round((Date.UTC(2026,10,23)-START)/864e5);
+const B=N<NEWFROM?BOARDS[N%7]:BOARDS[(7+N-NEWFROM)%BOARDS.length];
 const SKEY='idiomy-'+keyOf(N);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const keyFor=a=>[...a].sort().join('|');

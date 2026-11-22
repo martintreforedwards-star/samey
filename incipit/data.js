@@ -135,5 +135,95 @@ const DAYS = [
       {l: "He was an inch, perhaps two, under six feet, powerfully built…", t: "Lord Jim", a: "Joseph Conrad", y: 1900, o: ["Heart of Darkness", "Kim", "The Secret Agent"]}
     ],
     f: {s: "As I walk'd through the wilderness of this world,", e: "I lighted on a certain place where was a Den;", x: ["I came upon a narrow gate that stood ajar;", "I heard a voice that called me by my name;"], t: "The Pilgrim's Progress", a: "John Bunyan", y: 1678}
+  },
+  {
+    q: [
+      {l: "‘Tom!’ No answer.", t: "The Adventures of Tom Sawyer", a: "Mark Twain", y: 1876, o: ["Adventures of Huckleberry Finn", "Little Women", "What Katy Did"]},
+      {l: "In the year 1878 I took my degree of Doctor of Medicine of the University of London, and proceeded to Netley to go through the course prescribed for surgeons in the army.", t: "A Study in Scarlet", a: "Arthur Conan Doyle", y: 1887, o: ["The Sign of the Four", "The Valley of Fear", "The Lost World"]},
+      {l: "My godmother lived in a handsome house in the clean and ancient town of Bretton.", t: "Villette", a: "Charlotte Brontë", y: 1853, o: ["Shirley", "The Professor", "Agnes Grey"]},
+      {l: "One evening of late summer, before the nineteenth century had reached one-third of its span, a young man and woman, the latter carrying a child, were approaching the large village of Weydon-Priors…", t: "The Mayor of Casterbridge", a: "Thomas Hardy", y: 1886, o: ["Far from the Madding Crowd", "The Woodlanders", "Under the Greenwood Tree"]}
+    ],
+    f: {s: "One thing was certain, that the white kitten had had nothing to do with it:", e: "it was the black kitten's fault entirely.", x: ["it was Dinah's fault from the very beginning.", "it was the Red Queen's doing all along."], t: "Through the Looking-Glass", a: "Lewis Carroll", y: 1871}
+  },
+  {
+    q: [
+      {l: "There was once a velveteen rabbit, and in the beginning he was really splendid.", t: "The Velveteen Rabbit", a: "Margery Williams", y: 1922, o: ["The Tale of Peter Rabbit", "The Story of Doctor Dolittle", "The Wind in the Willows"]},
+      {l: "‘I wonder when in the world you're going to do anything, Rudolf?’ said my brother's wife.", t: "The Prisoner of Zenda", a: "Anthony Hope", y: 1894, o: ["The Scarlet Pimpernel", "King Solomon's Mines", "Kidnapped"]},
+      {l: "A wide plain, where the broadening Floss hurries on between its green banks to the sea…", t: "The Mill on the Floss", a: "George Eliot", y: 1860, o: ["Adam Bede", "Felix Holt", "Daniel Deronda"]},
+      {l: "‘Yes, of course, if it's fine tomorrow,’ said Mrs Ramsay.", t: "To the Lighthouse", a: "Virginia Woolf", y: 1927, o: ["Mrs Dalloway", "Orlando", "The Waves"]}
+    ],
+    f: {s: "Night is generally", e: "my time for walking.", x: ["the best time for thinking.", "when London tells its secrets."], t: "The Old Curiosity Shop", a: "Charles Dickens", y: 1841}
+  },
+  {
+    q: [
+      {l: "Once upon a time, many years ago—when our grandfathers were little children—there was a doctor; and his name was Dolittle…", t: "The Story of Doctor Dolittle", a: "Hugh Lofting", y: 1920, o: ["The Jungle Book", "Peter Pan", "The Wind in the Willows"]},
+      {l: "A surging, seething, murmuring crowd of beings that are human only in name…", t: "The Scarlet Pimpernel", a: "Baroness Orczy", y: 1905, o: ["A Tale of Two Cities", "The Prisoner of Zenda", "The Three Musketeers"]},
+      {l: "You must go back with me to the autumn of 1827.", t: "The Tenant of Wildfell Hall", a: "Anne Brontë", y: 1848, o: ["Agnes Grey", "Wuthering Heights", "Villette"]},
+      {l: "Mr Verloc, going out in the morning, left his shop nominally in charge of his brother-in-law.", t: "The Secret Agent", a: "Joseph Conrad", y: 1907, o: ["Lord Jim", "Nostromo", "Under Western Eyes"]}
+    ],
+    f: {s: "Once upon a time there was a little chimney-sweep,", e: "and his name was Tom.", x: ["and he had never once been clean.", "who lived at the top of a very tall house."], t: "The Water-Babies", a: "Charles Kingsley", y: 1863}
+  },
+  {
+    q: [
+      {l: "Miss Polly Harrington entered her kitchen a little hurriedly this June morning.", t: "Pollyanna", a: "Eleanor H. Porter", y: 1913, o: ["Anne of Green Gables", "Rebecca of Sunnybrook Farm", "Little Women"]},
+      {l: "Dark spruce forest frowned on either side the frozen waterway.", t: "White Fang", a: "Jack London", y: 1906, o: ["The Call of the Wild", "The Sea-Wolf", "Martin Eden"]},
+      {l: "There once lived, in a sequestered part of the county of Devonshire, one Mr Godfrey Nickleby…", t: "Nicholas Nickleby", a: "Charles Dickens", y: 1839, o: ["Martin Chuzzlewit", "Barnaby Rudge", "The Old Curiosity Shop"]},
+      {l: "On a January evening of the early seventies, Christine Nilsson was singing in Faust at the Academy of Music in New York.", t: "The Age of Innocence", a: "Edith Wharton", y: 1920, o: ["The House of Mirth", "Ethan Frome", "The Custom of the Country"]}
+    ],
+    f: {s: "When Farmer Oak smiled, the corners of his mouth spread", e: "till they were within an unimportant distance of his ears,", x: ["until they almost met at the back of his head,", "as wide as a barn door at harvest time,"], t: "Far from the Madding Crowd", a: "Thomas Hardy", y: 1874}
+  },
+  {
+    q: [
+      {l: "The house was three miles from the station, but, before the dusty hired hack had rattled along for five minutes, the children began to put their heads out of the carriage window and say, ‘Aren't we nearly there?’", t: "Five Children and It", a: "E. Nesbit", y: 1902, o: ["The Railway Children", "The Story of the Treasure Seekers", "The Phoenix and the Carpet"]},
+      {l: "I had this story from one who had no business to tell it to me, or to any other.", t: "Tarzan of the Apes", a: "Edgar Rice Burroughs", y: 1912, o: ["The Lost World", "King Solomon's Mines", "The Jungle Book"]},
+      {l: "I address these lines—written in India—to my relatives in England.", t: "The Moonstone", a: "Wilkie Collins", y: 1868, o: ["The Woman in White", "No Name", "Armadale"]},
+      {l: "He—for there could be no doubt of his sex, though the fashion of the time did something to disguise it—was in the act of slicing at the head of a Moor which swung from the rafters.", t: "Orlando", a: "Virginia Woolf", y: 1928, o: ["To the Lighthouse", "Jacob's Room", "The Voyage Out"]}
+    ],
+    f: {s: "It is a curious thing that at my age—fifty-five last birthday—", e: "I should find myself taking up a pen to try and write a history.", x: ["I should still be dreaming of diamonds.", "I should be setting out for Africa once more."], t: "King Solomon's Mines", a: "H. Rider Haggard", y: 1885}
+  },
+  {
+    q: [
+      {l: "Cedric himself knew nothing whatever about it.", t: "Little Lord Fauntleroy", a: "Frances Hodgson Burnett", y: 1886, o: ["A Little Princess", "The Secret Garden", "Little Women"]},
+      {l: "In that pleasant district of merry England which is watered by the river Don, there extended in ancient times a large forest…", t: "Ivanhoe", a: "Walter Scott", y: 1819, o: ["Rob Roy", "Waverley", "The Talisman"]},
+      {l: "I had the story, bit by bit, from various people, and, as generally happens in such cases, each time it was a different story.", t: "Ethan Frome", a: "Edith Wharton", y: 1911, o: ["The Age of Innocence", "Summer", "The House of Mirth"]},
+      {l: "With a single drop of ink for a mirror, the Egyptian sorcerer undertakes to reveal to any chance comer far-reaching visions of the past.", t: "Adam Bede", a: "George Eliot", y: 1859, o: ["Silas Marner", "Middlemarch", "Romola"]}
+    ],
+    f: {s: "In the first place, Cranford is in possession of the Amazons;", e: "all the holders of houses above a certain rent are women.", x: ["no gentleman may stay in the town after nine o'clock.", "every husband is either at sea or in the churchyard."], t: "Cranford", a: "Elizabeth Gaskell", y: 1853}
+  },
+  {
+    q: [
+      {l: "The old stage coach was rumbling along the dusty road that runs from Maplewood to Riverboro.", t: "Rebecca of Sunnybrook Farm", a: "Kate Douglas Wiggin", y: 1903, o: ["Pollyanna", "Anne of Green Gables", "What Katy Did"]},
+      {l: "It was a feature peculiar to the colonial wars of North America, that the toils and dangers of the wilderness were to be encountered before the adverse hosts could meet.", t: "The Last of the Mohicans", a: "James Fenimore Cooper", y: 1826, o: ["The Deerslayer", "The Pathfinder", "The Prairie"]},
+      {l: "Selden paused in surprise.", t: "The House of Mirth", a: "Edith Wharton", y: 1905, o: ["The Age of Innocence", "The Portrait of a Lady", "The Awakening"]},
+      {l: "In these times of ours, though concerning the exact year there is no need to be precise, a boat of dirty and disreputable appearance, with two figures in it, floated on the Thames…", t: "Our Mutual Friend", a: "Charles Dickens", y: 1865, o: ["Bleak House", "Little Dorrit", "Dombey and Son"]}
+    ],
+    f: {s: "The stranger came early in February, one wintry day,", e: "through a biting wind and a driving snow,", x: ["when the whole village was fast asleep,", "with nothing but a lantern and a black bag,"], t: "The Invisible Man", a: "H. G. Wells", y: 1897}
+  },
+  {
+    q: [
+      {l: "Dombey sat in the corner of the darkened room in the great arm-chair by the bedside, and Son lay tucked up warm in a little basket bedstead…", t: "Dombey and Son", a: "Charles Dickens", y: 1848, o: ["Martin Chuzzlewit", "Hard Times", "Our Mutual Friend"]},
+      {l: "All true histories contain instruction; though, in some, the treasure may be hard to find…", t: "Agnes Grey", a: "Anne Brontë", y: 1847, o: ["The Tenant of Wildfell Hall", "Jane Eyre", "Shirley"]},
+      {l: "On a hill by the Mississippi where Chippewas camped two generations ago, a girl stood in relief against the cornflower blue of Northern sky.", t: "Main Street", a: "Sinclair Lewis", y: 1920, o: ["Babbitt", "Elmer Gantry", "Arrowsmith"]},
+      {l: "I was ever of opinion, that the honest man who married and brought up a large family, did more service than he who continued single…", t: "The Vicar of Wakefield", a: "Oliver Goldsmith", y: 1766, o: ["Tom Jones", "Tristram Shandy", "Joseph Andrews"]}
+    ],
+    f: {s: "Thirty years ago, Marseilles", e: "lay burning in the sun, one day.", x: ["was a city of thieves and sailors.", "lay shivering under a winter sky."], t: "Little Dorrit", a: "Charles Dickens", y: 1857}
+  },
+  {
+    q: [
+      {l: "The towers of Zenith aspired above the morning mist…", t: "Babbitt", a: "Sinclair Lewis", y: 1922, o: ["Main Street", "Arrowsmith", "The Great Gatsby"]},
+      {l: "One January day, thirty years ago, the little town of Hanover, anchored on a windy Nebraska tableland, was trying not to be blown away.", t: "O Pioneers!", a: "Willa Cather", y: 1913, o: ["My Ántonia", "The Song of the Lark", "Main Street"]},
+      {l: "Those privileged to be present at a family festival of the Forsytes have seen that charming and instructive sight—an upper middle-class family in full plumage.", t: "The Man of Property", a: "John Galsworthy", y: 1906, o: ["In Chancery", "To Let", "The Old Wives' Tale"]},
+      {l: "The Rev. Septimus Harding was, a few years since, a beneficed clergyman residing in the cathedral town of ——; let us call it Barchester.", t: "The Warden", a: "Anthony Trollope", y: 1855, o: ["Barchester Towers", "Middlemarch", "Cranford"]}
+    ],
+    f: {s: "Under certain circumstances there are few hours in life more agreeable than", e: "the hour dedicated to the ceremony known as afternoon tea.", x: ["the hour before a long journey begins.", "the last hour of a summer evening."], t: "The Portrait of a Lady", a: "Henry James", y: 1881}
+  },
+  {
+    q: [
+      {l: "‘So of course,’ wrote Betty Flanders, pressing her heels rather deeper in the sand, ‘there was nothing for it but to leave.’", t: "Jacob's Room", a: "Virginia Woolf", y: 1922, o: ["Mrs Dalloway", "Night and Day", "The Voyage Out"]},
+      {l: "Was she beautiful or not beautiful?", t: "Daniel Deronda", a: "George Eliot", y: 1876, o: ["Middlemarch", "Romola", "Felix Holt"]},
+      {l: "When Caroline Meeber boarded the afternoon train for Chicago, her total outfit consisted of a small trunk, a cheap imitation alligator-skin satchel…", t: "Sister Carrie", a: "Theodore Dreiser", y: 1900, o: ["An American Tragedy", "The House of Mirth", "Main Street"]},
+      {l: "To dwellers in a wood almost every species of tree has its voice as well as its feature.", t: "Under the Greenwood Tree", a: "Thomas Hardy", y: 1872, o: ["The Woodlanders", "Far from the Madding Crowd", "A Pair of Blue Eyes"]}
+    ],
+    f: {s: "This is the saddest story", e: "I have ever heard.", x: ["ever told in Paris.", "that never really happened."], t: "The Good Soldier", a: "Ford Madox Ford", y: 1915}
   }
 ];

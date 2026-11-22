@@ -96,7 +96,13 @@ const N=Number.isInteger(td)&&td>=1?td-1:TODAY;
 // Pick by the real weekday (Monday first), cycling through the weeks in DAYS
 const EPOCH=Math.round(dayDate(N)/864e5)+3; // 1 Jan 1970 was a Thursday
 const WD=EPOCH%7, WEEKS=DAYS.length/7;
-const D=DAYS[(Math.floor(EPOCH/7)%WEEKS)*7+WD], LEVEL=LEVELS[WD];
+// Before 23 Nov 2026 the game cycled through Weeks A and B; from then on all weeks rotate, starting with Week C.
+const W0=Math.floor((Date.UTC(2026,10,23)/864e5+3)/7), WN=Math.floor(EPOCH/7);
+const BASE=DAYS[(WN<W0?WN%2:(2+WN-W0)%WEEKS)*7+WD], LEVEL=LEVELS[WD];
+// From the second time through, each round slides along at its own pace (round r moves r/R places per pass, never more than one),
+// so rounds come back in new combinations rather than as the same day, and each item still stays almost a full list apart.
+const mixPick=(j,L,r,R)=>(j%L+Math.ceil(Math.floor(j/L)*r/R))%L;
+const D=WN<W0?BASE:Object.fromEntries(Object.keys(BASE).map((key,r)=>[key,DAYS[((mixPick(WN-W0,WEEKS,r,5)+2)%WEEKS)*7+WD][key]]));
 const SKEY='mispelt-'+keyOf(N);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){if(isTest)return;try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
