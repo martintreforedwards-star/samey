@@ -4,8 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Gaggle</title>
-<meta name="description" content="A daily game of collective nouns. A murder of crows, a parliament of owls, a business of ferrets: which are real?">
-<meta name="robots" content="noindex">
+<meta name="description" content="A daily game of collective nouns and the names for things: a murder of crows, a parliament of owls, a tarn, a tombolo. Which are real?">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://samey.uk/gaggle/">
+<meta property="og:site_name" content="Gaggle">
+<meta property="og:title" content="Gaggle: collective nouns and the names for things">
+<meta property="og:description" content="A daily word game. A parliament of owls, a tarn, a tombolo: which are real?">
+<meta property="og:image" content="https://samey.uk/gaggle/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/gaggle/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,6 +35,8 @@ h1 svg{width:32px;height:32px;vertical-align:-5px;margin-right:6px}
 .kind{font-family:var(--head);font-weight:800;font-size:22px;margin:4px 0 2px}
 .sub{color:var(--muted);font-size:15px;margin:0 0 12px}
 .phrase{font:600 28px/1.25 var(--head);text-align:center;margin:10px 0 16px}
+.defn{font:600 21px/1.35 var(--head);text-align:center;margin:8px 0 16px}
+.wdef{text-align:center;color:var(--muted);font-size:16px;margin:-8px 0 16px}
 .phrase .gap{display:inline-block;min-width:3.2em;border-bottom:3px solid var(--pop);color:var(--pop)}
 .opts{display:grid;gap:8px}
 .opts.two{grid-template-columns:1fr 1fr}
@@ -78,10 +88,11 @@ footer{margin-top:18px;text-align:center}
   <footer><p class="muted"><a href="/feedback/?game=gaggle">Send feedback</a> · <a href="/support/?game=gaggle">Support the games</a></p></footer>
 </main>
 <script src="data.js"></script>
+<script src="themes.js"></script>
 <script>
 // ---- Which day is on screen ----
-// Preview: today's puzzle depends on the weekday (see data.js). ?day=N plays Gaggle No. N; #test plays without saving.
-const START=Date.UTC(2026,10,1);
+// Today's puzzle depends on the date (see data.js and themes.js). ?day=N plays Gaggle No. N; #test plays without saving.
+const START=Date.UTC(2026,10,23);
 const dayDate=n=>new Date(START+n*864e5);
 const fmt=(n,o)=>dayDate(n).toLocaleDateString('en-GB',Object.assign({timeZone:'UTC'},o));
 const keyOf=n=>{const d=dayDate(n);return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0')};
@@ -94,8 +105,16 @@ const td=parseInt(params.get('day'),10);
 const N=Number.isInteger(td)&&td>=1?td-1:TODAY;
 const EPOCH=Math.round(dayDate(N)/864e5)+3; // 1 Jan 1970 was a Thursday; Monday = 0
 const WD=EPOCH%7, WEEKS=DAYS.length/7;
-const D=DAYS[(Math.floor(EPOCH/7)%WEEKS)*7+WD];
+// A day is two collective-noun rounds, then three on a theme (themes.js). No. 1 is 23 Nov 2026, launch day.
+// Collective nouns: weekdays draw from the Mon to Sat entries' g1/g2 and r1/r2, Sundays from the people and jobs entries,
+// skipping Week 1 (which the unlisted preview played in November). Themes take turns, a day each, each taking its next set.
+const CN={g:[],r:[],pg:[],pr:[]};DAYS.forEach((d,i)=>{const sun=i%7===6;(sun?CN.pg:CN.g).push(d.g1,d.g2);(sun?CN.pr:CN.r).push(d.r1,d.r2)});
+const K=N, KW=Math.floor(K/7);
+const pickCN=(arr,skip,idx)=>arr[(skip+idx)%arr.length];
+const TH=THEMES[K%THEMES.length], TS=TH.sets[Math.floor(K/THEMES.length)%TH.sets.length];
+const D=WD===6?{g:pickCN(CN.pg,2,KW),r:pickCN(CN.pr,2,KW)}:{g:pickCN(CN.g,12,KW*6+WD),r:pickCN(CN.r,12,KW*6+WD)};
 const THEME=WD===6?'People and jobs':'';
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
 const SKEY='gaggle-'+keyOf(N);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){if(isTest)return;try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
@@ -103,11 +122,11 @@ function shuffled(arr,seed){const a=[...arr];let s=seed*9301+49297;for(let i=a.l
 const art=w=>/^[aeiou]/i.test(w)?'an':'a';
 
 const ROUNDS=[
-  {type:'group',name:'Which group?',d:D.g1,opts:shuffled([D.g1.c,...D.g1.o],N*13+1)},
-  {type:'real',name:'Real or made up?',d:D.r1},
-  {type:'group',name:'Which group?',d:D.g2,opts:shuffled([D.g2.c,...D.g2.o],N*13+2)},
-  {type:'real',name:'Real or made up?',d:D.r2},
-  {type:'match',name:'Match them',d:D.m,right:shuffled(D.m.map(p=>p[1]),N*13+3)}
+  {type:'group',name:'Which group?',d:D.g,opts:shuffled([D.g.c,...D.g.o],N*13+1),lab:THEME||'Collective nouns'},
+  {type:'real',name:'Real or made up?',d:D.r,lab:THEME||'Collective nouns'},
+  {type:'pick',name:'Which word?',d:TS.k,opts:shuffled([TS.k.c,...TS.k.o],N*13+2),lab:TH.name},
+  {type:'wreal',name:'Real or made up?',d:TS.r,lab:TH.name},
+  {type:'match',name:'Match them',d:TS.m,right:shuffled(TS.m.map(p=>p[1]),N*13+3),lab:TH.name,th:true}
 ];
 const MAX=ROUNDS.length;
 
@@ -129,6 +148,17 @@ function play(){
     body=`<div class="phrase">${answered?`${art(R.d.c)} <span class="gap">${esc(R.d.c)}</span> of ${esc(R.d.a)}`:`a <span class="gap">?</span> of ${esc(R.d.a)}`}</div>
     <div class="opts two" role="group" aria-label="Choices">${R.opts.map(o=>`<button class="opt${!answered?'':o===R.d.c?' right':o===st.ans[i]?' wrong':' dim'}" data-o="${esc(o)}"${answered?' disabled':''}>${esc(o)}</button>`).join('')}</div>`;
     note=R.d.n;
+  }else if(R.type==='pick'){
+    sub='Pick the word for this.';
+    body=`<div class="defn">${esc(cap(R.d.d))}</div>
+    <div class="opts two" role="group" aria-label="Choices">${R.opts.map(o=>`<button class="opt${!answered?'':o===R.d.c?' right':o===st.ans[i]?' wrong':' dim'}" data-o="${esc(o)}"${answered?' disabled':''}>${esc(o)}</button>`).join('')}</div>`;
+    note=R.d.n;
+  }else if(R.type==='wreal'){
+    sub='Is this a real word, with this meaning?';
+    const cls=v=>!answered?'':v===R.d.real?' right':v===st.ans[i]?' wrong':' dim';
+    body=`<div class="phrase">${esc(R.d.w)}</div><p class="wdef">${esc(cap(R.d.d))}</p>
+    <div class="opts two" role="group" aria-label="Choices"><button class="opt${cls(true)}" data-v="1"${answered?' disabled':''}>Real</button><button class="opt${cls(false)}" data-v="0"${answered?' disabled':''}>Made up</button></div>`;
+    note=R.d.n;
   }else if(R.type==='real'){
     sub='Is this a real collective noun?';
     const cls=v=>!answered?'':v===R.d.real?' right':v===st.ans[i]?' wrong':' dim';
@@ -136,7 +166,7 @@ function play(){
     <div class="opts two" role="group" aria-label="Choices"><button class="opt${cls(true)}" data-v="1"${answered?' disabled':''}>Real</button><button class="opt${cls(false)}" data-v="0"${answered?' disabled':''}>Made up</button></div>`;
     note=R.d.n;
   }else{
-    sub='Tap one on the left, then its partner on the right.';
+    sub=R.th?'Tap a word, then its meaning.':'Tap one on the left, then its partner on the right.';
     const L=R.d.map(p=>p[0]);
     const done=answered?st.ans[i]:pairs;
     const num=w=>{const k=L.indexOf(w);return k+1};
@@ -145,23 +175,24 @@ function play(){
     body=`<div class="match"><div class="col">${L.map(w=>`<button class="mt${leftCls(w)}" data-l="${esc(w)}"${done[w]?` data-c="${num(w)}"`:''}${answered?' disabled':''}>${esc(w)}</button>`).join('')}</div>
       <div class="col">${R.right.map(n=>{const o=owner(n);return`<button class="mt" data-r="${esc(n)}"${o?` data-c="${num(o)}"`:''}${answered?' disabled':''}>${esc(n)}</button>`}).join('')}</div></div>
       ${answered?'':`<div class="btns"><button class="ghost" id="clr"${Object.keys(pairs).length?'':' disabled'}>Clear</button><button class="primary" id="chk"${Object.keys(pairs).length===4?'':' disabled'}>Check</button></div>`}`;
-    if(answered){const wrong=R.d.filter(p=>done[p[0]]!==p[1]);note=wrong.length?`The right pairs: ${R.d.map(p=>`${art(p[1])} ${p[1]} of ${p[0]}`).join(', ')}.`:'All four right!'}
+    if(answered){const wrong=R.d.filter(p=>done[p[0]]!==p[1]);note=wrong.length?`The right pairs: ${R.d.map(p=>R.th?`${p[0]}: ${p[1]}`:`${art(p[1])} ${p[1]} of ${p[0]}`).join(', ')}.`:'All four right!'}
   }
   const reveal=answered?`<div class="reveal" role="status"><b>${st.ok[i]?'Yes!':'Not quite.'}</b> ${esc(note)}</div>
     <div class="btns"><button class="primary" id="next">${i+1<MAX?'Next round':'See how you did'}</button></div>`:'';
   app.innerHTML=`<div class="card">
-    <div class="tag">${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})}${THEME?' · '+THEME:''} · Round ${i+1} of ${MAX}</div>
+    <div class="tag">${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})}${R.lab?' · '+R.lab:THEME?' · '+THEME:''} · Round ${i+1} of ${MAX}</div>
     <div class="kind">${R.name}</div>
     <p class="sub">${sub}</p>
     ${i===0&&!answered?`<details class="ex"><summary>How to play</summary><ol class="how">
-      <li>Five quick rounds on collective nouns, one point each.</li>
-      <li>Pick the right group name, spot real ones from made-up ones, then match four pairs.</li>
-      <li>Sundays are people and jobs, from a list written in 1486.</li></ol></details>`:''}
+      <li>Five quick rounds, one point each.</li>
+      <li>Two on collective nouns, then three on today's theme: ${esc(TH.name.toLowerCase())}.</li>
+      <li>Pick the right word, spot real ones from made-up ones, then match four pairs.</li>
+      <li>Sunday's collective nouns are people and jobs, from a list written in 1486.</li></ol></details>`:''}
     ${body}${reveal}
   </div>`;
   if(!answered){
-    if(R.type==='group')app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{st.ans[i]=b.dataset.o;st.ok[i]=b.dataset.o===R.d.c;save();play()});
-    if(R.type==='real')app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const v=b.dataset.v==='1';st.ans[i]=v;st.ok[i]=v===R.d.real;save();play()});
+    if(R.type==='group'||R.type==='pick')app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{st.ans[i]=b.dataset.o;st.ok[i]=b.dataset.o===R.d.c;save();play()});
+    if(R.type==='real'||R.type==='wreal')app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const v=b.dataset.v==='1';st.ans[i]=v;st.ok[i]=v===R.d.real;save();play()});
     if(R.type==='match'){
       app.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{const w=b.dataset.l;delete pairs[w];pickL=w;play()});
       app.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{if(!pickL)return;const n=b.dataset.r;for(const k in pairs)if(pairs[k]===n)delete pairs[k];pairs[pickL]=n;pickL=null;play()});
@@ -175,11 +206,15 @@ function play(){
 function end(){
   pips(-1);
   const t=score();
+  if(!isTest&&N===TODAY)(window.SameySetQ=window.SameySetQ||[]).push(['gaggle',t+'/'+MAX]);
   const sq=ROUNDS.map((_,i)=>st.ok[i]?'🟩':'⬜').join('');
   const share=`Gaggle No. ${N+1}\n${sq} ${t}/${MAX}\n${rank(t)}\nYour go: https://samey.uk/gaggle/ #sameyuk`;
   const items=ROUNDS.map((R,i)=>{const mk=st.ok[i]?'✓':'✗';
     if(R.type==='group')return`<li><div class="v">${mk} ${art(R.d.c)} ${esc(R.d.c)} of ${esc(R.d.a)}</div><div class="n">${esc(R.d.n)}</div></li>`;
     if(R.type==='real')return`<li><div class="v">${mk} ${esc(R.d.p)}: ${R.d.real?'real':'made up'}</div><div class="n">${esc(R.d.n)}</div></li>`;
+    if(R.type==='pick')return`<li><div class="v">${mk} ${esc(R.d.c)}</div><div class="n">${esc(cap(R.d.d))}. ${esc(R.d.n)}</div></li>`;
+    if(R.type==='wreal')return`<li><div class="v">${mk} ${esc(R.d.w)}: ${R.d.real?'real':'made up'}</div><div class="n">${esc(R.d.n)}</div></li>`;
+    if(R.th)return`<li><div class="v">${mk} ${R.d.map(p=>`${esc(p[0])}: ${esc(p[1])}`).join(' · ')}</div></li>`;
     return`<li><div class="v">${mk} ${R.d.map(p=>`${art(p[1])} ${esc(p[1])} of ${esc(p[0])}`).join(' · ')}</div></li>`}).join('');
   app.innerHTML=`<div class="card center">
     <div class="tag">${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})}</div>
@@ -190,7 +225,7 @@ function end(){
     <p class="muted"><span data-next="Next Gaggle in {t}.">New groups tomorrow.</span></p>
     <p class="muted">All the games are free and ad-free, made by one librarian in Canterbury. Enjoyed today's? <a href="https://ko-fi.com/playtheroute" target="_blank" rel="noopener" style="font-weight:700;white-space:nowrap">☕ Buy me a coffee</a></p>
   </div>
-  <div class="card" style="margin-top:14px"><div class="tag">Today's groups</div>
+  <div class="card" style="margin-top:14px"><div class="tag">Today's answers</div>
     <ul class="recap">${items}</ul>
     <p class="muted" style="margin-top:12px">Know a better one, or think one's wrong? <a href="/feedback/?game=gaggle&type=puzzle&puzzle=${encodeURIComponent('No. '+(N+1))}">Tell us</a>.</p>
   </div>`;

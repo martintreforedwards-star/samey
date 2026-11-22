@@ -13,7 +13,7 @@ const DAYS = [
     p: {t: "chortle", h: "To chuckle gleefully, a blend of chuckle and snort.", c: "Lewis Carroll", o: ["Edward Lear", "Roald Dahl", "P. G. Wodehouse"], n: "“He chortled in his joy”, in Jabberwocky, from Through the Looking-Glass (1871). Carroll gave us galumph in the same poem."},
     x: {f: "words coined in fiction", w: ["nerd", "yahoo", "scrooge"], odd: "sandwich", n: "Sandwich comes from a real man, the 4th Earl of Sandwich, who liked his meat between two slices of bread."},
     m: [["Big Brother", "Nineteen Eighty-Four"], ["Shangri-La", "Lost Horizon"], ["pandemonium", "Paradise Lost"], ["Lilliputian", "Gulliver's Travels"]],
-    q: {ask: "Oldest to newest coinage", i: [["utopia", "1516"], ["malapropism", "1775"], ["robot", "1920"], ["metaverse", "1992"]], n: "Thomas More's Utopia is a pun in Greek: “no place”, which sounds like “good place”."},
+    q: {ask: "Oldest to newest coinage", i: [["utopia", "1516"], ["Lilliputian", "1726"], ["robot", "1920"], ["metaverse", "1992"]], n: "Thomas More's Utopia is a pun in Greek: “no place”, which sounds like “good place”."},
     s: {t: "gaslighting", c: "Gas Light", o: ["Rebecca", "Jane Eyre", "The Woman in White"], n: "In Patrick Hamilton's 1938 play, a husband dims the gas lights and insists his wife is imagining it. The 1944 film made it famous."}
   },
   /* Tue */ {
@@ -25,8 +25,8 @@ const DAYS = [
   },
   /* Wed */ {
     p: {t: "blatant", h: "Done openly and shamelessly.", c: "Edmund Spenser", o: ["William Shakespeare", "Christopher Marlowe", "John Milton"], n: "Spenser's Blatant Beast in The Faerie Queene (1596) is a monster of slander with a thousand tongues."},
-    x: {f: "words coined in fiction", w: ["Catch-22", "Frankenstein", "hobbit"], odd: "boycott", n: "Boycott comes from a real man, Captain Charles Boycott, an Irish land agent shunned by the whole district in 1880."},
-    m: [["chortle", "Through the Looking-Glass"], ["Svengali", "Trilby"], ["Pooh-Bah", "The Mikado"], ["Lothario", "The Fair Penitent"]],
+    x: {f: "words coined in fiction", w: ["Catch-22", "Frankenstein", "doublethink"], odd: "boycott", n: "Boycott comes from a real man, Captain Charles Boycott, an Irish land agent shunned by the whole district in 1880."},
+    m: [["chortle", "Through the Looking-Glass"], ["Svengali", "Trilby"], ["Pooh-Bah", "The Mikado"], ["grinch", "How the Grinch Stole Christmas!"]],
     q: {ask: "Oldest to newest coinage", i: [["Lilliputian", "1726"], ["scrooge", "1843"], ["nerd", "1950"], ["cyberspace", "1982"]], n: "Gibson first used cyberspace in a 1982 short story, Burning Chrome, then made it famous in Neuromancer."},
     s: {t: "Shangri-La", c: "Lost Horizon", o: ["The Razor's Edge", "A Passage to India", "Kim"], n: "James Hilton's 1933 novel hides the paradise of Shangri-La in a remote Tibetan valley."}
   },
@@ -47,15 +47,15 @@ const DAYS = [
   /* Sat: science fiction */ {
     p: {t: "robotics", h: "The science of building and using robots.", c: "Isaac Asimov", o: ["Arthur C. Clarke", "H. G. Wells", "Karel Čapek"], n: "Asimov used it in his 1941 story Liar!, thinking it was already a word."},
     x: {f: "words coined in fiction", w: ["Lilliputian", "Svengali", "Pooh-Bah"], odd: "spoonerism", n: "Spoonerism comes from a real man, the Reverend William Spooner of Oxford, famous for swapping his sounds."},
-    m: [["robot", "R.U.R."], ["genetic engineering", "Dragon's Island"], ["thoughtcrime", "Nineteen Eighty-Four"], ["muggle", "Harry Potter and the Philosopher's Stone"]],
+    m: [["robot", "R.U.R."], ["cyberspace", "Burning Chrome"], ["thoughtcrime", "Nineteen Eighty-Four"], ["muggle", "Harry Potter and the Philosopher's Stone"]],
     q: {ask: "Oldest to newest science fiction coinage", i: [["credit card", "1888"], ["waldo", "1942"], ["grok", "1961"], ["cyberspace", "1982"]], n: "A waldo, a remote-controlled mechanical hand, is from a Heinlein story."},
     s: {t: "credit card", c: "Looking Backward", o: ["The Time Machine", "Erewhon", "News from Nowhere"], n: "Edward Bellamy's 1888 novel imagines the year 2000, when everyone pays with a card instead of cash."}
   },
   /* Sun */ {
-    p: {t: "Lothario", h: "A man who seduces women.", c: "Nicholas Rowe", o: ["Henry Fielding", "Samuel Richardson", "Daniel Defoe"], n: "In Rowe's play The Fair Penitent (1703), Lothario is a heartless seducer."},
+    p: {t: "yahoo", h: "A rough, rude, loutish person.", c: "Jonathan Swift", o: ["Daniel Defoe", "Laurence Sterne", "Henry Fielding"], n: "In Gulliver's Travels (1726), the Yahoos are brutish humans, ruled by wise talking horses called Houyhnhnms."},
     x: {f: "words coined in fiction", w: ["Walter Mitty", "jabberwocky", "Frankenstein"], odd: "silhouette", n: "Silhouette comes from a real man, Étienne de Silhouette, a penny-pinching French finance minister."},
     m: [["Room 101", "Nineteen Eighty-Four"], ["Shangri-La", "Lost Horizon"], ["galumph", "Through the Looking-Glass"], ["gaslighting", "Gas Light"]],
-    q: {ask: "Oldest to newest coinage", i: [["yahoo", "1726"], ["freelance", "1819"], ["pollyanna", "1913"], ["Catch-22", "1961"]], n: "Pollyanna, in Eleanor H. Porter's novel, plays “the glad game”, finding something to be glad about in everything."},
+    q: {ask: "Oldest to newest coinage", i: [["pandemonium", "1667"], ["freelance", "1819"], ["pollyanna", "1913"], ["Catch-22", "1961"]], n: "Pollyanna, in Eleanor H. Porter's novel, plays “the glad game”, finding something to be glad about in everything."},
     s: {t: "quark", c: "Finnegans Wake", o: ["Ulysses", "A Portrait of the Artist as a Young Man", "Dubliners"], n: "All four are James Joyce. “Three quarks for Muster Mark!” is in Finnegans Wake (1939); the physicist Murray Gell-Mann borrowed it in 1963."}
   },
   /* ---------- Week 2 ---------- */
