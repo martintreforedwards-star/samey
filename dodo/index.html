@@ -112,8 +112,21 @@ const td=parseInt(params.get('day'),10);
 const N=Number.isInteger(td)&&td>=1?td-1:TODAY;
 const EPOCH=Math.round(dayDate(N)/864e5)+3; // 1 Jan 1970 was a Thursday; Monday = 0
 const WD=EPOCH%7, WEEKS=DAYS.length/7;
-const WK=((Math.floor(EPOCH/7)-2967)%WEEKS+WEEKS)%WEEKS; // week of 23 Nov 2026 plays data week 1; new weeks follow
-const D=DAYS[WK*7+WD];
+// Days before 23 Nov 2026 keep the weeks they played. From then on, ORDER says which data week plays:
+// Week 1, then the new Weeks 3 and 4, then Week 2 (whose weekend was played at launch). Add new weeks to ORDER.
+const WN=Math.floor(EPOCH/7), WS=2969; // WS = week of 23 Nov 2026
+const ORDER=[0,2,3,1];
+const WK=WN<WS?((WN-2967)%2+2)%2:ORDER[(WN-WS)%ORDER.length];
+const BASE=DAYS[WK*7+WD];
+// From the second time through, each round slides along at its own pace (round r moves r/R places per pass, never more than one),
+// so rounds come back in new combinations rather than as the same day, and each item still stays almost a full list apart.
+const mixPick=(j,L,r,R)=>(j%L+Math.ceil(Math.floor(j/L)*r/R))%L;
+// Once mixing starts (second pass on), a round that would repeat a word already used today takes the next week's version instead.
+const SUBJ={p:it=>[it.t],x:it=>[...it.w,it.odd],m:it=>it.flat(),q:it=>it.i.map(a=>a[0]),s:it=>[it.t]};
+const words=(key,it)=>(SUBJ[key]?SUBJ[key](it):[]).map(s=>String(s).toLowerCase());
+const D=WN<WS?BASE:(()=>{const used=new Set(),out={};Object.keys(BASE).forEach((key,r)=>{let first=null,pick=null;
+  for(let t=0;t<(Math.floor((WN-WS)/ORDER.length)?ORDER.length:1)&&!pick;t++){const i=(mixPick(WN-WS,ORDER.length,r,5)+t)%ORDER.length;const it=DAYS[(ORDER[i])*7+WD][key];if(!first)first=it;if(!words(key,it).some(s=>used.has(s)))pick=it;}
+  pick=pick||first;words(key,pick).forEach(s=>used.add(s));out[key]=pick;});return out;})();
 const THEME='';
 const SKEY='dodo-'+keyOf(N);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
