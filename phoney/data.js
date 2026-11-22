@@ -27,7 +27,23 @@ const SILENT=[
   {w:'solemn',s:5,o:'The n comes back in <i>solemnity</i>.'},
   {w:'plumber',s:4,o:'From Latin <i>plumbum</i>, lead: plumbers once worked with lead pipes. The b stopped being said centuries ago.'},
   {w:'campaign',s:6,o:'The gn spelling comes from French, where it made a "ny" sound. English kept the letters and dropped the sound.'},
-  {w:'lamb',s:3,o:'After m, a final b fell silent centuries ago: lamb, comb, climb, tomb.'}
+  {w:'lamb',s:3,o:'After m, a final b fell silent centuries ago: lamb, comb, climb, tomb.'},
+  {w:'knee',s:0,o:'The k was sounded in Old English <i>cnēow</i>. It fell silent in the 1600s, like the k in knight and knife.'},
+  {w:'wrong',s:0,o:'The w was once said: w-rong. It dropped out of speech centuries ago but stayed in the spelling.'},
+  {w:'listen',s:3,o:'Old English <i>hlysnan</i> had no t at all. It crept into the spelling, probably by analogy with words like glisten.'},
+  {w:'climb',s:4,o:'The b was pronounced in Old English <i>climban</i>, but -mb lost its b at the end of words, as in lamb and thumb.'},
+  {w:'tomb',s:3,o:'Another silent b after m. It came through French <i>tombe</i> and lost the b sound on arrival.'},
+  {w:'hour',s:0,o:'From French <i>heure</i>, where the h was already silent. That\'s why it\'s an hour, not a hour.'},
+  {w:'ascend',s:2,o:'The c is there because of Latin <i>ascendere</i>. The s does all the work.'},
+  {w:'calf',s:2,o:'The l went quiet after the a in words like calf, half and talk, stretching the vowel instead.'},
+  {w:'yolk',s:2,o:'The l in yolk has been silent for centuries, just like folk.'},
+  {w:'would',s:3,o:'The l was added by analogy with could, which had itself borrowed it from should. None of them say it.'},
+  {w:'gnat',s:0,o:'Old English <i>gnætt</i> was said with the g. Gn- at the start of a word lost its g by the 1600s.'},
+  {w:'sign',s:2,o:'From Latin <i>signum</i>. The g comes back to life in signal and signature.'},
+  {w:'rhubarb',s:1,o:'The h is a Greek touch: <i>rha</i> was the Greek name for the River Volga, where rhubarb grew.'},
+  {w:'hymn',s:3,o:'The n is silent at the end, but you hear it in hymnal and hymnody.'},
+  {w:'wreck',s:0,o:'Wr- once had a sounded w. Wreck, write and wrong all lost it.'},
+  {w:'reign',s:3,o:'From French <i>regne</i> and Latin <i>regnum</i>. The g is heard in regnal.'}
 ];
 
 // Say the place. a = how locals say it, f = three wrong versions. Capitals mark the stressed syllable.
@@ -56,7 +72,19 @@ const PLACE=[
   {p:'Gloucester',c:'Gloucestershire',a:'GLOSS-ter',f:['GLOW-ses-ter','GLOO-ster','GLOW-ster'],o:'Like Bicester and Leicester, the middle syllable disappears.'},
   {p:'Kirkcudbright',c:'Dumfries and Galloway',a:'kur-KOO-bree',f:['KIRK-cud-bright','kirk-CUD-bree','KUR-kub-rite'],o:'It means the church of St Cuthbert. The stress lands on the middle.'},
   {p:'Ruislip',c:'London',a:'RYE-slip',f:['ROO-iss-lip','RWEE-slip','RUSS-lip'],o:'The ui is said like the eye in rise.'},
-  {p:'Costessey',c:'Norfolk',a:'KOSS-ee',f:['KOS-tess-ee','KOST-uh-see','kos-TESS-ee'],o:'Norfolk likes to squash its place names: three written syllables become two.'}
+  {p:'Costessey',c:'Norfolk',a:'KOSS-ee',f:['KOS-tess-ee','KOST-uh-see','kos-TESS-ee'],o:'Norfolk likes to squash its place names: three written syllables become two.'},
+  {p:'Edinburgh',c:'Scotland',a:'ED-in-bruh',f:['ED-in-burg','ED-in-burr-oh','ed-in-BURG'],o:'The -burgh ending is said like borough, squashed to -bruh by locals.'},
+  {p:'Holborn',c:'London',a:'HOE-bun',f:['HOL-born','HOL-burn','HOLE-born'],o:'The l and the r both vanish in everyday speech.'},
+  {p:'Greenwich',c:'London',a:'GREN-itch',f:['GREEN-witch','GREEN-itch','GREN-wich'],o:'The w is silent and the long ee shortens: as in Norwich and Woolwich.'},
+  {p:'Chiswick',c:'London',a:'CHIZ-ick',f:['CHIS-wick','CHIZ-wick','CHISS-ick'],o:'Another silent w, and the s buzzes.'},
+  {p:'Warwick',c:'Warwickshire',a:'WORR-ick',f:['WAR-wick','WAR-ick','WOR-wick'],o:'The middle w drops out, as in Alnwick, Berwick and Keswick.'},
+  {p:'Cholmondeley',c:'Cheshire',a:'CHUM-lee',f:['CHOL-mon-dlee','CHOL-mund-lee','CHUM-un-dlee'],o:'Eleven letters, two syllables. One of England\'s most extreme spellings.'},
+  {p:'Beaulieu',c:'Hampshire',a:'BEW-lee',f:['BOH-lyuh','BOH-lee-oo','BEW-lyoo'],o:'French for ‘beautiful place’, but anglicised a long time ago.'},
+  {p:'Leicester',c:'Leicestershire',a:'LESS-ter',f:['LYE-ses-ter','LEE-ses-ter','LESS-es-ter'],o:'The -cester shrinks to -ster, as in Gloucester and Worcester.'},
+  {p:'Derby',c:'Derbyshire',a:'DAR-bee',f:['DUR-bee','DER-bee','DAIR-bee'],o:'The er turns to ar, as in clerk and Berkshire. Americans say DUR-bee for the horse race.'},
+  {p:'Woolfardisworthy',c:'Devon',a:'WOOL-zee',f:['WOOL-far-dis-wur-thee','WOOL-fards-worthy','WOOLS-worthy'],o:'Fifteen letters, two syllables. The signposts often give both.'},
+  {p:'Barnoldswick',c:'Lancashire',a:'BAR-lick',f:['bar-NOLDS-wick','BAR-nolds-wick','BAR-nick'],o:'Locals call it Barlick, and so does almost everyone in the area.'},
+  {p:'Llanelli',c:'Carmarthenshire',a:'thla-NETH-lee',f:['lan-EL-ee','LAN-el-ee','lan-NELL-ee'],o:'The Welsh ll is a breathy sound, a bit like thl. English speakers often settle for lan-ETH-lee.'}
 ];
 
 // Stress test. s = sentence with the word in [brackets], a = the right stress, f = the other. Capitals = stressed.
@@ -80,7 +108,17 @@ const STRESS=[
   {s:'Can you [produce] a receipt?',a:'proDUCE',f:'PROduce',o:'A verb. PROduce is fruit and veg.'},
   {s:'The camel crossed the [desert].',a:'DEsert',f:'deSERT',o:'Sand and heat. To deSERT is to abandon, and pudding is a deSSERT.'},
   {s:'The talks ended in [conflict].',a:'CONflict',f:'conFLICT',o:'A noun. Two dates can conFLICT.'},
-  {s:'The magazine prints a weekly [digest].',a:'DIgest',f:'diGEST',o:'A noun: a summary. Your stomach will diGEST lunch.'}
+  {s:'The magazine prints a weekly [digest].',a:'DIgest',f:'diGEST',o:'A noun: a summary. Your stomach will diGEST lunch.'},
+  {s:'The police [suspect] the butler.',a:'susPECT',f:'SUSpect',o:'A verb, so the stress moves to the end. The person they arrest is the SUSpect.'},
+  {s:'Please sign the [contract] before Friday.',a:'CONtract',f:'conTRACT',o:'A noun, stressed at the front. Muscles conTRACT.'},
+  {s:'Your muscles [contract] when you lift.',a:'conTRACT',f:'CONtract',o:'A verb this time, so the stress shifts to the end.'},
+  {s:'Maths is my favourite [subject].',a:'SUBject',f:'subJECT',o:'A noun, stressed first. To subJECT someone to something is the verb.'},
+  {s:'Practice will [perfect] your serve.',a:'perFECT',f:'PERfect',o:'A verb, so the stress is at the end. The adjective is PERfect.'},
+  {s:'We made good [progress] today.',a:'PROgress',f:'proGRESS',o:'A noun, stressed first. Things proGRESS.'},
+  {s:'Two officers will [escort] the prisoner.',a:'esCORT',f:'EScort',o:'A verb, stressed on the second syllable. The guard is an EScort.'},
+  {s:'You can [transfer] the money online.',a:'transFER',f:'TRANSfer',o:'A verb. A footballer\'s move is a TRANSfer.'},
+  {s:'There\'s a huge [contrast] between the twins.',a:'CONtrast',f:'conTRAST',o:'A noun, stressed first. Colours conTRAST.'},
+  {s:'Britain [imports] a lot of cheese.',a:'imPORTS',f:'IMports',o:'A verb. The cheese itself is one of our IMports.'}
 ];
 
 // Odd sound out. w[0] is the odd one; the other three share a sound. [Brackets] mark the letters to listen to.
@@ -105,7 +143,19 @@ const ODD=[
   {t:'c',w:['o[c]ean','[c]ar','[c]up','[c]ake'],o:'Ocean\'s c says <i>sh</i>. The others are a plain hard <i>k</i>.'},
   {t:'s',w:['pre[ss]ure','mea[s]ure','trea[s]ure','plea[s]ure'],o:'Pressure has an <i>sh</i>. Measure, treasure and pleasure have the rarer <i>zh</i> sound, as in vision.'},
   {t:'ch',w:['[ch]ain','[ch]ampagne','[ch]alet','[ch]ute'],o:'Champagne, chalet and chute are French and say <i>sh</i>. Chain has the English <i>ch</i>.'},
-  {t:'s',w:['[s]ugar','[s]un','[s]it','[s]ad'],o:'Sugar starts with an <i>sh</i> sound, like sure. The others are a plain <i>s</i>.'}
+  {t:'s',w:['[s]ugar','[s]un','[s]it','[s]ad'],o:'Sugar starts with an <i>sh</i> sound, like sure. The others are a plain <i>s</i>.'},
+  {t:'ou',w:['s[ou]p','l[ou]d','sh[ou]t','m[ou]th'],o:'Loud, shout and mouth have the <i>ow</i> sound. Soup keeps its French <i>oo</i>.'},
+  {t:'oo',w:['fl[oo]d','f[oo]d','m[oo]n','s[oo]n'],o:'Food, moon and soon have a long <i>oo</i>. Flood rhymes with mud, as does blood.'},
+  {t:'a',w:['w[a]sp','c[a]t','h[a]t','m[a]p'],o:'Cat, hat and map share the short <i>a</i>. After a w, a often turns into the <i>o</i> of hot: wasp, swan, watch.'},
+  {t:'o',w:['w[o]men','h[o]t','p[o]t','l[o]t'],o:'Hot, pot and lot share the short <i>o</i>. In women it sounds like the <i>i</i> in win.'},
+  {t:'ear',w:['h[ear]t','b[ear]','p[ear]','w[ear]'],o:'Bear, pear and wear rhyme with hair. Heart sounds like hart.'},
+  {t:'ie',w:['fr[ie]nd','p[ie]ce','f[ie]ld','ch[ie]f'],o:'Piece, field and chief have a long <i>ee</i>. Friend has the short <i>e</i> of bend.'},
+  {t:'ough',w:['thr[ough]','t[ough]','r[ough]','en[ough]'],o:'Tough, rough and enough end in <i>uff</i>. Through ends in <i>oo</i>.'},
+  {t:'ed',w:['nak[ed]','look[ed]','pick[ed]','book[ed]'],o:'Looked, picked and booked end in a t sound. Naked isn\'t a past tense, so its -ed is a full syllable.'},
+  {t:'c',w:['[c]ello','[c]ellar','[c]elery','[c]entre'],o:'Cellar, celery and centre start with an s sound. Cello keeps its Italian <i>ch</i>.'},
+  {t:'qu',w:['[qu]ay','[qu]een','[qu]ick','[qu]iet'],o:'Queen, quick and quiet start with <i>kw</i>. Quay is said just like key.'},
+  {t:'ow',w:['b[ow]l','h[ow]l','f[ow]l','gr[ow]l'],o:'Howl, fowl and growl rhyme with owl. Bowl rhymes with hole.'},
+  {t:'th',w:['[Th]omas','[th]ink','[th]ree','[th]umb'],o:'Think, three and thumb start with <i>th</i>. Thomas starts with a plain t, as do Thames and thyme.'}
 ];
 
 // Spot the stop: tap every t that a London accent swaps for a glottal stop.
@@ -129,7 +179,21 @@ const STOP=[
   {p:'A li##le bi# of bu##er',o:'Three stops: little, bit and butter.'},
   {p:'Le# me ge# i#',o:'Every t here ends a word, so all three become stops.'},
   {p:'Too ho# to si# ou#side',o:'Too and to start with t, so they stay. Hot, sit and outside lose theirs.'},
-  {p:'Ho# wa#er bo##le',o:'All three go. Hot ends in t; water and bottle have t before an unstressed syllable.'}
+  {p:'Ho# wa#er bo##le',o:'All three go. Hot ends in t; water and bottle have t before an unstressed syllable.'},
+  {p:'Pu# i# on the table',o:'Put and it end in t, so both go. Table keeps its t because it starts the word.'},
+  {p:'Bu# I go# a ticke#',o:'The t\'s at the ends of but, got and ticket go. The t at the start of ticket stays.'},
+  {p:'Wha# time is i#?',o:'What and it lose their t\'s. Time keeps it: it starts the word.'},
+  {p:'A lo# of be##er',o:'Lot ends in t; the tt in better sits before an unstressed syllable.'},
+  {p:'Ge# ou# of the ci#y',o:'Get and out end in t; city\'s t comes before an unstressed syllable.'},
+  {p:'Thir#y bu##ons',o:'Thirty and buttons both have their t before an unstressed syllable.'},
+  {p:'Wai# for the la#est news',o:'Wait ends in t; the t in latest comes before an unstressed syllable.'},
+  {p:'Mee# me a# the station',o:'Meet and at lose their t\'s. Station keeps its t: it starts the stressed syllable.'},
+  {p:'The ca# sa# on the ma#',o:'Three t\'s, all at the end of a word, all gone.'},
+  {p:'Ea# a ho# pota#o',o:'The first t in potato starts the stressed syllable (po-TA-to), so it stays. The second goes.'},
+  {p:'I\'m wri#ing a le##er',o:'Writing and letter both have their t before an unstressed syllable.'},
+  {p:'Sa# on a sea#',o:'Sat and seat both end in t.'},
+  {p:'Le#\'s ea# ou#',o:'Let\'s, eat and out: every t is at the end of a word.'},
+  {p:'A bi# la#er',o:'Bit ends in t; the t in later comes before an unstressed syllable.'}
 ];
 
 // Sunday special: Sound it out. i = the word in phonetic script (IPA, British), a = the word, f = three decoys.
