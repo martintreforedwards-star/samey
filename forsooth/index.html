@@ -117,9 +117,10 @@ const WN=Math.floor(EPOCH/7), WS=2969; // WS = week of 23 Nov 2026
 const ORDER=[1,2,0];
 const WK=WN<WS?0:ORDER[(WN-WS)%ORDER.length];
 const BASE=DAYS[WK*7+WD];
-// From the second time through, every other round slides one place per pass, so the same set of rounds never comes back together.
-const mixPick=(j,L,r)=>(j%L+Math.floor(j/L)*(r%2))%L;
-const D=WN<WS?BASE:Object.fromEntries(Object.keys(BASE).map((key,r)=>[key,DAYS[ORDER[mixPick(WN-WS,ORDER.length,r)]*7+WD][key]]));
+// From the second time through, each round slides along at its own pace (round r moves r/R places per pass, never more than one),
+// so rounds come back in new combinations rather than as the same day, and each item still stays almost a full list apart.
+const mixPick=(j,L,r,R)=>(j%L+Math.floor(Math.floor(j/L)*r/R))%L;
+const D=WN<WS?BASE:Object.fromEntries(Object.keys(BASE).map((key,r)=>[key,DAYS[ORDER[mixPick(WN-WS,ORDER.length,r,5)]*7+WD][key]]));
 const THEME=WD===5?'Chaucer day':'';
 const SKEY='forsooth-'+keyOf(N);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
