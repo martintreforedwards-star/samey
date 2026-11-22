@@ -94,7 +94,9 @@ const td=parseInt(params.get('day'),10);
 const N=Number.isInteger(td)&&td>=1?td-1:TODAY;
 const EPOCH=Math.round(dayDate(N)/864e5)+3; // 1 Jan 1970 was a Thursday; Monday = 0
 const WD=EPOCH%7, WEEKS=DAYS.length/7;
-const D=DAYS[(Math.floor(EPOCH/7)%WEEKS)*7+WD];
+// Every day before 23 Nov 2026 played Week 1; from then on the weeks rotate, starting with Week 2.
+const W0=Math.floor((Date.UTC(2026,10,23)/864e5+3)/7), WN=Math.floor(EPOCH/7);
+const D=DAYS[(WN<W0?0:(WN-W0+1)%WEEKS)*7+WD];
 const THEME=WD===6?'People and jobs':'';
 const SKEY='gaggle-'+keyOf(N);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
