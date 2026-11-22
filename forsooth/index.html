@@ -119,7 +119,7 @@ const WK=WN<WS?0:ORDER[(WN-WS)%ORDER.length];
 const BASE=DAYS[WK*7+WD];
 // From the second time through, each round slides along at its own pace (round r moves r/R places per pass, never more than one),
 // so rounds come back in new combinations rather than as the same day, and each item still stays almost a full list apart.
-const mixPick=(j,L,r,R)=>(j%L+Math.floor(Math.floor(j/L)*r/R))%L;
+const mixPick=(j,L,r,R)=>(j%L+Math.ceil(Math.floor(j/L)*r/R))%L;
 const D=WN<WS?BASE:Object.fromEntries(Object.keys(BASE).map((key,r)=>[key,DAYS[ORDER[mixPick(WN-WS,ORDER.length,r,5)]*7+WD][key]]));
 const THEME=WD===5?'Chaucer day':'';
 const SKEY='forsooth-'+keyOf(N);
