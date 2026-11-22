@@ -25,7 +25,19 @@ const FALSE = [
  {w:"glass",l:"Swedish",a:"Ice cream",f:["Glass","A mirror","Ice"],o:"A glass of water is <i>ett glas vatten</i>, with one s."},
  {w:"sopa",l:"Spanish",a:"Soup",f:["Soap","A sofa","A spoon"],o:"Soap is <i>jabón</i>."},
  {w:"morbido",l:"Italian",a:"Soft",f:["Morbid","Sickly","Gloomy"],o:"Soft as a pillow. Morbid is <i>macabro</i>."},
- {w:"pain",l:"French",a:"Bread",f:["Pain","A pane of glass","A pan"],o:"<i>Pain au chocolat</i>: chocolate bread. Pain is <i>la douleur</i>."}
+ {w:"pain",l:"French",a:"Bread",f:["Pain","A pane of glass","A pan"],o:"<i>Pain au chocolat</i>: chocolate bread. Pain is <i>la douleur</i>."},
+ {w:"actual",l:"Spanish",a:"Current",f:["Actual","Active","Accurate"],o:"Actually is <i>en realidad</i>."},
+ {w:"eventuell",l:"German",a:"Possibly",f:["Eventually","Evenly","Even so"],o:"Eventually is <i>schließlich</i>."},
+ {w:"Mist",l:"German",a:"Rubbish, or manure",f:["Mist","Fog","Dew"],o:"<i>So ein Mist!</i> means ‘what a load of rubbish!’. Mist in the English sense is <i>Nebel</i>."},
+ {w:"Fabrik",l:"German",a:"A factory",f:["Fabric","A workshop","A shed"],o:"Fabric is <i>Stoff</i>."},
+ {w:"lecture",l:"French",a:"Reading",f:["A lecture","A lesson","A letter"],o:"A university lecture is <i>un cours</i>."},
+ {w:"rumore",l:"Italian",a:"A noise",f:["A rumour","A rumble","A roar"],o:"A rumour is <i>una voce</i>, ‘a voice’."},
+ {w:"ropa",l:"Spanish",a:"Clothes",f:["A rope","A robe","A roof"],o:"A rope is <i>una cuerda</i>."},
+ {w:"Gymnasium",l:"German",a:"A grammar school",f:["A gym","A sports hall","A swimming pool"],o:"A gym is <i>ein Fitnessstudio</i>."},
+ {w:"magazzino",l:"Italian",a:"A warehouse",f:["A magazine","A shop","A cellar"],o:"A magazine is <i>una rivista</i>."},
+ {w:"Bad",l:"German",a:"A bath",f:["Bad","A bed","A bat"],o:"That's why spa towns have names like Baden-Baden and Bad Ems."},
+ {w:"door",l:"Dutch",a:"Through, or by",f:["A door","A floor","Dear"],o:"A door is <i>een deur</i>."},
+ {w:"barn",l:"Swedish",a:"A child, or children",f:["A barn","A bar","A bear"],o:"Scots and northern English <i>bairn</i> comes from the same old Norse word."}
 ];
 
 // Lost in translation · words English doesn't have
@@ -49,7 +61,19 @@ const LOST = [
  {w:"cwtch",l:"Welsh",a:"A cuddle, or a cosy safe place",f:["A quick kiss on the cheek","A sulk","A small cupboard for coats"],o:"Welsh people say a cwtch is much more than a hug."},
  {w:"Torschlusspanik",l:"German",a:"The fear that time is running out to do things",f:["Fear of shutting doors","Panic about missing a train","Dread of Monday mornings"],o:"Literally ‘gate-shut panic’, from city gates closing at night."},
  {w:"saudade",l:"Portuguese",a:"A deep, bittersweet longing for something or someone absent",f:["The sound of the sea","A happy reunion","A fast samba dance"],o:"It runs through Portuguese fado music."},
- {w:"mångata",l:"Swedish",a:"The road-like reflection of the moon on water",f:["A ring around the moon","Fog over a lake at dawn","A shooting star"],o:"Literally ‘moon street’."}
+ {w:"mångata",l:"Swedish",a:"The road-like reflection of the moon on water",f:["A ring around the moon","Fog over a lake at dawn","A shooting star"],o:"Literally ‘moon street’."},
+ {w:"Feierabend",l:"German",a:"The moment the working day ends",f:["A party on a holiday","A fire drill","An evening off school"],o:"Literally ‘celebration evening’. <i>Schönen Feierabend!</i> means ‘enjoy your evening off’."},
+ {w:"abbiocco",l:"Italian",a:"The drowsiness after a big meal",f:["A hiccup","A second breakfast","Indigestion"],o:"Usually after a long Sunday lunch."},
+ {w:"cafuné",l:"Brazilian Portuguese",a:"Gently running your fingers through someone's hair",f:["A strong morning coffee","A shy smile","A kiss on both cheeks"],o:"A tender word, often for parents and children or couples."},
+ {w:"ikigai",l:"Japanese",a:"Your reason for getting up in the morning",f:["A morning exercise","A tea ceremony","A lucky charm"],o:"From <i>iki</i>, ‘life’, and <i>gai</i>, ‘worth’."},
+ {w:"Ohrwurm",l:"German",a:"A tune you can't get out of your head",f:["Earache","A hearing aid","A very quiet voice"],o:"Literally ‘ear worm’. English borrowed it as earworm."},
+ {w:"kalsarikännit",l:"Finnish",a:"Drinking at home in your underwear, with no plans to go out",f:["A sauna party","A winter swim","A long walk in the snow"],o:"Finland's tourist board even made emojis for it."},
+ {w:"Weltschmerz",l:"German",a:"Sadness at the state of the world",f:["Fear of travel","Homesickness","A headache from the news"],o:"Literally ‘world pain’."},
+ {w:"smultronställe",l:"Swedish",a:"A special, secret place of your own",f:["A strawberry jam","A summer cottage","A hidden treasure"],o:"Literally ‘wild strawberry patch’."},
+ {w:"duende",l:"Spanish",a:"The mysterious power of art to move you deeply",f:["A ghost story","A guitar solo","A dance step"],o:"Also the name of a goblin or sprite. The poet Lorca made it famous."},
+ {w:"sprezzatura",l:"Italian",a:"Making something difficult look effortless",f:["A rude remark","A burst of speed","A spray of perfume"],o:"From a 1528 book on how to be the perfect courtier."},
+ {w:"meraki",l:"Greek",a:"Putting your heart and soul into what you do",f:["A lucky break","A family meal","A small boat"],o:"From Turkish <i>merak</i>, ‘passion, curiosity’."},
+ {w:"Gemütlichkeit",l:"German",a:"Warmth, cosiness and good company",f:["Good manners","Comfortable shoes","A quiet library"],o:"The German cousin of Danish <i>hygge</i>."}
 ];
 
 // Idioms, literally · lit = the word-for-word English; a = what it really means
@@ -72,7 +96,19 @@ const IDIOM = [
  {lit:"To have no hairs on your tongue",w:"Non avere peli sulla lingua",l:"Italian",a:"To speak your mind bluntly",f:["To be a picky eater","To tell lies smoothly","To never get ill"],o:"Someone who says exactly what they think."},
  {lit:"To throw the house out of the window",w:"Tirar la casa por la ventana",l:"Spanish",a:"To spend money lavishly",f:["To have a big clear-out","To lose your temper","To move house"],o:"Pushing the boat out for a big celebration."},
  {lit:"To pay the duck",w:"Pagar o pato",l:"Portuguese",a:"To take the blame for something you didn't do",f:["To pay too much","To pay for everyone's dinner","To pay a debt very late"],o:"Being the scapegoat."},
- {lit:"The bear dances there",w:"Da steppt der Bär",l:"German",a:"It's going to be a great party",f:["It's very dangerous","Someone's in a bad mood","It's a long way away"],o:"Where the bear dances, the fun is."}
+ {lit:"The bear dances there",w:"Da steppt der Bär",l:"German",a:"It's going to be a great party",f:["It's very dangerous","Someone's in a bad mood","It's a long way away"],o:"Where the bear dances, the fun is."},
+ {lit:"I think my pig's whistling",w:"Ich glaub, mein Schwein pfeift",l:"German",a:"I can't believe it!",f:["I'm hungry","It's time to go home","Something smells odd"],o:"Said when something is too surprising to be true."},
+ {lit:"To have a hair in your hand",w:"Avoir un poil dans la main",l:"French",a:"To be lazy",f:["To be nervous","To be very old","To be a good liar"],o:"The idea: your hand has done so little work that hair has grown on the palm."},
+ {lit:"To cost the eyes of the head",w:"Coûter les yeux de la tête",l:"French",a:"To be very expensive",f:["To be very ugly","To be hard to see","To be worth waiting for"],o:"The French version of costing an arm and a leg."},
+ {lit:"To be in the clouds",w:"Estar en las nubes",l:"Spanish",a:"To be daydreaming",f:["To be very happy","To be on a plane","To be very rich"],o:"Much the same as having your head in the clouds."},
+ {lit:"To put your batteries in",w:"Ponerse las pilas",l:"Spanish",a:"To get your act together",f:["To go to bed early","To lose your temper","To charge too much"],o:"Like putting fresh batteries into a toy."},
+ {lit:"To have your hands in the dough",w:"Avere le mani in pasta",l:"Italian",a:"To be involved in something (often secretly)",f:["To be a good cook","To be very busy","To be clumsy"],o:"Very Italian: everybody's hands are in the pasta."},
+ {lit:"To have ice in your stomach",w:"Att ha is i magen",l:"Swedish",a:"To stay calm under pressure",f:["To feel sick","To be very hungry","To be unkind"],o:"Often said of footballers taking penalties."},
+ {lit:"To fall into the house with the door",w:"Met de deur in huis vallen",l:"Dutch",a:"To get straight to the point",f:["To be very clumsy","To arrive uninvited","To move house"],o:"No small talk, no knocking: straight in."},
+ {lit:"To rain on the wet",w:"Chover no molhado",l:"Portuguese",a:"To do something pointless",f:["To have very bad luck","To cry a lot","To make things worse"],o:"Like flogging a dead horse."},
+ {lit:"When the crayfish whistles on the mountain",w:"Когда рак на горе свистнет",l:"Russian",a:"Never",f:["Very soon","At dawn","When pigs are happy"],o:"The Russian version of ‘when pigs fly’."},
+ {lit:"I'd even borrow a cat's paws",w:"猫の手も借りたい",l:"Japanese",a:"I'm extremely busy",f:["I'm very lonely","I'm very lucky","I'm hungry"],o:"So busy that even a cat's help would do."},
+ {lit:"It's not my hay",w:"Se ei ole minun heiniäni",l:"Finnish",a:"It's none of my business",f:["I'm not hungry","I didn't do it","It's not my fault"],o:"A farming country's way of minding your own business."}
 ];
 
 // Spot the script · w = a word in that script, r = how it sounds, g = what it means
@@ -90,7 +126,19 @@ const SCRIPT = [
  {w:"สวัสดี",r:"sawasdee",g:"hello",a:"Thai",f:["Tamil","Bengali","Korean"]},
  {w:"வணக்கம்",r:"vanakkam",g:"hello",a:"Tamil",f:["Thai","Bengali","Devanagari (Hindi)"]},
  {w:"নমস্কার",r:"nomoshkar",g:"hello",a:"Bengali",f:["Devanagari (Hindi)","Tamil","Thai"]},
- {w:"ሰላም",r:"selam",g:"hello, peace",a:"Amharic",f:["Armenian","Georgian","Hebrew"]}
+ {w:"ሰላም",r:"selam",g:"hello, peace",a:"Amharic",f:["Armenian","Georgian","Hebrew"]},
+ {w:"Ευχαριστώ",r:"efcharistó",g:"thank you",a:"Greek",f:["Cyrillic (Russian)","Armenian","Georgian"]},
+ {w:"Спасибо",r:"spasibo",g:"thank you",a:"Cyrillic (Russian)",f:["Greek","Armenian","Georgian"]},
+ {w:"תודה",r:"toda",g:"thank you",a:"Hebrew",f:["Arabic","Amharic","Georgian"]},
+ {w:"شكرا",r:"shukran",g:"thank you",a:"Arabic",f:["Hebrew","Tamil","Devanagari (Hindi)"]},
+ {w:"धन्यवाद",r:"dhanyavaad",g:"thank you",a:"Devanagari (Hindi)",f:["Bengali","Thai","Tamil"]},
+ {w:"감사합니다",r:"gamsahamnida",g:"thank you",a:"Korean",f:["Japanese","Chinese","Thai"]},
+ {w:"ありがとう",r:"arigatō",g:"thank you",a:"Japanese",f:["Korean","Chinese","Thai"]},
+ {w:"谢谢",r:"xièxie",g:"thank you",a:"Chinese",f:["Japanese","Korean","Thai"]},
+ {w:"მადლობა",r:"madloba",g:"thank you",a:"Georgian",f:["Armenian","Tamil","Thai"]},
+ {w:"Շնորհակալություն",r:"shnorhakalutyun",g:"thank you",a:"Armenian",f:["Georgian","Greek","Cyrillic (Russian)"]},
+ {w:"ขอบคุณ",r:"khop khun",g:"thank you",a:"Thai",f:["Tamil","Bengali","Korean"]},
+ {w:"நன்றி",r:"nandri",g:"thank you",a:"Tamil",f:["Thai","Bengali","Devanagari (Hindi)"]}
 ];
 
 // Animal noises · w = the sound, l = the language, a = the animal
@@ -110,7 +158,19 @@ const NOISE = [
  {w:"nöff nöff",l:"Swedish",a:"Pig",f:["Dog","Seal","Horse"],o:"Oink oink, in Swedish."},
  {w:"pío pío",l:"Spanish",a:"Chick",f:["Mouse","Cat","Owl"],o:"Cheep cheep, in Spanish."},
  {w:"gav gav",l:"Russian",a:"Dog",f:["Crow","Goose","Cat"],o:"Woof woof, in Russian: гав-гав."},
- {w:"kikeriki",l:"German",a:"Rooster",f:["Mouse","Cricket","Parrot"],o:"Cock-a-doodle-doo, in German."}
+ {w:"kikeriki",l:"German",a:"Rooster",f:["Mouse","Cricket","Parrot"],o:"Cock-a-doodle-doo, in German."},
+ {w:"ouaf ouaf",l:"French",a:"Dog",f:["Owl","Cat","Wolf"],o:"Woof woof, in French."},
+ {w:"cui-cui",l:"French",a:"Bird",f:["Mouse","Chick","Bee"],o:"Tweet tweet, in French."},
+ {w:"meuh",l:"French",a:"Cow",f:["Sheep","Cat","Goat"],o:"Moo, in French."},
+ {w:"wau wau",l:"German",a:"Dog",f:["Cat","Owl","Crow"],o:"Woof woof, in German."},
+ {w:"muh",l:"German",a:"Cow",f:["Duck","Pig","Sheep"],o:"Moo, in German."},
+ {w:"guau guau",l:"Spanish",a:"Dog",f:["Owl","Monkey","Cat"],o:"Woof woof, in Spanish."},
+ {w:"cuac cuac",l:"Spanish",a:"Duck",f:["Frog","Crow","Hen"],o:"Quack quack, in Spanish."},
+ {w:"wāng wāng",l:"Chinese",a:"Dog",f:["Cat","Wolf","Goat"],o:"Woof woof, in Chinese: 汪汪."},
+ {w:"kva kva",l:"Russian",a:"Frog",f:["Duck","Crow","Goose"],o:"Ribbit, in Russian: ква-ква."},
+ {w:"hav hav",l:"Turkish",a:"Dog",f:["Horse","Cat","Donkey"],o:"Woof woof, in Turkish."},
+ {w:"chicchirichì",l:"Italian",a:"Rooster",f:["Chick","Cricket","Sparrow"],o:"Cock-a-doodle-doo, in Italian."},
+ {w:"yaong",l:"Korean",a:"Cat",f:["Dog","Baby","Goat"],o:"Miaow, in Korean: 야옹."}
 ];
 
 // English abroad · English-looking words with a meaning of their own
@@ -131,7 +191,19 @@ const ABROAD = [
  {w:"puenting",l:"Spanish",a:"Bungee jumping",f:["Hopping on one foot","Bridge building","Punting on a river"],o:"From <i>puente</i>, ‘bridge’, plus English <i>-ing</i>."},
  {w:"hwaiting",l:"Korean",a:"Come on, you can do it!",f:["Let's fight!","Please wait","Bad luck"],o:"From ‘fighting’, shouted to cheer people on."},
  {w:"outdoor",l:"Brazilian Portuguese",a:"A billboard",f:["A garden","A camping trip","A patio"],o:"The big posters beside the road."},
- {w:"naitā",l:"Japanese",a:"A sports match played at night",f:["A nightclub","A night shift","Pyjamas"],o:"From ‘night’ plus ‘-er’, especially for baseball under floodlights."}
+ {w:"naitā",l:"Japanese",a:"A sports match played at night",f:["A nightclub","A night shift","Pyjamas"],o:"From ‘night’ plus ‘-er’, especially for baseball under floodlights."},
+ {w:"Body",l:"German",a:"A bodysuit",f:["A corpse","A bodyguard","A personal trainer"],o:"The one-piece top that fastens underneath."},
+ {w:"Shooting",l:"German",a:"A photo shoot",f:["A hunting trip","A football practice","A film premiere"],o:"Also <i>Fotoshooting</i>."},
+ {w:"Mobbing",l:"German",a:"Bullying, especially at work",f:["A crowd at a concert","A protest march","Mopping the floor"],o:"Used in several European languages."},
+ {w:"Pullunder",l:"German",a:"A sleeveless jumper",f:["A jumper with a hood","A pull-out sofa","A vest worn under a shirt"],o:"Worn under a jacket, the opposite idea to a pullover."},
+ {w:"un pressing",l:"French",a:"A dry cleaner's",f:["A trouser press","A printing works","A juice bar"],o:"Take your suit to <i>le pressing</i>."},
+ {w:"un relooking",l:"French",a:"A makeover",f:["A second look","A recount","A rerun on TV"],o:"From ‘re-’ plus ‘look’. English doesn't use it."},
+ {w:"un camping",l:"French",a:"A campsite",f:["A camping trip","A tent","A caravan"],o:"In English camping is the activity. In French it's the place."},
+ {w:"il box",l:"Italian",a:"A garage, or a child's playpen",f:["A boxing ring","A post box","A TV set"],o:"Also the pit stop area at a motor race."},
+ {w:"lo smart working",l:"Italian",a:"Working from home",f:["Working very hard","Office dress code","Wearing a smart suit"],o:"It took off in Italy in 2020."},
+ {w:"un crack",l:"Spanish",a:"An ace, a star player",f:["A broken bone","A joke","A small mistake"],o:"Usually said of brilliant footballers."},
+ {w:"baikingu",l:"Japanese",a:"An all-you-can-eat buffet",f:["Cycling","Baking","A Viking ship"],o:"From ‘Viking’, after a Swedish-style smorgasbord restaurant in a Tokyo hotel in the 1950s."},
+ {w:"haendeupon",l:"Korean",a:"A mobile phone",f:["A telephone box","A handbag","A remote control"],o:"From ‘hand phone’: 핸드폰."}
 ];
 
 // Real or Babel? · r = three real words [word, language, meaning], k = the one we made up
@@ -145,7 +217,27 @@ const FAKEB = [
  {r:[["sisu","Finnish","Grit and determination"],["lagom","Swedish","Just the right amount"],["hygge","Danish","Cosiness"]],k:["snøkkelig","Norwegian","The joy of the first snow"]},
  {r:[["hiraeth","Welsh","Longing for home"],["Torschlusspanik","German","Fear that time is running out"],["dolce far niente","Italian","The pleasure of doing nothing"]],k:["tristeloup","French","The sadness of Sunday evenings"]},
  {r:[["dreich","Scots","Dull, drizzly weather"],["craic","Irish","Fun and good chat"],["cwtch","Welsh","A cuddle"]],k:["glumph","Cornish","A thick sea mist"]},
- {r:[["Schadenfreude","German","Joy at someone else's bad luck"],["gezellig","Dutch","Cosy and sociable"],["wabi-sabi","Japanese","Beauty in imperfection"]],k:["chuffling","Welsh","Laughing so hard you can't speak"]}
+ {r:[["Schadenfreude","German","Joy at someone else's bad luck"],["gezellig","Dutch","Cosy and sociable"],["wabi-sabi","Japanese","Beauty in imperfection"]],k:["chuffling","Welsh","Laughing so hard you can't speak"]},
+ {r:[["Backpfeifengesicht","German","A face that's asking for a slap"],["jayus","Indonesian","A joke so unfunny it's funny"],["gigil","Filipino","The urge to squeeze something cute"]],k:["pomplirr","Swedish","The sound of rain on a tent"]},
+ {r:[["Waldeinsamkeit","German","Being alone in the woods"],["shinrin-yoku","Japanese","Forest bathing"],["friluftsliv","Norwegian","Outdoor living"]],k:["mossvärme","Swedish","The warmth of moss in the sun"]},
+ {r:[["Zugzwang","German","Being forced to make a move you don't want to"],["ikigai","Japanese","A reason for living"],["meraki","Greek","Putting your soul into your work"]],k:["travaillon","French","A job you can't stop thinking about at home"]},
+ {r:[["utepils","Norwegian","A beer drunk outdoors in the sun"],["Feierabend","German","The end of the working day"],["apéro","French","Drinks before dinner"]],k:["cervezol","Spanish","The first sip of a cold drink on a hot day"]},
+ {r:[["gattara","Italian","A woman who looks after stray cats"],["neko-jita","Japanese","Unable to eat hot food (a ‘cat's tongue’)"],["Kater","German","A hangover (and a tomcat)"]],k:["miaurello","Italian","A cat that only purrs for one person"]},
+ {r:[["kalsarikännit","Finnish","Drinking at home in your underwear"],["koselig","Norwegian","Cosy"],["mysig","Swedish","Snug"]],k:["pyjamarra","Spanish","A whole day spent in pyjamas"]},
+ {r:[["age-otori","Japanese","Looking worse after a haircut"],["tartle","Scots","Hesitating when you've forgotten someone's name"],["l'appel du vide","French","The call of the void"]],k:["frisørvrede","Danish","Anger at the hairdresser you never show"]},
+ {r:[["Ohrwurm","German","A tune stuck in your head"],["duende","Spanish","The power of art to move you"],["mamihlapinatapai","Yaghan","A look shared by two people who each want the other to go first"]],k:["chansonnite","French","Humming a song you hate"]},
+ {r:[["Kopfkino","German","Picturing something vividly in your head"],["boketto","Japanese","Gazing blankly into the distance"],["flâneur","French","Someone who strolls the city for pleasure"]],k:["passeggiolo","Italian","A walk taken only to be seen"]},
+ {r:[["poronkusema","Finnish","How far a reindeer walks before it needs a break"],["Fingerspitzengefühl","German","A natural feel for a situation"],["smultronställe","Swedish","A special secret place"]],k:["renvandring","Norwegian","Walking home through the snow after dark"]},
+ {r:[["cafuné","Brazilian Portuguese","Running your fingers through someone's hair"],["abbiocco","Italian","Drowsiness after a big meal"],["gökotta","Swedish","Getting up early to hear the birds"]],k:["dormiliance","French","The pleasure of a lie-in on a rainy day"]},
+ {r:[["verschlimmbessern","German","To make something worse by trying to improve it"],["Treppenwitz","German","A comeback you think of too late"],["arigata-meiwaku","Japanese","A favour you didn't want"]],k:["faltarello","Italian","Fixing something that wasn't broken"]},
+ {r:[["querencia","Spanish","The place where you feel most yourself"],["cynefin","Welsh","Your place of belonging"],["toska","Russian","A deep, aching sadness"]],k:["paysagerie","French","Missing a view you've only seen once"]},
+ {r:[["Gemütlichkeit","German","Cosiness and good company"],["hyggelig","Danish","Cosy and pleasant"],["mysa","Swedish","To relax and get cosy"]],k:["warmeling","Dutch","A blanket warmed on the radiator"]},
+ {r:[["Weltschmerz","German","Sadness at the state of the world"],["ennui","French","Listless boredom"],["mono no aware","Japanese","A gentle sadness at things passing"]],k:["tristolina","Spanish","The gloom when a holiday ends"]},
+ {r:[["jeitinho","Brazilian Portuguese","A clever way round the rules"],["chutzpah","Yiddish","Cheeky nerve"],["sprezzatura","Italian","Making hard things look effortless"]],k:["slinkerij","Dutch","Getting out of a job by looking busy"]},
+ {r:[["ouaf ouaf","French","A dog's woof"],["kva kva","Russian","A frog's croak"],["miau","German","A cat's miaow"]],k:["pruk pruk","Polish","A hen's cluck"]},
+ {r:[["Schweinshaxe","German","Roast pork knuckle"],["smørrebrød","Danish","Open sandwiches"],["gazpacho","Spanish","Cold tomato soup"]],k:["frittomela","Italian","Apple fritters dusted with cinnamon"]},
+ {r:[["Body","German","A bodysuit"],["Pullunder","German","A sleeveless jumper"],["un pressing","French","A dry cleaner's"]],k:["el beautymarket","Spanish","A make-up shop"]},
+ {r:[["cariad","Welsh","Darling, love"],["braw","Scots","Fine, excellent"],["dreckly","Cornish English","Later, eventually"]],k:["grommock","Manx","A cosy corner by the fire"]}
 ];
 
 // Closer to home · the other languages of Britain and Ireland
@@ -166,7 +258,19 @@ const HOME = [
  {w:"Kernow",l:"Cornish",a:"Cornwall",f:["Cornish pasty","The sea","Hello"],o:"You'll see it on Cornish flags and car stickers."},
  {w:"moghrey mie",l:"Manx",a:"Good morning",f:["Good night","Happy birthday","Welcome"],o:"Manx is the Isle of Man's own language, brought back from the brink."},
  {w:"dreich",l:"Scots",a:"Dull, wet and gloomy (of weather)",f:["Thirsty","Very cold","Lucky"],o:"Voted Scotland's favourite Scots word."},
- {w:"bairn",l:"Scots",a:"A child",f:["A barn","A bear","A beer"],o:"Also heard across the north of England."}
+ {w:"bairn",l:"Scots",a:"A child",f:["A barn","A bear","A beer"],o:"Also heard across the north of England."},
+ {w:"cariad",l:"Welsh",a:"Love, darling",f:["A carriage","A friend","A song"],o:"Used like ‘love’ or ‘sweetheart’ in Welsh English too."},
+ {w:"hwyl",l:"Welsh",a:"Fun and high spirits",f:["A howl","A sail","A field"],o:"<i>Hwyl fawr</i>, ‘great fun’, is how you say goodbye."},
+ {w:"bore da",l:"Welsh",a:"Good morning",f:["Good night","Good luck","Goodbye"],o:"<i>Bore</i> is morning and <i>da</i> is good."},
+ {w:"cwm",l:"Welsh",a:"A valley",f:["A coast","A cave","A spring"],o:"As in Cwmbran. Climbers borrowed it for a bowl-shaped mountain valley."},
+ {w:"loch",l:"Scottish Gaelic",a:"A lake or sea inlet",f:["A castle","A lock","A rocky island"],o:"Irish has it too, spelt <i>lough</i> in English."},
+ {w:"gleann",l:"Scottish Gaelic",a:"A narrow valley",f:["A green field","A small wood","A beach"],o:"Spelt glen in English, as in Glencoe."},
+ {w:"uisge beatha",l:"Scottish Gaelic",a:"Whisky (literally ‘water of life’)",f:["Holy water","Lemonade","Sea water"],o:"English made <i>uisge</i> into whisky."},
+ {w:"cill",l:"Irish",a:"A church",f:["A hill","A field","A lake"],o:"Spelt Kil in English, as in Kilkenny and Killarney."},
+ {w:"slán",l:"Irish",a:"Goodbye (literally ‘safe’)",f:["Hello","Cheers","Thank you"],o:"<i>Slán abhaile</i>: safe home."},
+ {w:"tre",l:"Cornish",a:"A farmstead or settlement",f:["A tree","Three","A hill"],o:"‘By Tre, Pol and Pen shall ye know the Cornishmen.’"},
+ {w:"ken",l:"Scots",a:"To know",f:["To see","To like","To laugh"],o:"<i>D'ye ken?</i> Do you know? English kept it in ‘beyond my ken’."},
+ {w:"braw",l:"Scots",a:"Fine, excellent",f:["Brave","Brown","Broad"],o:"<i>A braw bricht nicht</i>: a fine bright night."}
 ];
 
 // On the menu · a = what the dish's name literally means
@@ -187,5 +291,17 @@ const MENU = [
  {w:"bibimbap",l:"Korean",a:"Mixed rice",f:["Rice bowl","Spicy rice","Fried rice"],o:"Rice topped with vegetables, egg and chilli paste, all stirred together."},
  {w:"Kaiserschmarrn",l:"Austrian German",a:"Emperor's mess",f:["King's pancake","Royal crumble","Palace pudding"],o:"A fluffy pancake torn into pieces, said to be a favourite of Emperor Franz Joseph."},
  {w:"biscotti",l:"Italian",a:"Twice cooked",f:["Little biscuits","Almond bites","Dry bread"],o:"They're baked twice, which makes them crunchy. <i>Biscuit</i> means the same."},
- {w:"strozzapreti",l:"Italian",a:"Priest stranglers",f:["Little straws","Twisted ropes","Monks' fingers"],o:"There are several stories, mostly about greedy priests eating too fast."}
+ {w:"strozzapreti",l:"Italian",a:"Priest stranglers",f:["Little straws","Twisted ropes","Monks' fingers"],o:"There are several stories, mostly about greedy priests eating too fast."},
+ {w:"panna cotta",l:"Italian",a:"Cooked cream",f:["Sweet cream","Cream cake","Cold cream"],o:"A set cream pudding from Piedmont."},
+ {w:"saltimbocca",l:"Italian",a:"Jumps in the mouth",f:["Salted beef","Mouthful of salt","Tasty bite"],o:"Veal with ham and sage, so tasty it leaps into your mouth."},
+ {w:"spaghetti",l:"Italian",a:"Little strings",f:["Little worms","Little sticks","Long noodles"],o:"From <i>spago</i>, ‘string’."},
+ {w:"mille-feuille",l:"French",a:"A thousand leaves",f:["A thousand flavours","Thin pastry","Leaf cake"],o:"Layers and layers of puff pastry and cream."},
+ {w:"pot-au-feu",l:"French",a:"Pot on the fire",f:["Hot pot","Fire stew","Pot of plenty"],o:"A slow-cooked beef and vegetable stew."},
+ {w:"amuse-bouche",l:"French",a:"Mouth amuser",f:["Small bite","Before the meal","Funny food"],o:"A tiny free nibble before the meal."},
+ {w:"chilli con carne",l:"Spanish",a:"Chilli with meat",f:["Spicy beef","Hot stew","Chilli and beans"],o:"A Tex-Mex favourite."},
+ {w:"pad thai",l:"Thai",a:"Thai stir-fry",f:["Thai noodles","Peanut noodles","Street food"],o:"<i>Pad</i> means stir-fried."},
+ {w:"teriyaki",l:"Japanese",a:"Glossy grill",f:["Sweet sauce","Soy chicken","Fire roast"],o:"<i>Teri</i> is the shine of the glaze and <i>yaki</i> is grilling."},
+ {w:"smörgåsbord",l:"Swedish",a:"Sandwich table",f:["Butter feast","Cold buffet","Swedish table"],o:"English uses it for any big spread of choices."},
+ {w:"Apfelstrudel",l:"German",a:"Apple whirlpool",f:["Apple pie","Apple roll","Apple layers"],o:"The rolled pastry swirls like a whirlpool."},
+ {w:"risotto",l:"Italian",a:"Little rice",f:["Rice stew","Creamy rice","Cooked rice"],o:"From <i>riso</i>, ‘rice’."}
 ];
