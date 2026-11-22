@@ -111,7 +111,11 @@ const td=parseInt(params.get('day'),10);
 const N=Number.isInteger(td)&&td>=1?td-1:TODAY;
 const EPOCH=Math.round(dayDate(N)/864e5)+3; // 1 Jan 1970 was a Thursday; Monday = 0
 const WD=EPOCH%7, WEEKS=DAYS.length/7;
-const WK=((Math.floor(EPOCH/7)-2967)%WEEKS+WEEKS)%WEEKS; // week of 23 Nov 2026 plays data week 1; new weeks follow
+// Days before 23 Nov 2026 (launch weekend) keep Week 1. From then on, ORDER says which data week plays:
+// the new Weeks 2 and 3 first, then Week 1. Add new weeks to ORDER.
+const WN=Math.floor(EPOCH/7), WS=2969; // WS = week of 23 Nov 2026
+const ORDER=[1,2,0];
+const WK=WN<WS?0:ORDER[(WN-WS)%ORDER.length];
 const D=DAYS[WK*7+WD];
 const THEME=WD===5?'Science fiction':'';
 const SKEY='inkling-'+keyOf(N);
