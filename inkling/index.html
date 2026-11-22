@@ -120,7 +120,12 @@ const BASE=DAYS[WK*7+WD];
 // From the second time through, each round slides along at its own pace (round r moves r/R places per pass, never more than one),
 // so rounds come back in new combinations rather than as the same day, and each item still stays almost a full list apart.
 const mixPick=(j,L,r,R)=>(j%L+Math.ceil(Math.floor(j/L)*r/R))%L;
-const D=WN<WS?BASE:Object.fromEntries(Object.keys(BASE).map((key,r)=>[key,DAYS[ORDER[mixPick(WN-WS,ORDER.length,r,5)]*7+WD][key]]));
+// A mixed round that would repeat a word already used today takes the next week's version of that round instead.
+const SUBJ={p:it=>[it.t],x:it=>[...it.w,it.odd],m:it=>it.flat(),q:it=>it.i.map(a=>a[0]),s:it=>[it.t,it.c]};
+const words=(key,it)=>(SUBJ[key]?SUBJ[key](it):[]).map(s=>String(s).toLowerCase());
+const D=WN<WS?BASE:(()=>{const used=new Set(),out={};Object.keys(BASE).forEach((key,r)=>{let first=null,pick=null;
+  for(let t=0;t<ORDER.length&&!pick;t++){const i=(mixPick(WN-WS,ORDER.length,r,5)+t)%ORDER.length;const it=DAYS[(ORDER[i])*7+WD][key];if(!first)first=it;if(!words(key,it).some(s=>used.has(s)))pick=it;}
+  pick=pick||first;words(key,pick).forEach(s=>used.add(s));out[key]=pick;});return out;})();
 const THEME=WD===5?'Science fiction':'';
 const SKEY='inkling-'+keyOf(N);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
