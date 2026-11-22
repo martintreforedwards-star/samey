@@ -311,7 +311,7 @@ const fmt=(n,o)=>dayDate(n).toLocaleDateString('en-GB',Object.assign({timeZone:'
 const NEWFROM=Math.round((Date.UTC(2026,10,23)-START)/864e5), OLDLEN=30;
 // From the second time through, each round slides along at its own pace (round r moves r/R places per pass, never more than one),
 // so rounds come back in new combinations rather than as the same day, and each item still stays almost a full list apart.
-const mixPick=(j,L,r,R)=>(j%L+Math.floor(Math.floor(j/L)*r/R))%L;
+const mixPick=(j,L,r,R)=>(j%L+Math.ceil(Math.floor(j/L)*r/R))%L;
 const wordsFor=n=>TIERS.map((t,r)=>t[n<NEWFROM?n%OLDLEN:(OLDLEN+mixPick(n-NEWFROM,t.length,r,4))%t.length]);
 
 // ---- Which day is on screen ----
