@@ -112,9 +112,11 @@ const td=parseInt(params.get('day'),10);
 const N=Number.isInteger(td)&&td>=1?td-1:TODAY;
 const EPOCH=Math.round(dayDate(N)/864e5)+3; // 1 Jan 1970 was a Thursday; Monday = 0
 const WD=EPOCH%7, WEEKS=DAYS.length/7;
-// Weeks 1-2 played up to 6 Dec 2026 exactly as before (OLDW = 2); from 7 Dec the new weeks come next, then all rotate.
-const OLDW=2, WN=Math.floor(EPOCH/7), WS=2969; // WS = week of 23 Nov 2026
-const WK=WN<WS+OLDW?((WN-2967)%OLDW+OLDW)%OLDW:(WN-WS)%WEEKS;
+// Days before 23 Nov 2026 keep the weeks they played. From then on, ORDER says which data week plays:
+// Week 1, then the new Weeks 3 and 4, then Week 2 (whose weekend was played at launch). Add new weeks to ORDER.
+const WN=Math.floor(EPOCH/7), WS=2969; // WS = week of 23 Nov 2026
+const ORDER=[0,2,3,1];
+const WK=WN<WS?((WN-2967)%2+2)%2:ORDER[(WN-WS)%ORDER.length];
 const D=DAYS[WK*7+WD];
 const THEME='';
 const SKEY='dodo-'+keyOf(N);
