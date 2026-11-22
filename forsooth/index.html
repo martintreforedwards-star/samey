@@ -98,7 +98,7 @@ footer{margin-top:18px;text-align:center}
 <script>
 // ---- Which day is on screen ----
 // Preview: today's puzzle depends on the weekday (see data.js). ?day=N plays Forsooth No. N; #test plays without saving.
-const START=Date.UTC(2026,10,21);
+const START=Date.UTC(2026,10,22);
 const dayDate=n=>new Date(START+n*864e5);
 const fmt=(n,o)=>dayDate(n).toLocaleDateString('en-GB',Object.assign({timeZone:'UTC'},o));
 const keyOf=n=>{const d=dayDate(n);return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0')};
@@ -111,7 +111,7 @@ const td=parseInt(params.get('day'),10);
 const N=Number.isInteger(td)&&td>=1?td-1:TODAY;
 const EPOCH=Math.round(dayDate(N)/864e5)+3; // 1 Jan 1970 was a Thursday; Monday = 0
 const WD=EPOCH%7, WEEKS=DAYS.length/7;
-const WK=((Math.floor(EPOCH/7)-2967)%WEEKS+WEEKS)%WEEKS; // week of 23 Nov 2026 plays data week 1; new weeks follow
+const WK=((Math.floor(EPOCH/7)-2968)%WEEKS+WEEKS)%WEEKS; // week of 16 Nov 2026 (launch) plays data week 1; new weeks follow
 const D=DAYS[WK*7+WD];
 const THEME=WD===5?'Chaucer day':'';
 const SKEY='forsooth-'+keyOf(N);
