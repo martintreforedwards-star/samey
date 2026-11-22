@@ -537,8 +537,10 @@ const START=Date.UTC(2026,9,17);
 const dayDate=n=>new Date(START+n*864e5);   // read with UTC getters
 const keyOf=n=>{const d=dayDate(n);return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0')};
 const fmt=(n,o)=>dayDate(n).toLocaleDateString('en-GB',Object.assign({timeZone:'UTC'},o));
+// From the second time through, every other round slides one place per pass, so the same set of rounds never comes back together.
+const mixPick=(j,L,r)=>(j%L+Math.floor(j/L)*(r%2))%L;
 function roundsFor(n){
-  const rs=TYPES.map(t=>POOL[t][n%POOL[t].length]);
+  const rs=TYPES.map((t,r)=>POOL[t][mixPick(n,POOL[t].length,r)]);
   if(dayDate(n).getUTCDay()===0) rs.push(POOL.garden[(Math.floor((n+6)/7)-1)%POOL.garden.length]);
   return rs;
 }
