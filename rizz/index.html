@@ -209,7 +209,7 @@ function round(){
   const R=ROUNDS[st.i],k=R.key,it=R.it;dots();
   // Option 0 is always the right answer; the order on screen is shuffled.
   let opts,head;
-  if(k==='fake'){opts=[it.k,...it.r].map(x=>`<span class="w">${esc(x[0])}</span><span class="m">${esc(x[1])}</span>${x[2]?`<span class="src">Added: ${esc(x[2])}</span>`:''}`);head='Real or <mark>rizz</mark>?'}
+  if(k==='fake'){opts=[it.k,...it.r].map(x=>`<span class="w">${esc(x[0])}</span><span class="m">${esc(x[1])}</span>${x[2]?`<span class="src">${/Word of the Year/.test(x[2])?'':'Added: '}${esc(x[2])}</span>`:''}`);head='Real or <mark>rizz</mark>?'}
   else{opts=[it.a,...it.f].map(esc);head=k==='translate'?`<span class="say">“${esc(it.w)}”</span>`:`<mark>${esc(it.w)}</mark>`}
   let ord=order(4,dateKey+'|'+k+'|'+(k==='fake'?it.k[0]:it.w));
   if(k==='when'||k==='older')ord=[...ord].sort((x,y)=>parseInt(opts[x])-parseInt(opts[y]));   // dates read best in order
