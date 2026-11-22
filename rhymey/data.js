@@ -19,7 +19,21 @@ const ODD=[
   {w:['word','sword','board','cord'],o:'Sword (the w is silent), board and cord rhyme. Word rhymes with <i>bird</i>.'},
   {w:['pint','hint','mint','lint'],o:'Hint, mint and lint rhyme. Pint is the famous odd one out: it rhymes with <i>pine</i> + t.'},
   {w:['bone','gone','on','con'],o:'Gone, on and con rhyme. Bone rhymes with <i>stone</i>, even though gone ends with the same letters.'},
-  {w:['food','blood','mud','flood'],o:'Blood, mud and flood rhyme. Food rhymes with <i>mood</i>, though blood and flood look like it.'}
+  {w:['food','blood','mud','flood'],o:'Blood, mud and flood rhyme. Food rhymes with <i>mood</i>, though blood and flood look like it.'},
+  {w:['wand','hand','band','land'],o:'Hand, band and land rhyme. Wand rhymes with <i>pond</i>, though it looks like hand.'},
+  {w:['warm','farm','harm','charm'],o:'Farm, harm and charm rhyme. Warm rhymes with <i>storm</i>: the w changes the vowel.'},
+  {w:['worm','storm','form','norm'],o:'Storm, form and norm rhyme. Worm rhymes with <i>firm</i>.'},
+  {w:['shoe','toe','foe','go'],o:'Toe, foe and go rhyme. Shoe rhymes with <i>two</i>, though it ends like toe.'},
+  {w:['come','home','dome','foam'],o:'Home, dome and foam rhyme. Come rhymes with <i>hum</i>, despite looking like home.'},
+  {w:['lose','nose','those','rose'],o:'Nose, those and rose rhyme. Lose rhymes with <i>shoes</i>.'},
+  {w:['done','bone','stone','phone'],o:'Bone, stone and phone rhyme. Done rhymes with <i>sun</i>.'},
+  {w:['glove','cove','stove','grove'],o:'Cove, stove and grove rhyme. Glove rhymes with <i>love</i>.'},
+  {w:['draught','caught','bought','taught'],o:'Caught, bought and taught rhyme. Draught rhymes with <i>craft</i>: the gh sounds like f.'},
+  {w:['sew','new','few','dew'],o:'New, few and dew rhyme. Sew rhymes with <i>so</i>, though it ends like new.'},
+  {w:['four','hour','sour','flour'],o:'Hour, sour and flour rhyme. Four rhymes with <i>more</i>.'},
+  {w:['bear','hear','fear','near'],o:'Hear, fear and near rhyme. Bear rhymes with <i>hair</i>.'},
+  {w:['cost','post','most','host'],o:'Post, most and host rhyme with <i>ghost</i>. Cost rhymes with <i>lost</i>.'},
+  {w:['wonder','ponder','yonder','fonder'],o:'Ponder, yonder and fonder rhyme. Wonder rhymes with <i>thunder</i>.'}
 ];
 
 // Finish the line. The last line ends in ___. a rhymes AND keeps the beat; every decoy fails on one or the other.
@@ -37,7 +51,15 @@ const COUPLET=[
   {l:['The kettle\'s on, the biscuits wait;','The post arrives, as always, ___'],a:'late',f:['slow','lately','early'],by:ORIG,o:'Late rhymes with wait and lands on the beat. Lately rhymes on its first syllable, then trails off with an extra one.'},
   {l:['I tried to write a perfect line;','The rhythm slipped, the rhyme was ___'],a:'fine',f:['good','divine','perfect'],by:ORIG,o:'Fine rhymes with line. Divine rhymes too, but its extra syllable makes the rhythm slip, which is a bit too on the nose.'},
   {l:['The sun came out on Margate pier,','The first warm afternoon this ___'],a:'year',f:['month','summer','yesteryear'],by:ORIG,o:'Year rhymes with pier. Yesteryear rhymes but adds two syllables, so the line runs long.'},
-  {l:['He asked me why the sky is blue;','I said I hadn\'t got a ___'],a:'clue',f:['hint','notion','residue'],by:ORIG,o:'Clue rhymes with blue. Residue ends with the same sound, but the stress is on <i>RES</i>, so the rhyme falls on a weak syllable.'}
+  {l:['He asked me why the sky is blue;','I said I hadn\'t got a ___'],a:'clue',f:['hint','notion','residue'],by:ORIG,o:'Clue rhymes with blue. Residue ends with the same sound, but the stress is on <i>RES</i>, so the rhyme falls on a weak syllable.'},
+  {l:['Twinkle, twinkle, little star,','How I wonder what you ___'],a:'are',f:['be','shine','resemble'],by:'Jane Taylor, 1806',o:'Are rhymes with star and fills the final beat. Shine keeps the beat but doesn\'t rhyme; resemble has too many syllables.'},
+  {l:['Mary had a little lamb,','Its fleece was white as ___'],a:'snow',f:['milk','chalk','linen'],by:'Sarah Josepha Hale, 1830',o:'Snow rhymes with go two lines later. Milk and chalk keep the beat but don\'t rhyme; linen adds a syllable.'},
+  {l:['Humpty Dumpty sat on a wall,','Humpty Dumpty had a great ___'],a:'fall',f:['tumble','drop','accident'],by:'Nursery rhyme',o:'Fall rhymes with wall. Drop keeps the beat but doesn\'t rhyme; tumble and accident add syllables.'},
+  {l:['Of cloudless climes and starry skies;','And all that\'s best of dark and bright','Meet in her aspect and her ___'],a:'eyes',f:['face','gaze','features'],by:'Lord Byron, 1815',o:'Eyes rhymes with skies (the pattern is ABAB). Face and gaze keep the beat but miss the rhyme; features adds a weak syllable.'},
+  {l:['So was it when my life began;','So is it now I am a ___'],a:'man',f:['child','boy','grown-up'],by:'William Wordsworth, 1807',o:'Man rhymes with began. Child and boy keep the beat but don\'t rhyme; grown-up adds a syllable.'},
+  {l:['He clasps the crag with crooked hands;','Close to the sun in lonely lands,','Ringed with the azure world, he ___'],a:'stands',f:['sits','waits','perches'],by:'Alfred, Lord Tennyson, 1851',o:'Stands completes Tennyson\'s three-line rhyme: hands, lands, stands. Perches also spoils the beat.'},
+  {l:['They took some honey, and plenty of money,','Wrapped up in a five-pound ___'],a:'note',f:['bill','wallet','envelope'],by:'Edward Lear, 1871',o:'Note rhymes with boat from the line before. Bill keeps the beat but doesn\'t rhyme; the others add syllables.'},
+  {l:['And mark in every face I meet','Marks of weakness, marks of ___'],a:'woe',f:['pain','sorrow','misery'],by:'William Blake, 1794',o:'Woe rhymes with flow from the stanza\'s second line. Pain keeps the beat but doesn\'t rhyme; sorrow and misery add syllables.'}
 ];
 
 // Fix the line. The [bracketed] word breaks the metre; a puts it right. Every decoy still breaks it.
@@ -49,7 +71,15 @@ const FIX=[
   {l:'The morning train is [unfortunately] late again',a:'running',f:['delayed','slow','extremely'],by:ORIG,p:'the MOR-ning TRAIN is RUN-ning LATE a-GAIN',o:'The line wants a DUM-da word. Delayed is da-DUM, so two stresses bump together. Slow is a syllable short and extremely is one too long.'},
   {l:'Now is the [wintertime] of our discontent',a:'winter',f:['chill','December','frost'],by:'William Shakespeare, Richard III',p:'NOW is the WIN-ter OF our DIS-con-TENT',o:'Winter keeps it to ten syllables. Chill and frost are one short; December and wintertime are one too long.'},
   {l:'Was this the face that launched [innumerable] ships',a:'a thousand',f:['countless','millions of','a myriad of'],by:'Christopher Marlowe, c. 1592',p:'was THIS the FACE that LAUNCHED a THOU-sand SHIPS',o:'A thousand fills three syllables as da-DUM-da. Countless leaves the line a syllable short; the others overload it.'},
-  {l:'Season of mists and [ripe] fruitfulness',a:'mellow',f:['sweet','overripe','abundant'],by:'John Keats, 1819',p:'SEA-son of MISTS and MEL-low FRUIT-ful-NESS',o:'Keats needs two syllables here, stressed on the first. Mellow is perfect. Sweet and ripe are one short; overripe and abundant are one too many.'}
+  {l:'Season of mists and [ripe] fruitfulness',a:'mellow',f:['sweet','overripe','abundant'],by:'John Keats, 1819',p:'SEA-son of MISTS and MEL-low FRUIT-ful-NESS',o:'Keats needs two syllables here, stressed on the first. Mellow is perfect. Sweet and ripe are one short; overripe and abundant are one too many.'},
+  {l:'A thing of [loveliness] is a joy for ever:',a:'beauty',f:['grace','prettiness','charm'],by:'John Keats, 1818',p:'a THING of BEAU-ty IS a JOY for EV-er',o:'The gap needs two syllables, stressed on the first. Grace and charm are one short; prettiness and loveliness one too many.'},
+  {l:'She walks in beauty, like the [evening]',a:'night',f:['darkness','midnight','twilight'],by:'Lord Byron, 1815',p:'she WALKS in BEAU-ty, LIKE the NIGHT',o:'Eight syllables, ending on a beat. Every two-syllable word adds a weak ending and breaks the rhyme with bright.'},
+  {l:'Had we but world enough, and [leisure]',a:'time',f:['freedom','patience','moments'],by:'Andrew Marvell, 1681',p:'had WE but WORLD e-NOUGH, and TIME',o:'The line ends on a beat. Two-syllable words add a limp weak ending.'},
+  {l:'A rainbow in the [heavens]',a:'sky',f:['firmament','distance','open air'],by:'William Wordsworth, 1807',p:'a RAIN-bow IN the SKY',o:'Six syllables, three beats, ending strong. The others all add syllables.'},
+  {l:'If music be the [nourishment] of love, play on',a:'food',f:['diet','banquet','sustenance'],by:'William Shakespeare, Twelfth Night',p:'if MU-sic BE the FOOD of LOVE, play ON',o:'Ten syllables in five da-DUM beats. Only a one-syllable word keeps the count.'},
+  {l:'If you can keep your [composure] when all about you',a:'head',f:['sanity','temper','senses'],by:'Rudyard Kipling, 1910',p:'if YOU can KEEP your HEAD when ALL a-BOUT you',o:'The beat needs a single stressed syllable here. Every longer word piles up weak syllables.'},
+  {l:'Once upon a midnight dreary, while I pondered, weak and [fatigued]',a:'weary',f:['worn','exhausted','spent'],by:'Edgar Allan Poe, 1845',p:'ONCE up-ON a MID-night DREAR-y, WHILE i PON-dered, WEAK and WEAR-y',o:'The line is DUM-da throughout, and the end must rhyme with dreary. Weary does both; the others do neither.'},
+  {l:'The ploughman homeward plods his [long] way',a:'weary',f:['slow','exhausted','solitary'],by:'Thomas Gray, 1751',p:'the PLOUGH-man HOME-ward PLODS his WEAR-y WAY',o:'Ten syllables, five beats. The gap needs two syllables stressed on the first. Long and slow leave a beat missing.'}
 ];
 
 // Name the metre. p shows the stresses in capitals. Answer must be one of the four in METRES.
@@ -66,7 +96,17 @@ const METRE=[
   {l:'By the shores of Gitche Gumee',a:'Trochaic',by:'Henry Wadsworth Longfellow, 1855',p:'BY the SHORES of GIT-che GU-mee',o:'DUM-da, four times. <i>The Song of Hiawatha</i> is trochaic all the way through, all 5,000-odd lines.'},
   {l:'Half a league, half a league, half a league onward',a:'Dactylic',by:'Alfred, Lord Tennyson, 1854',p:'HALF a league, HALF a league, HALF a league ON-ward',o:'DUM-da-da, like hooves. <i>The Charge of the Light Brigade</i> is the classic English dactylic poem.'},
   {l:'At the end of the line, by the sea, in the rain',a:'Anapaestic',by:ORIG,p:'at the END of the LINE, by the SEA, in the RAIN',o:'Four da-da-DUM beats, each landing on the key word.'},
-  {l:'Because I could not stop for Death',a:'Iambic',by:'Emily Dickinson, 1890',p:'be-CAUSE i COULD not STOP for DEATH',o:'Four da-DUM beats. Dickinson used the iambic rhythms of hymns throughout her poems.'}
+  {l:'Because I could not stop for Death',a:'Iambic',by:'Emily Dickinson, 1890',p:'be-CAUSE i COULD not STOP for DEATH',o:'Four da-DUM beats. Dickinson used the iambic rhythms of hymns throughout her poems.'},
+  {l:'I met a traveller from an antique land',a:'Iambic',by:'Percy Bysshe Shelley, 1818',p:'i MET a TRAV-\'ller FROM an AN-tique LAND',o:'Five da-DUM beats: iambic pentameter, from <i>Ozymandias</i>.'},
+  {l:'My heart leaps up when I behold',a:'Iambic',by:'William Wordsworth, 1807',p:'my HEART leaps UP when I be-HOLD',o:'Four da-DUM beats: iambic tetrameter.'},
+  {l:'If music be the food of love, play on',a:'Iambic',by:'William Shakespeare, Twelfth Night',p:'if MU-sic BE the FOOD of LOVE, play ON',o:'Iambic pentameter again, the standard line of Shakespeare\'s plays.'},
+  {l:'Double, double toil and trouble',a:'Trochaic',by:'William Shakespeare, Macbeth',p:'DOU-ble, DOU-ble TOIL and TROU-ble',o:'DUM-da, four times. Shakespeare gives his witches trochees to set them apart from everyone else\'s iambs.'},
+  {l:'Twinkle, twinkle, little star',a:'Trochaic',by:'Jane Taylor, 1806',p:'TWIN-kle, TWIN-kle, LIT-tle STAR',o:'DUM-da beats with the last weak syllable dropped, like Blake\'s Tyger.'},
+  {l:'Tell me not, in mournful numbers',a:'Trochaic',by:'Henry Wadsworth Longfellow, 1838',p:'TELL me NOT, in MOURN-ful NUM-bers',o:'Four full DUM-da feet: trochaic tetrameter, from <i>A Psalm of Life</i>.'},
+  {l:'I am monarch of all I survey',a:'Anapaestic',by:'William Cowper, 1782',p:'i am MON-arch of ALL i sur-VEY',o:'Da-da-DUM, three times: anapaestic trimeter.'},
+  {l:'There was an Old Man with a beard',a:'Anapaestic',by:'Edward Lear, 1846',p:'there WAS an old MAN with a BEARD',o:'Limericks run on anapaests: da-da-DUM, with the first foot a syllable short.'},
+  {l:'Woman much missed, how you call to me, call to me',a:'Dactylic',by:'Thomas Hardy, 1914',p:'WO-man much MISSED, how you CALL to me, CALL to me',o:'DUM-da-da, four times. The dactyls give Hardy\'s <i>The Voice</i> its haunting lilt.'},
+  {l:'Hail to the Chief who in triumph advances',a:'Dactylic',by:'Walter Scott, 1810',p:'HAIL to the CHIEF who in TRI-umph ad-VAN-ces',o:'DUM-da-da feet: the march later played for American presidents.'}
 ];
 
 // Rhyme scheme. Answer is one of SCHEMES.
@@ -83,7 +123,18 @@ const SCHEME=[
   {l:['I hold it true, whate\'er befall;','I feel it when I sorrow most;','\'Tis better to have loved and lost','Than never to have loved at all.'],a:'ABBA',by:'Alfred, Lord Tennyson, 1850',o:'Befall/all wrap around most/lost. That is the <i>In Memoriam</i> stanza again, and the source of a very famous saying.'},
   {l:['I have a little shadow that goes in and out with me,','And what can be the use of him is more than I can see.','He is very, very like me from the heels up to the head;','And I see him jump before me, when I jump into my bed.'],a:'AABB',by:'Robert Louis Stevenson, 1885',o:'Me/see, then head/bed: rhyming couplets, perfect for reading aloud.'},
   {l:['The platform clock says ten past eight,','The coffee\'s cold, the sky is grey;','The train, of course, is running late –','Another ordinary day.'],a:'ABAB',by:ORIG,o:'Eight/late and grey/day alternate.'},
-  {l:['In the bleak mid-winter','Frosty wind made moan,','Earth stood hard as iron,','Water like a stone;'],a:'ABCB',by:'Christina Rossetti, 1872',o:'Moan/stone is the only rhyme. The short lines make it feel like a hymn.'}
+  {l:['In the bleak mid-winter','Frosty wind made moan,','Earth stood hard as iron,','Water like a stone;'],a:'ABCB',by:'Christina Rossetti, 1872',o:'Moan/stone is the only rhyme. The short lines make it feel like a hymn.'},
+  {l:['There was an Old Man with a beard,','Who said, \'It is just as I feared!—','Two Owls and a Hen,','Four Larks and a Wren,'],a:'AABB',by:'Edward Lear, 1846',o:'Beard/feared, then Hen/Wren. A limerick\'s fifth line comes back to the first rhyme.'},
+  {l:['She walks in beauty, like the night','Of cloudless climes and starry skies;','And all that\'s best of dark and bright','Meet in her aspect and her eyes:'],a:'ABAB',by:'Lord Byron, 1815',o:'Night/bright and skies/eyes alternate.'},
+  {l:['Shall I compare thee to a summer\'s day?','Thou art more lovely and more temperate:','Rough winds do shake the darling buds of May,','And summer\'s lease hath all too short a date:'],a:'ABAB',by:'William Shakespeare, Sonnet 18',o:'Day/May and temperate/date alternate, the pattern of every Shakespearean sonnet\'s quatrains.'},
+  {l:['If you can keep your head when all about you','Are losing theirs and blaming it on you,','If you can trust yourself when all men doubt you,','But make allowance for their doubting too;'],a:'ABAB',by:'Rudyard Kipling, 1910',o:'About you/doubt you and you/too alternate.'},
+  {l:['I wander thro\' each charter\'d street,','Near where the charter\'d Thames does flow,','And mark in every face I meet','Marks of weakness, marks of woe.'],a:'ABAB',by:'William Blake, 1794',o:'Street/meet and flow/woe alternate.'},
+  {l:['Remember me when I am gone away,','Gone far away into the silent land;','When you can no more hold me by the hand,','Nor I half turn to go yet turning stay.'],a:'ABBA',by:'Christina Rossetti, 1862',o:'Away/stay wrap around land/hand: the opening of a Petrarchan sonnet.'},
+  {l:['Earth has not anything to show more fair:','Dull would he be of soul who could pass by','A sight so touching in its majesty:','This City now doth, like a garment, wear'],a:'ABBA',by:'William Wordsworth, 1807',o:'Fair/wear enclose by/majesty. Wordsworth wrote it on Westminster Bridge.'},
+  {l:['The Owl and the Pussy-cat went to sea','In a beautiful pea-green boat,','They took some honey, and plenty of money,','Wrapped up in a five-pound note.'],a:'ABCB',by:'Edward Lear, 1871',o:'Only boat/note rhyme at the ends. Honey/money is a rhyme inside the third line.'},
+  {l:['Mary had a little lamb,','Its fleece was white as snow;','And everywhere that Mary went','The lamb was sure to go.'],a:'ABCB',by:'Sarah Josepha Hale, 1830',o:'Only snow/go rhyme: the ballad stanza again.'},
+  {l:['O what can ail thee, knight-at-arms,','Alone and palely loitering?','The sedge has withered from the lake,','And no birds sing.'],a:'ABCB',by:'John Keats, 1819',o:'Loitering/sing rhyme; the short last line stops the stanza dead.'},
+  {l:['Twinkle, twinkle, little star,','How I wonder what you are!','Up above the world so high,','Like a diamond in the sky.'],a:'AABB',by:'Jane Taylor, 1806',o:'Two rhyming pairs: star/are, high/sky.'}
 ];
 
 // Tap the stress (Sunday boss). Words split by spaces, syllables by ·. b has one digit per syllable: 1 = stressed.
