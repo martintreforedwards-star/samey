@@ -69,7 +69,8 @@
     { id: "dodo", name: "Dodo", href: "/dodo/", c: "#2f5d62", blurb: "Words on their way out. Can you save them?", isNew: true },
     { id: "inkling", name: "Inkling", href: "/inkling/", c: "#3b3486", blurb: "Words first coined in novels, plays and science fiction.", isNew: true },
     { id: "forsooth", name: "Forsooth", href: "/forsooth/", c: "#7a1f3d", blurb: "Shakespeare, Chaucer and their rivals, plus a red herring.", isNew: true },
-    { id: "gaggle", name: "Gaggle", href: "/gaggle/", c: "#2f6b3f", blurb: "Collective nouns, then the names for things: tarns, tombolos and more.", isNew: true }
+    { id: "gaggle", name: "Gaggle", href: "/gaggle/", c: "#2f6b3f", blurb: "Collective nouns, then the names for things: tarns, tombolos and more.", isNew: true },
+    { id: "fixy", name: "Antepostee", href: "/fixy/", c: "#5b3c96", blurb: "Prefixes and suffixes. Illegal or unlegal? Is gruntled a word?", isNew: true }
   ];
   var WORDS = ["", "", "", "", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
   var here = (location.pathname.split("/")[1] || "samey").toLowerCase();

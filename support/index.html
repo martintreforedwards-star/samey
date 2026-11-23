@@ -140,6 +140,10 @@ a{color:var(--ink);font-weight:700}
     const b = document.getElementById("back");
     b.href = "/gaggle/"; b.textContent = "← Back to Gaggle";
   }
+  if (new URLSearchParams(location.search).get("game") === "fixy") {
+    const b = document.getElementById("back");
+    b.href = "/fixy/"; b.textContent = "← Back to Antepostee";
+  }
   if (new URLSearchParams(location.search).get("game") === "babel") {
     const b = document.getElementById("back");
     b.href = "/babel/"; b.textContent = "← Back to Babel";
