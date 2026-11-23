@@ -5,7 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Antepostee</title>
 <meta name="description" content="A daily game of prefixes and suffixes. Illegal or unlegal? Is gruntled a word?">
-<meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://samey.uk/fixy/">
+<meta property="og:site_name" content="Antepostee">
+<meta property="og:title" content="Antepostee: the prefixes and suffixes game">
+<meta property="og:description" content="A daily game of prefixes and suffixes. Illegal or unlegal? Is gruntled a word?">
+<meta property="og:image" content="https://samey.uk/fixy/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <link rel="icon" href="/fixy/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -165,6 +172,7 @@ function end(){
   pips(-1);
   const t=score();
   const sq=ROUNDS.map((_,i)=>st.ok[i]?'🟩':'⬜').join('');
+  if(!isTest&&N===TODAY)(window.SameySetQ=window.SameySetQ||[]).push(['fixy',t+'/'+MAX]);
   const share=`Antepostee No. ${N+1}\n${sq} ${t}/${MAX}\n${rank(t)}\nYour go: https://samey.uk/fixy/ #sameyuk`;
   const lines=[
     `${P.c}${P.s}`,
@@ -186,7 +194,8 @@ function end(){
   <div class="card" style="margin-top:14px"><div class="tag">Today's answers</div>
     <ul class="recap">${items}</ul>
     <p class="muted" style="margin-top:12px">Know a better one, or think one's wrong? <a href="/feedback/?game=fixy&type=puzzle&puzzle=${encodeURIComponent('No. '+(N+1))}">Tell us</a>.</p>
-  </div>`;
+  </div>
+  <div class="xg" data-sy-cards></div>`;
   $('#share').onclick=()=>{if(navigator.share){navigator.share({text:share}).catch(()=>{});return}try{navigator.clipboard.writeText(share).then(()=>{$('#share').textContent='Copied'})}catch(e){}};
 }
 
