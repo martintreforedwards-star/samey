@@ -98,7 +98,8 @@
   }
   var q = window.SameySetQ || [];
   window.SameySetQ = { push: function (a) { report(a[0], a[1]); } };
-  q.forEach(function (a) { report(a[0], a[1]); });
+  // Scores a game reported before this file loaded (e.g. a finished game reopened) are replayed at the end of this file,
+  // once everything they draw with is set up.
 
   function shareText(s) {
     var done = GAMES.filter(function (g) { return s.g[g.id]; });
@@ -147,7 +148,7 @@
     svg.setAttribute("viewBox", "0 0 14 14"); svg.setAttribute("aria-hidden", "true"); svg.setAttribute("class", cls);
     path.setAttribute("d", "M2.5 7.5l3 3 6-7"); svg.append(path); return svg;
   }
-  var scoreText = function (sc) { return (sc === "✓" || sc === "✗") ? "Done" : sc; };
+  function scoreText(sc) { return (sc === "✓" || sc === "✗") ? "Done" : sc; }
   function fillBar(box) {
     var s = readSet(); box.textContent = "";
     GAMES.forEach(function (g) {
@@ -398,6 +399,7 @@
   window.addEventListener("appinstalled", function () { deferredPrompt = null; removeInstall(); });
 
   new MutationObserver(function () { fill(); placeCards(); placeSets(); placeInstall(); }).observe(document.documentElement, { childList: true, subtree: true });
+  try { q.forEach(function (a) { report(a[0], a[1]); }); } catch (e) {}
   function init() { fill(); placeCards(); placeSets(); renderNav(); placeInstall(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
 })();
