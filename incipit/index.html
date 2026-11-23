@@ -181,7 +181,8 @@ function end(){
   <div class="card" style="margin-top:14px"><div class="tag">Today's first lines</div>
     <ul class="lines">${ROUNDS.map((R,i)=>`<li><div class="q">${showLine(fullLine(R.q))}</div><div class="s">${got(i)?'✓':'✗'} ${credit(R.q)}<a class="read" href="${gut(R.q)}" target="_blank" rel="noopener">Read it free</a><a class="flag" href="/feedback/?game=incipit&type=puzzle&puzzle=${encodeURIComponent('No. '+(N+1)+' · '+R.q.t)}">Wrong?</a></div></li>`).join('')}</ul>
     <p class="muted" style="margin-top:12px">Every book here is out of copyright. Read them free at <a href="https://www.gutenberg.org/" rel="noopener">Project Gutenberg</a>.</p>
-  </div>`;
+  </div>
+  <div class="xg" data-sy-cards></div>`;
   $('#share').onclick=()=>{if(navigator.share){navigator.share({text:share}).catch(()=>{});return}try{navigator.clipboard.writeText(share).then(()=>{$('#share').textContent='Copied'})}catch(e){}};
 }
 

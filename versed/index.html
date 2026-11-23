@@ -195,7 +195,8 @@ function end(){
     ${BOSS?`<ol class="clues" style="margin-top:10px">${D.c.map((c,i)=>`<li><span>${i+1}</span>${esc(c)}</li>`).join('')}</ol>`:`<div class="q">${esc(D.l)}</div>`}
     <div class="s">${BOSS?'':`<b>${esc(D.t)}</b>, ${D.y}`}${D.pd===false?'':`<a class="read" href="${gut()}" target="_blank" rel="noopener">Read it free</a>`}<a style="margin-left:10px;font-weight:600" href="/feedback/?game=versed&type=puzzle&puzzle=${encodeURIComponent('No. '+(N+1)+' · '+D.p)}">Wrong?</a></div>
     <p class="muted" style="margin-top:12px">Lines are only ever taken from poems out of copyright. Sunday boss rounds use clues instead, so any poet can appear.</p>
-  </div>`;
+  </div>
+  <div class="xg" data-sy-cards></div>`;
   $('#share').onclick=()=>{if(navigator.share){navigator.share({text:share}).catch(()=>{});return}try{navigator.clipboard.writeText(share).then(()=>{$('#share').textContent='Copied'})}catch(e){}};
 }
 

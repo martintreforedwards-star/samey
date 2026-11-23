@@ -51,25 +51,25 @@
        (window.SameySetQ = window.SameySetQ || []).push(["dotty", "2/4"]);
      (a queue, because the games run before this file loads). */
   var GAMES = [
-    { id: "samey", name: "Samey", href: "/", blurb: "Find the word that means the same." },
-    { id: "spinonym", name: "Spinonym", href: "/spinonym/", blurb: "Spin the wheel for today's kind of word." },
-    { id: "dotty", name: "Dotty", href: "/dotty/", blurb: "Put the missing accents and punctuation back." },
-    { id: "syntaxed", name: "Syntaxed", href: "/syntaxed/", blurb: "Grammar puzzles that make you giggle, not wince." },
-    { id: "passe", name: "Passé", href: "/passe/", blurb: "Spot the real meaning of forgotten words." },
-    { id: "natter", name: "Natter", href: "/natter/", blurb: "Real local word, or made up?" },
-    { id: "roots", name: "Roots", href: "/roots/", blurb: "Where words come from, in four quick rounds." },
-    { id: "rizz", name: "Rizz", href: "/rizz/", blurb: "The newest words in English, in five quick rounds." },
-    { id: "babel", name: "Babel", href: "/babel/", blurb: "One word in four mystery languages. What is it in English?" },
-    { id: "rhymey", name: "Rhymey", href: "/rhymey/", blurb: "Rhyme and rhythm in quick daily rounds." },
-    { id: "phoney", name: "Phoney", href: "/phoney/", blurb: "How words really sound, from silent letters to glottal stops." },
-    { id: "idiomy", name: "Idiomy", href: "/idiomy/", blurb: "Tap words together to make idioms from today's hive." },
-    { id: "incipit", name: "Incipit", href: "/incipit/", blurb: "Name the book from its famous first line." },
-    { id: "versed", name: "Versed", href: "/versed/", blurb: "Name the poet from a single line, then guess their country." },
-    { id: "gamey", name: "Gamey", href: "/gamey/", blurb: "Words from sports, games and pastimes around the world." },
-    { id: "dodo", name: "Dodo", href: "/dodo/", blurb: "Words on their way out. Can you save them?", isNew: true },
-    { id: "inkling", name: "Inkling", href: "/inkling/", blurb: "Words first coined in novels, plays and science fiction.", isNew: true },
-    { id: "forsooth", name: "Forsooth", href: "/forsooth/", blurb: "Shakespeare, Chaucer and their rivals, plus a red herring.", isNew: true },
-    { id: "gaggle", name: "Gaggle", href: "/gaggle/", blurb: "Collective nouns, then the names for things: tarns, tombolos and more.", isNew: true }
+    { id: "samey", name: "Samey", href: "/", c: "#1f7a6d", blurb: "Find the word that means the same." },
+    { id: "spinonym", name: "Spinonym", href: "/spinonym/", c: "#d99a1e", blurb: "Spin the wheel for today's kind of word." },
+    { id: "dotty", name: "Dotty", href: "/dotty/", c: "#E2405A", blurb: "Put the missing accents and punctuation back." },
+    { id: "syntaxed", name: "Syntaxed", href: "/syntaxed/", c: "#3B5BDB", blurb: "Grammar puzzles that make you giggle, not wince." },
+    { id: "passe", name: "Passé", href: "/passe/", c: "#7B3F73", blurb: "Spot the real meaning of forgotten words." },
+    { id: "natter", name: "Natter", href: "/natter/", c: "#B0186A", blurb: "Real local word, or made up?" },
+    { id: "roots", name: "Roots", href: "/roots/", c: "#8A5A2B", blurb: "Where words come from, in four quick rounds." },
+    { id: "rizz", name: "Rizz", href: "/rizz/", c: "#2b8a3e", blurb: "The newest words in English, in five quick rounds." },
+    { id: "babel", name: "Babel", href: "/babel/", c: "#c2410c", blurb: "One word in four mystery languages. What is it in English?" },
+    { id: "rhymey", name: "Rhymey", href: "/rhymey/", c: "#0b7285", blurb: "Rhyme and rhythm in quick daily rounds." },
+    { id: "phoney", name: "Phoney", href: "/phoney/", c: "#6741d9", blurb: "How words really sound, from silent letters to glottal stops." },
+    { id: "idiomy", name: "Idiomy", href: "/idiomy/", c: "#b45309", blurb: "Tap words together to make idioms from today's hive." },
+    { id: "incipit", name: "Incipit", href: "/incipit/", c: "#8c2f1b", blurb: "Name the book from its famous first line." },
+    { id: "versed", name: "Versed", href: "/versed/", c: "#21585a", blurb: "Name the poet from a single line, then guess their country." },
+    { id: "gamey", name: "Gamey", href: "/gamey/", c: "#1d4e89", blurb: "Words from sports, games and pastimes around the world." },
+    { id: "dodo", name: "Dodo", href: "/dodo/", c: "#2f5d62", blurb: "Words on their way out. Can you save them?", isNew: true },
+    { id: "inkling", name: "Inkling", href: "/inkling/", c: "#3b3486", blurb: "Words first coined in novels, plays and science fiction.", isNew: true },
+    { id: "forsooth", name: "Forsooth", href: "/forsooth/", c: "#7a1f3d", blurb: "Shakespeare, Chaucer and their rivals, plus a red herring.", isNew: true },
+    { id: "gaggle", name: "Gaggle", href: "/gaggle/", c: "#2f6b3f", blurb: "Collective nouns, then the names for things: tarns, tombolos and more.", isNew: true }
   ];
   var WORDS = ["", "", "", "", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
   var here = (location.pathname.split("/")[1] || "samey").toLowerCase();
@@ -289,6 +289,52 @@
     });
   }
 
+  /* ---------- "Fancy another?" cards, built from GAMES so every game always lists every other game ----------
+     A page just needs an empty <div class="xg" data-sy-cards></div> on its result screen.
+     Games not played yet today come first (new ones at the top); ones already played drop to the bottom. */
+  var cardsStyled = false;
+  function cardsStyle() {
+    if (cardsStyled) return; cardsStyled = true;
+    var st = document.createElement("style");
+    // :where() keeps these at zero specificity, so a page's own .xg styles still win.
+    st.textContent = ":where(.card,.result) + :where(.xg){margin-top:14px}" +
+      ":where(.xg[data-sy-cards]){display:flex;flex-direction:column;gap:10px;text-align:left;--xg-s:var(--surface,var(--card,#fff))}" +
+      ":where(.xg[data-sy-cards] .xg-head){text-align:left;margin:4px 0 0;font-size:.92rem;font-weight:700;color:var(--muted,inherit);opacity:.9}" +
+      ":where(.xg[data-sy-cards] .xg-card){display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:10px;background:color-mix(in srgb,var(--c) 12%,var(--xg-s));border:2px solid var(--c);color:var(--ink,inherit);text-decoration:none;min-height:44px}" +
+      ":where(.xg[data-sy-cards] .xg-card:hover .xg-arrow){transform:translateX(3px)}" +
+      ":where(.xg[data-sy-cards] .xg-card:focus-visible){outline:3px solid var(--c);outline-offset:2px}" +
+      ":where(.xg[data-sy-cards] .xg-icon){flex:none;width:48px;height:48px}" +
+      ":where(.xg[data-sy-cards] .xg-text){display:flex;flex-direction:column;gap:1px;min-width:0}" +
+      ":where(.xg[data-sy-cards] .xg-new){font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:color-mix(in srgb,var(--c) 60%,var(--ink,currentColor))}" +
+      ":where(.xg[data-sy-cards] .xg-title){font-family:var(--display,inherit);font-weight:800;font-size:1.3rem;line-height:1.1}" +
+      ":where(.xg[data-sy-cards] .xg-sub){font-size:.9rem;color:var(--muted,inherit)}" +
+      ":where(.xg[data-sy-cards] .xg-arrow){margin-left:auto;font-size:1.4rem;font-weight:700;flex:none;color:color-mix(in srgb,var(--c) 60%,var(--ink,currentColor));transition:transform .15s}" +
+      ":where(.xg[data-sy-cards] .xg-card.played){opacity:.7}";
+    document.head.append(st);
+  }
+  function fillCards(box) {
+    box.setAttribute("data-sy-cards", "done");
+    cardsStyle();
+    var s = readSet();
+    var others = GAMES.filter(function (g) { return g.id !== here; });
+    var rank = function (g) { return (s.g[g.id] ? 2 : 0) + (g.isNew ? 0 : 1); };
+    others = others.map(function (g, i) { return [g, i]; })
+      .sort(function (a, b) { return rank(a[0]) - rank(b[0]) || a[1] - b[1]; })
+      .map(function (x) { return x[0]; });
+    box.append(el("p", "xg-head", "Fancy another?"));
+    others.forEach(function (g) {
+      var played = s.g[g.id];
+      var a = el("a", "xg-card xg-" + g.id + (played ? " played" : "")); a.href = g.href; a.style.setProperty("--c", g.c);
+      var img = el("img", "xg-icon"); img.src = g.id === "samey" ? "/icons/samey.svg" : g.href + "favicon.svg"; img.alt = ""; img.width = 48; img.height = 48;
+      var txt = el("span", "xg-text");
+      txt.append(el("span", "xg-new", played ? "Played today · " + scoreText(played) : (g.isNew ? "New from Samey" : "Also from Samey")),
+        el("span", "xg-title", "Play " + g.name), el("span", "xg-sub", g.blurb.replace(/\.$/, "")));
+      var arr = el("span", "xg-arrow", "→"); arr.setAttribute("aria-hidden", "true");
+      a.append(img, txt, arr); box.append(a);
+    });
+  }
+  function placeCards() { document.querySelectorAll(".xg[data-sy-cards='']").forEach(fillCards); }
+
   /* ---------- "Install Samey & friends" (adds the whole set to the home screen; see /sw.js) ----------
      Goes just under the "Enjoyed today's? Buy me a coffee" line on every game's result screen.
      Hidden if already installed, if "Not now" was tapped in the last 30 days, or if the browser can't install.
@@ -351,7 +397,7 @@
   window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); deferredPrompt = e; placeInstall(); });
   window.addEventListener("appinstalled", function () { deferredPrompt = null; removeInstall(); });
 
-  new MutationObserver(function () { fill(); placeSets(); placeInstall(); }).observe(document.documentElement, { childList: true, subtree: true });
-  function init() { fill(); placeSets(); renderNav(); placeInstall(); }
+  new MutationObserver(function () { fill(); placeCards(); placeSets(); placeInstall(); }).observe(document.documentElement, { childList: true, subtree: true });
+  function init() { fill(); placeCards(); placeSets(); renderNav(); placeInstall(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
 })();

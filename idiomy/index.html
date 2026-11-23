@@ -215,7 +215,8 @@ function end(){
   <div class="card" style="margin-top:14px"><div class="tag">Today's idioms</div>
     <ul class="found">${order.map(i=>{const a=B.a[i],got=st.found.includes(i);return`<li class="${got?'':'miss'}"><div class="p">${got?'':'Missed: '}${phrase(a.p)}</div><div class="m">${esc(a.m)}<a class="flag" href="/feedback/?game=idiomy&type=puzzle&puzzle=${encodeURIComponent('No. '+(N+1)+' · '+a.p.replace(/\*/g,''))}">Wrong?</a></div></li>`}).join('')}</ul>
     <p class="muted" style="margin-top:12px">Found a real idiom we didn't count? <a href="/feedback/?game=idiomy&type=puzzle&puzzle=${encodeURIComponent('No. '+(N+1)+' · missing idiom')}">Tell us</a>.</p>
-  </div>`;
+  </div>
+  <div class="xg" data-sy-cards></div>`;
   $('#share').onclick=()=>{if(navigator.share){navigator.share({text:share}).catch(()=>{});return}try{navigator.clipboard.writeText(share).then(()=>{$('#share').textContent='Copied'})}catch(e){}};
 }
 
