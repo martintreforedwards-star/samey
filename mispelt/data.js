@@ -1,61 +1,64 @@
-// Mispelt puzzles, by day of the week. Difficulty rises Monday to Friday; weekends are medium.
-// DAYS is a run of whole weeks, Monday first. The game picks today's weekday from the current week,
-// cycling through the weeks.
+// Mispelt puzzles: one week, Monday first. The game picks today's entry by weekday.
+// Difficulty dots rise Monday (1) to Friday (5); weekends are 3.
+// Every answer comes with a note (n): a short story about the word, shown after answering.
+// The aim: the difficulty comes from how odd English spelling is, never from making anyone feel bad.
+//
 // Five rounds a day, always in this order:
-//   pick  = Which is right?   c = correct spelling, x = wrong spellings
-//   spot  = Spot the mistake  s = sentence, w = the misspelled word as it appears, c = how it should be spelt
-//   uk    = British or American?  b = British spelling, a = American spelling, ctx (optional) = which meaning
-//   fix   = Fix it (type it)  w = shown misspelled, c = correct spelling
-//   hard  = Which is right? (tricky, four choices)  c, x as for pick
-// Every wrong option should be wrong in British dictionaries too, not an accepted variant.
-const LEVELS = ["Gentle", "Easy", "Medium", "Hard", "Fiendish", "Medium", "Medium"];
+//   std    = Standard spelling   c = standard spelling, x = two other spellings (wrong in British dictionaries too)
+//   blame  = Blame the scholars  w = the word, i = position (from 0) of the letter that was added on purpose and is never said
+//   became = Became right        q = the old form in a sentence, c = the word now, x = two other words
+//   sound  = Sound-alikes        s = sentence with ___ for the gap, c = spelling that fits, x = the other sound-alike(s)
+//   uk     = British or American b = British, a = American, ctx (optional) = which meaning
+//   long   = Long word (Fridays only, instead of uk)  c, x as for std
+const DOTS = [1, 2, 3, 4, 5, 3, 3];
 const DAYS = [
-  // ---- Week A ----
-  /* Mon */ {pick: {c: "separate", x: ["seperate", "separete"]}, spot: {s: "I'll definately be there on Friday.", w: "definately", c: "definitely"}, uk: {b: "colour", a: "color"}, fix: {w: "recieve", c: "receive"}, hard: {c: "accommodate", x: ["accomodate", "acommodate", "accommadate"]}},
-  /* Tue */ {pick: {c: "weird", x: ["wierd", "weerd"]}, spot: {s: "The restaraunt was fully booked for weeks.", w: "restaraunt", c: "restaurant"}, uk: {b: "centre", a: "center"}, fix: {w: "tommorow", c: "tomorrow"}, hard: {c: "millennium", x: ["millenium", "milennium", "millenneum"]}},
-  /* Wed */ {pick: {c: "embarrass", x: ["embarass", "embarras"]}, spot: {s: "We need to liase with the other team before Monday.", w: "liase", c: "liaise"}, uk: {b: "travelled", a: "traveled"}, fix: {w: "occurence", c: "occurrence"}, hard: {c: "questionnaire", x: ["questionaire", "questionnair", "questionnare"]}},
-  /* Thu */ {pick: {c: "conscientious", x: ["concientious", "conscientous"]}, spot: {s: "The committee agreed to accommodate the guests in the newly refurbished pavillion.", w: "pavillion", c: "pavilion"}, uk: {b: "manoeuvre", a: "maneuver"}, fix: {w: "mischievious", c: "mischievous"}, hard: {c: "idiosyncrasy", x: ["idiosyncracy", "idiosyncrisy", "idiosincrasy"]}},
-  /* Fri */ {pick: {c: "sacrilegious", x: ["sacreligious", "sacrilegeous"]}, spot: {s: "Her inadvertant remark caused a minor diplomatic incident in the Philippines.", w: "inadvertant", c: "inadvertent"}, uk: {b: "haemorrhage", a: "hemorrhage"}, fix: {w: "dessicated", c: "desiccated"}, hard: {c: "chrysanthemum", x: ["chrysanthemam", "chrysanthimum", "crysanthemum"]}},
-  /* Sat */ {pick: {c: "February", x: ["Febuary", "Feburary"]}, spot: {s: "He took a deep breath and stepped over the threshhold.", w: "threshhold", c: "threshold"}, uk: {b: "jewellery", a: "jewelry"}, fix: {w: "rythm", c: "rhythm"}, hard: {c: "bureaucracy", x: ["beaurocracy", "bureacracy", "bureaucrasy"]}},
-  /* Sun */ {pick: {c: "guarantee", x: ["garantee", "guarentee"]}, spot: {s: "It's a real priviledge to be here tonight.", w: "priviledge", c: "privilege"}, uk: {b: "pyjamas", a: "pajamas"}, fix: {w: "harrass", c: "harass"}, hard: {c: "Fahrenheit", x: ["Farenheit", "Fahrenhiet", "Farenhite"]}},
-  // ---- Week B ----
-  /* Mon */ {pick: {c: "believe", x: ["beleive", "belive"]}, spot: {s: "The cemetary is at the end of the lane.", w: "cemetary", c: "cemetery"}, uk: {b: "aluminium", a: "aluminum"}, fix: {w: "goverment", c: "government"}, hard: {c: "fluorescent", x: ["flourescent", "florescent", "fluorecent"]}},
-  /* Tue */ {pick: {c: "library", x: ["libary", "librery"]}, spot: {s: "The weather this summer has been truely awful.", w: "truely", c: "truly"}, uk: {b: "defence", a: "defense"}, fix: {w: "calender", c: "calendar"}, hard: {c: "pharaoh", x: ["pharoah", "pharaoe", "pharoh"]}},
-  /* Wed */ {pick: {c: "address", x: ["adress", "addres"]}, spot: {s: "I didn't realise the shop was shut untill I got there.", w: "untill", c: "until"}, uk: {b: "sceptical", a: "skeptical"}, fix: {w: "independant", c: "independent"}, hard: {c: "Mediterranean", x: ["Mediteranean", "Meditteranean", "Mediterannean"]}},
-  /* Thu */ {pick: {c: "occasion", x: ["ocassion", "occassion"]}, spot: {s: "Our neighbour's dachshund has an extraordinary repetoire of tricks.", w: "repetoire", c: "repertoire"}, uk: {b: "anaesthetist", a: "anesthetist"}, fix: {w: "aquiesce", c: "acquiesce"}, hard: {c: "onomatopoeia", x: ["onomatopeia", "onomatopoea", "onamatopoeia"]}},
-  /* Fri */ {pick: {c: "mnemonic", x: ["mneumonic", "nmemonic"]}, spot: {s: "The rhododendrons in the vicarage garden were a magnificient sight.", w: "magnificient", c: "magnificent"}, uk: {b: "paediatrician", a: "pediatrician"}, fix: {w: "camraderie", c: "camaraderie"}, hard: {c: "fuchsia", x: ["fuschia", "fushia", "fuchia"]}},
-  /* Sat */ {pick: {c: "vacuum", x: ["vaccum", "vacum"]}, spot: {s: "We had broccolli and roast potatoes for tea.", w: "broccolli", c: "broccoli"}, uk: {b: "moustache", a: "mustache"}, fix: {w: "persistant", c: "persistent"}, hard: {c: "connoisseur", x: ["connoiseur", "conoisseur", "connoissuer"]}},
-  /* Sun */ {pick: {c: "misspell", x: ["mispell", "misspel"]}, spot: {s: "The play was written by a famous playwrite from Dublin.", w: "playwrite", c: "playwright"}, uk: {b: "tyre", a: "tire", ctx: "on a car"}, fix: {w: "concensus", c: "consensus"}, hard: {c: "Caribbean", x: ["Carribean", "Carribbean", "Caribean"]}},
-  // ---- Week C ----
-  /* Mon */ {pick: {c: "necessary", x: ["neccessary", "necesary"]}, spot: {s: "We drove accross the bridge into Wales.", w: "accross", c: "across"}, uk: {b: "grey", a: "gray"}, fix: {w: "freind", c: "friend"}, hard: {c: "parallel", x: ["paralell", "parralel", "parrallel"]}},
-  /* Tue */ {pick: {c: "business", x: ["buisness", "busness"]}, spot: {s: "My nan turned ninty last week.", w: "ninty", c: "ninety"}, uk: {b: "programme", a: "program", ctx: "on TV"}, fix: {w: "tounge", c: "tongue"}, hard: {c: "pneumonia", x: ["pnuemonia", "neumonia", "pneumonya"]}},
-  /* Wed */ {pick: {c: "foreign", x: ["foriegn", "forein"]}, spot: {s: "The sherrif rode into town at noon.", w: "sherrif", c: "sheriff"}, uk: {b: "cheque", a: "check", ctx: "for paying"}, fix: {w: "existance", c: "existence"}, hard: {c: "silhouette", x: ["silhouete", "sillhouette", "silouhette"]}},
-  /* Thu */ {pick: {c: "hierarchy", x: ["heirarchy", "hierachy"]}, spot: {s: "The castle withstood a seige lasting eight months.", w: "seige", c: "siege"}, uk: {b: "analyse", a: "analyze"}, fix: {w: "maintainance", c: "maintenance"}, hard: {c: "entrepreneur", x: ["entreprenuer", "entrepeneur", "enterpreneur"]}},
-  /* Fri */ {pick: {c: "pronunciation", x: ["pronounciation", "pronunciaton"]}, spot: {s: "The medival manuscript was kept in a climate-controlled vault.", w: "medival", c: "medieval"}, uk: {b: "sulphur", a: "sulfur"}, fix: {w: "dilemna", c: "dilemma"}, hard: {c: "ophthalmologist", x: ["opthalmologist", "ophthamologist", "opthamologist"]}},
-  /* Sat */ {pick: {c: "Wednesday", x: ["Wensday", "Wednsday"]}, spot: {s: "We bought a punnet of rasberries at the farm shop.", w: "rasberries", c: "raspberries"}, uk: {b: "kerb", a: "curb", ctx: "at the roadside"}, fix: {w: "neice", c: "niece"}, hard: {c: "mayonnaise", x: ["mayonaise", "mayonnaisse", "mayonnase"]}},
-  /* Sun */ {pick: {c: "recommend", x: ["reccomend", "recomend"]}, spot: {s: "Grandad grows potatos and beans on his allotment.", w: "potatos", c: "potatoes"}, uk: {b: "licence", a: "license", ctx: "the noun"}, fix: {w: "acheive", c: "achieve"}, hard: {c: "handkerchief", x: ["handkercheif", "hankerchief", "handkerchif"]}},
-  // ---- Week D ----
-  /* Mon */ {pick: {c: "disappear", x: ["dissapear", "disapear"]}, spot: {s: "A pidgeon landed on the windowsill.", w: "pidgeon", c: "pigeon"}, uk: {b: "theatre", a: "theater"}, fix: {w: "excercise", c: "exercise"}, hard: {c: "millionaire", x: ["millionnaire", "millionare", "milionaire"]}},
-  /* Tue */ {pick: {c: "argument", x: ["arguement", "argumant"]}, spot: {s: "She moved to Britian from Kenya in 1998.", w: "Britian", c: "Britain"}, uk: {b: "behaviour", a: "behavior"}, fix: {w: "grammer", c: "grammar"}, hard: {c: "dumbbell", x: ["dumbell", "dumbel", "dummbell"]}},
-  /* Wed */ {pick: {c: "environment", x: ["enviroment", "envirnoment"]}, spot: {s: "The temperture dropped below zero overnight.", w: "temperture", c: "temperature"}, uk: {b: "practise", a: "practice", ctx: "the verb"}, fix: {w: "knowlege", c: "knowledge"}, hard: {c: "Portuguese", x: ["Portugese", "Portugeuse", "Portguese"]}},
-  /* Thu */ {pick: {c: "schedule", x: ["shedule", "scedule"]}, spot: {s: "Her apparantly casual remark upset the whole table.", w: "apparantly", c: "apparently"}, uk: {b: "catalogue", a: "catalog"}, fix: {w: "posession", c: "possession"}, hard: {c: "lieutenant", x: ["leiutenant", "lieutenent", "lutenant"]}},
-  /* Fri */ {pick: {c: "gauge", x: ["guage", "gauje"]}, spot: {s: "The parliment debated the bill late into the night.", w: "parliment", c: "parliament"}, uk: {b: "oesophagus", a: "esophagus"}, fix: {w: "sargeant", c: "sergeant"}, hard: {c: "rhododendron", x: ["rhododendrum", "rododendron", "rhodedendron"]}},
-  /* Sat */ {pick: {c: "height", x: ["heighth", "hieght"]}, spot: {s: "Mum was so pleased with her succesful audition.", w: "succesful", c: "successful"}, uk: {b: "storey", a: "story", ctx: "of a building"}, fix: {w: "tatoo", c: "tattoo"}, hard: {c: "guillotine", x: ["guilotine", "guillatine", "gillotine"]}},
-  /* Sun */ {pick: {c: "surprise", x: ["suprise", "surprice"]}, spot: {s: "The film was humourous but a bit too long.", w: "humourous", c: "humorous"}, uk: {b: "plough", a: "plow"}, fix: {w: "yatch", c: "yacht"}, hard: {c: "camouflage", x: ["camoflage", "camouflague", "camaflage"]}},
-  // ---- Week E ----
-  /* Mon */ {pick: {c: "beginning", x: ["begining", "beggining"]}, spot: {s: "We shared a bannana on the bus.", w: "bannana", c: "banana"}, uk: {b: "mould", a: "mold"}, fix: {w: "wellfare", c: "welfare"}, hard: {c: "acquaintance", x: ["aquaintance", "acquaintence", "acquantance"]}},
-  /* Tue */ {pick: {c: "noticeable", x: ["noticable", "noticible"]}, spot: {s: "There were fourty people at the meeting.", w: "fourty", c: "forty"}, uk: {b: "cosy", a: "cozy"}, fix: {w: "immediatly", c: "immediately"}, hard: {c: "chauffeur", x: ["chauffuer", "chaufeur", "chauffer"]}},
-  /* Wed */ {pick: {c: "publicly", x: ["publically", "publicaly"]}, spot: {s: "The vegatable patch needs weeding.", w: "vegatable", c: "vegetable"}, uk: {b: "fulfil", a: "fulfill"}, fix: {w: "concious", c: "conscious"}, hard: {c: "renaissance", x: ["renaisance", "rennaisance", "renaissence"]}},
-  /* Thu */ {pick: {c: "occurred", x: ["occured", "ocurred"]}, spot: {s: "Good hand hygeine stops germs spreading.", w: "hygeine", c: "hygiene"}, uk: {b: "offence", a: "offense"}, fix: {w: "medecine", c: "medicine"}, hard: {c: "liaison", x: ["liason", "liaision", "laison"]}},
-  /* Fri */ {pick: {c: "tendency", x: ["tendancy", "tendencey"]}, spot: {s: "The professor's lecture on phenomenology was surprisingly accessable.", w: "accessable", c: "accessible"}, uk: {b: "anaemia", a: "anemia"}, fix: {w: "persue", c: "pursue"}, hard: {c: "exhilarate", x: ["exhilerate", "exhillarate", "exilarate"]}},
-  /* Sat */ {pick: {c: "sincerely", x: ["sincerly", "sincerley"]}, spot: {s: "The heros of the story were two schoolgirls.", w: "heros", c: "heroes"}, uk: {b: "labour", a: "labor"}, fix: {w: "minature", c: "miniature"}, hard: {c: "Massachusetts", x: ["Massachussetts", "Massachusets", "Massachussets"]}},
-  /* Sun */ {pick: {c: "rhyme", x: ["ryhme", "rhime"]}, spot: {s: "Decaf coffee still has a little caffiene in it.", w: "caffiene", c: "caffeine"}, uk: {b: "woollen", a: "woolen"}, fix: {w: "religous", c: "religious"}, hard: {c: "Philippines", x: ["Phillipines", "Philipines", "Phillippines"]}},
-  // ---- Week F ----
-  /* Mon */ {pick: {c: "different", x: ["diffrent", "differant"]}, spot: {s: "Our new puppy chewed the leg of the kitchen tabel.", w: "tabel", c: "table"}, uk: {b: "litre", a: "liter"}, fix: {w: "wich", c: "which"}, hard: {c: "Mississippi", x: ["Missisippi", "Mississipi", "Missisipi"]}},
-  /* Tue */ {pick: {c: "interrupt", x: ["interupt", "interrup"]}, spot: {s: "She sent a long and thoughful letter.", w: "thoughful", c: "thoughtful"}, uk: {b: "harbour", a: "harbor"}, fix: {w: "sieze", c: "seize"}, hard: {c: "bourgeois", x: ["bourgois", "burgeois", "bourgious"]}},
-  /* Wed */ {pick: {c: "accidentally", x: ["accidently", "accidentaly"]}, spot: {s: "The comittee met every second Tuesday.", w: "comittee", c: "committee"}, uk: {b: "ageing", a: "aging"}, fix: {w: "liesure", c: "leisure"}, hard: {c: "exaggerate", x: ["exagerate", "exxaggerate", "exaggarate"]}},
-  /* Thu */ {pick: {c: "vicious", x: ["viscious", "vicous"]}, spot: {s: "Her speech was full of grammatical errors and unneccessary jargon.", w: "unneccessary", c: "unnecessary"}, uk: {b: "vigour", a: "vigor"}, fix: {w: "dissapoint", c: "disappoint"}, hard: {c: "irresistible", x: ["irresistable", "irrisistible", "iresistible"]}},
-  /* Fri */ {pick: {c: "pastime", x: ["pasttime", "passtime"]}, spot: {s: "The museum's collection of Byzantine icons is unparalelled.", w: "unparalelled", c: "unparalleled"}, uk: {b: "mollusc", a: "mollusk"}, fix: {w: "ecstacy", c: "ecstasy"}, hard: {c: "daiquiri", x: ["daquiri", "daiquiry", "daquiry"]}},
-  /* Sat */ {pick: {c: "colleague", x: ["collegue", "colleage"]}, spot: {s: "The children played hide and seek in the vinyard.", w: "vinyard", c: "vineyard"}, uk: {b: "sombre", a: "somber"}, fix: {w: "begginer", c: "beginner"}, hard: {c: "cappuccino", x: ["capuccino", "cappucino", "cappuccinno"]}},
-  /* Sun */ {pick: {c: "receipt", x: ["reciept", "receit"]}, spot: {s: "It was such a releif to get home.", w: "releif", c: "relief"}, uk: {b: "speciality", a: "specialty"}, fix: {w: "rediculous", c: "ridiculous"}, hard: {c: "pharmaceutical", x: ["pharmacuetical", "pharmaceuticle", "farmaceutical"]}}
+  /* Mon */ {
+    std: {c: "separate", x: ["seperate", "separete"], n: "From Latin <i>separare</i>: <i>se-</i> “apart” + <i>parare</i> “to prepare”. That <i>par</i> is why it isn't “seperate”, the version almost everyone reaches for."},
+    blame: {w: "debt", i: 2, n: "In the Middle Ages it was <i>dette</i>, borrowed from French. In the 1500s scholars slipped in a <b>b</b> to show off its Latin roots (<i>debitum</i>). Nobody has ever said it."},
+    became: {q: "Pease porridge hot! People heard “pease” as a plural, and invented a word for just one.", c: "pea", x: ["pod", "peanut"], n: "<i>Pease</i> was one pea, from Old English <i>pise</i>. The final s sounded plural, so in the 1600s a single <b>pea</b> was born. Pease pudding still keeps the old word."},
+    sound: {s: "We need more envelopes from the ___ cupboard.", c: "stationery", x: ["stationary"], n: "Both come from Latin <i>statio</i>, “standing”. A <i>stationer</i> was a bookseller with a fixed stall, unlike the pedlars who wandered about. Their paper and pens became <b>stationery</b>."},
+    uk: {b: "colour", a: "color", n: "Noah Webster dropped the u in his 1828 American dictionary. Britain kept the Norman French <i>-our</i>. The Latin original, <i>color</i>, never had a u at all."}
+  },
+  /* Tue */ {
+    std: {c: "weird", x: ["wierd", "weerd"], n: "From Old English <i>wyrd</i>, “fate”. Macbeth's Weird Sisters are the Fates, not just odd. The meaning “strange” only arrived in the 1800s, inspired by them."},
+    blame: {w: "island", i: 1, n: "Old English <i>iegland</i> had no s. In the 1500s people assumed it came from <i>isle</i> (Latin <i>insula</i>) and added one. The two words were never related."},
+    became: {q: "In the 1400s you'd have tied on a <i>napron</i> before cooking.", c: "apron", x: ["napkin", "bib"], n: "“A napron” was heard as “an apron”, and the n slid across. <i>Napkin</i> comes from the same Old French <i>nape</i>, “cloth”, which is where that n came from."},
+    sound: {s: "The dragon slept on a ___ of gold.", c: "hoard", x: ["horde"], n: "<b>Hoard</b> is Old English <i>hord</i>, a treasure store. <b>Horde</b> arrived via Polish from a Turkic word for a camp or army, <i>ordu</i>, the same root as <i>Urdu</i>, “language of the camp”."},
+    uk: {b: "centre", a: "center", n: "Webster again: he switched <i>-re</i> to <i>-er</i>. But it wasn't new. Shakespeare's First Folio of 1623 spells it <i>center</i>, and Britain only settled on <i>centre</i> later."}
+  },
+  /* Wed */ {
+    std: {c: "mnemonic", x: ["mneumonic", "nemonic"], n: "From Greek <i>mnēmē</i>, “memory”. The same root, with <i>a-</i> for “not”, gives us <i>amnesia</i> and <i>amnesty</i>, an official forgetting."},
+    blame: {w: "receipt", i: 5, n: "Medieval English had <i>receite</i>. The silent <b>p</b> was added to match Latin <i>recepta</i>. Its cousin <i>recipe</i>, from the same Latin verb, kept the p and says it."},
+    became: {q: "People once gave each other an <i>ekename</i>.", c: "nickname", x: ["surname", "name tag"], n: "<i>Eke</i> meant “also” (it survives in “eke out”), so an ekename was an extra name. “An ekename” became “a nekename”: here the n jumped the other way from apron."},
+    sound: {s: "Red wine is the perfect ___ to cheese.", c: "complement", x: ["compliment"], n: "Both come from Latin <i>complementum</i>, “something that completes”. <b>Compliment</b> took a detour through Italian and Spanish politeness, and by the 1600s the two had split."},
+    uk: {b: "cheque", a: "check", ctx: "for paying", n: "It began as <i>check</i>, a slip that checks against fraud. The British <b>cheque</b> spelling took hold in the 1800s, probably helped along by <i>exchequer</i>."}
+  },
+  /* Thu */ {
+    std: {c: "rhythm", x: ["rythm", "rhythym"], n: "From Greek <i>rhythmos</i>, “flow”. The <i>rh</i> is a Greek habit, as in <i>rhinoceros</i>. And look: not a single a, e, i, o or u."},
+    blame: {w: "doubt", i: 3, n: "Medieval English said and wrote <i>doute</i>. Scholars added a <b>b</b> from Latin <i>dubitare</i>. Its relative <i>dubious</i>, borrowed straight from Latin, says the b out loud."},
+    became: {q: "A medieval contest needed a <i>noumpere</i> to settle disputes.", c: "umpire", x: ["herald", "marshal"], n: "From Old French <i>nonper</i>, “not equal”: the odd one out, on neither side. “A noumpere” became “an umpire”, just like apron."},
+    sound: {s: "The ___ of the story: never trust a fox.", c: "moral", x: ["morale"], n: "Both are French. English added the e to <b>morale</b> (team spirit) to keep the stress on the end. In French itself, both are spelt <i>moral</i>."},
+    uk: {b: "aluminium", a: "aluminum", n: "Humphry Davy named it <i>alumium</i>, then <i>aluminum</i>. In 1812 it became <i>aluminium</i> to match sodium and potassium. America stuck with an earlier version."}
+  },
+  /* Fri */ {
+    std: {c: "fuchsia", x: ["fuschia", "fushia"], n: "Named after the German botanist Leonhart Fuchs (1501–1566). The awkward <i>chs</i> is just his surname, so blame him, not yourself."},
+    blame: {w: "ptarmigan", i: 0, n: "From Scottish Gaelic <i>tàrmachan</i>. In 1684 a writer added a <b>p</b>, probably thinking of Greek words like <i>pteron</i>, “wing”. The bird is no relation of the pterodactyl."},
+    became: {q: "Falstaff loved a cup of <i>sherris</i>, a wine named after a Spanish town.", c: "sherry", x: ["port", "sangria"], n: "<i>Sherris</i> came from <i>Xeres</i>, now Jerez. It sounded plural, so a single <b>sherry</b> was coined, the same trick as pea."},
+    sound: {s: "Please be ___: it's a surprise party.", c: "discreet", x: ["discrete"], n: "Both come from Latin <i>discretus</i>, “separated”. For a long time they were one word. The spellings split by meaning: <b>discreet</b> for careful, <b>discrete</b> for separate."},
+    long: {c: "floccinaucinihilipilification", x: ["floccinaucinihilipilifacation", "flocinaucinihilipilification"], n: "The act of judging something worthless. A joke word stitched from four Latin words for a trifle, <i>flocci, nauci, nihili, pili</i>, all listed together in an old Eton Latin grammar. William Shenstone used it in 1741."}
+  },
+  /* Sat */ {
+    std: {c: "liaison", x: ["liason", "liaision"], n: "French, from <i>lier</i>, “to bind”, from Latin <i>ligare</i>. The same root ties together <i>ligament</i> and <i>league</i>."},
+    blame: {w: "scissors", i: 1, n: "Middle English <i>sisoures</i>, from Old French. A <b>c</b> crept in because people linked it to Latin <i>scindere</i>, “to cut” (as in <i>rescind</i>). They were wrong."},
+    became: {q: "An <i>ewt</i> was a small creature found in ponds.", c: "newt", x: ["eel", "toad"], n: "“An ewt” became “a newt”. Its cousin <i>eft</i> comes from the very same Old English word, <i>efete</i>, without the stray n."},
+    sound: {s: "Keep a tight ___ on the spending.", c: "rein", x: ["reign", "rain"], n: "It's horses, not kings: <b>reins</b> steer a horse. That's why it's “free rein” too, though “free reign” is everywhere."},
+    uk: {b: "plough", a: "plow", n: "A surprise: <i>plow</i> was the usual spelling in England until the 1700s. Britain then moved to <b>plough</b>, while America kept the old one."}
+  },
+  /* Sun */ {
+    std: {c: "embarrass", x: ["embarass", "embarras"], n: "Two rs and two ss. Through French from a word meaning to block or hamper. For its first 150 years in English it meant to hinder or perplex. Feeling awkward only came in the 1820s."},
+    blame: {w: "rhyme", i: 1, n: "Medieval English wrote <i>rime</i>. Around 1600 an <b>h</b> was added by association with <i>rhythm</i>. Coleridge's <i>Rime of the Ancient Mariner</i> uses the old spelling on purpose."},
+    became: {q: "Norman French gave English the <i>cherise</i>.", c: "cherry", x: ["chervil", "cress"], n: "<i>Cherise</i> sounded plural, so a single <b>cherry</b> was coined around 1300. The French kept theirs: <i>cerise</i>."},
+    sound: {s: "She would ___ over old maps for hours.", c: "pore", x: ["pour"], n: "To <b>pore</b> over something is a medieval verb of unknown origin. It has nothing to do with skin pores (from Greek) or with pouring."},
+    uk: {b: "tyre", a: "tire", n: "<i>Tire</i> is the older spelling, in England too (probably short for <i>attire</i>, the wheel's clothing). Britain revived <b>tyre</b> in the 1800s, just in time for rubber ones."}
+  }
 ];
