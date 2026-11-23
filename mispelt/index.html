@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mispelt</title>
-<meta name="description" content="A daily spelling game. Five quick rounds: pick the right spelling, spot the mistake, British or American, and fix it.">
+<meta name="description" content="A daily game about why English spelling is so odd. Five quick rounds, and a story behind every word.">
 <meta name="robots" content="noindex">
 <link rel="icon" href="/mispelt/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,18 +22,18 @@ h1 .squig{text-decoration:underline wavy var(--accent);text-decoration-thickness
 h1 svg{width:30px;height:30px;vertical-align:-4px;margin-right:6px}
 .pips{display:flex;gap:5px}
 .pip{width:12px;height:12px;border-radius:50%;background:var(--line)}
-.pip.g{background:var(--good)}.pip.x{background:var(--bad)}.pip.now{background:var(--navy)}
+.pip.g{background:var(--good)}.pip.x{background:var(--muted)}.pip.now{background:var(--navy)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
 .tag{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600}
 .kind{font-family:var(--head);font-weight:800;font-size:22px;margin:4px 0 2px}
 .sub{color:var(--muted);font-size:15px;margin:0 0 14px}
-.opts{display:grid;gap:8px}
-.opt{display:block;width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);font:600 20px/1.3 var(--head);color:var(--ink);cursor:pointer;min-height:54px;letter-spacing:.3px}
+.opts{display:grid;gap:12px}
+.opt{display:block;width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);font:600 21px/1.3 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);cursor:pointer;min-height:58px;letter-spacing:.6px;word-break:break-word}
 .opt:hover:not([disabled]){border-color:var(--navy)}
 .opt:focus-visible,.w:focus-visible,.primary:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
 .opt[disabled]{cursor:default}
 .opt.right{border-color:var(--good);background:var(--goodbg)}
-.opt.wrong{border-color:var(--bad);background:var(--badbg);text-decoration:line-through}
+.opt.wrong{border-color:var(--muted);background:var(--chip)}
 .opt.dim{opacity:.5}
 .sent{font:400 22px/1.9 var(--head);margin:6px 0 4px}
 .w{font:inherit;color:inherit;background:none;border:0;border-bottom:2px dotted var(--line);padding:0 2px;margin:0 1px;border-radius:4px;cursor:pointer}
@@ -67,6 +67,25 @@ a{color:var(--accent)}
 .recap .v{font:600 18px/1.3 var(--head);text-align:right}
 .recap .v s{color:var(--muted);font-weight:400;margin-right:6px}
 footer{margin-top:18px;text-align:center}
+.dots{letter-spacing:2px}
+.sentq{font:500 20px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:4px 0 14px}
+.sentq .gap{display:inline-block;min-width:4.5em;border-bottom:2px solid var(--navy)}
+.oldq{font-size:18px;line-height:1.55;margin:4px 0 14px}
+.tiles{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:6px 0 4px}
+.tile{width:46px;height:56px;border:1.5px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:700 26px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;display:flex;align-items:center;justify-content:center}
+.tile:hover:not([disabled]){border-color:var(--navy)}
+.tile:focus-visible,.hear:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+.tile[disabled]{cursor:default}
+.tile.right{border-color:var(--good);background:var(--goodbg);color:var(--good)}
+.tile.wrong{border-color:var(--muted);background:var(--chip)}
+.hear{border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:6px 12px;font-size:15px;font-weight:600;margin-top:10px}
+.story{margin-top:8px;line-height:1.5}
+.story i{font-style:italic}
+.flag{font-size:13px;margin-left:6px}
+.recap li{flex-direction:column;gap:4px}
+.recap .top{display:flex;justify-content:space-between;gap:10px}
+.recap .n{color:var(--muted);font-size:14px;line-height:1.45}
+
 </style>
 <link rel="manifest" href="/manifest.webmanifest">
 </head>
@@ -82,7 +101,8 @@ footer{margin-top:18px;text-align:center}
 <script>
 // ---- Which day is on screen ----
 // Preview: today's puzzle depends on the weekday (see data.js). ?day=N plays Mispelt No. N; #test plays without saving.
-const START=Date.UTC(2026,10,1);
+// START (and so the No.) will be reset to the launch day.
+const START=Date.UTC(2026,10,23);
 const dayDate=n=>new Date(START+n*864e5);
 const fmt=(n,o)=>dayDate(n).toLocaleDateString('en-GB',Object.assign({timeZone:'UTC'},o));
 const keyOf=n=>{const d=dayDate(n);return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0')};
@@ -93,28 +113,24 @@ const TODAY=Math.max(0,Math.round((Date.UTC(now.getFullYear(),now.getMonth(),now
 const isTest=location.hash==='#test';
 const td=parseInt(params.get('day'),10);
 const N=Number.isInteger(td)&&td>=1?td-1:TODAY;
-// Pick by the real weekday (Monday first), cycling through the weeks in DAYS
-const EPOCH=Math.round(dayDate(N)/864e5)+3; // 1 Jan 1970 was a Thursday
-const WD=EPOCH%7, WEEKS=DAYS.length/7;
-// Before 23 Nov 2026 the game cycled through Weeks A and B; from then on all weeks rotate, starting with Week C.
-const W0=Math.floor((Date.UTC(2026,10,23)/864e5+3)/7), WN=Math.floor(EPOCH/7);
-const BASE=DAYS[(WN<W0?WN%2:(2+WN-W0)%WEEKS)*7+WD], LEVEL=LEVELS[WD];
-// From the second time through, each round slides along at its own pace (round r moves r/R places per pass, never more than one),
-// so rounds come back in new combinations rather than as the same day, and each item still stays almost a full list apart.
-const mixPick=(j,L,r,R)=>(j%L+Math.ceil(Math.floor(j/L)*r/R))%L;
-const D=WN<W0?BASE:Object.fromEntries(Object.keys(BASE).map((key,r)=>[key,DAYS[((mixPick(WN-W0,WEEKS,r,5)+2)%WEEKS)*7+WD][key]]));
-const SKEY='mispelt-'+keyOf(N);
+const WD=(Math.round(dayDate(N)/864e5)+3)%7; // Monday = 0 (1 Jan 1970 was a Thursday)
+const D=DAYS[WD%DAYS.length], DOT=DOTS[WD];
+const dots='●'.repeat(DOT)+'○'.repeat(5-DOT);
+const SKEY='mispelt2-'+keyOf(N);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){if(isTest)return;try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 function shuffled(arr,seed){const a=[...arr];let s=seed*9301+49297;for(let i=a.length-1;i>0;i--){s=(s*9301+49297)%233280;const j=Math.floor(s/233280*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 
-// The five rounds, in a fixed order
+// The five rounds, in a fixed order. Fridays swap British or American for a long word.
+const last=D.long
+  ?{type:'choice',name:'Long word Friday',sub:'Which is the standard spelling? Take your time.',opts:shuffled([D.long.c,...D.long.x],N*11+5),right:D.long.c,n:D.long.n,say:D.long.c}
+  :{type:'choice',name:'British or American?',sub:`Which is the British spelling${D.uk.ctx?` (${esc(D.uk.ctx)})`:''}?`,opts:shuffled([D.uk.b,D.uk.a],N*11+5),right:D.uk.b,other:D.uk.a,n:D.uk.n,say:D.uk.b};
 const ROUNDS=[
-  {type:'choice',name:'Which is right?',sub:'Pick the correct spelling.',opts:shuffled([D.pick.c,...D.pick.x],N*11+1),right:D.pick.c},
-  {type:'spot',name:'Spot the mistake',sub:'One word in this sentence is spelt wrong. Tap it.',d:D.spot},
-  {type:'choice',name:'British or American?',sub:`Which is the British spelling${D.uk.ctx?` (${esc(D.uk.ctx)})`:''}?`,opts:shuffled([D.uk.b,D.uk.a],N*11+3),right:D.uk.b,other:D.uk.a},
-  {type:'fix',name:'Fix it',sub:'This word is spelt wrong. Type it correctly.',d:D.fix},
-  {type:'choice',name:'Which is right? (tricky)',sub:'Pick the correct spelling.',opts:shuffled([D.hard.c,...D.hard.x],N*11+5),right:D.hard.c}
+  {type:'choice',name:'Standard spelling',sub:'Which is the standard spelling?',opts:shuffled([D.std.c,...D.std.x],N*11+1),right:D.std.c,n:D.std.n,say:D.std.c},
+  {type:'blame',name:'Blame the scholars',sub:'One letter here was added on purpose, and nobody has ever said it. Tap it.',d:D.blame,right:D.blame.w,n:D.blame.n,say:D.blame.w},
+  {type:'choice',name:'Became right',sub:'This word began as a mistake. What do we say now?',q:D.became.q,opts:shuffled([D.became.c,...D.became.x],N*11+3),right:D.became.c,n:D.became.n,say:D.became.c},
+  {type:'choice',name:'Sound-alikes',sub:'They sound the same. Which one fits?',s:D.sound.s,opts:shuffled([D.sound.c,...D.sound.x],N*11+4),right:D.sound.c,n:D.sound.n,say:D.sound.c},
+  last
 ];
 const MAX=ROUNDS.length;
 
@@ -123,55 +139,54 @@ const $=s=>document.querySelector(s);
 const app=$('#app');
 function save(){store.set(SKEY,st)}
 const score=()=>st.ok.filter(Boolean).length;
-const norm=s=>String(s).trim().toLowerCase().replace(/[’']/g,"'");
-const clean=w=>w.replace(/^[^\p{L}]+|[^\p{L}]+$/gu,'');
-function rank(t){return['Back to the dictionary','Back to the dictionary','Getting there','Spellbound','Top of the class','Word perfect'][t]}
+function rank(t){return['Fresh eyes','Fresh eyes','Word collector','Spelling sleuth','Silent letter spotter','Word perfect'][t]}
 function pips(cur){$('#pips').innerHTML=ROUNDS.map((_,i)=>`<span class="pip ${st.ok[i]===true?'g':st.ok[i]===false?'x':i===cur?'now':''}"></span>`).join('')}
-const answerOf=R=>R.type==='choice'?R.right:R.d.c;
+
+// Optional: hear a word, using the browser's own voice (hidden where there isn't one)
+const canSay='speechSynthesis' in window&&'SpeechSynthesisUtterance' in window;
+function say(w){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(w);u.lang='en-GB';u.rate=.85;const v=speechSynthesis.getVoices().find(v=>/en[-_]GB/i.test(v.lang));if(v)u.voice=v;speechSynthesis.speak(u)}catch(e){}}
+const hearBtn=w=>canSay?`<button class="hear" type="button" data-say="${esc(w)}">🔊 Hear it</button>`:'';
+const flagLink=(i,R)=>`<a class="flag" href="/feedback/?game=mispelt&type=puzzle&puzzle=${encodeURIComponent('No. '+(N+1)+' · '+R.name+' · '+R.right)}">Wrong?</a>`;
 
 function play(){
   const i=st.r,R=ROUNDS[i],answered=st.ok[i]!=null;
   pips(i);
   let body='';
+  if(R.q)body+=`<p class="oldq">${R.q}</p>`;
+  if(R.s)body+=`<p class="sentq">${esc(R.s).replace('___','<span class="gap" aria-label="gap"></span>')}</p>`;
   if(R.type==='choice'){
     const cls=o=>!answered?'':o===R.right?' right':o===st.ans[i]?' wrong':' dim';
-    body=`<div class="opts" role="group" aria-label="Spellings">${R.opts.map((o,j)=>`<button class="opt${cls(o)}" data-o="${esc(o)}"${answered?' disabled':''}>${esc(o)}</button>`).join('')}</div>`;
-  }else if(R.type==='spot'){
-    const words=R.d.s.split(' ');
-    body=`<p class="sent">${words.map((w,j)=>{const isBad=clean(w)===R.d.w,picked=st.ans[i]===j;const c=!answered?'':isBad?' right':picked?' wrong':'';return`<button class="w${c}" data-j="${j}"${answered?' disabled':''}>${esc(w)}</button>`}).join(' ')}</p>`;
+    body+=`<div class="opts" role="group" aria-label="Answers">${R.opts.map(o=>`<button class="opt${cls(o)}" data-o="${esc(o)}"${answered?' disabled':''}>${esc(o)}</button>`).join('')}</div>`;
   }else{
-    body=`<div class="shown" aria-label="Misspelled word">${esc(R.d.w)}</div>
-    <form class="typed" id="fixf" autocomplete="off"><input id="fixi" type="text" inputmode="text" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Your spelling" value="${answered?esc(st.ans[i]):''}"${answered?' disabled':''}><button class="primary" id="fixb"${answered?' disabled':''}>Check</button></form>`;
+    const cls=j=>!answered?'':j===R.d.i?' right':j===st.ans[i]?' wrong':'';
+    body+=`<div class="tiles" role="group" aria-label="Letters">${[...R.d.w].map((ch,j)=>`<button class="tile${cls(j)}" data-j="${j}" aria-label="Letter ${j+1}: ${esc(ch)}"${answered?' disabled':''}>${esc(ch)}</button>`).join('')}</div>`;
+    if(!answered)body+=`<div class="center">${hearBtn(R.say)}</div>`;
   }
   let reveal='';
   if(answered){
     const ok=st.ok[i];
-    let line;
-    if(R.type==='spot')line=`It's spelt <b>${esc(R.d.c)}</b>, not <s>${esc(R.d.w)}</s>.`;
-    else if(R.type==='fix')line=ok?`<b>${esc(R.d.c)}</b>`:`You typed <s>${esc(st.ans[i]||'(nothing)')}</s>. It's spelt:<div class="big">${esc(R.d.c)}</div>`;
-    else if(R.other)line=`British: <b>${esc(R.right)}</b> · American: <b>${esc(R.other)}</b>`;
-    else line=`It's spelt <b>${esc(R.right)}</b>.`;
-    reveal=`<div class="reveal" role="status"><b>${ok?'Correct!':'Not quite.'}</b> ${line}</div>
+    const head=ok?'Well spotted!':R.type==='blame'?`Not quite. It's the <b>${esc(R.d.w[R.d.i])}</b>. Here's the story.`:`Not quite. It's <b>${esc(R.right)}</b>. Here's the story.`;
+    const extra=R.other?`<div class="muted" style="margin-top:6px">British: <b>${esc(R.right)}</b> · American: <b>${esc(R.other)}</b></div>`:'';
+    reveal=`<div class="reveal" role="status"><b>${head}</b>${extra}<div class="story">${R.n}</div>${hearBtn(R.say)}${flagLink(i,R)}</div>
     <div class="btns"><button class="primary" id="next">${i+1<MAX?'Next round':'See how you did'}</button></div>`;
   }
   app.innerHTML=`<div class="card">
-    <div class="tag">${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})} · ${LEVEL} · Round ${i+1} of ${MAX}</div>
+    <div class="tag">${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})} · <span class="dots" aria-label="Difficulty ${DOT} of 5">${dots}</span> · Round ${i+1} of ${MAX}</div>
     <div class="kind">${R.name}</div>
     <p class="sub">${R.sub}</p>
     ${i===0&&!answered?`<details class="ex"><summary>How to play</summary><ol class="how">
-      <li>Five quick rounds, one point each.</li>
-      <li>Pick the right spelling, spot the mistake in a sentence, choose the British spelling, then type a word correctly.</li>
-      <li>The last round is the tricky one.</li>
-      <li>It gets harder through the week: gentle on Monday, fiendish on Friday.</li>
-      <li>British spellings throughout. One go per round.</li></ol></details>`:''}
+      <li>Five quick rounds, one point each, and a story behind every answer.</li>
+      <li>Spot the standard spelling, find the letter scholars sneaked in, name the word that began as a mistake, pick the right sound-alike, then British or American.</li>
+      <li>Fridays end with a long word instead.</li>
+      <li>English spelling is odd, not you. It gets a little trickier through the week.</li>
+      <li>No timer. Tap 🔊 to hear a word.</li></ol></details>`:''}
     ${body}
     ${reveal}
   </div>`;
+  app.querySelectorAll('.hear').forEach(b=>b.onclick=()=>say(b.dataset.say));
   if(!answered){
     if(R.type==='choice')app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{st.ans[i]=b.dataset.o;st.ok[i]=b.dataset.o===R.right;save();play()});
-    if(R.type==='spot')app.querySelectorAll('.w').forEach(b=>b.onclick=()=>{const j=+b.dataset.j;st.ans[i]=j;st.ok[i]=clean(R.d.s.split(' ')[j])===R.d.w;save();play()});
-    if(R.type==='fix'){const f=$('#fixf'),inp=$('#fixi'),btn=$('#fixb');const upd=()=>btn.disabled=!inp.value.trim();upd();inp.oninput=upd;
-      f.onsubmit=e=>{e.preventDefault();const v=inp.value.trim();if(!v)return;st.ans[i]=v;st.ok[i]=norm(v)===norm(R.d.c);save();play()}}
+    else app.querySelectorAll('.tile').forEach(b=>b.onclick=()=>{const j=+b.dataset.j;st.ans[i]=j;st.ok[i]=j===R.d.i;save();play()});
   }
   const nb=$('#next');if(nb){nb.onclick=()=>{if(st.r+1<MAX){st.r++;save();play()}else{st.done=true;save();end()}};nb.focus({preventScroll:true})}
 }
@@ -179,22 +194,23 @@ function play(){
 function end(){
   pips(-1);
   const t=score();
-  const sq=ROUNDS.map((_,i)=>st.ok[i]?'🟩':'🟥').join('');
-  const share=`Mispelt No. ${N+1} (${LEVEL})\n${sq} ${t}/${MAX}\n${rank(t)}\nYour go: https://samey.uk/mispelt/ #sameyuk`;
-  const wrongOf=(R,i)=>R.type==='choice'?(st.ok[i]?'':st.ans[i]):R.type==='spot'?R.d.w:R.d.w;
+  const sq=ROUNDS.map((_,i)=>st.ok[i]?'🟩':'⬜').join('');
+  if(!isTest&&N===TODAY)(window.SameySetQ=window.SameySetQ||[]).push(['mispelt',t+'/'+MAX]);
+  const share=`Mispelt No. ${N+1}\n${sq} ${t}/${MAX}\n${rank(t)}\nYour go: https://samey.uk/mispelt/ #sameyuk`;
   app.innerHTML=`<div class="card center">
-    <div class="tag">${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})} · ${LEVEL}</div>
+    <div class="tag">${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})}</div>
     <div class="rank">${rank(t)}</div>
     <div class="squares" aria-label="${t} out of ${MAX}">${sq}</div>
-    <p class="muted">${t} of ${MAX} correct</p>
+    <p class="muted">${t} of ${MAX}, and five new stories</p>
     <div class="btns"><button class="primary" id="share">Share</button></div>
-    <p class="muted"><span data-next="Next Mispelt in {t}.">New spellings tomorrow.</span></p>
+    <p class="muted"><span data-next="Next Mispelt in {t}.">New words tomorrow.</span></p>
     <p class="muted">All the games are free and ad-free, made by one librarian in Canterbury. Enjoyed today's? <a href="https://ko-fi.com/playtheroute" target="_blank" rel="noopener" style="font-weight:700;white-space:nowrap">☕ Buy me a coffee</a></p>
   </div>
-  <div class="card" style="margin-top:14px"><div class="tag">Today's spellings</div>
-    <ul class="recap">${ROUNDS.map((R,i)=>{const w=wrongOf(R,i);return`<li><span class="k">${st.ok[i]?'✓':'✗'} ${esc(R.name.replace(' (tricky)',''))}</span><span class="v">${w?`<s>${esc(w)}</s>`:''}${esc(answerOf(R))}</span></li>`}).join('')}</ul>
-    <p class="muted" style="margin-top:12px">Think one's wrong? <a href="/feedback/?game=mispelt&type=puzzle&puzzle=${encodeURIComponent('No. '+(N+1))}">Tell us</a>.</p>
-  </div>`;
+  <div class="card" style="margin-top:14px"><div class="tag">Today's stories</div>
+    <ul class="recap">${ROUNDS.map((R,i)=>`<li><div class="top"><span class="k">${st.ok[i]?'✓':'•'} ${esc(R.name)}</span><span class="v">${esc(R.right)}</span></div><div class="n">${R.n}</div></li>`).join('')}</ul>
+    <p class="muted" style="margin-top:12px">Think one's wrong, or know a better story? <a href="/feedback/?game=mispelt&type=puzzle&puzzle=${encodeURIComponent('No. '+(N+1))}">Tell us</a>.</p>
+  </div>
+  <div class="xg" data-sy-cards></div>`;
   $('#share').onclick=()=>{if(navigator.share){navigator.share({text:share}).catch(()=>{});return}try{navigator.clipboard.writeText(share).then(()=>{$('#share').textContent='Copied'})}catch(e){}};
 }
 
