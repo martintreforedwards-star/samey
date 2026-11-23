@@ -261,6 +261,36 @@
     addNavStyle(); bars.forEach(fillBar); grids.forEach(fillGrid);
   }
   function renderSets() { document.querySelectorAll(".sy-set").forEach(fillSet); renderNav(); }
+  /* ---------- Advent calendar banner, 24 Nov to 31 Dec 2026 ----------
+     A slim strip above the games bar (or the "Today's games" grid on the home page) pointing to /advent/.
+     Before 1 December it counts down; through December it says which door is open. Players can hide it for the day. */
+  function placeAdvent() {
+    if (here === "advent" || document.querySelector(".sy-advent")) return;
+    var now = new Date(), y = now.getFullYear(), m = now.getMonth(), d = now.getDate();
+    if (y !== 2026 || m < 10 || (m === 10 && d < 24)) return;
+    var hideKey = "samey-advent-hide";
+    try { if (localStorage.getItem(hideKey) === dayKey(now)) return; } catch (e) {}
+    var spot = document.querySelector(".sy-bar") || document.querySelector(".sy-grid");
+    if (!spot) return;
+    var msg;
+    if (m === 10) { var n = 31 - d; msg = n === 1 ? "🎁 Something festive opens tomorrow: the samey.uk Advent calendar" : "🎁 The samey.uk Advent calendar opens in " + n + " days. Take a peek"; }
+    else if (d <= 24) msg = "🎄 Advent door " + d + " is open. Today's festive word round →";
+    else msg = "🎄 All 24 Advent doors are open. Catch up on any you missed →";
+    var box = el("div", "sy-advent"), a = el("a", null, msg), x = el("button", null, "×");
+    a.href = "/advent/"; x.type = "button"; x.setAttribute("aria-label", "Hide for today");
+    x.onclick = function () { try { localStorage.setItem(hideKey, dayKey(new Date())); } catch (e) {} box.remove(); };
+    box.append(a, x);
+    if (!document.getElementById("sy-advent-css")) {
+      var st = document.createElement("style"); st.id = "sy-advent-css";
+      st.textContent = ".sy-advent{display:flex;align-items:center;gap:6px;margin:0 0 10px;padding:4px 4px 4px 14px;border-radius:12px;background:linear-gradient(90deg,#1f5c3f,#b3262e);color:#fff;font-family:var(--body,inherit);font-size:.92rem;font-weight:700;box-shadow:0 2px 10px rgba(179,38,46,.25)}" +
+        ".sy-advent a{flex:1;color:#fff;text-decoration:none;padding:8px 0;line-height:1.3}" +
+        ".sy-advent a:hover{text-decoration:underline}" +
+        ".sy-advent button{flex:none;width:36px;height:36px;border:0;border-radius:8px;background:rgba(255,255,255,.15);color:#fff;font-size:20px;line-height:1;cursor:pointer}" +
+        ".sy-advent a:focus-visible,.sy-advent button:focus-visible{outline:3px solid #fff;outline-offset:2px}";
+      document.head.append(st);
+    }
+    spot.parentNode.insertBefore(box, spot);
+  }
   var styled = false;
   function addStyle() {
     if (styled) return; styled = true;
@@ -402,6 +432,6 @@
 
   new MutationObserver(function () { fill(); placeCards(); placeSets(); placeInstall(); }).observe(document.documentElement, { childList: true, subtree: true });
   try { q.forEach(function (a) { report(a[0], a[1]); }); } catch (e) {}
-  function init() { fill(); placeCards(); placeSets(); renderNav(); placeInstall(); }
+  function init() { fill(); placeCards(); placeSets(); renderNav(); placeInstall(); placeAdvent(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
 })();
