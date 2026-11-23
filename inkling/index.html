@@ -243,7 +243,8 @@ function end(){
   <div class="card" style="margin-top:14px"><div class="tag">Today's words</div>
     <ul class="recap">${items}</ul>
     <p class="muted" style="margin-top:12px">Think one's wrong, or know a better one? <a href="/feedback/?game=inkling&type=puzzle&puzzle=${encodeURIComponent('No. '+(N+1))}">Tell us</a>.</p>
-  </div>`;
+  </div>
+  <div class="xg" data-sy-cards></div>`;
   $('#share').onclick=()=>{if(navigator.share){navigator.share({text:share}).catch(()=>{});return}try{navigator.clipboard.writeText(share).then(()=>{$('#share').textContent='Copied'})}catch(e){}};
 }
 
