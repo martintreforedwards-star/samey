@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Advent calendar · samey.uk</title>
+<meta name="description" content="A word-game Advent calendar: one festive door a day from 1 to 24 December, from wassail to Xmas.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://samey.uk/advent/">
+<meta property="og:site_name" content="samey.uk">
+<meta property="og:title" content="The samey.uk Advent calendar">
+<meta property="og:description" content="24 festive word doors, one a day from 1 December. Why is there an X in Xmas?">
+<meta property="og:image" content="https://samey.uk/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/advent/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&display=swap">
+<style>
+:root{--bg:#f5efe4;--card:#fff;--ink:#1f2420;--muted:#5f6a63;--line:#e2d9c8;--accent:#1f5c3f;--on-accent:#fff;--pop:#b3262e;--gold:#c99a2e;--good:#2b8a3e;--bad:#c92a2a;--goodbg:#ebfbee;--badbg:#fff5f5;--chip:#efe7d8;--head:"Fraunces",Georgia,serif}
+@media (prefers-color-scheme:dark){:root{--bg:#111613;--card:#19201c;--ink:#eef2ef;--muted:#a5b0a9;--line:#2e3832;--accent:#7fc8a0;--on-accent:#122018;--pop:#ff7b80;--gold:#e8c065;--good:#8ce99a;--bad:#ff8787;--goodbg:#173022;--badbg:#3a1f22;--chip:#232b26}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+main{max-width:520px;margin:0 auto;padding:16px 16px 40px;min-height:100vh}
+header{margin-bottom:12px}
+h1{font-family:var(--head);font-weight:800;font-size:34px;margin:0;line-height:1.05;letter-spacing:-.5px}
+h1 span{color:var(--pop)}
+.lede{color:var(--muted);margin:6px 0 0;font-size:15px}
+.status{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:14px 0 10px;font-weight:700;font-size:15px}
+.status .cd{color:var(--pop)}
+.doors{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.door{position:relative;aspect-ratio:1/1.1;border-radius:12px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font:800 26px/1 var(--head);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;padding:4px;transition:transform .15s}
+.door small{font:600 11px/1.2 system-ui,sans-serif;color:var(--muted);text-align:center}
+.door:hover:not([disabled]){transform:translateY(-2px);border-color:var(--accent)}
+.door:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.door[disabled]{cursor:default;opacity:.45}
+.door.today{border:2px solid var(--pop);box-shadow:0 0 0 3px color-mix(in srgb,var(--pop) 18%,transparent);animation:glow 2.4s ease-in-out infinite}
+.door.open{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.door.open small{color:var(--on-accent);opacity:.85}
+.door.d24{background:linear-gradient(135deg,var(--card),color-mix(in srgb,var(--gold) 25%,var(--card)))}
+.door.d24.open{background:var(--accent)}
+@keyframes glow{50%{box-shadow:0 0 0 7px color-mix(in srgb,var(--pop) 10%,transparent)}}
+@media (prefers-reduced-motion:reduce){.door{transition:none}.door.today{animation:none}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-top:16px;scroll-margin-top:12px}
+.tag{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600}
+.q{font:600 22px/1.3 var(--head);margin:6px 0 14px}
+.opts{display:grid;gap:8px}
+.opt{display:block;width:100%;text-align:left;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);font:600 17px/1.3 system-ui,-apple-system,sans-serif;color:var(--ink);cursor:pointer;min-height:52px}
+.opt:hover:not([disabled]){border-color:var(--accent)}
+.opt:focus-visible,.btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.opt[disabled]{cursor:default}
+.opt.right{border-color:var(--good);background:var(--goodbg)}
+.opt.wrong{border-color:var(--bad);background:var(--badbg)}
+.opt.dim{opacity:.5}
+.reveal{margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--chip);font-size:15px}
+.reveal b{display:block;margin-bottom:4px}
+.btns{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.btn{flex:1;display:inline-flex;align-items:center;justify-content:center;padding:13px;border:0;border-radius:12px;background:var(--accent);color:var(--on-accent);font:700 16px system-ui,sans-serif;min-height:50px;text-decoration:none;cursor:pointer;text-align:center}
+.btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink)}
+.teaser{text-align:center}
+.teaser .big{font:800 56px/1 var(--head);color:var(--pop);margin:6px 0}
+.foot{color:var(--muted);font-size:14px;text-align:center;margin-top:22px}
+.foot a{color:inherit}
+</style>
+</head>
+<body>
+<main>
+<nav class="sy-bar" aria-label="Games"></nav>
+<header>
+  <h1>Advent <span>calendar</span></h1>
+  <p class="lede">A festive word door every day from 1 to 24 December, each one a taste of a samey.uk game. Missed a day? Earlier doors stay open.</p>
+</header>
+<div class="status"><span id="count"></span><span class="cd" id="cd"></span></div>
+<div class="doors" id="doors" aria-label="Advent doors"></div>
+<section class="card" id="panel" hidden aria-live="polite"></section>
+<p class="foot">Made by one librarian in Canterbury. <a href="/">All the games</a></p>
+</main>
+<script src="/advent/data.js"></script>
+<script>
+(function () {
+  var YEAR = 2026, KEY = "samey-advent-" + YEAR;
+  var NAMES = { samey: "Samey", spinonym: "Spinonym", dotty: "Dotty", syntaxed: "Syntaxed", passe: "Passé", natter: "Natter", roots: "Roots", rizz: "Rizz", babel: "Babel", rhymey: "Rhymey", phoney: "Phoney", idiomy: "Idiomy", incipit: "Incipit", versed: "Versed", gamey: "Gamey", dodo: "Dodo", inkling: "Inkling", forsooth: "Forsooth", gaggle: "Gaggle", fixy: "Antepostee", mispelt: "Mispelt" };
+  // A jumbled door order, like a real calendar. Door 24 always sits last.
+  var ORDER = [7, 19, 3, 12, 21, 1, 15, 9, 5, 17, 23, 11, 2, 14, 20, 8, 10, 4, 18, 13, 6, 22, 16, 24];
+  var test = location.hash === "#test";
+  var state; try { state = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { state = {}; }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  // Which doors can be opened today, by the player's own clock (0 before 1 December, 24 from Christmas Eve on).
+  function unlocked() {
+    if (test) return 24;
+    var now = new Date();
+    if (now.getFullYear() > YEAR) return 24;
+    if (now.getFullYear() < YEAR || now.getMonth() < 11) return 0;
+    return Math.min(24, now.getDate());
+  }
+  function el(t, c, x) { var e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; }
+  // Options are shuffled the same way for everyone on a given door.
+  function order(n, seed) {
+    var a = [], i; for (i = 0; i < n; i++) a.push(i);
+    var s = seed * 9301 + 49297;
+    for (i = n - 1; i > 0; i--) { s = (s * 9301 + 49297) % 233280; var j = Math.floor(s / 233280 * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+  var doorsEl = document.getElementById("doors"), panel = document.getElementById("panel");
+  function render() {
+    var u = unlocked(), opened = 0, right = 0;
+    Object.keys(state).forEach(function (k) { opened++; if (state[k] === 1) right++; });
+    document.getElementById("count").textContent = u === 0 ? "24 doors, all still shut" : opened + " of " + u + " open · " + right + " right";
+    var cd = document.getElementById("cd");
+    if (u === 0) {
+      var days = Math.ceil((new Date(YEAR, 11, 1) - new Date()) / 864e5);
+      cd.textContent = days <= 1 ? "Door 1 opens tomorrow" : "Door 1 opens in " + days + " days";
+    } else cd.textContent = u < 24 ? "Door " + (u + 1) + " opens at midnight" : "🎄 All 24 open";
+    doorsEl.textContent = "";
+    ORDER.forEach(function (n) {
+      var d = window.ADVENT[n - 1], done = state[n], b = el("button", "door" + (n === 24 ? " d24" : "") + (done ? " open" : "") + (n === u && !done && !test ? " today" : ""));
+      b.type = "button";
+      b.append(el("span", null, done ? (done === 1 ? "✓" : "✗") : String(n)));
+      if (done) b.append(el("small", null, n + " · " + NAMES[d.g]));
+      if (n > u) { b.disabled = true; b.setAttribute("aria-label", "Door " + n + ", opens " + n + " December"); }
+      else { b.setAttribute("aria-label", "Door " + n + (done ? ", opened, " + (done === 1 ? "right" : "wrong") : ", ready to open")); b.onclick = function () { show(n, true); }; }
+      doorsEl.append(b);
+    });
+    if (u === 0 && panel.hidden) teaser();
+  }
+  function teaser() {
+    panel.hidden = false; panel.textContent = "";
+    var t = el("div", "teaser");
+    t.append(el("div", "tag", "Coming 1 December"), el("div", "big", "🎁"),
+      el("p", null, "Twenty-four festive rounds, one from each corner of samey.uk: wassail, Scrooge, the X in Xmas and a few surprises."),
+      el("p", null, "Come back on 1 December to open the first door."));
+    panel.append(t);
+  }
+  function show(n, scroll) {
+    var d = window.ADVENT[n - 1], done = state[n];
+    panel.hidden = false; panel.textContent = "";
+    panel.append(el("div", "tag", "Door " + n + " · a taste of " + NAMES[d.g]), el("p", "q", d.q));
+    var opts = el("div", "opts"), btns = [];
+    order(d.o.length, n).forEach(function (i) {
+      var b = el("button", "opt", d.o[i]); b.type = "button"; b.dataset.i = i;
+      b.onclick = function () { answer(n, i); };
+      btns.push(b); opts.append(b);
+    });
+    panel.append(opts);
+    if (done) mark(n, btns, done === 1 ? 0 : -1);
+    if (scroll) panel.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion:reduce)").matches ? "auto" : "smooth", block: "start" });
+  }
+  function answer(n, i) {
+    if (state[n]) return;
+    state[n] = i === 0 ? 1 : 2; save();
+    var btns = panel.querySelectorAll(".opt");
+    mark(n, Array.prototype.slice.call(btns), i);
+    render();
+  }
+  function mark(n, btns, picked) {
+    var d = window.ADVENT[n - 1], ok = state[n] === 1;
+    btns.forEach(function (b) {
+      var i = +b.dataset.i; b.disabled = true;
+      if (i === 0) b.classList.add("right");
+      else if (i === picked) b.classList.add("wrong");
+      else b.classList.add("dim");
+    });
+    var r = el("div", "reveal"); r.append(el("b", null, ok ? "Ho ho, yes!" : "Not quite."), document.createTextNode(d.x));
+    var row = el("div", "btns"), play = el("a", "btn", "Play today’s " + NAMES[d.g] + " →");
+    play.href = d.g === "samey" ? "/" : "/" + d.g + "/";
+    var share = el("button", "btn ghost", "Share"); share.type = "button";
+    share.onclick = function () {
+      var opened = 0, right = 0; Object.keys(state).forEach(function (k) { opened++; if (state[k] === 1) right++; });
+      var text = "samey.uk Advent 🎄 Door " + n + " " + (ok ? "✅" : "❌") + "\n" + right + " of " + opened + " doors right so far\nhttps://samey.uk/advent/ #sameyuk";
+      if (navigator.share) { navigator.share({ text: text }).catch(function () {}); return; }
+      try { navigator.clipboard.writeText(text).then(function () { share.textContent = "Copied"; }); } catch (e) {}
+    };
+    row.append(play, share);
+    panel.append(r, row);
+  }
+  render();
+  // Opening the page on a December day goes straight to today's door if it's still shut.
+  var u = unlocked();
+  if (u > 0 && u <= 24 && !state[u] && !test) show(u, false);
+  // Roll over at midnight if the page is left open.
+  var day = new Date().getDate();
+  setInterval(function () { var d = new Date().getDate(); if (d !== day) { day = d; render(); } else if (unlocked() === 0) render(); }, 60000);
+})();
+</script>
+<script src="/daily.js" defer></script>
+</body>
+</html>
