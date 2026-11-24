@@ -6,6 +6,9 @@
 //   x = "Odd one out"      w = three terms from one pursuit (named in f), odd = the interloper, n = note
 //   q = "Put in order"     ask = what to order by, i = [term, value] pairs in the RIGHT order, n = note
 //   m = "Match them"       four [term, pursuit] pairs
+//   w = "Who said it?"     optional (Fridays): t = a famous commentary line, c = the commentator, o = three others, n = note.
+//                          w can be a list: each time the weeks come round again, the next line in the list is used.
+//                          When a day has w, it takes the place of that day's "Where's it from?" round.
 const DAYS = [
   /* ---------- Week 1 ---------- */
   /* Mon */ {
@@ -37,7 +40,8 @@ const DAYS = [
     m: [["hog line", "Curling"], ["jack", "Bowls"], ["kiss", "Snooker"], ["Shanghai", "Darts"]]
   },
   /* Fri */ {
-    p: {t: "henka", h: "Stepping aside at the charge so your opponent stumbles.", c: "Sumo", o: ["Judo", "Kendo", "Karate"], n: "Perfectly legal, but frowned on, especially from a yokozuna."},
+    w: {t: "One of the good things about rain in Scotland is that most of it ends up as Scotch.", c: "Peter Alliss", o: ["Bill McLaren", "Richie Benaud", "Sid Waddell"], n: "Peter Alliss, the BBC's voice of golf for almost 60 years, on a soggy tournament in Scotland."},
+    p: {t: "Zamballi", h: "The little caged buggy that sweeps up after practice.", c: "Golf", o: ["Ice hockey", "Tennis", "Cricket"], n: "The machine that collects balls on a driving range, its driver protected by a cage. A pun on the Zamboni, which resurfaces ice rinks."},
     s: {t: "a Hail Mary", c: "American football", o: ["Baseball", "Basketball", "Rugby union"], n: "In 1975 Roger Staubach won a play-off with a last-second long pass, then said he'd closed his eyes and said a Hail Mary. Now it's any desperate last try."},
     x: {f: "Darts", w: ["oche", "double top", "Robin Hood"], odd: "bunker", n: "A bunker is golf's sand trap. In darts a Robin Hood is a dart that sticks in the back of another."},
     q: {ask: "Lowest to highest value in snooker", i: [["yellow", "2 points"], ["brown", "4 points"], ["pink", "6 points"], ["black", "7 points"]], n: "Reds are 1, green 3 and blue 5. A maximum break, all reds with blacks then the colours, is 147."},
@@ -68,25 +72,26 @@ const DAYS = [
   /* Tue */ {
     p: {t: "nutmeg", h: "Putting the ball through an opponent's legs.", c: "Football", o: ["Cricket", "Tennis", "Golf"], n: "Nobody's sure why. One theory links it to tricks in the old nutmeg trade, making a fool of someone."},
     s: {t: "step up to the plate", c: "Baseball", o: ["Cricket", "Golf", "Darts"], n: "The batter steps up to home plate to face the pitcher. Now taking on a responsibility."},
-    x: {f: "Sumo", w: ["dohyo", "mawashi", "kachi-koshi"], odd: "tatami", n: "Tatami mats are for judo. Sumo is fought on a dohyo, a raised ring of clay. Kachi-koshi is a winning record in a tournament."},
+    x: {f: "Golf", w: ["the beach", "worm burner", "son-in-law"], odd: "dead rubber", n: "A dead rubber is a match played after a series is already decided, in tennis, cricket and more. In golf the beach is a bunker, a worm burner skims along the grass, and a son-in-law is a shot that's not what you wanted, but you'll take it."},
     q: {ask: "Lightest to heaviest boxing weight", i: [["flyweight", "up to 8 st"], ["bantamweight", "up to 8 st 6 lb"], ["featherweight", "up to 9 st"], ["lightweight", "up to 9 st 9 lb"]], n: "Professional limits; there are “super” and “light” divisions in between."},
     m: [["Garryowen", "Rugby union"], ["jaffa", "Cricket"], ["power forward", "Basketball"], ["peloton", "Cycling"]]
   },
   /* Wed */ {
-    p: {t: "hammer", h: "Having the last stone of an end.", c: "Curling", o: ["Bowls", "Pétanque", "Snooker"], n: "A big advantage, since nobody can knock your last stone away."},
+    p: {t: "leaving chicken on the bone", h: "Not finishing the job, so there's an awkward bit left.", c: "Golf", o: ["Darts", "Snooker", "Bowls"], n: "Said when a putt stops short of a tap-in, leaving a tricky one still to hole. Like a plate sent back with meat still on it."},
     s: {t: "down to the wire", c: "Horse racing", o: ["Athletics", "Cycling", "Motor racing"], n: "American racecourses once strung a wire above the finish line, so a race decided at the very end went down to the wire."},
     x: {f: "Basketball", w: ["and-one", "triple-double", "brick"], odd: "fly-half", n: "A fly-half plays rugby. In basketball a brick is a clumsy miss, and an and-one is a basket scored while fouled, plus a free throw."},
     q: {ask: "Fewest to most points in American football", i: [["extra point", "1"], ["safety", "2"], ["field goal", "3"], ["touchdown", "6"]], n: "A two-point conversion can replace the extra kick after a touchdown."},
     m: [["bed and breakfast", "Darts"], ["fore", "Golf"], ["maiden", "Cricket"], ["keirin", "Cycling"]]
   },
   /* Thu */ {
-    p: {t: "bagel", h: "Winning a set six games to love.", c: "Tennis", o: ["Squash", "Badminton", "Darts"], n: "The 0 looks like a bagel. Win 6–1 and it's a breadstick."},
+    p: {t: "right club", h: "A cheeky compliment when the pace was perfect but the aim wasn't.", c: "Golf", o: ["Bowls", "Snooker", "Curling"], n: "Said when a putt is struck just hard enough but sails past on the wrong line. Only the club choice gets any praise."},
     s: {t: "jump the gun", c: "Athletics", o: ["Shooting", "Horse racing", "Motor racing"], n: "Leaving before the starting pistol fires."},
     x: {f: "Rugby", w: ["scrum", "line-out", "up-and-under"], odd: "behind", n: "A behind is Aussie rules: one point for missing between the big posts but going through the small ones."},
     q: {ask: "Shortest to longest form of cricket", i: [["The Hundred", "100 balls an innings"], ["T20", "120 balls"], ["One-Day International", "300 balls"], ["Test", "up to five days"]], n: "A Test innings has no ball limit."},
     m: [["chukka", "Polo"], ["hole in one", "Golf"], ["full house", "Poker"], ["cox", "Rowing"]]
   },
   /* Fri */ {
+    w: {t: "Oh, I say!", c: "Dan Maskell", o: ["Peter Alliss", "Ted Lowe", "Murray Walker"], n: "Dan Maskell, the BBC's voice of Wimbledon from 1951 to 1991, saved it for a really special shot."},
     p: {t: "kong", h: "A set of four identical tiles.", c: "Mahjong", o: ["Dominoes", "Scrabble", "Rummikub"], n: "Three of a kind is a pung, and a run of three is a chow."},
     s: {t: "a sticky wicket", c: "Cricket", o: ["Croquet", "Golf", "Baseball"], n: "A pitch drying out after rain made the ball do unpredictable things. So a tricky spot."},
     x: {f: "Ice hockey", w: ["icing", "biscuit", "slapshot"], odd: "southpaw", n: "Southpaw (a left-hander) comes from baseball and is now mostly used in boxing. In hockey the biscuit is the puck."},
@@ -94,7 +99,7 @@ const DAYS = [
     m: [["Texas Leaguer", "Baseball"], ["goofy foot", "Surfing"], ["waza-ari", "Judo"], ["en garde", "Fencing"]]
   },
   /* Sat */ {
-    p: {t: "hang ten", h: "Riding with all ten toes over the nose of the board.", c: "Surfing", o: ["Rowing", "Sailing", "Diving"], n: "A classic longboard move from the 1950s and 60s."},
+    p: {t: "taxi!", h: "Shouted as a ball races past its target and keeps going.", c: "Golf", o: ["Bowls", "Curling", "Snooker"], n: "Yelled as a putt zips past the hole: it's going so far it'll need a cab. Cruel, and very satisfying when it's your opponent's."},
     s: {t: "skating on thin ice", c: "Ice skating", o: ["Curling", "Skiing", "Sledging"], n: "Taking a big risk, as skaters on thin ice do."},
     x: {f: "Go", w: ["ko", "gote", "joseki"], odd: "pung", n: "A pung is three of a kind in mahjong. In Go, joseki are standard opening sequences in a corner."},
     q: {ask: "Lowest to highest shirt number in rugby union", i: [["loosehead prop", "1"], ["hooker", "2"], ["scrum-half", "9"], ["full-back", "15"]], n: "Forwards wear 1 to 8, backs 9 to 15."},
@@ -123,20 +128,21 @@ const DAYS = [
     m: [["empty-netter", "Ice hockey"], ["Cruyff turn", "Football"], ["eggbeater", "Water polo"], ["hoop", "Croquet"]]
   },
   /* Wed */ {
-    p: {t: "puck-out", h: "The goalkeeper's restart after a wide or a score.", c: "Hurling", o: ["Ice hockey", "Lacrosse", "Shinty"], n: "In hurling, striking the ball with the hurley is “pucking” it."},
+    p: {t: "nice catch", h: "A sly dig when a ball only just drops in.", c: "Golf", o: ["Cricket", "Baseball", "Rounders"], n: "Said to a golfer whose putt barely toppled over the lip, as if the hole caught it. Best used when there's a little money on the round."},
     s: {t: "a dark horse", c: "Horse racing", o: ["Chess", "Polo", "Poker"], n: "A little-known horse that surprises everyone. Benjamin Disraeli used it in an 1831 novel."},
     x: {f: "Baseball", w: ["hot corner", "Baltimore chop", "Uncle Charlie"], odd: "checkside", n: "A checkside is an Aussie rules kick that curls off the outside of the boot. Uncle Charlie is a curveball, and the hot corner is third base."},
     q: {ask: "First to last on day one of a decathlon", i: [["100 m", "event 1"], ["long jump", "event 2"], ["shot put", "event 3"], ["high jump", "event 4"]], n: "Day one ends with the 400 m. Day two is 110 m hurdles, discus, pole vault, javelin and 1500 m."},
     m: [["crosse", "Lacrosse"], ["kickflip", "Skateboarding"], ["no-trump", "Bridge"], ["Yurchenko", "Gymnastics"]]
   },
   /* Thu */ {
-    p: {t: "chanko", h: "A hearty stew eaten to bulk up.", c: "Sumo", o: ["Judo", "Kendo", "Karate"], n: "Chanko-nabe is cooked and eaten in the wrestlers' stables. Plenty of retired wrestlers open chanko restaurants."},
+    p: {t: "red lipstick", h: "A nickname for the most popular target there is.", c: "Darts", o: ["Archery", "Snooker", "Bowls"], n: "Double 20, the red band at the very top of the board. Sid Waddell made it famous, usually at full volume."},
     s: {t: "knocked for six", c: "Cricket", o: ["Baseball", "Boxing", "Golf"], n: "Hitting the ball over the boundary without a bounce scores six. Being knocked for six is being hit hard by bad news."},
     x: {f: "Football", w: ["rabona", "offside trap", "VAR"], odd: "penhold", n: "Penhold is a table tennis grip. A rabona is a kick with your leg wrapped behind your standing one."},
     q: {ask: "Earliest to latest in the men's golf year", i: [["The Masters", "April"], ["PGA Championship", "May"], ["US Open", "June"], ["The Open", "July"]], n: "Together they're golf's four majors."},
     m: [["chicane", "Motor racing"], ["flick serve", "Badminton"], ["blindside", "Rugby union"], ["uchi mata", "Judo"]]
   },
   /* Fri */ {
+    w: {t: "They think it's all over… it is now!", c: "Kenneth Wolstenholme", o: ["John Motson", "David Coleman", "Murray Walker"], n: "Kenneth Wolstenholme, as Geoff Hurst scored England's fourth goal in the 1966 World Cup final, with fans already spilling on to the pitch."},
     p: {t: "flèche", h: "A running attack, launched in one burst.", c: "Fencing", o: ["Archery", "Ballet", "Gymnastics"], n: "French for “arrow”. It's been banned in sabre since 1994."},
     s: {t: "move the goalposts", c: "Football", o: ["Golf", "Tennis", "Cricket"], n: "Changing the rules or target halfway through, as if the goal had been shifted mid-match."},
     x: {f: "American football", w: ["audible", "blitz", "end zone"], odd: "the T", n: "The T is the spot in the middle of a squash court. An audible is a quarterback changing the play at the line."},
@@ -175,18 +181,20 @@ const DAYS = [
   /* Wed */ {
     p: {t: "lanterne rouge", h: "The rider in last place overall.", c: "Cycling", o: ["Motor racing", "Sailing", "Horse racing"], n: "French for “red lantern”, after the light on the back of a train's last carriage."},
     s: {t: "Monday-morning quarterback", c: "American football", o: ["Baseball", "Basketball", "Ice hockey"], n: "Someone who knows exactly what should have been done, once the weekend's game is over."},
-    x: {f: "Darts", w: ["arrows", "three in a bed", "checkout"], odd: "carreau", n: "A carreau is pétanque: knocking an opponent's boule away and leaving yours in its place. Three in a bed is three darts in the same segment."},
+    x: {f: "Golf", w: ["dead sheep", "UBE", "shank"], odd: "jaffa", n: "A jaffa is cricket: an unplayable ball. A dead sheep is a putt left short (still ewe), a UBE is ugly but effective, and a shank flies off sideways from the club's neck."},
     q: {ask: "Lowest to highest suit in bridge", i: [["clubs", "♣"], ["diamonds", "♦"], ["hearts", "♥"], ["spades", "♠"]], n: "No-trumps outranks them all."},
     m: [["shepherd", "Aussie rules"], ["tack", "Sailing"], ["kote", "Kendo"], ["split", "Ten-pin bowling"]]
   },
   /* Thu */ {
-    p: {t: "dyno", h: "A flying leap from one hold to the next.", c: "Climbing", o: ["Gymnastics", "Trampolining", "Diving"], n: "Short for dynamic move, when you can't reach the next hold any other way."},
+    p: {t: "no pictures on the scorecard", h: "Said when an ugly shot still does the job.", c: "Golf", o: ["Darts", "Bowls", "Archery"], n: "The card only counts how many shots you took, not how pretty they were."},
     s: {t: "poker face", c: "Poker", o: ["Bridge", "Chess", "Snooker"], n: "Card players keep a blank face to give nothing away."},
     x: {f: "Cycling", w: ["domestique", "bonk", "echelon"], odd: "marbles", n: "Marbles are motor racing's bits of tyre rubber off the racing line. A cyclist who bonks has run out of energy."},
     q: {ask: "First to last in an individual medley swim", i: [["butterfly", "1st leg"], ["backstroke", "2nd leg"], ["breaststroke", "3rd leg"], ["freestyle", "4th leg"]], n: "In a medley relay the order changes: backstroke goes first, because it starts in the water."},
     m: [["Mankad", "Cricket"], ["hane", "Go"], ["photo finish", "Horse racing"], ["fletching", "Archery"]]
   },
   /* Fri */ {
+    w: [{t: "He's about as predictable as a wasp on speed.", c: "Sid Waddell", o: ["Murray Walker", "Peter Alliss", "Ted Lowe"], n: "Sid Waddell, the voice of darts, famous for wild comparisons like this one."},
+        {t: "When Alexander of Macedonia was 33, he cried salt tears because there were no more worlds to conquer…", c: "Sid Waddell", o: ["Peter Alliss", "Richie Benaud", "Bill McLaren"], n: "…“Bristow's only 27.” Sid Waddell, as Eric Bristow won his fourth world darts title in 1985."}],
     p: {t: "box, box", h: "A radio call telling the driver to come in.", c: "Motor racing", o: ["Boxing", "Cycling", "Sailing"], n: "From the German “Boxenstopp” for a pit stop. It's also short and clear over a noisy radio."},
     s: {t: "rain check", c: "Baseball", o: ["Cricket", "Tennis", "Golf"], n: "Fans at a rained-off game got a ticket stub, a rain check, to come back another day."},
     x: {f: "Chess", w: ["j'adoube", "patzer", "fork"], odd: "tesuji", n: "Tesuji is Go: a clever, sharp move. J'adoube is French for “I adjust”, said when you touch a piece only to straighten it."},
@@ -237,6 +245,7 @@ const DAYS = [
     m: [["chin music", "Cricket"], ["intarsia", "Knitting"], ["the wall", "Mahjong"], ["slalom", "Skiing"]]
   },
   /* Fri */ {
+    w: {t: "Unless I'm very much mistaken… I AM very much mistaken!", c: "Murray Walker", o: ["Sid Waddell", "John Motson", "Dan Maskell"], n: "Murray Walker, the voice of Formula 1, put himself right mid-sentence. “Unless I'm Very Much Mistaken” became the title of his autobiography."},
     p: {t: "boast", h: "A shot hit into a side wall first.", c: "Squash", o: ["Tennis", "Badminton", "Table tennis"], n: "The ball angles off the side wall to the front, often catching an opponent at the back."},
     s: {t: "stumped", c: "Cricket", o: ["Baseball", "Chess", "Golf"], n: "A batter out of their ground is stumped when the keeper breaks the wicket. Now completely baffled."},
     x: {f: "Skiing", w: ["mogul", "schuss", "piste"], odd: "kook", n: "A kook is a surfing beginner. A schuss is skiing straight down at full speed."},
@@ -244,7 +253,7 @@ const DAYS = [
     m: [["send", "Climbing"], ["furlong", "Horse racing"], ["sin bin", "Rugby league"], ["tumble turn", "Swimming"]]
   },
   /* Sat */ {
-    p: {t: "his nobs", h: "The jack of the same suit as the turned-up card.", c: "Cribbage", o: ["Bridge", "Whist", "Poker"], n: "Holding it scores “one for his nob”."},
+    p: {t: "Bingo Bango Bongo", h: "A side game with three points up for grabs each time.", c: "Golf", o: ["Croquet", "Bowls", "Darts"], n: "Bingo for first onto the green, bango for closest to the pin once everyone's on, bongo for first in the hole. Playing order counts as much as skill, so anyone can pick up points."},
     s: {t: "neck and neck", c: "Horse racing", o: ["Motor racing", "Rowing", "Athletics"], n: "Two horses so close their necks are level."},
     x: {f: "Basketball", w: ["airball", "sixth man", "swish"], odd: "cradle", n: "Cradling is lacrosse: rocking the stick to keep the ball in its net. An airball misses everything, rim included."},
     q: {ask: "Closest to furthest from the batter, in cricket", i: [["silly point", "almost on the bat"], ["gully", "close catcher"], ["cover", "saving one"], ["long-off", "on the boundary"]], n: "“Silly” fielders stand near enough to be in real danger."},
