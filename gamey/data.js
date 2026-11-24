@@ -123,7 +123,7 @@ const DAYS = [
     m: [["empty-netter", "Ice hockey"], ["Cruyff turn", "Football"], ["eggbeater", "Water polo"], ["hoop", "Croquet"]]
   },
   /* Wed */ {
-    p: {t: "puck-out", h: "The goalkeeper's restart after a wide or a score.", c: "Hurling", o: ["Ice hockey", "Lacrosse", "Shinty"], n: "In hurling, striking the ball with the hurley is “pucking” it."},
+    p: {t: "nice catch", h: "A sly dig when a ball only just drops in.", c: "Golf", o: ["Cricket", "Baseball", "Rounders"], n: "Said to a golfer whose putt barely toppled over the lip, as if the hole caught it. Best used when there's a little money on the round."},
     s: {t: "a dark horse", c: "Horse racing", o: ["Chess", "Polo", "Poker"], n: "A little-known horse that surprises everyone. Benjamin Disraeli used it in an 1831 novel."},
     x: {f: "Baseball", w: ["hot corner", "Baltimore chop", "Uncle Charlie"], odd: "checkside", n: "A checkside is an Aussie rules kick that curls off the outside of the boot. Uncle Charlie is a curveball, and the hot corner is third base."},
     q: {ask: "First to last on day one of a decathlon", i: [["100 m", "event 1"], ["long jump", "event 2"], ["shot put", "event 3"], ["high jump", "event 4"]], n: "Day one ends with the 400 m. Day two is 110 m hurdles, discus, pole vault, javelin and 1500 m."},
