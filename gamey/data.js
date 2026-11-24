@@ -73,7 +73,7 @@ const DAYS = [
     m: [["Garryowen", "Rugby union"], ["jaffa", "Cricket"], ["power forward", "Basketball"], ["peloton", "Cycling"]]
   },
   /* Wed */ {
-    p: {t: "hammer", h: "Having the last stone of an end.", c: "Curling", o: ["Bowls", "Pétanque", "Snooker"], n: "A big advantage, since nobody can knock your last stone away."},
+    p: {t: "leaving chicken on the bone", h: "Not finishing the job, so there's an awkward bit left.", c: "Golf", o: ["Darts", "Snooker", "Bowls"], n: "Said when a putt stops short of a tap-in, leaving a tricky one still to hole. Like a plate sent back with meat still on it."},
     s: {t: "down to the wire", c: "Horse racing", o: ["Athletics", "Cycling", "Motor racing"], n: "American racecourses once strung a wire above the finish line, so a race decided at the very end went down to the wire."},
     x: {f: "Basketball", w: ["and-one", "triple-double", "brick"], odd: "fly-half", n: "A fly-half plays rugby. In basketball a brick is a clumsy miss, and an and-one is a basket scored while fouled, plus a free throw."},
     q: {ask: "Fewest to most points in American football", i: [["extra point", "1"], ["safety", "2"], ["field goal", "3"], ["touchdown", "6"]], n: "A two-point conversion can replace the extra kick after a touchdown."},
@@ -94,7 +94,7 @@ const DAYS = [
     m: [["Texas Leaguer", "Baseball"], ["goofy foot", "Surfing"], ["waza-ari", "Judo"], ["en garde", "Fencing"]]
   },
   /* Sat */ {
-    p: {t: "hang ten", h: "Riding with all ten toes over the nose of the board.", c: "Surfing", o: ["Rowing", "Sailing", "Diving"], n: "A classic longboard move from the 1950s and 60s."},
+    p: {t: "taxi!", h: "Shouted as a ball races past its target and keeps going.", c: "Golf", o: ["Bowls", "Curling", "Snooker"], n: "Yelled as a putt zips past the hole: it's going so far it'll need a cab. Cruel, and very satisfying when it's your opponent's."},
     s: {t: "skating on thin ice", c: "Ice skating", o: ["Curling", "Skiing", "Sledging"], n: "Taking a big risk, as skaters on thin ice do."},
     x: {f: "Go", w: ["ko", "gote", "joseki"], odd: "pung", n: "A pung is three of a kind in mahjong. In Go, joseki are standard opening sequences in a corner."},
     q: {ask: "Lowest to highest shirt number in rugby union", i: [["loosehead prop", "1"], ["hooker", "2"], ["scrum-half", "9"], ["full-back", "15"]], n: "Forwards wear 1 to 8, backs 9 to 15."},
