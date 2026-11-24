@@ -37,7 +37,7 @@ const DAYS = [
     m: [["hog line", "Curling"], ["jack", "Bowls"], ["kiss", "Snooker"], ["Shanghai", "Darts"]]
   },
   /* Fri */ {
-    p: {t: "henka", h: "Stepping aside at the charge so your opponent stumbles.", c: "Sumo", o: ["Judo", "Kendo", "Karate"], n: "Perfectly legal, but frowned on, especially from a yokozuna."},
+    p: {t: "Zamballi", h: "The little caged buggy that sweeps up after practice.", c: "Golf", o: ["Ice hockey", "Tennis", "Cricket"], n: "The machine that collects balls on a driving range, its driver protected by a cage. A pun on the Zamboni, which resurfaces ice rinks."},
     s: {t: "a Hail Mary", c: "American football", o: ["Baseball", "Basketball", "Rugby union"], n: "In 1975 Roger Staubach won a play-off with a last-second long pass, then said he'd closed his eyes and said a Hail Mary. Now it's any desperate last try."},
     x: {f: "Darts", w: ["oche", "double top", "Robin Hood"], odd: "bunker", n: "A bunker is golf's sand trap. In darts a Robin Hood is a dart that sticks in the back of another."},
     q: {ask: "Lowest to highest value in snooker", i: [["yellow", "2 points"], ["brown", "4 points"], ["pink", "6 points"], ["black", "7 points"]], n: "Reds are 1, green 3 and blue 5. A maximum break, all reds with blacks then the colours, is 147."},
@@ -175,12 +175,12 @@ const DAYS = [
   /* Wed */ {
     p: {t: "lanterne rouge", h: "The rider in last place overall.", c: "Cycling", o: ["Motor racing", "Sailing", "Horse racing"], n: "French for “red lantern”, after the light on the back of a train's last carriage."},
     s: {t: "Monday-morning quarterback", c: "American football", o: ["Baseball", "Basketball", "Ice hockey"], n: "Someone who knows exactly what should have been done, once the weekend's game is over."},
-    x: {f: "Darts", w: ["arrows", "three in a bed", "checkout"], odd: "carreau", n: "A carreau is pétanque: knocking an opponent's boule away and leaving yours in its place. Three in a bed is three darts in the same segment."},
+    x: {f: "Golf", w: ["dead sheep", "UBE", "shank"], odd: "jaffa", n: "A jaffa is cricket: an unplayable ball. A dead sheep is a putt left short (still ewe), a UBE is ugly but effective, and a shank flies off sideways from the club's neck."},
     q: {ask: "Lowest to highest suit in bridge", i: [["clubs", "♣"], ["diamonds", "♦"], ["hearts", "♥"], ["spades", "♠"]], n: "No-trumps outranks them all."},
     m: [["shepherd", "Aussie rules"], ["tack", "Sailing"], ["kote", "Kendo"], ["split", "Ten-pin bowling"]]
   },
   /* Thu */ {
-    p: {t: "dyno", h: "A flying leap from one hold to the next.", c: "Climbing", o: ["Gymnastics", "Trampolining", "Diving"], n: "Short for dynamic move, when you can't reach the next hold any other way."},
+    p: {t: "no pictures on the scorecard", h: "Said when an ugly shot still does the job.", c: "Golf", o: ["Darts", "Bowls", "Archery"], n: "The card only counts how many shots you took, not how pretty they were."},
     s: {t: "poker face", c: "Poker", o: ["Bridge", "Chess", "Snooker"], n: "Card players keep a blank face to give nothing away."},
     x: {f: "Cycling", w: ["domestique", "bonk", "echelon"], odd: "marbles", n: "Marbles are motor racing's bits of tyre rubber off the racing line. A cyclist who bonks has run out of energy."},
     q: {ask: "First to last in an individual medley swim", i: [["butterfly", "1st leg"], ["backstroke", "2nd leg"], ["breaststroke", "3rd leg"], ["freestyle", "4th leg"]], n: "In a medley relay the order changes: backstroke goes first, because it starts in the water."},
