@@ -7,6 +7,7 @@
 //   q = "Put in order"     ask = what to order by, i = [term, value] pairs in the RIGHT order, n = note
 //   m = "Match them"       four [term, pursuit] pairs
 //   w = "Who said it?"     optional (Fridays): t = a famous commentary line, c = the commentator, o = three others, n = note.
+//                          w can be a list: each time the weeks come round again, the next line in the list is used.
 //                          When a day has w, it takes the place of that day's "Where's it from?" round.
 const DAYS = [
   /* ---------- Week 1 ---------- */
@@ -71,7 +72,7 @@ const DAYS = [
   /* Tue */ {
     p: {t: "nutmeg", h: "Putting the ball through an opponent's legs.", c: "Football", o: ["Cricket", "Tennis", "Golf"], n: "Nobody's sure why. One theory links it to tricks in the old nutmeg trade, making a fool of someone."},
     s: {t: "step up to the plate", c: "Baseball", o: ["Cricket", "Golf", "Darts"], n: "The batter steps up to home plate to face the pitcher. Now taking on a responsibility."},
-    x: {f: "Sumo", w: ["dohyo", "mawashi", "kachi-koshi"], odd: "tatami", n: "Tatami mats are for judo. Sumo is fought on a dohyo, a raised ring of clay. Kachi-koshi is a winning record in a tournament."},
+    x: {f: "Golf", w: ["the beach", "worm burner", "son-in-law"], odd: "dead rubber", n: "A dead rubber is a match played after a series is already decided, in tennis, cricket and more. In golf the beach is a bunker, a worm burner skims along the grass, and a son-in-law is a shot that's not what you wanted, but you'll take it."},
     q: {ask: "Lightest to heaviest boxing weight", i: [["flyweight", "up to 8 st"], ["bantamweight", "up to 8 st 6 lb"], ["featherweight", "up to 9 st"], ["lightweight", "up to 9 st 9 lb"]], n: "Professional limits; there are “super” and “light” divisions in between."},
     m: [["Garryowen", "Rugby union"], ["jaffa", "Cricket"], ["power forward", "Basketball"], ["peloton", "Cycling"]]
   },
@@ -83,7 +84,7 @@ const DAYS = [
     m: [["bed and breakfast", "Darts"], ["fore", "Golf"], ["maiden", "Cricket"], ["keirin", "Cycling"]]
   },
   /* Thu */ {
-    p: {t: "bagel", h: "Winning a set six games to love.", c: "Tennis", o: ["Squash", "Badminton", "Darts"], n: "The 0 looks like a bagel. Win 6–1 and it's a breadstick."},
+    p: {t: "right club", h: "A cheeky compliment when the pace was perfect but the aim wasn't.", c: "Golf", o: ["Bowls", "Snooker", "Curling"], n: "Said when a putt is struck just hard enough but sails past on the wrong line. Only the club choice gets any praise."},
     s: {t: "jump the gun", c: "Athletics", o: ["Shooting", "Horse racing", "Motor racing"], n: "Leaving before the starting pistol fires."},
     x: {f: "Rugby", w: ["scrum", "line-out", "up-and-under"], odd: "behind", n: "A behind is Aussie rules: one point for missing between the big posts but going through the small ones."},
     q: {ask: "Shortest to longest form of cricket", i: [["The Hundred", "100 balls an innings"], ["T20", "120 balls"], ["One-Day International", "300 balls"], ["Test", "up to five days"]], n: "A Test innings has no ball limit."},
@@ -134,7 +135,7 @@ const DAYS = [
     m: [["crosse", "Lacrosse"], ["kickflip", "Skateboarding"], ["no-trump", "Bridge"], ["Yurchenko", "Gymnastics"]]
   },
   /* Thu */ {
-    p: {t: "chanko", h: "A hearty stew eaten to bulk up.", c: "Sumo", o: ["Judo", "Kendo", "Karate"], n: "Chanko-nabe is cooked and eaten in the wrestlers' stables. Plenty of retired wrestlers open chanko restaurants."},
+    p: {t: "red lipstick", h: "A nickname for the most popular target there is.", c: "Darts", o: ["Archery", "Snooker", "Bowls"], n: "Double 20, the red band at the very top of the board. Sid Waddell made it famous, usually at full volume."},
     s: {t: "knocked for six", c: "Cricket", o: ["Baseball", "Boxing", "Golf"], n: "Hitting the ball over the boundary without a bounce scores six. Being knocked for six is being hit hard by bad news."},
     x: {f: "Football", w: ["rabona", "offside trap", "VAR"], odd: "penhold", n: "Penhold is a table tennis grip. A rabona is a kick with your leg wrapped behind your standing one."},
     q: {ask: "Earliest to latest in the men's golf year", i: [["The Masters", "April"], ["PGA Championship", "May"], ["US Open", "June"], ["The Open", "July"]], n: "Together they're golf's four majors."},
@@ -192,7 +193,8 @@ const DAYS = [
     m: [["Mankad", "Cricket"], ["hane", "Go"], ["photo finish", "Horse racing"], ["fletching", "Archery"]]
   },
   /* Fri */ {
-    w: {t: "He's about as predictable as a wasp on speed.", c: "Sid Waddell", o: ["Murray Walker", "Peter Alliss", "Ted Lowe"], n: "Sid Waddell, the voice of darts, famous for wild comparisons like this one."},
+    w: [{t: "He's about as predictable as a wasp on speed.", c: "Sid Waddell", o: ["Murray Walker", "Peter Alliss", "Ted Lowe"], n: "Sid Waddell, the voice of darts, famous for wild comparisons like this one."},
+        {t: "When Alexander of Macedonia was 33, he cried salt tears because there were no more worlds to conquer…", c: "Sid Waddell", o: ["Peter Alliss", "Richie Benaud", "Bill McLaren"], n: "…“Bristow's only 27.” Sid Waddell, as Eric Bristow won his fourth world darts title in 1985."}],
     p: {t: "box, box", h: "A radio call telling the driver to come in.", c: "Motor racing", o: ["Boxing", "Cycling", "Sailing"], n: "From the German “Boxenstopp” for a pit stop. It's also short and clear over a noisy radio."},
     s: {t: "rain check", c: "Baseball", o: ["Cricket", "Tennis", "Golf"], n: "Fans at a rained-off game got a ticket stub, a rain check, to come back another day."},
     x: {f: "Chess", w: ["j'adoube", "patzer", "fork"], odd: "tesuji", n: "Tesuji is Go: a clever, sharp move. J'adoube is French for “I adjust”, said when you touch a piece only to straighten it."},
