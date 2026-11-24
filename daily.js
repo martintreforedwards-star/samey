@@ -51,20 +51,20 @@
        (window.SameySetQ = window.SameySetQ || []).push(["dotty", "2/4"]);
      (a queue, because the games run before this file loads). */
   var GAMES = [
-    { id: "samey", name: "Samey", href: "/", c: "#1f7a6d", blurb: "Find the word that means the same." },
-    { id: "spinonym", name: "Spinonym", href: "/spinonym/", c: "#d99a1e", blurb: "Spin the wheel for today's kind of word." },
-    { id: "dotty", name: "Dotty", href: "/dotty/", c: "#E2405A", blurb: "Put the missing accents and punctuation back." },
-    { id: "syntaxed", name: "Syntaxed", href: "/syntaxed/", c: "#3B5BDB", blurb: "Grammar puzzles that make you giggle, not wince." },
-    { id: "passe", name: "Passé", href: "/passe/", c: "#7B3F73", blurb: "Spot the real meaning of forgotten words." },
-    { id: "natter", name: "Natter", href: "/natter/", c: "#B0186A", blurb: "Real local word, or made up?" },
-    { id: "roots", name: "Roots", href: "/roots/", c: "#8A5A2B", blurb: "Where words come from, in four quick rounds." },
-    { id: "rizz", name: "Rizz", href: "/rizz/", c: "#2b8a3e", blurb: "The newest words in English, in five quick rounds." },
-    { id: "babel", name: "Babel", href: "/babel/", c: "#c2410c", blurb: "One word in four mystery languages. What is it in English?" },
-    { id: "rhymey", name: "Rhymey", href: "/rhymey/", c: "#0b7285", blurb: "Rhyme and rhythm in quick daily rounds." },
-    { id: "phoney", name: "Phoney", href: "/phoney/", c: "#6741d9", blurb: "How words really sound, from silent letters to glottal stops." },
-    { id: "idiomy", name: "Idiomy", href: "/idiomy/", c: "#b45309", blurb: "Tap words together to make idioms from today's hive." },
-    { id: "incipit", name: "Incipit", href: "/incipit/", c: "#8c2f1b", blurb: "Name the book from its famous first line." },
-    { id: "versed", name: "Versed", href: "/versed/", c: "#21585a", blurb: "Name the poet from a single line, then guess their country." },
+    { id: "samey", name: "Samey", href: "/", c: "#1f7a6d", blurb: "Find the word that means the same.", wlv: "samey" },
+    { id: "spinonym", name: "Spinonym", href: "/spinonym/", c: "#d99a1e", blurb: "Spin the wheel for today's kind of word.", wlv: "spinonym" },
+    { id: "dotty", name: "Dotty", href: "/dotty/", c: "#E2405A", blurb: "Put the missing accents and punctuation back.", wlv: "dotty" },
+    { id: "syntaxed", name: "Syntaxed", href: "/syntaxed/", c: "#3B5BDB", blurb: "Grammar puzzles that make you giggle, not wince.", wlv: "syntaxed" },
+    { id: "passe", name: "Passé", href: "/passe/", c: "#7B3F73", blurb: "Spot the real meaning of forgotten words.", wlv: "passe" },
+    { id: "natter", name: "Natter", href: "/natter/", c: "#B0186A", blurb: "Real local word, or made up?", wlv: "natter" },
+    { id: "roots", name: "Roots", href: "/roots/", c: "#8A5A2B", blurb: "Where words come from, in four quick rounds.", wlv: "roots" },
+    { id: "rizz", name: "Rizz", href: "/rizz/", c: "#2b8a3e", blurb: "The newest words in English, in five quick rounds.", wlv: "rizz" },
+    { id: "babel", name: "Babel", href: "/babel/", c: "#c2410c", blurb: "One word in four mystery languages. What is it in English?", wlv: "babel-2" },
+    { id: "rhymey", name: "Rhymey", href: "/rhymey/", c: "#0b7285", blurb: "Rhyme and rhythm in quick daily rounds.", wlv: "rhymey" },
+    { id: "phoney", name: "Phoney", href: "/phoney/", c: "#6741d9", blurb: "How words really sound, from silent letters to glottal stops.", wlv: "phoney" },
+    { id: "idiomy", name: "Idiomy", href: "/idiomy/", c: "#b45309", blurb: "Tap words together to make idioms from today's hive.", wlv: "idiomy" },
+    { id: "incipit", name: "Incipit", href: "/incipit/", c: "#8c2f1b", blurb: "Name the book from its famous first line.", wlv: "incipit" },
+    { id: "versed", name: "Versed", href: "/versed/", c: "#21585a", blurb: "Name the poet from a single line, then guess their country.", wlv: "versed" },
     { id: "gamey", name: "Gamey", href: "/gamey/", c: "#1d4e89", blurb: "Words from sports, games and pastimes around the world." },
     { id: "dodo", name: "Dodo", href: "/dodo/", c: "#2f5d62", blurb: "Words on their way out. Can you save them?", isNew: true },
     { id: "inkling", name: "Inkling", href: "/inkling/", c: "#3b3486", blurb: "Words first coined in novels, plays and science fiction.", isNew: true },
@@ -76,6 +76,19 @@
   var WORDS = ["", "", "", "", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
   var here = (location.pathname.split("/")[1] || "samey").toLowerCase();
   var SET_KEY = "samey-set";
+  /* Wordleverse players: Wordleverse links here with ?utm_source=wordleverse.net (and sends a referrer).
+     Remember that for 60 days, so those players see a small "rate it on Wordleverse" line on result screens.
+     Ratings there only count for signed-in players, which is why it only goes to people who came from there.
+     A game gets the line once its Wordleverse listing is live: add its page slug as wlv in GAMES above. */
+  var WLV_KEY = "sy-wlv", WLV_DONE = "sy-wlv-rated";
+  try {
+    var src = (new URLSearchParams(location.search).get("utm_source") || "") + " " + (document.referrer || "");
+    if (/wordleverse/i.test(src)) localStorage.setItem(WLV_KEY, String(Date.now()));
+  } catch (e) {}
+  function fromWordleverse() {
+    try { return Date.now() - (+localStorage.getItem(WLV_KEY) || 0) < 60 * 864e5; } catch (e) { return false; }
+  }
+  function ratedHere() { var r = getJSON(WLV_DONE); return !!(r && r[here]); }
   function getJSON(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }
   function readSet() {
     var today = dayKey(new Date()), s = getJSON(SET_KEY);
@@ -141,6 +154,20 @@
       var k = el("a", null, "☕ Buy me a coffee");
       k.href = "https://ko-fi.com/playtheroute"; k.target = "_blank"; k.rel = "noopener";
       tip.append(k); box.append(tip);
+    }
+    // "Rate it on Wordleverse", only for players who came from there, and gone once they've tapped it for this game.
+    var game = GAMES.filter(function (g) { return g.id === here; })[0];
+    if (game && game.wlv && fromWordleverse() && !ratedHere()) {
+      var rate = el("p", "sy-wlv");
+      rate.append(el("b", null, "Found us on Wordleverse? "), "A quick rating helps other players find " + game.name + ". Sign in there to make it count. ");
+      var ra = el("a", null, "⭐ Rate it");
+      ra.href = "https://wordleverse.net/games/" + game.wlv; ra.target = "_blank"; ra.rel = "noopener";
+      ra.onclick = function () {
+        var r = getJSON(WLV_DONE) || {}; r[here] = Date.now();
+        try { localStorage.setItem(WLV_DONE, JSON.stringify(r)); } catch (e) {}
+        setTimeout(function () { document.querySelectorAll(".sy-wlv").forEach(function (n) { n.remove(); }); }, 300);
+      };
+      rate.append(ra); box.append(rate);
     }
   }
   /* ---------- Games bar (.sy-bar) and "Today's games" grid (.sy-grid) ----------
@@ -306,6 +333,7 @@
       ".sy-chip.here{outline:2px solid currentColor;outline-offset:1px}.sy-chip.done.here{outline-color:#1f7a6d}" +
       "a.sy-chip:not(.done):hover{border-color:currentColor}" +
       ".sy-coffee{margin:12px 0 0;font-size:14px;line-height:1.45;text-align:center;opacity:.85}.sy-coffee a{color:inherit;font-weight:700;white-space:nowrap}" +
+      ".sy-wlv{margin:10px 0 0;padding:10px 12px;border-radius:10px;border:1px dashed rgba(127,127,127,.45);font-size:14px;line-height:1.45;text-align:center}.sy-wlv a{color:inherit;font-weight:700;white-space:nowrap}" +
       ".sy-set-share{display:block;width:100%;margin-top:10px;padding:10px;border-radius:10px;border:0;background:#1f7a6d;color:#fff;font:inherit;font-weight:700;cursor:pointer}" +
       "";
     var st = document.createElement("style"); st.textContent = css; document.head.append(st);
