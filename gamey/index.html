@@ -124,7 +124,8 @@ function jumbled(arr,seed){let a=shuffled(arr,seed);if(a.every((v,k)=>v===arr[k]
 const ORDER=D.q.i.map(p=>p[0]);
 const ROUNDS=[
   {type:'pick',name:'Which pursuit?',d:D.p,opts:shuffled([D.p.c,...D.p.o],N*13+1)},
-  {type:'saying',name:'Where’s it from?',d:D.s,opts:shuffled([D.s.c,...D.s.o],N*13+2)},
+  D.w?{type:'said',name:'Who said it?',d:D.w,opts:shuffled([D.w.c,...D.w.o],N*13+2)}
+     :{type:'saying',name:'Where’s it from?',d:D.s,opts:shuffled([D.s.c,...D.s.o],N*13+2)},
   {type:'odd',name:'Odd one out',d:D.x,opts:shuffled([...D.x.w,D.x.odd],N*13+3)},
   {type:'order',name:'Put in order',d:D.q,items:jumbled(ORDER,N*13+4)},
   {type:'match',name:'Match them',d:D.m,right:shuffled(D.m.map(p=>p[1]),N*13+5)}
@@ -152,6 +153,10 @@ function play(){
     note=R.d.n;
   }else if(R.type==='saying'){
     sub='This everyday saying started out in which pursuit?';
+    body=`<div class="saying">${esc(R.d.t)}</div>${optBtns(R.opts,R.d.c,i,answered)}`;
+    note=R.d.n;
+  }else if(R.type==='said'){
+    sub='Which commentator said this?';
     body=`<div class="saying">${esc(R.d.t)}</div>${optBtns(R.opts,R.d.c,i,answered)}`;
     note=R.d.n;
   }else if(R.type==='odd'){
@@ -191,11 +196,12 @@ function play(){
     ${i===0&&!answered?`<details class="ex"><summary>How to play</summary><ol class="how">
       <li>Five quick rounds on the language of sports, games and pastimes from around the world, one point each.</li>
       <li>Name the pursuit a word belongs to, find where a saying started, spot the odd one out, put four things in order, then match four pairs.</li>
+      <li>Fridays swap the saying for a famous commentary line: name who said it.</li>
       <li>Sundays are hobbies and pastimes, from knitting to bell ringing.</li></ol></details>`:''}
     ${body}${reveal}
   </div>`;
   if(!answered){
-    if(R.type==='pick'||R.type==='saying'||R.type==='odd'){const right=R.type==='odd'?R.d.odd:R.d.c;app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{st.ans[i]=b.dataset.o;st.ok[i]=b.dataset.o===right;save();play()})}
+    if(R.type==='pick'||R.type==='saying'||R.type==='said'||R.type==='odd'){const right=R.type==='odd'?R.d.odd:R.d.c;app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{st.ans[i]=b.dataset.o;st.ok[i]=b.dataset.o===right;save();play()})}
     if(R.type==='order'){
       app.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{const w=b.dataset.w;const k=seq.indexOf(w);if(k>=0)seq=seq.slice(0,k);else seq.push(w);play()});
       $('#clr').onclick=()=>{seq=[];play()};
@@ -220,6 +226,7 @@ function end(){
   const items=ROUNDS.map((R,i)=>{const mk=st.ok[i]?'✓':'✗';
     if(R.type==='pick')return`<li><div class="v">${mk} ${esc(R.d.t)}: ${esc(R.d.c.toLowerCase())}</div><div class="n">${esc(R.d.n)}</div></li>`;
     if(R.type==='saying')return`<li><div class="v">${mk} “${esc(R.d.t)}”: ${esc(R.d.c.toLowerCase())}</div><div class="n">${esc(R.d.n)}</div></li>`;
+    if(R.type==='said')return`<li><div class="v">${mk} “${esc(R.d.t)}”: ${esc(R.d.c)}</div><div class="n">${esc(R.d.n)}</div></li>`;
     if(R.type==='odd')return`<li><div class="v">${mk} ${esc(R.d.odd)} wasn’t ${esc(R.d.f.toLowerCase())}</div><div class="n">${esc(R.d.n)}</div></li>`;
     if(R.type==='order')return`<li><div class="v">${mk} ${R.d.i.map(p=>esc(p[0])).join(' → ')}</div><div class="n">${esc(R.d.ask)}. ${esc(R.d.n)}</div></li>`;
     return`<li><div class="v">${mk} ${R.d.map(p=>`${esc(p[0])} (${esc(p[1].toLowerCase())})`).join(' · ')}</div></li>`}).join('');

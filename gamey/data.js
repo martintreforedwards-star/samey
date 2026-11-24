@@ -6,6 +6,8 @@
 //   x = "Odd one out"      w = three terms from one pursuit (named in f), odd = the interloper, n = note
 //   q = "Put in order"     ask = what to order by, i = [term, value] pairs in the RIGHT order, n = note
 //   m = "Match them"       four [term, pursuit] pairs
+//   w = "Who said it?"     optional (Fridays): t = a famous commentary line, c = the commentator, o = three others, n = note.
+//                          When a day has w, it takes the place of that day's "Where's it from?" round.
 const DAYS = [
   /* ---------- Week 1 ---------- */
   /* Mon */ {
@@ -37,6 +39,7 @@ const DAYS = [
     m: [["hog line", "Curling"], ["jack", "Bowls"], ["kiss", "Snooker"], ["Shanghai", "Darts"]]
   },
   /* Fri */ {
+    w: {t: "One of the good things about rain in Scotland is that most of it ends up as Scotch.", c: "Peter Alliss", o: ["Bill McLaren", "Richie Benaud", "Sid Waddell"], n: "Peter Alliss, the BBC's voice of golf for almost 60 years, on a soggy tournament in Scotland."},
     p: {t: "Zamballi", h: "The little caged buggy that sweeps up after practice.", c: "Golf", o: ["Ice hockey", "Tennis", "Cricket"], n: "The machine that collects balls on a driving range, its driver protected by a cage. A pun on the Zamboni, which resurfaces ice rinks."},
     s: {t: "a Hail Mary", c: "American football", o: ["Baseball", "Basketball", "Rugby union"], n: "In 1975 Roger Staubach won a play-off with a last-second long pass, then said he'd closed his eyes and said a Hail Mary. Now it's any desperate last try."},
     x: {f: "Darts", w: ["oche", "double top", "Robin Hood"], odd: "bunker", n: "A bunker is golf's sand trap. In darts a Robin Hood is a dart that sticks in the back of another."},
@@ -87,6 +90,7 @@ const DAYS = [
     m: [["chukka", "Polo"], ["hole in one", "Golf"], ["full house", "Poker"], ["cox", "Rowing"]]
   },
   /* Fri */ {
+    w: {t: "Oh, I say!", c: "Dan Maskell", o: ["Peter Alliss", "Ted Lowe", "Murray Walker"], n: "Dan Maskell, the BBC's voice of Wimbledon from 1951 to 1991, saved it for a really special shot."},
     p: {t: "kong", h: "A set of four identical tiles.", c: "Mahjong", o: ["Dominoes", "Scrabble", "Rummikub"], n: "Three of a kind is a pung, and a run of three is a chow."},
     s: {t: "a sticky wicket", c: "Cricket", o: ["Croquet", "Golf", "Baseball"], n: "A pitch drying out after rain made the ball do unpredictable things. So a tricky spot."},
     x: {f: "Ice hockey", w: ["icing", "biscuit", "slapshot"], odd: "southpaw", n: "Southpaw (a left-hander) comes from baseball and is now mostly used in boxing. In hockey the biscuit is the puck."},
@@ -137,6 +141,7 @@ const DAYS = [
     m: [["chicane", "Motor racing"], ["flick serve", "Badminton"], ["blindside", "Rugby union"], ["uchi mata", "Judo"]]
   },
   /* Fri */ {
+    w: {t: "They think it's all over… it is now!", c: "Kenneth Wolstenholme", o: ["John Motson", "David Coleman", "Murray Walker"], n: "Kenneth Wolstenholme, as Geoff Hurst scored England's fourth goal in the 1966 World Cup final, with fans already spilling on to the pitch."},
     p: {t: "flèche", h: "A running attack, launched in one burst.", c: "Fencing", o: ["Archery", "Ballet", "Gymnastics"], n: "French for “arrow”. It's been banned in sabre since 1994."},
     s: {t: "move the goalposts", c: "Football", o: ["Golf", "Tennis", "Cricket"], n: "Changing the rules or target halfway through, as if the goal had been shifted mid-match."},
     x: {f: "American football", w: ["audible", "blitz", "end zone"], odd: "the T", n: "The T is the spot in the middle of a squash court. An audible is a quarterback changing the play at the line."},
@@ -187,6 +192,7 @@ const DAYS = [
     m: [["Mankad", "Cricket"], ["hane", "Go"], ["photo finish", "Horse racing"], ["fletching", "Archery"]]
   },
   /* Fri */ {
+    w: {t: "He's about as predictable as a wasp on speed.", c: "Sid Waddell", o: ["Murray Walker", "Peter Alliss", "Ted Lowe"], n: "Sid Waddell, the voice of darts, famous for wild comparisons like this one."},
     p: {t: "box, box", h: "A radio call telling the driver to come in.", c: "Motor racing", o: ["Boxing", "Cycling", "Sailing"], n: "From the German “Boxenstopp” for a pit stop. It's also short and clear over a noisy radio."},
     s: {t: "rain check", c: "Baseball", o: ["Cricket", "Tennis", "Golf"], n: "Fans at a rained-off game got a ticket stub, a rain check, to come back another day."},
     x: {f: "Chess", w: ["j'adoube", "patzer", "fork"], odd: "tesuji", n: "Tesuji is Go: a clever, sharp move. J'adoube is French for “I adjust”, said when you touch a piece only to straighten it."},
@@ -237,6 +243,7 @@ const DAYS = [
     m: [["chin music", "Cricket"], ["intarsia", "Knitting"], ["the wall", "Mahjong"], ["slalom", "Skiing"]]
   },
   /* Fri */ {
+    w: {t: "Unless I'm very much mistaken… I AM very much mistaken!", c: "Murray Walker", o: ["Sid Waddell", "John Motson", "Dan Maskell"], n: "Murray Walker, the voice of Formula 1, put himself right mid-sentence. “Unless I'm Very Much Mistaken” became the title of his autobiography."},
     p: {t: "boast", h: "A shot hit into a side wall first.", c: "Squash", o: ["Tennis", "Badminton", "Table tennis"], n: "The ball angles off the side wall to the front, often catching an opponent at the back."},
     s: {t: "stumped", c: "Cricket", o: ["Baseball", "Chess", "Golf"], n: "A batter out of their ground is stumped when the keeper breaks the wicket. Now completely baffled."},
     x: {f: "Skiing", w: ["mogul", "schuss", "piste"], odd: "kook", n: "A kook is a surfing beginner. A schuss is skiing straight down at full speed."},
