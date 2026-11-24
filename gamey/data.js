@@ -244,7 +244,7 @@ const DAYS = [
     m: [["send", "Climbing"], ["furlong", "Horse racing"], ["sin bin", "Rugby league"], ["tumble turn", "Swimming"]]
   },
   /* Sat */ {
-    p: {t: "his nobs", h: "The jack of the same suit as the turned-up card.", c: "Cribbage", o: ["Bridge", "Whist", "Poker"], n: "Holding it scores “one for his nob”."},
+    p: {t: "Bingo Bango Bongo", h: "A side game with three points up for grabs each time.", c: "Golf", o: ["Croquet", "Bowls", "Darts"], n: "Bingo for first onto the green, bango for closest to the pin once everyone's on, bongo for first in the hole. Playing order counts as much as skill, so anyone can pick up points."},
     s: {t: "neck and neck", c: "Horse racing", o: ["Motor racing", "Rowing", "Athletics"], n: "Two horses so close their necks are level."},
     x: {f: "Basketball", w: ["airball", "sixth man", "swish"], odd: "cradle", n: "Cradling is lacrosse: rocking the stick to keep the ball in its net. An airball misses everything, rim included."},
     q: {ask: "Closest to furthest from the batter, in cricket", i: [["silly point", "almost on the bat"], ["gully", "close catcher"], ["cover", "saving one"], ["long-off", "on the boundary"]], n: "“Silly” fielders stand near enough to be in real danger."},
