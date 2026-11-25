@@ -71,9 +71,10 @@
     { id: "forsooth", name: "Forsooth", href: "/forsooth/", c: "#7a1f3d", blurb: "Shakespeare, Chaucer and their rivals, plus a red herring.", isNew: true },
     { id: "gaggle", name: "Gaggle", href: "/gaggle/", c: "#2f6b3f", blurb: "Collective nouns, then the names for things: tarns, tombolos and more.", isNew: true, wlv: "gaggle" },
     { id: "fixy", name: "Antepostee", href: "/fixy/", c: "#5b3c96", blurb: "Prefixes and suffixes. Illegal or unlegal? Is gruntled a word?", isNew: true },
-    { id: "mispelt", name: "Mispelt", href: "/mispelt/", c: "#1d2a44", blurb: "Why is there a b in debt? The stories behind odd spellings.", isNew: true }
+    { id: "mispelt", name: "Mispelt", href: "/mispelt/", c: "#1d2a44", blurb: "Why is there a b in debt? The stories behind odd spellings.", isNew: true },
+    { id: "mither", name: "Mither", href: "/mither/", c: "#46607a", blurb: "Welsh, Gaelic, Manx, Cornish, Scots, Polari: the tongues of these islands.", isNew: true }
   ];
-  var WORDS = ["", "", "", "", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+  var WORDS = ["", "", "", "", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty", "twenty-one", "twenty-two", "twenty-three", "twenty-four", "twenty-five", "twenty-six", "twenty-seven", "twenty-eight", "twenty-nine", "thirty"];
   var here = (location.pathname.split("/")[1] || "samey").toLowerCase();
   var SET_KEY = "samey-set";
   /* Wordleverse players: Wordleverse links here with ?utm_source=wordleverse.net (and sends a referrer).
