@@ -203,7 +203,8 @@ const DAYS = [
   },
   /* Fri */ {
     w: [{t: "He's about as predictable as a wasp on speed.", c: "Sid Waddell", o: ["Murray Walker", "Peter Alliss", "Ted Lowe"], n: "Sid Waddell, the voice of darts, famous for wild comparisons like this one."},
-        {t: "When Alexander of Macedonia was 33, he cried salt tears because there were no more worlds to conquer…", c: "Sid Waddell", o: ["Peter Alliss", "Richie Benaud", "Bill McLaren"], n: "…“Bristow's only 27.” Sid Waddell, as Eric Bristow won his fourth world darts title in 1985."}],
+        {t: "When Alexander of Macedonia was 33, he cried salt tears because there were no more worlds to conquer…", c: "Sid Waddell", o: ["Peter Alliss", "Richie Benaud", "Bill McLaren"], n: "…“Bristow's only 27.” Sid Waddell, as Eric Bristow won his fourth world darts title in 1985."},
+        {t: "Start the car!", c: "David Lloyd", o: ["Geoffrey Boycott", "Richie Benaud", "Murray Walker"], n: "David Lloyd, Accrington's own Bumble, bellowed it at decisive moments in the commentary box. It became the title of his book, Start the Car: The World According to Bumble."}],
     p: {t: "box, box", h: "A radio call telling the driver to come in.", c: "Motor racing", o: ["Boxing", "Cycling", "Sailing"], n: "From the German “Boxenstopp” for a pit stop. It's also short and clear over a noisy radio."},
     s: {t: "rain check", c: "Baseball", o: ["Cricket", "Tennis", "Golf"], n: "Fans at a rained-off game got a ticket stub, a rain check, to come back another day."},
     x: [{f: "Chess", w: ["j'adoube", "patzer", "fork"], odd: "tesuji", n: "Tesuji is Go: a clever, sharp move. J'adoube is French for “I adjust”, said when you touch a piece only to straighten it."},
