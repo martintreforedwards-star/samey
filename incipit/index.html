@@ -35,6 +35,7 @@ h1 svg{width:30px;height:30px;vertical-align:-4px;margin-right:6px}
 .kind{font-family:var(--head);font-weight:800;font-size:22px;margin:4px 0 0}
 .quote{position:relative;margin:16px 0 14px;padding:4px 0 4px 18px;border-left:3px solid var(--gold);font-family:var(--head);font-style:italic;font-weight:400;font-size:21px;line-height:1.4}
 .quote .cut{color:var(--muted)}
+.quote .gap{display:inline-block;width:3.2em;border-bottom:2px solid var(--muted);vertical-align:-0.1em}
 .from{font-size:15px;color:var(--muted);margin:10px 0 0}
 .from b{color:var(--ink);font-weight:600}
 .clues{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
@@ -132,8 +133,9 @@ const pts=i=>got(i)?3-hintsAt(i):0;
 const total=()=>ROUNDS.reduce((s,_,i)=>s+pts(i),0);
 const gut=q=>'https://www.gutenberg.org/ebooks/search/?query='+encodeURIComponent(q.t+' '+q.a.split(' ').pop());
 const credit=q=>`<b>${esc(q.t)}</b> · ${esc(q.a)}, ${q.y}${q.tr?` <span class="muted">(tr. ${esc(q.tr)})</span>`:''}`;
-const fullLine=q=>q.l!=null?q.l:q.s+' '+q.e;
-const showLine=s=>esc(s).replace(/…$/,'<span class="cut">…</span>');
+const fullLine=q=>q.l!=null?q.l.replace(/[{}]/g,''):q.s+' '+q.e;
+// {word} in a line marks a giveaway name: blanked while the question is up, filled in on the answer and results.
+const showLine=(s,gap)=>esc(s).replace(/\{([^}]*)\}/g,(m,w)=>gap?'<span class="gap" aria-label="blank"></span>':w).replace(/…$/,'<span class="cut">…</span>');
 const initials=a=>a.split(/\s+/).filter(w=>/^[A-Z]/.test(w)).map(w=>w[0]+'.').join(' ');
 function rank(t){if(t>=MAX)return'First edition';if(t>=12)return'Page-turner';if(t>=8)return'Well thumbed';if(t>=4)return'Bookworm in training';return'Still in the stacks'}
 const mark=i=>st.pick[i]==null?'':got(i)?(hintsAt(i)?'h':'g'):'x';
@@ -154,7 +156,7 @@ function play(){
       <li>Round five: pick the real ending of a famous first line.</li>
       <li>3 points a round, ${MAX} in all.</li></ol></details>`:''}
     ${R.kind==='end'?`<p class="from">From ${credit(q)}</p>`:''}
-    <blockquote class="quote">${R.kind==='book'?showLine(q.l):esc(q.s)+' <span class="cut">…</span>'}</blockquote>
+    <blockquote class="quote">${R.kind==='book'?showLine(q.l,true):esc(q.s)+' <span class="cut">…</span>'}</blockquote>
     ${clues.length?`<div class="clues">${clues.map(c=>`<span class="clue">${esc(c)}</span>`).join('')}</div>`:''}
     <div class="opts" role="group" aria-label="Choices">${R.opts.map((o,j)=>`<button class="opt${R.kind==='end'?' end':''}${optCls(j)}" data-j="${j}"${answered?' disabled':''}>${esc(o)}</button>`).join('')}</div>
     ${answered?`<div class="reveal" role="status"><span class="pts">${got(i)?'+'+pts(i):'0'}</span>${got(i)?'Yes!':'Not this time.'}${R.kind==='book'?`<div class="t">${esc(q.t)}</div><div>${esc(q.a)}, ${q.y}${q.tr?` · translated by ${esc(q.tr)}`:''}</div>`:`<div style="margin-top:6px;font-family:var(--head);font-style:italic">${esc(fullLine(q))}</div>`}</div>
