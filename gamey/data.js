@@ -204,7 +204,8 @@ const DAYS = [
   /* Fri */ {
     w: [{t: "He's about as predictable as a wasp on speed.", c: "Sid Waddell", o: ["Murray Walker", "Peter Alliss", "Ted Lowe"], n: "Sid Waddell, the voice of darts, famous for wild comparisons like this one."},
         {t: "When Alexander of Macedonia was 33, he cried salt tears because there were no more worlds to conquer…", c: "Sid Waddell", o: ["Peter Alliss", "Richie Benaud", "Bill McLaren"], n: "…“Bristow's only 27.” Sid Waddell, as Eric Bristow won his fourth world darts title in 1985."},
-        {t: "Start the car!", c: "David Lloyd", o: ["Geoffrey Boycott", "Richie Benaud", "Murray Walker"], n: "David Lloyd, Accrington's own Bumble, bellowed it at decisive moments in the commentary box. It became the title of his book, Start the Car: The World According to Bumble."}],
+        {t: "Start the car!", c: "David Lloyd", o: ["Geoffrey Boycott", "Richie Benaud", "Murray Walker"], n: "David Lloyd, Accrington's own Bumble, bellowed it at decisive moments in the commentary box. It became the title of his book, Start the Car: The World According to Bumble."},
+        {t: "That wee ball's gone so high there'll be snow on it when it comes down.", c: "Bill McLaren", o: ["Peter Alliss", "David Lloyd", "Richie Benaud"], n: "Bill McLaren, the BBC's voice of rugby for half a century, and a PE teacher in his home town of Hawick."}],
     p: {t: "box, box", h: "A radio call telling the driver to come in.", c: "Motor racing", o: ["Boxing", "Cycling", "Sailing"], n: "From the German “Boxenstopp” for a pit stop. It's also short and clear over a noisy radio."},
     s: {t: "rain check", c: "Baseball", o: ["Cricket", "Tennis", "Golf"], n: "Fans at a rained-off game got a ticket stub, a rain check, to come back another day."},
     x: [{f: "Chess", w: ["j'adoube", "patzer", "fork"], odd: "tesuji", n: "Tesuji is Go: a clever, sharp move. J'adoube is French for “I adjust”, said when you touch a piece only to straighten it."},
@@ -262,7 +263,8 @@ const DAYS = [
   },
   /* Fri */ {
     w: [{t: "Unless I'm very much mistaken… I AM very much mistaken!", c: "Murray Walker", o: ["Sid Waddell", "John Motson", "Dan Maskell"], n: "Murray Walker, the voice of Formula 1, put himself right mid-sentence. “Unless I'm Very Much Mistaken” became the title of his autobiography."},
-        {t: "I reckon my mum could have caught that in her pinny!", c: "Geoffrey Boycott", o: ["David Lloyd", "Richie Benaud", "Peter Alliss"], n: "Geoffrey Boycott, after Australia's Shane Watson dropped a catch in 2014. A pinny is an apron."}],
+        {t: "I reckon my mum could have caught that in her pinny!", c: "Geoffrey Boycott", o: ["David Lloyd", "Richie Benaud", "Peter Alliss"], n: "Geoffrey Boycott, after Australia's Shane Watson dropped a catch in 2014. A pinny is an apron."},
+        {t: "Those props are as cunning as a bag o' weasels.", c: "Bill McLaren", o: ["Sid Waddell", "Geoffrey Boycott", "Peter Alliss"], n: "Bill McLaren, the voice of rugby, on the front-row forwards. His other famous line: “They'll be dancing in the streets tonight.”"}],
     p: {t: "boast", h: "A shot hit into a side wall first.", c: "Squash", o: ["Tennis", "Badminton", "Table tennis"], n: "The ball angles off the side wall to the front, often catching an opponent at the back."},
     s: {t: "stumped", c: "Cricket", o: ["Baseball", "Chess", "Golf"], n: "A batter out of their ground is stumped when the keeper breaks the wicket. Now completely baffled."},
     x: {f: "Skiing", w: ["mogul", "schuss", "piste"], odd: "kook", n: "A kook is a surfing beginner. A schuss is skiing straight down at full speed."},
