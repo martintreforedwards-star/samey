@@ -312,7 +312,7 @@
       ".sy-gst{display:flex;align-items:center;gap:5px;font-size:.85rem;font-weight:700}" +
       ".sy-gcard.done .sy-gst{color:" + OK + "}" +
       "@media (min-width:480px){.sy-gcards{grid-template-columns:repeat(3,minmax(0,1fr))}}" +
-      ".sy-start{display:flex;flex-direction:column;gap:8px;padding:14px;margin-bottom:8px;border-radius:16px;background:color-mix(in srgb," + T + " 8%," + S + ");border:1.5px solid color-mix(in srgb," + T + " 35%," + L + ")}" +
+      ".sy-start{display:flex;flex-direction:column;gap:8px;padding:14px;margin-bottom:8px;border-radius:16px;background:color-mix(in srgb," + A + " 16%," + S + ");border:1.5px solid color-mix(in srgb," + A + " 60%," + L + ")}" +
       ".sy-shead{display:flex;justify-content:space-between;align-items:center;gap:10px}" +
       ".sy-shead h2{margin:0;font-family:var(--display,inherit);font-weight:800;font-size:1.25rem;letter-spacing:-.01em;color:" + I + "}" +
       ".sy-sskip{flex:none;border:0;background:none;padding:6px 0;color:" + M + ";font:inherit;font-size:.85rem;text-decoration:underline;cursor:pointer}" +
