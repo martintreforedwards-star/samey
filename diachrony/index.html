@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Diachrony</title>
+<meta name="description" content="A daily game about how words travel through time: follow one word's journey through languages and meanings.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://samey.uk/diachrony/">
+<meta property="og:site_name" content="Diachrony">
+<meta property="og:title" content="Diachrony: how words travel through time">
+<meta property="og:description" content="From prayer to taking aim. From leather bag to budget airline. Follow a word's journey, one stop at a time.">
+<link rel="icon" href="/diachrony/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+:root{--bg:#fbf8f2;--card:#fff;--ink:#231c12;--muted:#6f6455;--line:#e6dfd2;--accent:#9a6b12;--deep:#5a3d0c;--good:#2b8a3e;--bad:#c92a2a;--goodbg:#ebfbee;--chip:#f3ede2;--head:"Libre Baskerville",Georgia,serif}
+@media (prefers-color-scheme:dark){:root{--bg:#15120d;--card:#1f1a13;--ink:#f1e9dc;--muted:#a99c88;--line:#3a3226;--accent:#e8b65a;--deep:#f3d9a4;--good:#8ce99a;--bad:#ff8787;--goodbg:#173022;--chip:#2a241a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+main{max-width:480px;margin:0 auto;padding:16px 16px 40px;min-height:100vh}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+h1{font-family:var(--head);font-weight:700;font-size:30px;margin:0;line-height:1}
+h1 svg{width:30px;height:30px;vertical-align:-5px;margin-right:6px}
+.pts{font-weight:700;color:var(--deep);font-size:15px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+.tag{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600}
+.kind{font-family:var(--head);font-weight:700;font-size:21px;margin:8px 0 2px;line-height:1.3}
+.sub{color:var(--muted);font-size:15px;margin:4px 0 14px}
+.route{list-style:none;padding:0;margin:0 0 4px;position:relative}
+.route::before{content:"";position:absolute;left:14px;top:20px;bottom:20px;width:3px;background:var(--line);border-radius:2px}
+.stop{position:relative;display:flex;gap:10px;align-items:center;margin-bottom:8px}
+.num{flex:0 0 31px;height:31px;border-radius:50%;background:var(--card);border:3px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--accent);z-index:1}
+.box{flex:1;min-width:0;border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;min-height:54px;background:var(--card);display:flex;align-items:center;gap:8px}
+.box .t{flex:1;min-width:0}
+.lang{font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:600}
+.lang i{text-transform:none;letter-spacing:0;font-family:var(--head)}
+.when{float:right;font-size:12px;color:var(--muted);margin-left:8px}
+.mean{font-size:16px;line-height:1.35}
+.box.hid{background:var(--chip);border-style:dashed;justify-content:center;color:var(--muted);font-size:15px}
+.box.ok{border-color:var(--good);background:var(--goodbg)}
+.arrows{display:flex;flex-direction:column;gap:4px}
+.arrows button{width:40px;height:30px;border:1.5px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font-size:13px;padding:0}
+.arrows button:focus-visible,.primary:focus-visible,.ghost:focus-visible{outline:3px solid var(--deep);outline-offset:2px}
+.typed{display:flex;gap:8px;margin-top:12px}
+.typed input{flex:1;min-width:0;font:700 19px/1.2 var(--head);padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink)}
+.typed input:focus{outline:3px solid var(--deep);outline-offset:1px;border-color:transparent}
+.typed .primary{flex:0 0 auto;padding:0 20px}
+.btns{display:flex;gap:10px;margin-top:12px}
+button{font:inherit;color:inherit;cursor:pointer}
+.primary{flex:1;padding:14px;border:0;border-radius:12px;background:var(--deep);color:var(--bg);font-weight:700;min-height:50px}
+.ghost{flex:1;padding:12px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);font-weight:600;min-height:48px}
+.primary[disabled],.ghost[disabled]{opacity:.4;cursor:default}
+.msg{min-height:1.4em;margin:10px 0 0;font-size:15px;color:var(--muted)}
+.msg.bad{color:var(--bad)}
+.center{text-align:center}
+.word{font-family:var(--head);font-weight:700;font-size:34px;margin:6px 0 0}
+.rank{font-family:var(--head);font-weight:700;font-size:22px;margin:4px 0;color:var(--accent)}
+.squares{font-size:22px;letter-spacing:3px;margin:6px 0 4px;white-space:pre-line;line-height:1.4}
+.jump{font-family:var(--head);font-style:italic;margin:10px 0}
+.muted{color:var(--muted);font-size:15px}
+a{color:var(--accent)}
+.test{background:var(--chip);border-radius:10px;padding:8px 12px;font-size:14px;margin-bottom:12px}
+.ex{margin:10px 0 12px;font-size:15px}.ex summary{cursor:pointer;color:var(--accent);font-weight:600}
+.how{margin:8px 0 0;padding-left:20px;color:var(--muted)}
+.how li{margin:3px 0}
+.phase{font-weight:700;color:var(--accent);font-size:15px;margin:0 0 8px}
+footer{margin-top:18px;text-align:center}
+</style>
+<link rel="manifest" href="/manifest.webmanifest">
+</head>
+<body>
+<main>
+  <header><h1><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="56" height="56" rx="12" fill="#5a3d0c"/><path d="M14 44C22 44 22 20 32 20S42 44 50 44" fill="none" stroke="#f3d9a4" stroke-width="3.5" stroke-linecap="round"/><circle cx="14" cy="44" r="5" fill="#fff"/><circle cx="32" cy="20" r="5" fill="#f3d9a4"/><circle cx="50" cy="44" r="5" fill="#e8a33c"/></svg>Diachrony</h1><span class="pts" id="pts"></span></header>
+  <nav class="sy-bar" aria-label="Games"></nav>
+  <div id="test"></div>
+  <div id="app"></div>
+  <footer><p class="muted"><a href="/feedback/?game=diachrony">Send feedback</a> · <a href="/support/?game=diachrony">Support the games</a></p></footer>
+</main>
+<script src="data.js"></script>
+<script>
+// ---- Which day is on screen ----
+// Preview: ?day=N plays Diachrony No. N; #test plays without saving.
+// START must be a Monday (routes in data.js are laid out Monday first). Reset it to the launch Monday.
+const START=Date.UTC(2026,10,30);
+const dayDate=n=>new Date(START+n*864e5);
+const fmt=(n,o)=>dayDate(n).toLocaleDateString('en-GB',Object.assign({timeZone:'UTC'},o));
+const keyOf=n=>{const d=dayDate(n);return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0')};
+addEventListener('hashchange',()=>location.reload());
+const params=new URLSearchParams(location.search);
+const now=new Date();
+const TODAY=Math.max(0,Math.round((Date.UTC(now.getFullYear(),now.getMonth(),now.getDate())-START)/864e5));
+const isTest=location.hash==='#test';
+const td=parseInt(params.get('day'),10);
+const N=Number.isInteger(td)&&td>=1?td-1:TODAY;
+const R=ROUTES[N%ROUTES.length];
+const LAST=R.stops.length-1;
+const MAX=R.mode==='long'?10:5;
+const SKEY='diachrony-'+keyOf(N);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const norm=s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z ]/g,'').replace(/\s+/g,' ').trim();
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){if(isTest)return;try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+// Seeded shuffle (same order for everyone on the day); never starts in order, and few stops already in place.
+function shuffled(n,seed){
+  let s=seed;
+  for(let tries=0;tries<50;tries++){
+    const a=[...Array(n).keys()];
+    for(let i=n-1;i>0;i--){s=(s*9301+49297)%233280;const j=Math.floor(s/233280*(i+1));[a[i],a[j]]=[a[j],a[i]]}
+    if(a.filter((v,i)=>v===i).length<=Math.floor(n/3)&&!a.every((v,i)=>v===i))return a;
+  }
+  return [...Array(n).keys()].reverse();
+}
+
+let st=store.get(SKEY)||{phase:R.mode==='order'?'order':'reveal',revealed:[],wrong:[],rPts:null,rWon:null,order:null,submits:[],oPts:null,done:false};
+const $=s=>document.querySelector(s);
+const app=$('#app');
+function save(){store.set(SKEY,st)}
+const tagLine=()=>`${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})}`;
+const MODE={reveal:'Reveal day',order:'Order day',long:'Sunday long route'};
+const flagLink=`<a href="/feedback/?game=diachrony&type=puzzle&puzzle=${encodeURIComponent('No. '+(N+1)+' · '+R.word)}">Tell us</a>`;
+function stopFull(s){return `<div class="t"><div class="lang">${esc(s[0])} · <i>${esc(s[1])}</i><span class="when">${esc(s[3])}</span></div><div class="mean">${esc(s[2])}</div></div>`}
+function stopMasked(s){return `<div class="t"><div class="lang">${esc(s[0])}</div><div class="mean">${esc(s[2])}</div></div>`}
+const howTo=`<details class="ex"><summary>How to play</summary><ol class="how">
+  <li>Every word has travelled: through languages, and through meanings.</li>
+  <li><b>Reveal days</b> (Mon, Wed, Fri): see where a word started and where it ended up. Reveal stops along the way, then guess today's word. Start on 5 points; each stop revealed or wrong guess costs 1.</li>
+  <li><b>Order days</b> (Tue, Thu, Sat): put the stops in date order, earliest at the top. Three tries: 5 points first time, 3 second, 1 third. Stops in the right place lock green.</li>
+  <li><b>Sundays:</b> a long route. Guess the word, then order every stop. Out of 10.</li></ol></details>`;
+
+// ---------- Reveal ----------
+const rPts=()=>Math.max(0,5-st.revealed.length-st.wrong.length);
+function reveal(){
+  $('#pts').textContent=rPts()+' pts';
+  const left=st.revealed.length<LAST-1&&rPts()>1;
+  app.innerHTML=`<div class="card">
+    <div class="tag">${tagLine()} · ${MODE[R.mode]}</div>
+    ${R.mode==='long'?'<div class="phase" style="margin-top:8px">Part 1: name the word</div>':''}
+    <div class="kind">${esc(R.hook)}</div>
+    <p class="sub">Follow the route, then guess today's word.</p>
+    ${howTo}
+    <ol class="route">${R.stops.map((s,i)=>{const open=i===0||i===LAST||st.revealed.includes(i);
+      return `<li class="stop"><span class="num">${i+1}</span><div class="box${open?'':' hid'}">${open?stopMasked(s):'Hidden stop'}</div></li>`}).join('')}</ol>
+    <div class="btns"><button class="ghost" id="rev"${left?'':' disabled'}>Reveal a stop (−1)</button></div>
+    <form class="typed" id="f"><input id="g" placeholder="Today's word" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Your guess"><button class="primary">Guess</button></form>
+    <p class="msg${st.wrong.length?' bad':''}" id="msg" role="status">${st.wrong.length?'Not '+st.wrong.map(w=>'<b>'+esc(w)+'</b>').join(', '):''}</p>
+  </div>`;
+  $('#rev').onclick=()=>{for(let i=1;i<LAST;i++)if(!st.revealed.includes(i)){st.revealed.push(i);break}save();reveal()};
+  $('#f').onsubmit=e=>{
+    e.preventDefault();
+    const g=norm($('#g').value);if(!g)return;
+    if([R.word,...(R.accept||[])].map(norm).some(w=>g===w||g===w+'s'))return endReveal(true);
+    if(st.wrong.includes(g)){$('#msg').textContent='You tried that one.';return}
+    st.wrong.push(g);
+    if(rPts()<=0)return endReveal(false);
+    save();reveal();$('#g').focus();
+  };
+}
+function endReveal(won){
+  st.rWon=won;st.rPts=won?rPts():0;
+  if(R.mode==='long')st.phase='order';else st.done=true;
+  save();go();
+}
+
+// ---------- Order ----------
+const locked=()=>{const l=st.submits[st.submits.length-1];return st.order.map((v,i)=>!!l&&l[i]===i&&v===i)};
+function order(){
+  if(!st.order){st.order=shuffled(R.stops.length,N*7919+13);save()}
+  const lk=locked();
+  $('#pts').textContent=R.mode==='long'?(st.rPts+' + ?'):`Try ${st.submits.length+1} of 3`;
+  app.innerHTML=`<div class="card">
+    <div class="tag">${tagLine()} · ${MODE[R.mode]}</div>
+    ${R.mode==='long'?`<div class="phase" style="margin-top:8px">Part 2: order the route</div><p class="sub">${st.rWon?'Well done: it was':'It was'} <b>${esc(R.word)}</b>. Now put its stops in date order, earliest at the top. Try ${st.submits.length+1} of 3.</p>`
+      :`<div class="kind">Today's word: ${esc(R.word)}</div><p class="sub">${esc(R.hook)}. Put the stops in date order, earliest at the top.</p>${howTo}`}
+    <ol class="route">${st.order.map((si,p)=>`<li class="stop"><span class="num">${p+1}</span><div class="box${lk[p]?' ok':''}">${stopMasked(R.stops[si])}
+      ${lk[p]?'':`<div class="arrows"><button data-p="${p}" data-d="-1" aria-label="Move up"${p===0?' disabled':''}>▲</button><button data-p="${p}" data-d="1" aria-label="Move down"${p===LAST?' disabled':''}>▼</button></div>`}</div></li>`).join('')}</ol>
+    <div class="btns"><button class="primary" id="chk">Check order</button></div>
+    <p class="msg" role="status">${st.submits.length?`${lk.filter(Boolean).length} of ${R.stops.length} in place. Green stops are locked.`:''}</p>
+  </div>`;
+  app.querySelectorAll('.arrows button').forEach(b=>b.onclick=()=>move(+b.dataset.p,+b.dataset.d));
+  $('#chk').onclick=check;
+}
+function move(p,d){
+  const lk=locked();let t=p+d;
+  while(t>=0&&t<=LAST&&lk[t])t+=d;
+  if(t<0||t>LAST)return;
+  [st.order[p],st.order[t]]=[st.order[t],st.order[p]];
+  save();order();
+  const b=app.querySelector(`.arrows button[data-p="${t}"][data-d="${d}"]`)||app.querySelector(`.arrows button[data-p="${t}"]`);if(b)b.focus({preventScroll:true});
+}
+function check(){
+  st.submits.push([...st.order]);
+  const perfect=st.order.every((v,i)=>v===i);
+  if(perfect||st.submits.length>=3){st.oPts=perfect?[5,3,1][st.submits.length-1]:0;st.done=true}
+  save();go();
+}
+
+// ---------- End ----------
+function rank(t){const f=Math.round(t/MAX*5);return['Lost in time','Day tripper','Word wanderer','Lexicographer','Etymologist','Philologist'][f]}
+function end(){
+  const t=(st.rPts||0)+(st.oPts||0);
+  $('#pts').textContent=t+'/'+MAX;
+  let sq='';
+  if(R.mode!=='order')sq+=R.stops.slice(1,-1).map((_,j)=>st.revealed.includes(j+1)?'🟨':'⬜').join('')+(st.rWon?' ✅':' ❌')+'\n';
+  if(R.mode!=='reveal')sq+=st.submits.map(s=>s.map((v,i)=>v===i?'🟩':'⬜').join('')).join('\n');
+  sq=sq.trim();
+  if(!isTest&&N===TODAY)(window.SameySetQ=window.SameySetQ||[]).push(['diachrony',t+'/'+MAX]);
+  const share=`Diachrony No. ${N+1}\n${R.hook}\n${sq}\n${t}/${MAX} ${rank(t)}\nYour go: https://samey.uk/diachrony/ #sameyuk`;
+  app.innerHTML=`<div class="card center">
+    <div class="tag">${tagLine()}</div>
+    <div class="word">${esc(R.word)}</div>
+    <div class="rank">${t}/${MAX} · ${rank(t)}</div>
+    <div class="squares" aria-label="${t} out of ${MAX}">${sq}</div>
+    <div class="btns"><button class="primary" id="share">Share</button></div>
+    <p class="muted"><span data-next="Next Diachrony in {t}.">A new route tomorrow.</span></p>
+    <p class="muted">All the games are free and ad-free, made by one librarian in Canterbury. Enjoyed today's? <a href="https://ko-fi.com/playtheroute" target="_blank" rel="noopener" style="font-weight:700;white-space:nowrap">☕ Buy me a coffee</a></p>
+  </div>
+  <div class="card" style="margin-top:14px"><div class="tag">The whole journey</div>
+    <p class="jump">${esc(R.jump)}</p>
+    <ol class="route">${R.stops.map((s,i)=>`<li class="stop"><span class="num">${i+1}</span><div class="box">${stopFull(s)}</div></li>`).join('')}</ol>
+    <p class="muted" style="margin-top:12px">Dates are approximate: dictionaries disagree on first uses. Think a stop's wrong? ${flagLink}.</p>
+  </div>
+  <div class="xg" data-sy-cards></div>`;
+  $('#share').onclick=()=>{if(navigator.share){navigator.share({text:share}).catch(()=>{});return}try{navigator.clipboard.writeText(share).then(()=>{$('#share').textContent='Copied'})}catch(e){}};
+}
+
+function go(){if(st.done)return end();if(st.phase==='reveal')return reveal();order()}
+if(isTest)$('#test').innerHTML=`<div class="test">Test mode: No. ${N+1} · results not saved · <a href="?day=${N+2}#test">Next day</a></div>`;
+go();
+</script>
+<script src="/daily.js"></script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "210d8562172a4416bc59877612814183"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
