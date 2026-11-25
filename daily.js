@@ -212,9 +212,41 @@
     row.append(fb, sp);
     box.parentNode.insertBefore(row, box.nextSibling);
   }
+  /* "New here? Start with these three": a small starter route above the full grid, so 21 games isn't daunting.
+     Shown until the player has finished all three starters on one day, or taps "Show me everything". */
+  var STARTERS = ["samey", "spinonym", "roots"], STARTER_KEY = "samey-starter-done";
+  function starterBox(s) {
+    var gone; try { gone = localStorage.getItem(STARTER_KEY); } catch (e) {}
+    var picks = STARTERS.map(function (id) { return GAMES.filter(function (g) { return g.id === id; })[0]; }).filter(Boolean);
+    var played = picks.filter(function (g) { return s.g[g.id]; }).length, allDone = played === picks.length;
+    // Finishing all three hides the strip from tomorrow; today it stays up to say well done.
+    if (allDone && !gone) { gone = s.day + "*"; try { localStorage.setItem(STARTER_KEY, gone); } catch (e) {} }
+    if (gone && gone !== s.day + "*") return null;
+    var box = el("div", "sy-start"), head = el("div", "sy-shead");
+    head.append(el("h2", null, allDone ? "Starter set done 🎉" : "New here? Start with these three"));
+    var skip = el("button", "sy-sskip", allDone ? "Hide" : "Show me everything");
+    skip.type = "button";
+    skip.onclick = function () { try { localStorage.setItem(STARTER_KEY, "skip"); } catch (e) {} box.remove(); };
+    head.append(skip);
+    box.append(head, el("p", "sy-snote", allDone
+      ? "That's the starter route. Pick anything below next: there's no need to finish the whole set."
+      : "Quick daily word games, a few minutes each. Play one or all three, then explore the rest whenever you like."));
+    var row = el("ol", "sy-srow");
+    picks.forEach(function (g, i) {
+      var sc = s.g[g.id], li = el("li"), a = el("a", "sy-scard" + (sc ? " done" : "") + (g.id === here ? " here" : ""));
+      a.href = g.href; a.style.setProperty("--gc", g.c);
+      var top = el("span", "sy-stop");
+      top.append(sc ? tick("sy-tick") : el("span", "sy-snum", String(i + 1)), el("span", "sy-gname", g.name));
+      a.append(top, el("span", "sy-gblurb", g.blurb), el("span", "sy-gst", sc ? scoreText(sc) : (g.id === here ? "Playing now" : "Play →")));
+      li.append(a); row.append(li);
+    });
+    box.append(row);
+    return box;
+  }
   function fillGrid(box) {
     var s = readSet(), n = GAMES.filter(function (g) { return s.g[g.id]; }).length;
     box.textContent = "";
+    var start = starterBox(s); if (start) box.append(start);
     var head = el("div", "sy-ghead");
     head.append(el("h2", null, "Today's games"), el("span", null, n === GAMES.length ? "All " + WORDS[GAMES.length] + " played 🏆" : n + " of " + GAMES.length + " played"));
     var bar = el("div", "sy-gprog"), fillEl = el("span");
@@ -279,6 +311,20 @@
       ".sy-gst{display:flex;align-items:center;gap:5px;font-size:.85rem;font-weight:700}" +
       ".sy-gcard.done .sy-gst{color:" + OK + "}" +
       "@media (min-width:480px){.sy-gcards{grid-template-columns:repeat(3,minmax(0,1fr))}}" +
+      ".sy-start{display:flex;flex-direction:column;gap:8px;padding:14px;margin-bottom:8px;border-radius:16px;background:color-mix(in srgb," + T + " 8%," + S + ");border:1.5px solid color-mix(in srgb," + T + " 35%," + L + ")}" +
+      ".sy-shead{display:flex;justify-content:space-between;align-items:center;gap:10px}" +
+      ".sy-shead h2{margin:0;font-family:var(--display,inherit);font-weight:800;font-size:1.25rem;letter-spacing:-.01em;color:" + I + "}" +
+      ".sy-sskip{flex:none;border:0;background:none;padding:6px 0;color:" + M + ";font:inherit;font-size:.85rem;text-decoration:underline;cursor:pointer}" +
+      ".sy-snote{margin:0;font-size:.9rem;line-height:1.4;color:" + M + "}" +
+      ".sy-srow{list-style:none;margin:4px 0 0;padding:0;display:grid;grid-template-columns:1fr;gap:8px}" +
+      ".sy-scard{display:flex;flex-direction:column;gap:4px;padding:12px 14px;border-radius:12px;border:1px solid " + L + ";border-left:5px solid var(--gc," + T + ");background:" + S + ";color:" + I + ";text-decoration:none}" +
+      ".sy-scard:hover{border-color:" + I + ";border-left-color:var(--gc," + T + ")}" +
+      ".sy-scard.here{outline:2px solid " + T + ";outline-offset:-1px}" +
+      ".sy-stop{display:flex;align-items:center;gap:8px}" +
+      ".sy-snum{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--gc," + T + ");color:#fff;font-size:.8rem;font-weight:800}" +
+      ".sy-scard .sy-tick{width:22px;height:22px;stroke:" + OK + "}" +
+      ".sy-scard.done .sy-gst{color:" + OK + "}" +
+      "@media (min-width:480px){.sy-srow{grid-template-columns:repeat(3,minmax(0,1fr))}.sy-scard{min-height:118px}}" +
       "@media (prefers-reduced-motion:reduce){.sy-gprog span{transition:none}}";
     var st = document.createElement("style"); st.textContent = css; document.head.append(st);
   }
