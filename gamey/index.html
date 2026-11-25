@@ -114,7 +114,8 @@ const WD=EPOCH%7, WEEKS=DAYS.length/7;
 const WK=((Math.floor(EPOCH/7)-2966)%WEEKS+WEEKS)%WEEKS; // week of 15 Nov 2026 (launch) plays data week 2; new weeks follow
 const D=DAYS[WK*7+WD];
 const CYC=Math.floor((Math.floor(EPOCH/7)-2966)/WEEKS); // how many times the weeks have come round
-if(Array.isArray(D.w))D.w=D.w[((CYC%D.w.length)+D.w.length)%D.w.length];
+// Any round but the match round can hold a list: each time the weeks come round, the next one is used.
+for(const k of['p','s','x','q','w'])if(Array.isArray(D[k]))D[k]=D[k][((CYC%D[k].length)+D[k].length)%D[k].length];
 const THEME=WD===6?'Hobbies and pastimes':'';
 const SKEY='gamey-'+keyOf(N);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
