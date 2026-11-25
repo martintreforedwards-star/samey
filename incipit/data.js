@@ -22,7 +22,7 @@ const DAYS = [
   {
     q: [
       {l: "Call me Ishmael.", t: "Moby-Dick", a: "Herman Melville", y: 1851, o: ["Treasure Island", "Robinson Crusoe", "Twenty Thousand Leagues Under the Sea"]},
-      {l: "Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do:", t: "Alice's Adventures in Wonderland", a: "Lewis Carroll", y: 1865, o: ["Peter Pan", "The Secret Garden", "The Railway Children"]},
+      {l: "{Alice} was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do:", t: "Alice's Adventures in Wonderland", a: "Lewis Carroll", y: 1865, o: ["Peter Pan", "The Secret Garden", "The Railway Children"]},
       {l: "Mr. Utterson the lawyer was a man of a rugged countenance that was never lighted by a smile;", t: "Strange Case of Dr Jekyll and Mr Hyde", a: "Robert Louis Stevenson", y: 1886, o: ["The Picture of Dorian Gray", "Dracula", "The Hound of the Baskervilles"]},
       {l: "Miss Brooke had that kind of beauty which seems to be thrown into relief by poor dress.", t: "Middlemarch", a: "George Eliot", y: 1871, o: ["Persuasion", "North and South", "The Mill on the Floss"]}
     ],
@@ -138,7 +138,7 @@ const DAYS = [
   },
   {
     q: [
-      {l: "‘Tom!’ No answer.", t: "The Adventures of Tom Sawyer", a: "Mark Twain", y: 1876, o: ["Adventures of Huckleberry Finn", "Little Women", "What Katy Did"]},
+      {l: "‘{Tom}!’ No answer.", t: "The Adventures of Tom Sawyer", a: "Mark Twain", y: 1876, o: ["Adventures of Huckleberry Finn", "Little Women", "What Katy Did"]},
       {l: "In the year 1878 I took my degree of Doctor of Medicine of the University of London, and proceeded to Netley to go through the course prescribed for surgeons in the army.", t: "A Study in Scarlet", a: "Arthur Conan Doyle", y: 1887, o: ["The Sign of the Four", "The Valley of Fear", "The Lost World"]},
       {l: "My godmother lived in a handsome house in the clean and ancient town of Bretton.", t: "Villette", a: "Charlotte Brontë", y: 1853, o: ["Shirley", "The Professor", "Agnes Grey"]},
       {l: "One evening of late summer, before the nineteenth century had reached one-third of its span, a young man and woman, the latter carrying a child, were approaching the large village of Weydon-Priors…", t: "The Mayor of Casterbridge", a: "Thomas Hardy", y: 1886, o: ["Far from the Madding Crowd", "The Woodlanders", "Under the Greenwood Tree"]}
@@ -147,16 +147,16 @@ const DAYS = [
   },
   {
     q: [
-      {l: "There was once a velveteen rabbit, and in the beginning he was really splendid.", t: "The Velveteen Rabbit", a: "Margery Williams", y: 1922, o: ["The Tale of Peter Rabbit", "The Story of Doctor Dolittle", "The Wind in the Willows"]},
+      {l: "There was once a {velveteen} rabbit, and in the beginning he was really splendid.", t: "The Velveteen Rabbit", a: "Margery Williams", y: 1922, o: ["The Tale of Peter Rabbit", "The Story of Doctor Dolittle", "The Wind in the Willows"]},
       {l: "‘I wonder when in the world you're going to do anything, Rudolf?’ said my brother's wife.", t: "The Prisoner of Zenda", a: "Anthony Hope", y: 1894, o: ["The Scarlet Pimpernel", "King Solomon's Mines", "Kidnapped"]},
-      {l: "A wide plain, where the broadening Floss hurries on between its green banks to the sea…", t: "The Mill on the Floss", a: "George Eliot", y: 1860, o: ["Adam Bede", "Felix Holt", "Daniel Deronda"]},
+      {l: "A wide plain, where the broadening {Floss} hurries on between its green banks to the sea…", t: "The Mill on the Floss", a: "George Eliot", y: 1860, o: ["Adam Bede", "Felix Holt", "Daniel Deronda"]},
       {l: "‘Yes, of course, if it's fine tomorrow,’ said Mrs Ramsay.", t: "To the Lighthouse", a: "Virginia Woolf", y: 1927, o: ["Mrs Dalloway", "Orlando", "The Waves"]}
     ],
     f: {s: "Night is generally", e: "my time for walking.", x: ["the best time for thinking.", "when London tells its secrets."], t: "The Old Curiosity Shop", a: "Charles Dickens", y: 1841}
   },
   {
     q: [
-      {l: "Once upon a time, many years ago—when our grandfathers were little children—there was a doctor; and his name was Dolittle…", t: "The Story of Doctor Dolittle", a: "Hugh Lofting", y: 1920, o: ["The Jungle Book", "Peter Pan", "The Wind in the Willows"]},
+      {l: "Once upon a time, many years ago—when our grandfathers were little children—there was a doctor; and his name was {Dolittle}…", t: "The Story of Doctor Dolittle", a: "Hugh Lofting", y: 1920, o: ["The Jungle Book", "Peter Pan", "The Wind in the Willows"]},
       {l: "A surging, seething, murmuring crowd of beings that are human only in name…", t: "The Scarlet Pimpernel", a: "Baroness Orczy", y: 1905, o: ["A Tale of Two Cities", "The Prisoner of Zenda", "The Three Musketeers"]},
       {l: "You must go back with me to the autumn of 1827.", t: "The Tenant of Wildfell Hall", a: "Anne Brontë", y: 1848, o: ["Agnes Grey", "Wuthering Heights", "Villette"]},
       {l: "Mr Verloc, going out in the morning, left his shop nominally in charge of his brother-in-law.", t: "The Secret Agent", a: "Joseph Conrad", y: 1907, o: ["Lord Jim", "Nostromo", "Under Western Eyes"]}
@@ -167,7 +167,7 @@ const DAYS = [
     q: [
       {l: "Miss Polly Harrington entered her kitchen a little hurriedly this June morning.", t: "Pollyanna", a: "Eleanor H. Porter", y: 1913, o: ["Anne of Green Gables", "Rebecca of Sunnybrook Farm", "Little Women"]},
       {l: "Dark spruce forest frowned on either side the frozen waterway.", t: "White Fang", a: "Jack London", y: 1906, o: ["The Call of the Wild", "The Sea-Wolf", "Martin Eden"]},
-      {l: "There once lived, in a sequestered part of the county of Devonshire, one Mr Godfrey Nickleby…", t: "Nicholas Nickleby", a: "Charles Dickens", y: 1839, o: ["Martin Chuzzlewit", "Barnaby Rudge", "The Old Curiosity Shop"]},
+      {l: "There once lived, in a sequestered part of the county of Devonshire, one Mr Godfrey {Nickleby}…", t: "Nicholas Nickleby", a: "Charles Dickens", y: 1839, o: ["Martin Chuzzlewit", "Barnaby Rudge", "The Old Curiosity Shop"]},
       {l: "On a January evening of the early seventies, Christine Nilsson was singing in Faust at the Academy of Music in New York.", t: "The Age of Innocence", a: "Edith Wharton", y: 1920, o: ["The House of Mirth", "Ethan Frome", "The Custom of the Country"]}
     ],
     f: {s: "When Farmer Oak smiled, the corners of his mouth spread", e: "till they were within an unimportant distance of his ears,", x: ["until they almost met at the back of his head,", "as wide as a barn door at harvest time,"], t: "Far from the Madding Crowd", a: "Thomas Hardy", y: 1874}
@@ -201,7 +201,7 @@ const DAYS = [
   },
   {
     q: [
-      {l: "Dombey sat in the corner of the darkened room in the great arm-chair by the bedside, and Son lay tucked up warm in a little basket bedstead…", t: "Dombey and Son", a: "Charles Dickens", y: 1848, o: ["Martin Chuzzlewit", "Hard Times", "Our Mutual Friend"]},
+      {l: "{Dombey} sat in the corner of the darkened room in the great arm-chair by the bedside, and {Son} lay tucked up warm in a little basket bedstead…", t: "Dombey and Son", a: "Charles Dickens", y: 1848, o: ["Martin Chuzzlewit", "Hard Times", "Our Mutual Friend"]},
       {l: "All true histories contain instruction; though, in some, the treasure may be hard to find…", t: "Agnes Grey", a: "Anne Brontë", y: 1847, o: ["The Tenant of Wildfell Hall", "Jane Eyre", "Shirley"]},
       {l: "On a hill by the Mississippi where Chippewas camped two generations ago, a girl stood in relief against the cornflower blue of Northern sky.", t: "Main Street", a: "Sinclair Lewis", y: 1920, o: ["Babbitt", "Elmer Gantry", "Arrowsmith"]},
       {l: "I was ever of opinion, that the honest man who married and brought up a large family, did more service than he who continued single…", t: "The Vicar of Wakefield", a: "Oliver Goldsmith", y: 1766, o: ["Tom Jones", "Tristram Shandy", "Joseph Andrews"]}
