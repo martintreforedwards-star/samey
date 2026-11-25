@@ -164,7 +164,8 @@ const DAYS = [
     m: [["Sicilian", "Chess"], ["duck dive", "Surfing"], ["wood", "Bowls"], ["TKO", "Boxing"]]
   },
   /* Sun */ {
-    p: {t: "gricer", h: "A dedicated railway enthusiast.", c: "Trainspotting", o: ["Birdwatching", "Plane spotting", "Ham radio"], n: "Nobody's quite sure where it comes from. One theory links it to grouse shooting."},
+    p: [{t: "gricer", h: "A dedicated railway enthusiast.", c: "Trainspotting", o: ["Birdwatching", "Plane spotting", "Ham radio"], n: "Nobody's quite sure where it comes from. One theory links it to grouse shooting."},
+        {t: "cover the queen", h: "What you must do straight after sinking the red piece.", c: "Carrom", o: ["Snooker", "Draughts", "Chess"], n: "In carrom, the red queen only counts if you pocket one of your own carrom men right after it. Fail, and she goes back to the centre."}],
     s: {t: "level pegging", c: "Cribbage", o: ["Golf", "Croquet", "Darts"], n: "Cribbage scores are kept with pegs on a board, so level pegging means neck and neck."},
     x: {f: "Knitting", w: ["stash", "UFO", "swatch"], odd: "fat quarter", n: "A fat quarter is a quilter's piece of fabric. To knitters a UFO is an unfinished object."},
     q: {ask: "Finest to thickest knitting yarn", i: [["lace", "the finest"], ["4-ply", "sock weight"], ["double knitting", "DK, the all-rounder"], ["chunky", "quick to knit"]], n: "Beyond chunky comes super chunky."},
@@ -188,7 +189,8 @@ const DAYS = [
     m: [["kumite", "Karate"], ["caman", "Shinty"], ["boneyard", "Dominoes"], ["Annie's room", "Darts"]]
   },
   /* Wed */ {
-    p: {t: "lanterne rouge", h: "The rider in last place overall.", c: "Cycling", o: ["Motor racing", "Sailing", "Horse racing"], n: "French for “red lantern”, after the light on the back of a train's last carriage."},
+    p: [{t: "lanterne rouge", h: "The rider in last place overall.", c: "Cycling", o: ["Motor racing", "Sailing", "Horse racing"], n: "French for “red lantern”, after the light on the back of a train's last carriage."},
+        {t: "do-or-die raid", h: "A must-score attack after two that came back empty-handed.", c: "Kabaddi", o: ["Kho-kho", "Handball", "Rugby league"], n: "After two empty raids in a row, the third raider has to score, or they're out and the defenders get a point."}],
     s: {t: "Monday-morning quarterback", c: "American football", o: ["Baseball", "Basketball", "Ice hockey"], n: "Someone who knows exactly what should have been done, once the weekend's game is over."},
     x: {f: "Golf", w: ["dead sheep", "UBE", "shank"], odd: "jaffa", n: "A jaffa is cricket: an unplayable ball. A dead sheep is a putt left short (still ewe), a UBE is ugly but effective, and a shank flies off sideways from the club's neck."},
     q: {ask: "Lowest to highest suit in bridge", i: [["clubs", "♣"], ["diamonds", "♦"], ["hearts", "♥"], ["spades", "♠"]], n: "No-trumps outranks them all."},
@@ -197,7 +199,8 @@ const DAYS = [
   /* Thu */ {
     p: {t: "no pictures on the scorecard", h: "Said when an ugly shot still does the job.", c: "Golf", o: ["Darts", "Bowls", "Archery"], n: "The card only counts how many shots you took, not how pretty they were."},
     s: {t: "poker face", c: "Poker", o: ["Bridge", "Chess", "Snooker"], n: "Card players keep a blank face to give nothing away."},
-    x: {f: "Cycling", w: ["domestique", "bonk", "echelon"], odd: "marbles", n: "Marbles are motor racing's bits of tyre rubber off the racing line. A cyclist who bonks has run out of energy."},
+    x: [{f: "Cycling", w: ["domestique", "bonk", "echelon"], odd: "marbles", n: "Marbles are motor racing's bits of tyre rubber off the racing line. A cyclist who bonks has run out of energy."},
+        {f: "Kabaddi", w: ["antis", "empty raid", "super tackle"], odd: "pole dive", n: "A pole dive is kho-kho: tagging a runner while gripping one of the poles. In kabaddi, antis are the defenders, an empty raid scores nothing, and a super tackle is stopping a raider with three or fewer defenders left."}],
     q: {ask: "First to last in an individual medley swim", i: [["butterfly", "1st leg"], ["backstroke", "2nd leg"], ["breaststroke", "3rd leg"], ["freestyle", "4th leg"]], n: "In a medley relay the order changes: backstroke goes first, because it starts in the water."},
     m: [["Mankad", "Cricket"], ["hane", "Go"], ["photo finish", "Horse racing"], ["fletching", "Archery"]]
   },
@@ -214,7 +217,8 @@ const DAYS = [
     m: [["rikishi", "Sumo"], ["double fault", "Tennis"], ["gammon", "Backgammon"], ["baton", "Athletics"]]
   },
   /* Sat */ {
-    p: {t: "cochonnet", h: "The little ball everyone aims at.", c: "Pétanque", o: ["Bowls", "Croquet", "Curling"], n: "French for “piglet”. In bowls it would be the jack."},
+    p: [{t: "cochonnet", h: "The little ball everyone aims at.", c: "Pétanque", o: ["Bowls", "Croquet", "Curling"], n: "French for “piglet”. In bowls it would be the jack."},
+        {t: "kho", h: "Said while tapping a crouching teammate's back to send them chasing.", c: "Kho-kho", o: ["Kabaddi", "Relay running", "Tag rugby"], n: "The game takes its name from it: kho-kho comes from Marathi, and kho imitates the sound players make as they hand over the chase."}],
     s: [{t: "take the wind out of someone's sails", c: "Sailing", o: ["Gliding", "Golf", "Archery"], n: "Sailing upwind of another boat steals its wind and slows it down."},
         {t: "on the back foot", c: "Cricket", o: ["Fencing", "Tennis", "Ballet"], n: "A batter rocked back to defend against a short ball, instead of stepping forward to attack. So, on the defensive."}],
     x: {f: "Poker", w: ["the nuts", "the river", "tell"], odd: "ruff", n: "A ruff is bridge: trumping a trick. In poker the nuts is the best possible hand and the river is the last card dealt."},
@@ -222,7 +226,8 @@ const DAYS = [
     m: [["suplex", "Wrestling"], ["shuttlecock", "Badminton"], ["centre pass", "Netball"], ["zwischenzug", "Chess"]]
   },
   /* Sun */ {
-    p: {t: "sally", h: "The striped woollen grip on a rope.", c: "Bell ringing", o: ["Sailing", "Knitting", "Weaving"], n: "Ringers pull the sally on the handstroke and the rope's tail end on the backstroke."},
+    p: [{t: "sally", h: "The striped woollen grip on a rope.", c: "Bell ringing", o: ["Sailing", "Knitting", "Weaving"], n: "Ringers pull the sally on the handstroke and the rope's tail end on the backstroke."},
+        {t: "flying general", h: "Two leaders may never face each other along an empty line.", c: "Xiangqi", o: ["Shogi", "Go", "Mahjong"], n: "In Chinese chess, if the two generals stare each other down with nothing in between, one can fly across the board and take the other, so it's never allowed."}],
     s: {t: "life isn't all beer and skittles", c: "Skittles", o: ["Bowls", "Darts", "Shove ha'penny"], n: "Beer and skittles meant an easy, fun time at the pub. Life isn't all that."},
     x: {f: "Birdwatching", w: ["patch", "stringer", "gripped"], odd: "gricer", n: "A gricer is a railway enthusiast. Birders are gripped when someone sees a bird they missed; a stringer claims birds they didn't really see."},
     q: {ask: "Easiest to hardest traditional British climbing grade", i: [["Moderate", "M"], ["Difficult", "D"], ["Very Difficult", "VD"], ["Severe", "S"]], n: "After Severe come Hard Severe, Very Severe and the E grades. The names have aged oddly."},
@@ -238,7 +243,8 @@ const DAYS = [
     m: [["raider", "Kabaddi"], ["seventh-inning stretch", "Baseball"], ["box kick", "Rugby union"], ["Fair Isle", "Knitting"]]
   },
   /* Tue */ {
-    p: {t: "a cup of coffee", h: "A brief spell in the top league before being sent back down.", c: "Baseball", o: ["Cricket", "Rugby union", "Golf"], n: "Just long enough to drink a cup of coffee."},
+    p: [{t: "a cup of coffee", h: "A brief spell in the top league before being sent back down.", c: "Baseball", o: ["Cricket", "Rugby union", "Golf"], n: "Just long enough to drink a cup of coffee."},
+        {t: "roll spike", h: "A mid-air flip that kicks the ball over your own shoulder.", c: "Sepak takraw", o: ["Volleyball", "Football", "Capoeira"], n: "Sepak takraw is volleyball played with the feet. Its name joins Malay sepak, “kick”, and Thai takraw, a woven rattan ball."}],
     s: {t: "an opening gambit", c: "Chess", o: ["Poker", "Bridge", "Fencing"], n: "A gambit is an opening that gives up a pawn for an advantage, from an Italian word for tripping someone up."},
     x: [{f: "Bridge", w: ["finesse", "rubber", "slam"], odd: "muggins", n: "Muggins is a cribbage rule: if you miss points, your opponent can claim them. In bridge a rubber is a best-of-three set of games."},
         {f: "Golf", w: ["sandy", "chili dip", "quality miss"], odd: "nurdle", n: "To nurdle is cricket: nudging the ball into a gap for a single. In golf a sandy is getting up and down from a bunker, a chili dip is a chip hit fat, and a quality miss is a bad strike that ends up somewhere good."}],
@@ -254,7 +260,8 @@ const DAYS = [
     m: [["the 19th hole", "Golf"], ["gutter ball", "Ten-pin bowling"], ["six again", "Rugby league"], ["valley fold", "Origami"]]
   },
   /* Thu */ {
-    p: {t: "blot", h: "A single piece left alone on a point, open to attack.", c: "Backgammon", o: ["Draughts", "Dominoes", "Chess"], n: "Hit a blot and it goes back to the bar to start again."},
+    p: [{t: "blot", h: "A single piece left alone on a point, open to attack.", c: "Backgammon", o: ["Draughts", "Dominoes", "Chess"], n: "Hit a blot and it goes back to the bar to start again."},
+        {t: "chapandaz", h: "A master rider in a rough, centuries-old contest.", c: "Buzkashi", o: ["Polo", "Horse racing", "Show jumping"], n: "A buzkashi player. The name means “goat grabbing”: it's Afghanistan's national sport, a bit like polo, with a goat carcass instead of a ball."}],
     s: [{t: "follow suit", c: "Card games", o: ["Darts", "Horse racing", "Sailing"], n: "In whist and bridge you must play a card of the suit that was led if you can. Now doing what others have just done."},
         {t: "never up, never in", c: "Golf", o: ["Darts", "Snooker", "Bowls"], n: "A putt that stops short of the hole can never drop. Now said of any attempt that's too timid to succeed."}],
     x: {f: "Sumo", w: ["kinboshi", "mono-ii", "chonmage"], odd: "shinai", n: "A shinai is kendo's bamboo sword. A kinboshi (gold star) is won by beating a yokozuna from the ranks; a chonmage is the topknot."},
