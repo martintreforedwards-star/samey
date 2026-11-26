@@ -130,6 +130,8 @@ const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){retu
 const ANS={};B.a.forEach((a,i)=>{ANS[keyFor(a.k)]=i;(a.alt||[]).forEach(x=>ANS[keyFor(x)]=i)});
 const NEAR={};(B.near||[]).forEach(x=>NEAR[keyFor(x.k)]=x.say);
 const TOTAL=B.a.length,TARGET=B.t;
+// Most words any idiom on today's board needs (some need four)
+const MAXSEL=Math.max(3,...B.a.flatMap(a=>[a.k,...(a.alt||[])].map(k=>k.length)));
 
 let st=store.get(SKEY)||{found:[],miss:0,hints:[],done:false,tried:[]};
 let sel=[];
@@ -150,7 +152,7 @@ function play(msg,cls){
   const clue=st.hints.filter(i=>!st.found.includes(i)).map(i=>`<div class="clue"><b>Clue:</b> find an idiom that means “${esc(B.a[i].m)}”.</div>`).join('');
   app.innerHTML=`<div class="card">
     <div class="tag">${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'long',day:'numeric',month:'long'})}</div>
-    <p class="lead">Tap two or three words from the hive that belong to the same idiom.</p>
+    <p class="lead">Tap two, three or four words from the hive that belong to the same idiom.</p>
     <details class="ex"${exOpen?' open':''}><summary>How to play</summary>
       <div class="ex-demo" aria-hidden="true"><span class="mini">pinch</span><span class="mini">worth</span><span class="mini on">salt</span><span class="mini">wound</span><span class="mini">kick</span></div>
       <p class="ex-res">One word can open several idioms. In this mini hive, <b>salt</b> makes three:</p>
@@ -171,7 +173,7 @@ function play(msg,cls){
     <div class="links"><button id="hint"${unfound.length&&st.miss<LIVES-1?'':' disabled'}>Clue (costs a miss)</button><button id="fin">${f>=TARGET?'Finish':'Give up'}</button></div>
     ${f?`<ul class="found">${st.found.map(i=>`<li><div class="p">${phrase(B.a[i].p)}</div><div class="m">${esc(B.a[i].m)}</div></li>`).join('')}</ul>`:''}
   </div>`;
-  app.querySelectorAll('.hex').forEach(b=>b.onclick=()=>{const w=b.dataset.w;sel=sel.includes(w)?sel.filter(x=>x!==w):sel.length<3?[...sel,w]:sel;play()});
+  app.querySelectorAll('.hex').forEach(b=>b.onclick=()=>{const w=b.dataset.w;sel=sel.includes(w)?sel.filter(x=>x!==w):sel.length<MAXSEL?[...sel,w]:sel;play()});
   $('.ex').ontoggle=e=>{exOpen=e.target.open};
   $('#clear').onclick=()=>{sel=[];play()};
   $('#go').onclick=check;
