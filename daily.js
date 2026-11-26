@@ -73,6 +73,7 @@
     { id: "fixy", name: "Antepostee", href: "/fixy/", c: "#5b3c96", blurb: "Prefixes and suffixes. Illegal or unlegal? Is gruntled a word?", isNew: true },
     { id: "mispelt", name: "Mispelt", href: "/mispelt/", c: "#1d2a44", blurb: "Why is there a b in debt? The stories behind odd spellings.", isNew: true },
     { id: "mither", name: "Mither", href: "/mither/", c: "#46607a", blurb: "Welsh, Gaelic, Manx, Cornish, Scots, Polari: the tongues of these islands.", isNew: true },
+    { id: "twixt", name: "Twixt", href: "/twixt/", c: "#1f7a80", blurb: "Prepositions. On Skye but in Guernsey? Over or above?", isNew: true },
     { id: "doornail", name: "Doornail", href: "/doornail/", c: "#8a3d63", blurb: "Similes and metaphors. We'll burn that bridge when we come to it.", isNew: true }
   ];
   /* Themes for the "Today's games" grid on the home page. Every game in GAMES should be in exactly one group;
@@ -80,7 +81,7 @@
   var GROUPS = [
     { name: "Meanings", note: "Synonyms, lost words and local words", ids: ["samey", "spinonym", "passe", "natter", "gaggle", "gamey"] },
     { name: "Word histories", note: "Where words come from, and where they're going", ids: ["roots", "rizz", "dodo", "inkling", "babel", "mither"] },
-    { name: "Spelling, sound and grammar", note: "The nuts and bolts", ids: ["dotty", "syntaxed", "mispelt", "fixy", "phoney", "rhymey"] },
+    { name: "Grammar and sound", note: "Spelling, punctuation, grammar and how words sound", ids: ["dotty", "syntaxed", "twixt", "mispelt", "fixy", "phoney", "rhymey"] },
     { name: "Books, poems and phrases", note: "Literature and figures of speech", ids: ["incipit", "versed", "forsooth", "idiomy", "doornail"] }
   ];
   var WORDS = ["", "", "", "", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty", "twenty-one", "twenty-two", "twenty-three", "twenty-four", "twenty-five", "twenty-six", "twenty-seven", "twenty-eight", "twenty-nine", "thirty"];
