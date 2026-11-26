@@ -30,6 +30,7 @@ h1 svg{width:28px;height:28px;vertical-align:-3px;margin-right:6px}
 .lives{display:flex;gap:6px;align-items:center}
 .life{width:14px;height:16px;background:var(--pop);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
 .life.used{background:var(--line)}
+.notice{background:var(--chip);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:10px 0;font-size:15px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
 .tag{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600}
 .lead{margin:6px 0 2px;font-size:16px}
@@ -99,11 +100,14 @@ footer{margin-top:18px;text-align:center}
   <header><h1><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M22 6l12 7v13l-12 7-12-7V13z" fill="var(--pop)"/><path d="M44 6l12 7v13l-12 7-12-7V13z" fill="currentColor"/><path d="M33 31l12 7v13l-12 7-12-7V38z" fill="var(--pop)"/></svg>Idiomy</h1><div class="lives" id="lives" aria-label="Misses left"></div></header>
   <nav class="sy-bar" aria-label="Games"></nav>
   <div id="test"></div>
+  <div id="notice"></div>
   <div id="app"></div>
   <footer><p class="muted"><a href="/feedback/?game=idiomy">Send feedback</a> · <a href="/support/?game=idiomy">Support the games</a></p></footer>
 </main>
 <script src="data.js"></script>
 <script>
+// Temporary notice about the four-word fix (No. 29). Shows until 6pm on 27 Nov 2026, then disappears by itself.
+if(Date.now()<Date.UTC(2026,10,27,18))document.getElementById('notice').innerHTML='<p class="notice"><b>Sorry!</b> Some idioms need four words, but the game only let you pick three, so No. 29 (<i>kill two birds with one stone</i>) couldn\u2019t be solved. That\u2019s fixed now \u2013 thanks to the player who told us.</p>';
 // ---- Which day is on screen ----
 // Preview: board N comes from BOARDS in order. ?day=N plays Idiomy No. N; #test plays without saving.
 const START=Date.UTC(2026,9,29);
