@@ -8,7 +8,7 @@
    You don't need to touch this file when you edit a game. Bump VERSION only if you add a
    new game you want saved for offline play on install (add it to PRECACHE too), or if you
    ever want to wipe everyone's offline copy. */
-const VERSION = "v11";
+const VERSION = "v12";
 const CACHE = "samey-" + VERSION;
 const FONT_CACHE = "samey-fonts";
 const NETWORK_TIMEOUT = 4000;
@@ -17,7 +17,7 @@ const NETWORK_TIMEOUT = 4000;
 // words.txt (2.7 MB) is left out to spare mobile data; it is cached the first time Samey or Spinonym loads it.
 const PRECACHE = [
   // Icons for the "Fancy another?" cards on each result screen.
-  "/icons/samey.svg", "/spinonym/favicon.svg", "/dotty/favicon.svg", "/syntaxed/favicon.svg", "/passe/favicon.svg", "/natter/favicon.svg", "/roots/favicon.svg", "/rizz/favicon.svg", "/babel/favicon.svg", "/rhymey/favicon.svg", "/phoney/favicon.svg", "/idiomy/favicon.svg", "/incipit/favicon.svg", "/versed/favicon.svg", "/gamey/favicon.svg", "/dodo/favicon.svg", "/inkling/favicon.svg", "/forsooth/favicon.svg", "/gaggle/favicon.svg", "/fixy/favicon.svg", "/mispelt/favicon.svg", "/mither/favicon.svg",
+  "/icons/samey.svg", "/spinonym/favicon.svg", "/dotty/favicon.svg", "/syntaxed/favicon.svg", "/passe/favicon.svg", "/natter/favicon.svg", "/roots/favicon.svg", "/rizz/favicon.svg", "/babel/favicon.svg", "/rhymey/favicon.svg", "/phoney/favicon.svg", "/idiomy/favicon.svg", "/incipit/favicon.svg", "/versed/favicon.svg", "/gamey/favicon.svg", "/dodo/favicon.svg", "/inkling/favicon.svg", "/forsooth/favicon.svg", "/gaggle/favicon.svg", "/fixy/favicon.svg", "/mispelt/favicon.svg", "/mither/favicon.svg", "/doornail/favicon.svg",
   "/", "/daily.js", "/favicon.svg", "/manifest.webmanifest", "/icons/icon-192.png",
   "/spinonym/", "/spinonym/puzzles.js",
   "/dotty/", "/syntaxed/", "/passe/", "/natter/",
@@ -37,6 +37,7 @@ const PRECACHE = [
   "/fixy/", "/fixy/data.js",
   "/mispelt/", "/mispelt/data.js",
   "/mither/", "/mither/data.js",
+  "/doornail/", "/doornail/data.js",
   "/advent/", "/advent/data.js"
 ];
 

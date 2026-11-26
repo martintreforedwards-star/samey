@@ -72,7 +72,16 @@
     { id: "gaggle", name: "Gaggle", href: "/gaggle/", c: "#2f6b3f", blurb: "Collective nouns, then the names for things: tarns, tombolos and more.", isNew: true, wlv: "gaggle" },
     { id: "fixy", name: "Antepostee", href: "/fixy/", c: "#5b3c96", blurb: "Prefixes and suffixes. Illegal or unlegal? Is gruntled a word?", isNew: true },
     { id: "mispelt", name: "Mispelt", href: "/mispelt/", c: "#1d2a44", blurb: "Why is there a b in debt? The stories behind odd spellings.", isNew: true },
-    { id: "mither", name: "Mither", href: "/mither/", c: "#46607a", blurb: "Welsh, Gaelic, Manx, Cornish, Scots, Polari: the tongues of these islands.", isNew: true }
+    { id: "mither", name: "Mither", href: "/mither/", c: "#46607a", blurb: "Welsh, Gaelic, Manx, Cornish, Scots, Polari: the tongues of these islands.", isNew: true },
+    { id: "doornail", name: "Doornail", href: "/doornail/", c: "#8a3d63", blurb: "Similes and metaphors. We'll burn that bridge when we come to it.", isNew: true }
+  ];
+  /* Themes for the "Today's games" grid on the home page. Every game in GAMES should be in exactly one group;
+     anything left out lands in a final "More games" group so it never disappears. */
+  var GROUPS = [
+    { name: "Meanings", note: "Synonyms, lost words and local words", ids: ["samey", "spinonym", "passe", "natter", "gaggle", "gamey"] },
+    { name: "Word histories", note: "Where words come from, and where they're going", ids: ["roots", "rizz", "dodo", "inkling", "babel", "mither"] },
+    { name: "Spelling, sound and grammar", note: "The nuts and bolts", ids: ["dotty", "syntaxed", "mispelt", "fixy", "phoney", "rhymey"] },
+    { name: "Books, poems and phrases", note: "Literature and figures of speech", ids: ["incipit", "versed", "forsooth", "idiomy", "doornail"] }
   ];
   var WORDS = ["", "", "", "", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty", "twenty-one", "twenty-two", "twenty-three", "twenty-four", "twenty-five", "twenty-six", "twenty-seven", "twenty-eight", "twenty-nine", "thirty"];
   var here = (location.pathname.split("/")[1] || "samey").toLowerCase();
@@ -253,8 +262,25 @@
     var bar = el("div", "sy-gprog"), fillEl = el("span");
     bar.setAttribute("role", "img"); bar.setAttribute("aria-label", n + " of " + GAMES.length + " played");
     fillEl.style.width = (n / GAMES.length * 100) + "%"; bar.append(fillEl);
-    var grid = el("div", "sy-gcards");
-    GAMES.forEach(function (g) {
+    box.append(head, bar);
+    var byId = {}; GAMES.forEach(function (g) { byId[g.id] = g; });
+    var seen = {}, groups = GROUPS.map(function (gr) {
+      return { name: gr.name, note: gr.note, games: gr.ids.map(function (id) { seen[id] = 1; return byId[id]; }).filter(Boolean) };
+    });
+    var rest = GAMES.filter(function (g) { return !seen[g.id]; });
+    if (rest.length) groups.push({ name: "More games", games: rest });
+    groups.forEach(function (gr) {
+      var sec = el("section", "sy-gsec"), gh = el("div", "sy-gsh"), h = el("h3", null, gr.name);
+      var played = gr.games.filter(function (g) { return s.g[g.id]; }).length;
+      gh.append(h, el("span", null, played + "/" + gr.games.length));
+      sec.append(gh);
+      if (gr.note) sec.append(el("p", "sy-gsnote", gr.note));
+      var grid = el("div", "sy-gcards");
+      gr.games.forEach(function (g) { grid.append(gcard(g, s)); });
+      sec.append(grid); box.append(sec);
+    });
+  }
+  function gcard(g, s) {
       var sc = s.g[g.id], cur = g.id === here, card = el("a", "sy-gcard" + (sc ? " done" : "") + (cur ? " here" : ""));
       card.href = g.href; if (cur) card.setAttribute("aria-current", "page");
       var top = el("span", "sy-gtop"); top.append(el("span", "sy-gname", g.name));
@@ -263,9 +289,7 @@
       if (sc) { st.append(tick("sy-tick"), document.createTextNode(scoreText(sc))); }
       else st.textContent = cur ? "Playing now" : "Play →";
       card.append(top, el("span", "sy-gblurb", g.blurb), st);
-      grid.append(card);
-    });
-    box.append(head, bar, grid);
+      return card;
   }
   var navStyled = false;
   function addNavStyle() {
@@ -301,6 +325,11 @@
       ".sy-ghead span{font-weight:700;color:" + T + ";font-size:.95rem}" +
       ".sy-gprog{height:8px;border-radius:999px;background:" + L + ";overflow:hidden}" +
       ".sy-gprog span{display:block;height:100%;background:" + T + ";border-radius:999px;transition:width .4s}" +
+      ".sy-gsec{display:flex;flex-direction:column;gap:8px;margin-top:10px}" +
+      ".sy-gsh{display:flex;justify-content:space-between;align-items:baseline;gap:8px}" +
+      ".sy-gsh h3{margin:0;font-family:var(--display,inherit);font-weight:800;font-size:1.15rem;color:" + I + "}" +
+      ".sy-gsh span{font-size:.85rem;font-weight:700;color:" + M + "}" +
+      ".sy-gsnote{margin:-6px 0 2px;font-size:.85rem;color:" + M + "}" +
       ".sy-gcards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}" +
       ".sy-gcard{display:flex;flex-direction:column;gap:6px;min-height:118px;padding:14px;border-radius:14px;border:1px solid " + L + ";background:" + S + ";color:" + I + ";text-decoration:none}" +
       ".sy-gcard:hover{border-color:" + I + "}" +
