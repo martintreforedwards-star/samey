@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Splash</title>
+<meta name="description" content="A daily game of newspaper headlines: fill the famous splash, decode the headlinese, untangle the crash blossom.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://samey.uk/splash/">
+<meta property="og:site_name" content="Splash">
+<meta property="og:title" content="Splash: Freddie Starr ate my what?">
+<meta property="og:description" content="Five rounds of newspaper headlines a day. Hold the front page.">
+<meta property="og:image" content="https://samey.uk/splash/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<link rel="icon" href="/splash/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap">
+<style>
+:root{--bg:#f5f3ee;--card:#fff;--ink:#141414;--muted:#5f5b55;--line:#e2ddd3;--accent:#c8102e;--deep:#141414;--good:#2b8a3e;--bad:#c92a2a;--goodbg:#ebfbee;--badbg:#fff0f0;--chip:#f1ede4;--head:"Oswald","Arial Narrow",Impact,sans-serif}
+@media (prefers-color-scheme:dark){:root{--bg:#121212;--card:#1c1c1c;--ink:#f2efe9;--muted:#a9a49b;--line:#34312c;--accent:#ff5a6e;--deep:#f2efe9;--good:#8ce99a;--bad:#ff8787;--goodbg:#173022;--badbg:#3a1a1a;--chip:#29261f}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+main{max-width:480px;margin:0 auto;padding:16px 16px 40px;min-height:100vh}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+h1{font-family:var(--head);font-weight:700;font-size:32px;margin:0;line-height:1;text-transform:uppercase;letter-spacing:.5px}
+h1 svg{width:30px;height:30px;vertical-align:-4px;margin-right:6px}
+.pts{font-weight:700;color:var(--deep);font-size:15px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+.tag{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600}
+.kind{font-family:var(--head);font-weight:500;text-transform:uppercase;letter-spacing:1px;color:var(--accent);font-size:16px;margin:10px 0 4px}
+.ask{color:var(--muted);font-size:15px;margin:0 0 6px}
+.q{font-family:var(--head);font-weight:700;font-size:28px;line-height:1.15;margin:8px 0 4px;text-transform:uppercase;border-top:3px solid var(--ink);border-bottom:1px solid var(--ink);padding:10px 0}
+.q.long{font-size:22px}
+.gap{display:inline-block;min-width:3em;border-bottom:3px solid var(--accent);text-align:center;color:var(--accent)}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0 0}
+.opts.one{grid-template-columns:minmax(0,1fr)}
+.opts button{min-height:54px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);font:700 19px/1.2 var(--head);text-transform:uppercase;padding:8px 10px;position:relative}
+.opts.one button{font:600 16px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-transform:none;text-align:left;padding:12px 14px}
+.opts.caps button{font:700 17px/1.25 var(--head);text-transform:uppercase}
+.opts button.sel{border-color:var(--accent);background:var(--chip);color:var(--accent)}
+.opts button.ok{border-color:var(--good);background:var(--goodbg);color:var(--good)}
+.opts button.no{border-color:var(--bad);background:var(--badbg);color:var(--bad)}
+.opts button:disabled{cursor:default}
+.num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font:700 14px system-ui,sans-serif;margin-right:10px;vertical-align:1px}
+.num.off{background:var(--line);color:var(--muted)}
+.yr{float:right;font:600 14px system-ui,sans-serif;color:var(--muted)}
+.dots{display:flex;gap:6px}
+.dots i{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.dots i.ok{background:var(--good)}.dots i.no{background:var(--bad)}.dots i.cur{background:var(--accent)}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.btns{display:flex;gap:10px;margin-top:14px}
+.primary{flex:1;padding:14px;border:0;border-radius:12px;background:var(--deep);color:var(--bg);font-weight:700;min-height:50px}
+.ghost{padding:14px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);font-weight:600;min-height:50px}
+.why{margin:14px 0 0;font-size:16px;line-height:1.5}
+.why b.g{color:var(--good)}.why b.r{color:var(--bad)}
+.hint{min-height:1.4em;margin:10px 0 0;font-size:14px;color:var(--muted)}
+.center{text-align:center}
+.rank{font-family:var(--head);font-weight:700;font-size:26px;margin:8px 0 4px;color:var(--accent);text-transform:uppercase}
+.squares{font-size:24px;letter-spacing:3px;margin:6px 0 4px}
+.muted{color:var(--muted);font-size:15px}
+a{color:var(--accent)}
+.test{background:var(--chip);border-radius:10px;padding:8px 12px;font-size:14px;margin-bottom:12px}
+.ex{margin:10px 0 4px;font-size:15px}.ex summary{cursor:pointer;color:var(--accent);font-weight:600}
+.how{margin:8px 0 0;padding-left:20px;color:var(--muted)}
+.how li{margin:3px 0}
+.recap{list-style:none;padding:0;margin:8px 0 0}
+.recap li{border-top:1px solid var(--line);padding:10px 0;font-size:15px}
+.recap .h{font-family:var(--head);font-weight:500;text-transform:uppercase}
+.recap .a{font-family:var(--head);font-weight:700;color:var(--accent);text-transform:uppercase}
+.recap .a.plain{font-family:inherit;text-transform:none}
+.hl{font-family:var(--head);font-weight:700;font-size:22px;text-transform:uppercase;margin:10px 0 0}
+footer{margin-top:18px;text-align:center}
+</style>
+<link rel="manifest" href="/manifest.webmanifest">
+</head>
+<body>
+<main>
+  <header><h1><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="56" height="56" rx="12" fill="#c8102e"/><rect x="14" y="14" width="36" height="7" rx="1.5" fill="#fff"/><rect x="14" y="26" width="16" height="22" rx="1.5" fill="#fff"/><rect x="34" y="26" width="16" height="3.5" rx="1.5" fill="#fff"/><rect x="34" y="34" width="16" height="3.5" rx="1.5" fill="#fff"/><rect x="34" y="42" width="11" height="3.5" rx="1.5" fill="#fff"/></svg>Splash</h1><span class="pts" id="pts"></span></header>
+  <nav class="sy-bar" aria-label="Games"></nav>
+  <div id="test"></div>
+  <div id="app"></div>
+  <footer><p class="muted"><a href="/feedback/?game=splash">Send feedback</a> · <a href="/support/?game=splash">Support the games</a></p></footer>
+</main>
+<script src="data.js"></script>
+<script>
+// ---- Which day is on screen ----
+// ?day=N plays Splash No. N; #test plays without saving.
+// START is No. 1 (set to the launch date when Splash joins the full set). DAYS in data.js run Monday first,
+// so WD lines the rounds up with the real weekday (Sunday stays the boss day).
+const START=Date.UTC(2026,10,30);
+const WD=(new Date(START).getUTCDay()+6)%7;
+const dayDate=n=>new Date(START+n*864e5);
+const fmt=(n,o)=>dayDate(n).toLocaleDateString('en-GB',Object.assign({timeZone:'UTC'},o));
+const keyOf=n=>{const d=dayDate(n);return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0')};
+addEventListener('hashchange',()=>location.reload());
+const params=new URLSearchParams(location.search);
+const now=new Date();
+const TODAY=Math.max(0,Math.round((Date.UTC(now.getFullYear(),now.getMonth(),now.getDate())-START)/864e5));
+const isTest=location.hash==='#test';
+const td=parseInt(params.get('day'),10);
+const N=Number.isInteger(td)&&td>=1?td-1:TODAY;
+const D=DAYS[(N+WD)%DAYS.length];
+const NR=D.length;
+const SKEY='splash-'+keyOf(N);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){if(isTest)return;try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const $=s=>document.querySelector(s);
+const app=$('#app');
+function seeded(arr,seed){const a=[...arr];let s=seed;for(let i=a.length-1;i>0;i--){s=(s*9301+49297)%233280;const j=Math.floor(s/233280*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const ASK={pun:'Pick the missing word.',hl:'What does it mean in plain English?',cb:'This headline can be read two ways. What did the paper mean?',who:'Which paper ran it?',real:'',ord:'Tap them oldest first.'};
+const ROUNDS=D.map((r,i)=>{
+  let o=seeded(r.o,N*7919+i*104729+17);
+  if(r.t==='ord'&&o.every((x,j)=>x===r.o[j]))o=[...o.slice(1),o[0]];
+  const a=r.t==='ord'?r.o:r.o[0];
+  return Object.assign({},r,{o,a,k:LABEL[r.t]});
+});
+const isRight=(R,p)=>R.t==='ord'?(Array.isArray(p)&&p.length===R.a.length&&p.every((x,j)=>x===R.a[j])):p===R.a;
+const yearOf=(R,h)=>R.y?R.y[R.a.indexOf(h)]:'';
+
+let st=store.get(SKEY)||{picks:[],at:0,done:false};
+let sel=[];
+const save=()=>store.set(SKEY,st);
+const right=i=>isRight(ROUNDS[i],st.picks[i]);
+const score=()=>ROUNDS.filter((_,i)=>right(i)).length;
+const isSunday=(N+WD)%7===6;
+const tagLine=()=>`${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})}`;
+const howTo=`<details class="ex"><summary>How to play</summary><ol class="how">
+  <li>Five rounds a day on newspaper headlines, from famous front pages to local-paper oddities.</li>
+  <li><b>Rounds:</b> fill the missing word, translate the headlinese, untangle a crash blossom (a headline you can read two ways), name the paper, and spot the real local headline.</li>
+  <li>One go per round. On Sundays, a sixth round: put the week's headlines in date order.</li></ol></details>`;
+const flagLink=`<a href="/feedback/?game=splash&type=puzzle&puzzle=${encodeURIComponent('No. '+(N+1))}">Tell us</a>`;
+const qHtml=(R,fill,cls)=>{
+  if(R.t==='pun')return `<p class="q${R.q.length>60?' long':''}">${esc(R.q).replace('___',`<span class="gap"${cls?` style="color:var(--${cls})"`:''}>${fill?esc(fill):'&nbsp;'}</span>`)}</p>`;
+  if(R.t==='real'||R.t==='ord')return '';
+  return `<p class="q${R.q.length>34?' long':''}">${esc(R.q)}</p>`;
+};
+const answerText=R=>R.t==='ord'?R.a.map((h,j)=>`${h} (${R.y[j]})`).join(' → '):R.a;
+
+function round(){
+  const i=st.at,R=ROUNDS[i],answered=st.picks.length>i,p=st.picks[i],ok=answered&&right(i);
+  $('#pts').innerHTML=`<span class="dots" aria-label="Round ${i+1} of ${NR}">${ROUNDS.map((_,j)=>`<i class="${j<st.picks.length?(right(j)?'ok':'no'):j===i?'cur':''}"></i>`).join('')}</span>`;
+  const ord=R.t==='ord';
+  const caps=R.t==='real'||ord||R.t==='who';
+  const one=ord||R.t==='real'||R.t==='hl'||R.t==='cb'||R.o.some(o=>o.length>16);
+  const ask=R.t==='real'?R.q:ASK[R.t];
+  let opts;
+  if(ord){
+    const shown=answered?R.a:R.o;
+    opts=shown.map((o,j)=>{
+      let c='',badge;
+      if(answered){const pos=p.indexOf(o);c=pos===j?'ok':'no';badge=`<span class="num${pos===j?'':' off'}">${j+1}</span>`}
+      else{const pos=sel.indexOf(o);if(pos>=0)c='sel';badge=`<span class="num${pos>=0?'':' off'}">${pos>=0?pos+1:''}</span>`}
+      return `<button class="${c}" data-o="${esc(o)}"${answered?' disabled':''}>${badge}${esc(o)}${answered?`<span class="yr">${yearOf(R,o)}</span>`:''}</button>`;
+    }).join('');
+  } else {
+    opts=R.o.map(o=>{let c='';
+      if(answered){if(o===R.a)c='ok';else if(o===p)c='no'}
+      return `<button class="${c}" data-o="${esc(o)}"${answered?' disabled':''}>${esc(o)}</button>`}).join('');
+  }
+  app.innerHTML=`<div class="card">
+    <div class="tag">${tagLine()} · Round ${i+1} of ${NR}${isSunday&&ord?' · Boss round':''}</div>
+    ${i===0&&!answered?howTo:''}
+    <div class="kind">${esc(R.k)}</div>
+    ${ask?`<p class="ask">${esc(ask)}</p>`:''}
+    ${qHtml(R,answered&&R.t==='pun'?p:'',answered?(ok?'good':'bad'):'')}
+    <div class="opts${one?' one':''}${caps?' caps':''}">${opts}</div>
+    ${ord&&!answered?`<p class="hint" id="hint">${sel.length<R.o.length?'Tap a headline again to take it out.':''}</p><div class="btns"><button class="ghost" id="clr">Clear</button><button class="primary" id="chk">Check</button></div>`:''}
+    ${answered?`<p class="why" role="status">${ok?'<b class="g">Hold the front page!</b>':ord?`<b class="r">Not quite. Here's the right order.</b>`:`<b class="r">Not quite: it's ${esc(answerText(R))}.</b>`} ${esc(R.why)}</p>
+      <div class="btns"><button class="primary" id="nx">${i<NR-1?'Next round':'See how you did'}</button></div>`:''}
+  </div>`;
+  if(!answered){
+    app.querySelectorAll('.opts button').forEach(b=>b.onclick=()=>{
+      const o=b.dataset.o;
+      if(ord){if(sel.includes(o))sel=sel.filter(x=>x!==o);else sel.push(o);round();return}
+      st.picks.push(o);save();round();$('#nx').focus({preventScroll:true});
+    });
+    if(ord){
+      $('#clr').onclick=()=>{sel=[];round()};
+      $('#chk').onclick=()=>{if(sel.length<R.o.length){$('#hint').textContent=`Put all ${R.o.length} in order first.`;$('#hint').style.color='var(--bad)';return}st.picks.push(sel);sel=[];save();round();$('#nx').focus({preventScroll:true})};
+    }
+  } else $('#nx').onclick=()=>{if(i===NR-1)st.done=true;else st.at++;save();go()};
+}
+
+function rank(t){return['Spiked','Small ads','Page 17','Front page','Hold the front page'][Math.round(t/NR*4)]}
+function recapLine(R,i){
+  const mark=right(i)?'🟩':'🟥';
+  let body;
+  if(R.t==='pun')body=`<span class="h">${esc(R.q).replace('___',`<span class="a">${esc(R.a)}</span>`)}</span>`;
+  else if(R.t==='real')body=`<span class="a">${esc(R.a)}</span>`;
+  else if(R.t==='ord')body=`<span class="a plain">${esc(answerText(R))}</span>`;
+  else if(R.t==='who')body=`<span class="h">${esc(R.q)}</span> <span class="a plain">${esc(R.a)}</span>`;
+  else body=`<span class="h">${esc(R.q)}</span><br><span class="a plain">${esc(R.a)}</span>`;
+  return `<li>${mark} <b>${esc(R.k)}${/[?]$/.test(R.k)?'':':'}</b> ${body}<br><span class="muted">${esc(R.why)}</span></li>`;
+}
+function end(){
+  const t=score();
+  $('#pts').textContent=t+'/'+NR;
+  const sq=ROUNDS.map((_,i)=>right(i)?'🟩':'🟥').join('');
+  const pun=ROUNDS.find(R=>R.t==='pun');
+  const lead=pun&&{q:pun.q.replace('___',pun.a)};
+  if(!isTest&&N===TODAY)(window.SameySetQ=window.SameySetQ||[]).push(['splash',t+'/'+NR]);
+  const share=`Splash No. ${N+1}\n${pun?pun.q+'\n':''}${sq}\n${t}/${NR} ${rank(t)}\nYour go: https://samey.uk/splash/ #sameyuk`;
+  app.innerHTML=`<div class="card center">
+    <div class="tag">${tagLine()}</div>
+    ${lead?`<p class="hl">${esc(lead.q)}</p>`:''}
+    <div class="rank">${t}/${NR} · ${rank(t)}</div>
+    <div class="squares" aria-label="${t} out of ${NR}">${sq}</div>
+    <div class="btns"><button class="primary" id="share">Share</button></div>
+    <p class="muted"><span data-next="Next Splash in {t}.">New headlines tomorrow.</span></p>
+    <p class="muted">All the games are free and ad-free, made by one librarian in Canterbury. Enjoyed today's? <a href="https://ko-fi.com/playtheroute" target="_blank" rel="noopener" style="font-weight:700;white-space:nowrap">☕ Buy me a coffee</a></p>
+  </div>
+  <div class="card" style="margin-top:14px"><div class="tag">Today's rounds</div>
+    <ul class="recap">${ROUNDS.map(recapLine).join('')}</ul>
+    <p class="muted" style="margin-top:8px">Think one of today's is wrong? ${flagLink}.</p>
+  </div>
+  <div class="xg" data-sy-cards></div>`;
+  $('#share').onclick=()=>{if(navigator.share){navigator.share({text:share}).catch(()=>{});return}try{navigator.clipboard.writeText(share).then(()=>{$('#share').textContent='Copied'})}catch(e){}};
+}
+
+function go(){if(st.done)return end();round()}
+if(isTest)$('#test').innerHTML=`<div class="test">Test mode: No. ${N+1} · results not saved · <a href="?day=${N+2}#test">Next day</a></div>`;
+go();
+</script>
+<script src="/daily.js"></script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "210d8562172a4416bc59877612814183"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
