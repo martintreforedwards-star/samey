@@ -30,6 +30,7 @@ h1 svg{width:28px;height:28px;vertical-align:-3px;margin-right:6px}
 .lives{display:flex;gap:6px;align-items:center}
 .life{width:14px;height:16px;background:var(--pop);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
 .life.used{background:var(--line)}
+.notice{background:var(--chip);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:10px 0;font-size:15px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
 .tag{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600}
 .lead{margin:6px 0 2px;font-size:16px}
@@ -99,11 +100,14 @@ footer{margin-top:18px;text-align:center}
   <header><h1><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M22 6l12 7v13l-12 7-12-7V13z" fill="var(--pop)"/><path d="M44 6l12 7v13l-12 7-12-7V13z" fill="currentColor"/><path d="M33 31l12 7v13l-12 7-12-7V38z" fill="var(--pop)"/></svg>Idiomy</h1><div class="lives" id="lives" aria-label="Misses left"></div></header>
   <nav class="sy-bar" aria-label="Games"></nav>
   <div id="test"></div>
+  <div id="notice"></div>
   <div id="app"></div>
   <footer><p class="muted"><a href="/feedback/?game=idiomy">Send feedback</a> · <a href="/support/?game=idiomy">Support the games</a></p></footer>
 </main>
 <script src="data.js"></script>
 <script>
+// Temporary notice about the four-word fix (No. 29). Shows until 6pm on 27 Nov 2026, then disappears by itself.
+if(Date.now()<Date.UTC(2026,10,27,18))document.getElementById('notice').innerHTML='<p class="notice"><b>Sorry!</b> Some idioms need four words, but the game only let you pick three, so No. 29 (<i>kill two birds with one stone</i>) couldn\u2019t be solved. That\u2019s fixed now \u2013 thanks to the player who told us.</p>';
 // ---- Which day is on screen ----
 // Preview: board N comes from BOARDS in order. ?day=N plays Idiomy No. N; #test plays without saving.
 const START=Date.UTC(2026,9,29);
@@ -130,6 +134,8 @@ const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){retu
 const ANS={};B.a.forEach((a,i)=>{ANS[keyFor(a.k)]=i;(a.alt||[]).forEach(x=>ANS[keyFor(x)]=i)});
 const NEAR={};(B.near||[]).forEach(x=>NEAR[keyFor(x.k)]=x.say);
 const TOTAL=B.a.length,TARGET=B.t;
+// Most words any idiom on today's board needs (some need four)
+const MAXSEL=Math.max(3,...B.a.flatMap(a=>[a.k,...(a.alt||[])].map(k=>k.length)));
 
 let st=store.get(SKEY)||{found:[],miss:0,hints:[],done:false,tried:[]};
 let sel=[];
@@ -150,7 +156,7 @@ function play(msg,cls){
   const clue=st.hints.filter(i=>!st.found.includes(i)).map(i=>`<div class="clue"><b>Clue:</b> find an idiom that means “${esc(B.a[i].m)}”.</div>`).join('');
   app.innerHTML=`<div class="card">
     <div class="tag">${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'long',day:'numeric',month:'long'})}</div>
-    <p class="lead">Tap two or three words from the hive that belong to the same idiom.</p>
+    <p class="lead">Tap two, three or four words from the hive that belong to the same idiom.</p>
     <details class="ex"${exOpen?' open':''}><summary>How to play</summary>
       <div class="ex-demo" aria-hidden="true"><span class="mini">pinch</span><span class="mini">worth</span><span class="mini on">salt</span><span class="mini">wound</span><span class="mini">kick</span></div>
       <p class="ex-res">One word can open several idioms. In this mini hive, <b>salt</b> makes three:</p>
@@ -171,7 +177,7 @@ function play(msg,cls){
     <div class="links"><button id="hint"${unfound.length&&st.miss<LIVES-1?'':' disabled'}>Clue (costs a miss)</button><button id="fin">${f>=TARGET?'Finish':'Give up'}</button></div>
     ${f?`<ul class="found">${st.found.map(i=>`<li><div class="p">${phrase(B.a[i].p)}</div><div class="m">${esc(B.a[i].m)}</div></li>`).join('')}</ul>`:''}
   </div>`;
-  app.querySelectorAll('.hex').forEach(b=>b.onclick=()=>{const w=b.dataset.w;sel=sel.includes(w)?sel.filter(x=>x!==w):sel.length<3?[...sel,w]:sel;play()});
+  app.querySelectorAll('.hex').forEach(b=>b.onclick=()=>{const w=b.dataset.w;sel=sel.includes(w)?sel.filter(x=>x!==w):sel.length<MAXSEL?[...sel,w]:sel;play()});
   $('.ex').ontoggle=e=>{exOpen=e.target.open};
   $('#clear').onclick=()=>{sel=[];play()};
   $('#go').onclick=check;
