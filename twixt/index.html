@@ -96,7 +96,7 @@ const app=$('#app');
 // Each round, filled out: options (shuffled the same for everyone on the day), answer, extras that also score.
 function seeded(arr,seed){const a=[...arr];let s=seed;for(let i=a.length-1;i>0;i--){s=(s*9301+49297)%233280;const j=Math.floor(s/233280*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 const ROUNDS=D.map((r,i)=>{
-  const src=r.p?SCENES[r.p]:r;
+  const src=r.p?Object.assign({},SCENES[r.p],r.o?{o:r.o}:{},r.why?{why:r.why}:{}):r;
   return {pic:r.p||null,k:r.p?'Picture round':r.k,q:r.q||null,a:src.o[0],also:src.also||[],why:src.why,o:seeded(src.o,N*7919+i*104729+17)};
 });
 
@@ -145,7 +145,7 @@ const howTo=`<details class="ex"><summary>How to play</summary><ol class="how">
   <li>Five rounds a day, all about the little words that put things in their place.</li>
   <li><b>Picture rounds:</b> where's the orange ball? Pick the word that fits.</li>
   <li><b>Sentence rounds:</b> fill the gap. Some have more than one right answer (British and American, say): any right answer scores.</li>
-  <li>One go per round. It gets trickier through the week.</li></ol></details>`;
+  <li>One go per round. It gets trickier through the week, and Sunday is a boss day: five sentences where two answers both look right.</li></ol></details>`;
 const flagLink=i=>`<a href="/feedback/?game=twixt&type=puzzle&puzzle=${encodeURIComponent('No. '+(N+1)+' · round '+(i+1))}">Tell us</a>`;
 const fillGap=(q,w,cls)=>esc(q).replace('___',`<span class="gap"${cls?` style="color:var(--${cls})"`:''}>${w?esc(w):'&nbsp;'}</span>`);
 
@@ -158,7 +158,7 @@ function round(){
     why=`<p class="why" role="status">${ok?'<b class="g">Spot on.</b>':`<b class="r">Not quite: it's ${esc(R.a)}${R.also.length?' (or '+R.also.map(esc).join(', ')+')':''}.</b>`} ${esc(R.why)}</p>`;
   }
   app.innerHTML=`<div class="card">
-    <div class="tag">${tagLine()} · Round ${i+1} of 5</div>
+    <div class="tag">${tagLine()} · Round ${i+1} of 5${N%7===6?' · Boss day':''}</div>
     ${i===0&&!answered?howTo:''}
     <div class="kind">${esc(R.k)}</div>
     ${R.pic?scene(R.pic):`<p class="q">${fillGap(R.q,answered?p:'',answered?(ok?'good':'bad'):'')}</p>`}
