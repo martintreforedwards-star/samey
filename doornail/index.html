@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Doornail</title>
+<meta name="description" content="A daily game of similes and metaphors: finish the simile, untangle the mixed metaphor, find the hidden one.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://samey.uk/doornail/">
+<meta property="og:site_name" content="Doornail">
+<meta property="og:title" content="Doornail: as dead as a what?">
+<meta property="og:description" content="We'll burn that bridge when we come to it. Four rounds of similes and metaphors a day.">
+<link rel="icon" href="/doornail/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+:root{--bg:#faf7f8;--card:#fff;--ink:#21171c;--muted:#6b5c63;--line:#e6dbe0;--accent:#8a3d63;--deep:#5c2742;--good:#2b8a3e;--bad:#c92a2a;--goodbg:#ebfbee;--badbg:#fff0f0;--chip:#f3ebef;--head:"Libre Baskerville",Georgia,serif}
+@media (prefers-color-scheme:dark){:root{--bg:#151012;--card:#1f181b;--ink:#f0e6ea;--muted:#a8979e;--line:#3a2d33;--accent:#e39bbd;--deep:#f2cfe0;--good:#8ce99a;--bad:#ff8787;--goodbg:#173022;--badbg:#3a1a1a;--chip:#2a2025}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+main{max-width:480px;margin:0 auto;padding:16px 16px 40px;min-height:100vh}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+h1{font-family:var(--head);font-weight:700;font-size:30px;margin:0;line-height:1}
+h1 svg{width:30px;height:30px;vertical-align:-5px;margin-right:6px}
+.pts{font-weight:700;color:var(--deep);font-size:15px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+.tag{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600}
+.kind{font-weight:700;color:var(--accent);font-size:15px;margin:10px 0 4px}
+.ask{color:var(--muted);font-size:15px;margin:0 0 6px}
+.q{font-family:var(--head);font-size:22px;line-height:1.45;margin:6px 0 4px}
+.q.long{font-size:19px;font-style:italic}
+.gap{display:inline-block;min-width:3.2em;border-bottom:2.5px solid var(--accent);text-align:center;color:var(--accent);font-weight:700}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0 0}
+.opts.one{grid-template-columns:minmax(0,1fr)}
+.opts button{min-height:54px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);font:700 18px/1.25 var(--head);padding:8px 10px}
+.opts.one button{font:600 16px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-align:left;padding:12px 14px}
+.opts button.sel{border-color:var(--accent);background:var(--chip);color:var(--accent)}
+.opts button.ok{border-color:var(--good);background:var(--goodbg);color:var(--good)}
+.opts button.no{border-color:var(--bad);background:var(--badbg);color:var(--bad)}
+.opts button:disabled{cursor:default}
+.dots{display:flex;gap:6px}
+.dots i{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.dots i.ok{background:var(--good)}.dots i.no{background:var(--bad)}.dots i.cur{background:var(--accent)}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--deep);outline-offset:2px}
+.btns{display:flex;gap:10px;margin-top:14px}
+.primary{flex:1;padding:14px;border:0;border-radius:12px;background:var(--deep);color:var(--bg);font-weight:700;min-height:50px}
+.why{margin:14px 0 0;font-size:16px;line-height:1.5}
+.why b.g{color:var(--good)}.why b.r{color:var(--bad)}
+.hint{min-height:1.4em;margin:10px 0 0;font-size:14px;color:var(--muted)}
+.center{text-align:center}
+.rank{font-family:var(--head);font-weight:700;font-size:24px;margin:8px 0 4px;color:var(--accent)}
+.squares{font-size:24px;letter-spacing:3px;margin:6px 0 4px}
+.muted{color:var(--muted);font-size:15px}
+a{color:var(--accent)}
+.test{background:var(--chip);border-radius:10px;padding:8px 12px;font-size:14px;margin-bottom:12px}
+.ex{margin:10px 0 4px;font-size:15px}.ex summary{cursor:pointer;color:var(--accent);font-weight:600}
+.how{margin:8px 0 0;padding-left:20px;color:var(--muted)}
+.how li{margin:3px 0}
+.recap{list-style:none;padding:0;margin:8px 0 0}
+.recap li{border-top:1px solid var(--line);padding:10px 0;font-size:15px}
+.recap .a{font-family:var(--head);font-weight:700;color:var(--accent)}
+.hl{font-family:var(--head);font-style:italic;font-size:18px;margin:10px 0 0}
+footer{margin-top:18px;text-align:center}
+</style>
+<link rel="manifest" href="/manifest.webmanifest">
+</head>
+<body>
+<main>
+  <header><h1><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="56" height="56" rx="12" fill="#5c2742"/><path d="M20 18h24" stroke="#f2cfe0" stroke-width="6" stroke-linecap="round"/><path d="M32 18v22q0 8 9 8" fill="none" stroke="#f2cfe0" stroke-width="5" stroke-linecap="round"/></svg>Doornail</h1><span class="pts" id="pts"></span></header>
+  <nav class="sy-bar" aria-label="Games"></nav>
+  <div id="test"></div>
+  <div id="app"></div>
+  <footer><p class="muted"><a href="/feedback/?game=doornail">Send feedback</a> · <a href="/support/?game=doornail">Support the games</a></p></footer>
+</main>
+<script src="data.js"></script>
+<script>
+// ---- Which day is on screen ----
+// Preview: ?day=N plays Doornail No. N; #test plays without saving.
+// START must be a Monday (DAYS in data.js run Monday first). Reset it to the launch Monday.
+const START=Date.UTC(2026,10,30);
+const dayDate=n=>new Date(START+n*864e5);
+const fmt=(n,o)=>dayDate(n).toLocaleDateString('en-GB',Object.assign({timeZone:'UTC'},o));
+const keyOf=n=>{const d=dayDate(n);return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0')};
+addEventListener('hashchange',()=>location.reload());
+const params=new URLSearchParams(location.search);
+const now=new Date();
+const TODAY=Math.max(0,Math.round((Date.UTC(now.getFullYear(),now.getMonth(),now.getDate())-START)/864e5));
+const isTest=location.hash==='#test';
+const td=parseInt(params.get('day'),10);
+const N=Number.isInteger(td)&&td>=1?td-1:TODAY;
+const D=DAYS[N%DAYS.length];
+const NR=D.length;
+const SKEY='doornail-'+keyOf(N);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){if(isTest)return;try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const $=s=>document.querySelector(s);
+const app=$('#app');
+function seeded(arr,seed){const a=[...arr];let s=seed;for(let i=a.length-1;i>0;i--){s=(s*9301+49297)%233280;const j=Math.floor(s/233280*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const ASK={sim:'Pick the word that finishes it.',cls:'Is this a simile, a metaphor, or neither?',mix:'Two sayings have collided. Pick both of them.',hid:'',poet:'Who wrote it?',boss:"What's really being described?"};
+const ROUNDS=D.map((r,i)=>{
+  const o=r.t==='cls'?CLS:seeded(r.o,N*7919+i*104729+17);
+  const a=r.t==='cls'?r.a:r.t==='mix'?r.a:r.o[0];
+  return Object.assign({},r,{o,a,k:LABEL[r.t]});
+});
+const isRight=(R,p)=>R.t==='mix'?(Array.isArray(p)&&p.length===2&&p.every(x=>R.a.includes(x))):p===R.a;
+
+let st=store.get(SKEY)||{picks:[],at:0,done:false};
+let sel=[];
+const save=()=>store.set(SKEY,st);
+const right=i=>isRight(ROUNDS[i],st.picks[i]);
+const score=()=>ROUNDS.filter((_,i)=>right(i)).length;
+const tagLine=()=>`${isTest?'Test · ':''}No. ${N+1} · ${fmt(N,{weekday:'short',day:'numeric',month:'short'})}`;
+const howTo=`<details class="ex"><summary>How to play</summary><ol class="how">
+  <li>Four rounds a day on similes (as cool as a cucumber) and metaphors (the classroom was a zoo).</li>
+  <li><b>Rounds:</b> finish the simile, simile or metaphor?, untangle a mixed metaphor, spot the hidden metaphor, or name the poet.</li>
+  <li><b>Mixed metaphors:</b> pick both of the sayings that collided.</li>
+  <li>One go per round. Trickier through the week; Sunday is a boss day of extended metaphors.</li></ol></details>`;
+const flagLink=`<a href="/feedback/?game=doornail&type=puzzle&puzzle=${encodeURIComponent('No. '+(N+1))}">Tell us</a>`;
+const qHtml=(R,fill,cls)=>{
+  if(R.t==='sim')return `<p class="q">${esc(R.q).replace('___',`<span class="gap"${cls?` style="color:var(--${cls})"`:''}>${fill?esc(fill):'&nbsp;'}</span>`)}</p>`;
+  return `<p class="q${R.t==='boss'||R.t==='poet'||R.q.length>70?' long':''}">${esc(R.q)}</p>`;
+};
+const answerText=R=>R.t==='mix'?R.a.join(' + '):R.a;
+
+function round(){
+  const i=st.at,R=ROUNDS[i],answered=st.picks.length>i,p=st.picks[i],ok=answered&&right(i);
+  $('#pts').innerHTML=`<span class="dots" aria-label="Round ${i+1} of ${NR}">${ROUNDS.map((_,j)=>`<i class="${j<st.picks.length?(right(j)?'ok':'no'):j===i?'cur':''}"></i>`).join('')}</span>`;
+  const mix=R.t==='mix',one=mix||R.t==='boss'&&R.o.some(o=>o.length>14)||R.o.some(o=>o.length>18);
+  const picked=o=>mix?(answered?p.includes(o):sel.includes(o)):o===p;
+  const isAns=o=>mix?R.a.includes(o):o===R.a;
+  app.innerHTML=`<div class="card">
+    <div class="tag">${tagLine()} · Round ${i+1} of ${NR}${N%7===6?' · Boss day':''}</div>
+    ${i===0&&!answered?howTo:''}
+    <div class="kind">${esc(R.k)}</div>
+    ${ASK[R.t]?`<p class="ask">${ASK[R.t]}</p>`:''}
+    ${qHtml(R,answered&&R.t==='sim'?p:'',answered?(ok?'good':'bad'):'')}
+    <div class="opts${one?' one':''}">${R.o.map(o=>{let c='';
+      if(answered){if(isAns(o))c='ok';else if(picked(o))c='no'}else if(picked(o))c='sel';
+      return `<button class="${c}" data-o="${esc(o)}"${answered?' disabled':''} aria-pressed="${picked(o)}">${esc(o)}</button>`}).join('')}</div>
+    ${mix&&!answered?`<p class="hint" id="hint">${sel.length===2?'':'Pick '+(2-sel.length)+' more.'}</p><div class="btns"><button class="primary" id="chk">Check</button></div>`:''}
+    ${answered?`<p class="why" role="status">${ok?'<b class="g">Spot on.</b>':`<b class="r">Not quite: it's ${esc(answerText(R))}.</b>`} ${esc(R.why)}</p>
+      <div class="btns"><button class="primary" id="nx">${i<NR-1?'Next round':'See how you did'}</button></div>`:''}
+  </div>`;
+  if(!answered){
+    app.querySelectorAll('.opts button').forEach(b=>b.onclick=()=>{
+      const o=b.dataset.o;
+      if(mix){if(sel.includes(o))sel=sel.filter(x=>x!==o);else if(sel.length<2)sel.push(o);else sel=[sel[1],o];round();return}
+      st.picks.push(o);save();round();$('#nx').focus({preventScroll:true});
+    });
+    if(mix)$('#chk').onclick=()=>{if(sel.length<2){$('#hint').textContent='Pick two sayings first.';$('#hint').style.color='var(--bad)';return}st.picks.push(sel);sel=[];save();round();$('#nx').focus({preventScroll:true})};
+  } else $('#nx').onclick=()=>{if(i===NR-1)st.done=true;else st.at++;save();go()};
+}
+
+function rank(t){return['Dead as a doornail','Dull as ditchwater','Right as rain','Bright as a button','Sharp as a tack'][Math.round(t/NR*4)]}
+function end(){
+  const t=score();
+  $('#pts').textContent=t+'/'+NR;
+  const sq=ROUNDS.map((_,i)=>right(i)?'🟩':'🟥').join('');
+  const m=ROUNDS.find(R=>R.t==='mix');
+  if(!isTest&&N===TODAY)(window.SameySetQ=window.SameySetQ||[]).push(['doornail',t+'/'+NR]);
+  const share=`Doornail No. ${N+1}\n${m?'“'+m.q+'”\n':''}${sq}\n${t}/${NR} ${rank(t)}\nYour go: https://samey.uk/doornail/ #sameyuk`;
+  app.innerHTML=`<div class="card center">
+    <div class="tag">${tagLine()}</div>
+    ${m?`<p class="hl">“${esc(m.q)}”</p>`:''}
+    <div class="rank">${t}/${NR} · ${rank(t)}</div>
+    <div class="squares" aria-label="${t} out of ${NR}">${sq}</div>
+    <div class="btns"><button class="primary" id="share">Share</button></div>
+    <p class="muted"><span data-next="Next Doornail in {t}.">Four new rounds tomorrow.</span></p>
+    <p class="muted">All the games are free and ad-free, made by one librarian in Canterbury. Enjoyed today's? <a href="https://ko-fi.com/playtheroute" target="_blank" rel="noopener" style="font-weight:700;white-space:nowrap">☕ Buy me a coffee</a></p>
+  </div>
+  <div class="card" style="margin-top:14px"><div class="tag">Today's rounds</div>
+    <ul class="recap">${ROUNDS.map((R,i)=>`<li>${right(i)?'🟩':'🟥'} <b>${esc(R.k)}${/[?]$/.test(R.k)?"":":"}</b> ${R.t==='sim'?esc(R.q).replace('___',`<span class="a">${esc(R.a)}</span>`):`${esc(R.q)} <span class="a">${esc(answerText(R))}</span>`}<br><span class="muted">${esc(R.why)}</span></li>`).join('')}</ul>
+    <p class="muted" style="margin-top:8px">Think one of today's is wrong? ${flagLink}.</p>
+  </div>
+  <div class="xg" data-sy-cards></div>`;
+  $('#share').onclick=()=>{if(navigator.share){navigator.share({text:share}).catch(()=>{});return}try{navigator.clipboard.writeText(share).then(()=>{$('#share').textContent='Copied'})}catch(e){}};
+}
+
+function go(){if(st.done)return end();round()}
+if(isTest)$('#test').innerHTML=`<div class="test">Test mode: No. ${N+1} · results not saved · <a href="?day=${N+2}#test">Next day</a></div>`;
+go();
+</script>
+<script src="/daily.js"></script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "210d8562172a4416bc59877612814183"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
