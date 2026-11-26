@@ -393,6 +393,35 @@
         ".sy-advent a:focus-visible,.sy-advent button:focus-visible{outline:3px solid #fff;outline-offset:2px}";
       document.head.append(st);
     }
+    var idea = document.querySelector(".sy-idea");
+    if (idea && idea.parentNode === spot.parentNode) spot = idea; // keep the order: Advent strip, idea line, games bar
+    spot.parentNode.insertBefore(box, spot);
+  }
+  /* ---------- "Got an idea for a game?" line ----------
+     One quiet line just above the games bar on every game, linking to /ideas/. The × hides it for 30 days;
+     sending an idea hides it for 90 (the ideas page sets samey-idea-hide). */
+  function placeIdea() {
+    if (here === "ideas" || here === "feedback" || here === "support" || document.querySelector(".sy-idea")) return;
+    var hideKey = "samey-idea-hide";
+    try { var until = +localStorage.getItem(hideKey); if (until && Date.now() < until) return; } catch (e) {}
+    var spot = document.querySelector(".sy-bar") || document.querySelector(".sy-grid");
+    if (!spot) return;
+    var box = el("div", "sy-idea"), a = el("a"), x = el("button", null, "×");
+    a.href = "/ideas/?from=" + encodeURIComponent(here);
+    a.append(el("span", "sy-idea-bulb", "💡"), el("span", null, "Got an idea for a new word game? "), el("b", null, "Tell me →"));
+    x.type = "button"; x.setAttribute("aria-label", "Hide this for now");
+    x.onclick = function () { try { localStorage.setItem(hideKey, String(Date.now() + 30 * 864e5)); } catch (e) {} box.remove(); };
+    box.append(a, x);
+    if (!document.getElementById("sy-idea-css")) {
+      var st = document.createElement("style"); st.id = "sy-idea-css";
+      st.textContent = ".sy-idea{display:flex;align-items:center;gap:4px;margin:0 0 10px;padding:2px 2px 2px 12px;border:1px dashed rgba(127,127,127,.45);border-radius:12px;font-family:var(--body,inherit);font-size:.9rem}" +
+        ".sy-idea a{flex:1;color:inherit;text-decoration:none;padding:8px 0;line-height:1.3}" +
+        ".sy-idea a span{opacity:.85}.sy-idea a .sy-idea-bulb{opacity:1;margin-right:6px}.sy-idea a b{white-space:nowrap}" +
+        ".sy-idea a:hover b{text-decoration:underline}" +
+        ".sy-idea button{flex:none;width:36px;height:36px;border:0;border-radius:8px;background:transparent;color:inherit;opacity:.6;font-size:20px;line-height:1;cursor:pointer}" +
+        ".sy-idea button:hover{opacity:1}.sy-idea a:focus-visible,.sy-idea button:focus-visible{outline:2px solid currentColor;outline-offset:2px}";
+      document.head.append(st);
+    }
     spot.parentNode.insertBefore(box, spot);
   }
   var styled = false;
@@ -537,6 +566,6 @@
 
   new MutationObserver(function () { fill(); placeCards(); placeSets(); placeInstall(); }).observe(document.documentElement, { childList: true, subtree: true });
   try { q.forEach(function (a) { report(a[0], a[1]); }); } catch (e) {}
-  function init() { fill(); placeCards(); placeSets(); renderNav(); placeInstall(); placeAdvent(); }
+  function init() { fill(); placeCards(); placeSets(); renderNav(); placeInstall(); placeIdea(); placeAdvent(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
 })();

@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Got an idea for a game? · Samey and friends</title>
+<meta name="description" content="Suggest a new daily word game for samey.uk.">
+<style>
+  :root {
+    --bg: #f7f5f0; --card: #ffffff; --text: #1f1d1a; --muted: #6b665e;
+    --line: #ddd8ce; --accent: #2f6f5e; --accent-text: #ffffff; --error: #b3261e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #161513; --card: #211f1c; --text: #f0ece4; --muted: #a39d92;
+      --line: #3a3732; --accent: #5fb39b; --accent-text: #0d1f1a; --error: #f2948c;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 520px; margin: 0 auto; padding: 28px 16px 48px; }
+  h1 { font-size: 1.6rem; margin: 0 0 6px; }
+  .intro { color: var(--muted); margin: 0 0 12px; }
+  details { margin: 0 0 20px; color: var(--muted); font-size: .95rem; }
+  summary { cursor: pointer; color: var(--accent); font-weight: 600; }
+  details ul { margin: 8px 0 0; padding-left: 20px; }
+  details li { margin: 2px 0; }
+  form, .thanks {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 14px; padding: 20px;
+  }
+  label { display: block; font-weight: 600; margin: 0 0 6px; }
+  .opt { font-weight: 400; color: var(--muted); }
+  .field { margin-bottom: 18px; }
+  input, textarea {
+    width: 100%; font: inherit; color: var(--text); background: var(--bg);
+    border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px;
+  }
+  textarea { min-height: 150px; resize: vertical; }
+  input:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .hp { position: absolute; left: -9999px; }
+  button {
+    width: 100%; font: inherit; font-weight: 700; border: 0; border-radius: 10px;
+    padding: 12px; background: var(--accent); color: var(--accent-text); cursor: pointer;
+  }
+  button:disabled { opacity: .6; cursor: default; }
+  .status { margin: 12px 0 0; min-height: 1.5em; color: var(--error); }
+  .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin: 20px 0 0; }
+  .back { display: inline-block; color: var(--accent); }
+  .support { font-weight: 700; }
+  .thanks { display: none; text-align: center; }
+  .thanks h2 { margin: 0 0 8px; }
+</style>
+<link rel="manifest" href="/manifest.webmanifest">
+</head>
+<body>
+<main>
+  <h1>💡 Got an idea for a game?</h1>
+  <p class="intro">Every game here started as a <i>wouldn't it be fun if…?</i> If there's a corner of language you'd love a daily puzzle about, tell me. Half-formed ideas are welcome.</p>
+
+  <details>
+    <summary>What's already covered?</summary>
+    <ul>
+      <li><b>Meanings:</b> synonyms (Samey), -nyms (Spinonym), forgotten words (Passé), local words (Natter), collective nouns (Gaggle), sports words (Gamey)</li>
+      <li><b>Word histories:</b> etymology (Roots), new words (Rizz), dying words (Dodo), words from fiction (Inkling), other languages (Babel), the tongues of these islands (Mither)</li>
+      <li><b>Grammar and sound:</b> accents and punctuation (Dotty), grammar (Syntaxed), prepositions (Twixt), odd spellings (Mispelt), prefixes and suffixes (Antepostee), pronunciation (Phoney), rhyme and metre (Rhymey)</li>
+      <li><b>Books, poems and phrases:</b> first lines (Incipit), poets (Versed), Shakespeare and Chaucer (Forsooth), idioms (Idiomy), similes and metaphors (Doornail)</li>
+    </ul>
+  </details>
+
+  <form id="idea" novalidate>
+    <div class="field">
+      <label for="message">What would the game be about?</label>
+      <textarea id="message" name="message" required maxlength="3000" placeholder="A topic, a type of puzzle, or a few example questions: anything helps."></textarea>
+    </div>
+
+    <div class="field">
+      <label for="title">A name for it? <span class="opt">(optional)</span></label>
+      <input id="title" name="title" type="text" maxlength="60">
+    </div>
+
+    <div class="field">
+      <label for="name">Your name <span class="opt">(optional)</span></label>
+      <input id="name" name="name" type="text" maxlength="60" autocomplete="name">
+    </div>
+
+    <div class="field">
+      <label for="email">Your email <span class="opt">(optional, only if you'd like to hear back)</span></label>
+      <input id="email" name="email" type="email" autocomplete="email">
+    </div>
+
+    <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+    <p style="margin:0 0 14px;color:var(--muted);font-size:.9rem">What I do with your message: <a href="/privacy/" style="color:var(--accent)">privacy</a>.</p>
+    <button id="send" type="submit">Send my idea</button>
+    <p class="status" id="status" role="status"></p>
+  </form>
+
+  <div class="thanks" id="thanks">
+    <h2>Thank you!</h2>
+    <p>Your idea is on its way. I read every one, and some of the games here started exactly like this.</p>
+    <p style="margin:14px 0 0;color:var(--muted)">All the games are free and ad-free. If you'd like to help keep them coming, <a href="/support/" id="support2" style="color:var(--accent);font-weight:700">support the games</a>.</p>
+  </div>
+
+  <p class="foot"><a class="back" id="back" href="/">← Back to the games</a><a class="back support" id="support" href="/support/">❤️ Support the games</a></p>
+</main>
+
+<script>
+  // Same Web3Forms key as the feedback form, so ideas arrive in the same inbox.
+  const ACCESS_KEY = "72e46a0c-bcae-4809-8818-f00b4f433e4d";
+  const $ = id => document.getElementById(id);
+  const from = (new URLSearchParams(location.search).get("from") || "").toLowerCase();
+  if (/^[a-z]+$/.test(from) && from !== "samey") $("back").href = "/" + from + "/";
+  $("support").href = $("support2").href = "/support/?game=" + encodeURIComponent(/^[a-z]+$/.test(from) ? from : "samey");
+
+  $("idea").addEventListener("submit", async e => {
+    e.preventDefault();
+    const msg = $("message").value.trim();
+    if (!msg) { $("status").textContent = "Please tell me a little about the idea first."; $("message").focus(); return; }
+    $("status").textContent = "";
+    $("send").disabled = true;
+    $("send").textContent = "Sending…";
+    const title = $("title").value.trim(), name = $("name").value.trim();
+    const payload = {
+      access_key: ACCESS_KEY,
+      subject: "Game idea" + (title ? ": " + title : ""),
+      from_name: name || "A samey.uk player",
+      about: "Game idea",
+      game_name: title || "(not given)",
+      their_name: name || "(not given)",
+      sent_from: from || "(direct)",
+      message: msg,
+      device: navigator.userAgent,
+      botcheck: e.target.botcheck.checked
+    };
+    const email = $("email").value.trim();
+    if (email) { payload.email = email; payload.replyto = email; }
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message);
+      $("idea").style.display = "none";
+      $("thanks").style.display = "block";
+      // Hide the "Got an idea?" line on the games for 90 days: they've just sent one.
+      try { localStorage.setItem("samey-idea-hide", String(Date.now() + 90 * 864e5)); } catch (err) {}
+    } catch (err) {
+      $("status").textContent = "Sorry, that didn't send. Please try again in a moment.";
+      $("send").disabled = false;
+      $("send").textContent = "Send my idea";
+    }
+  });
+</script>
+</body>
+</html>
