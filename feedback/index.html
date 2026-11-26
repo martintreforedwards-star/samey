@@ -86,6 +86,7 @@
           <option value="Mither">Mither</option>
           <option value="Twixt">Twixt</option>
           <option value="Doornail">Doornail</option>
+          <option value="Splash">Splash</option>
           <option value="All / general">All / general</option>
         </select>
       </div>
@@ -163,6 +164,7 @@
   if (game === "mither") $("game").value = "Mither";
   if (game === "twixt") $("game").value = "Twixt";
   if (game === "doornail") $("game").value = "Doornail";
+  if (game === "splash") $("game").value = "Splash";
   const type = (q.get("type") || "").toLowerCase();
   const typeMap = { puzzle: "Puzzle issue", bug: "Bug", idea: "Idea", other: "Other" };
   if (typeMap[type]) $("type").value = typeMap[type];
@@ -190,6 +192,7 @@
   if (game === "mither") $("back").href = "/mither/";
   if (game === "twixt") $("back").href = "/twixt/";
   if (game === "doornail") $("back").href = "/doornail/";
+  if (game === "splash") $("back").href = "/splash/";
 
   $("fb").addEventListener("submit", async e => {
     e.preventDefault();
