@@ -157,5 +157,55 @@ const DAYS = [
     m: [["Micawber", "David Copperfield"], ["Gradgrind", "Hard Times"], ["scrooge", "A Christmas Carol"], ["Pickwickian", "The Pickwick Papers"]],
     q: {ask: "Oldest to newest coinage", i: [["Lothario", "1703"], ["Frankenstein", "1818"], ["Peter Pan", "1902"], ["Stepford wife", "1972"]], n: "Ira Levin's The Stepford Wives (1972) imagines a town of eerily perfect wives."},
     s: {t: "Gradgrind", c: "Hard Times", o: ["Bleak House", "Little Dorrit", "Great Expectations"], n: "Thomas Gradgrind wants ‘nothing but Facts’. A Gradgrind is someone cold who cares only about facts."}
+  },
+  /* ---------- Week 4 ---------- */
+  /* Mon */ {
+    p: {t: "runcible", h: "A nonsense word: a runcible spoon is now sold as a three-pronged fork with a cutting edge, but its inventor never said what it meant.", c: "Edward Lear", o: ["Lewis Carroll", "Hilaire Belloc", "A. A. Milne"], n: "“They dined on mince, and slices of quince, / Which they ate with a runcible spoon”, in The Owl and the Pussy-cat (1871). Lear also gave us a runcible hat and a runcible cat."},
+    x: {f: "words coined in fiction", w: ["hobbit", "heffalump", "Munchkin"], odd: "quisling", n: "Quisling comes from a real man, Vidkun Quisling, who governed Norway for the Nazis."},
+    m: [["Uriah Heep", "David Copperfield"], ["Simon Legree", "Uncle Tom's Cabin"], ["Lady Bountiful", "The Beaux' Stratagem"], ["Pooh-sticks", "The House at Pooh Corner"]],
+    q: {ask: "Oldest to newest coinage", i: [["pander", "1385"], ["Goody Two-Shoes", "1765"], ["Knickerbocker", "1809"], ["Tarzan", "1912"]], n: "Pander comes from Pandarus, the go-between in Chaucer's Troilus and Criseyde, who came from Boccaccio before him."},
+    s: {t: "portmanteau word", c: "Through the Looking-Glass", o: ["Alice's Adventures in Wonderland", "The Hunting of the Snark", "Sylvie and Bruno"], n: "Humpty Dumpty explains slithy to Alice: “it's like a portmanteau—there are two meanings packed up into one word.” A portmanteau was a suitcase that opened into two halves."}
+  },
+  /* Tue */ {
+    p: {t: "tintinnabulation", h: "The ringing and jingling of bells.", c: "Edgar Allan Poe", o: ["Herman Melville", "Nathaniel Hawthorne", "Walt Whitman"], n: "“To the tintinnabulation that so musically wells / From the bells”, in The Bells (1849), from Latin <i>tintinnabulum</i>, a bell."},
+    x: {f: "words that came from fiction", w: ["Jeeves", "gruntled", "trilby"], odd: "blurb", n: "Blurb was coined in 1907 by the humorist Gelett Burgess, for a joke book jacket featuring a ‘Miss Belinda Blurb’. A real book launch, not a novel."},
+    m: [["Miranda", "The Tempest"], ["Imogen", "Cymbeline"], ["Benedick", "Much Ado About Nothing"], ["Romeo", "Romeo and Juliet"]],
+    q: {ask: "Oldest to newest coinage", i: [["Gilded Age", "1873"], ["superman", "1903"], ["hobbit", "1937"], ["droog", "1962"]], n: "The Gilded Age was the title of Mark Twain and Charles Dudley Warner's 1873 novel, before it named the era."},
+    s: {t: "Wendy house", c: "Peter Pan", o: ["The Railway Children", "The Secret Garden", "Five Children and It"], n: "In J. M. Barrie's Peter Pan (1904), the Lost Boys build a little house around Wendy where she lies asleep."}
+  },
+  /* Wed */ {
+    p: {t: "Vanessa", h: "A girl's name.", c: "Jonathan Swift", o: ["Alexander Pope", "Daniel Defoe", "Samuel Richardson"], n: "Swift made it up for Esther Vanhomrigh in his poem Cadenus and Vanessa (published 1726): Van from her surname, Essa from Esther."},
+    x: {f: "names first made up by writers", w: ["Thelma", "Lorna", "Pamela"], odd: "Elizabeth", n: "Elizabeth is Hebrew, from Elisheba. Thelma was invented by Marie Corelli, Lorna by R. D. Blackmore and Pamela by Sir Philip Sidney."},
+    m: [["vorpal", "Through the Looking-Glass"], ["runcible", "The Owl and the Pussy-cat"], ["tintinnabulation", "The Bells"], ["heffalump", "Winnie-the-Pooh"]],
+    q: {ask: "Oldest to newest coinage", i: [["Pantagruel", "1532"], ["Romeo", "1597"], ["Lady Bountiful", "1707"], ["Little Lord Fauntleroy", "1886"]], n: "A Romeo is any ardent lover; a Little Lord Fauntleroy a boy in velvet and lace; a Lady Bountiful a showily generous woman."},
+    s: {t: "mentor", c: "The Odyssey", o: ["The Iliad", "The Aeneid", "Beowulf"], n: "Mentor is the old friend Athena disguises herself as to guide Odysseus's son. A French novel by Fénelon (1699) made mentor an everyday word."}
+  },
+  /* Thu */ {
+    p: {t: "time machine", h: "A machine for travelling through time.", c: "H. G. Wells", o: ["Jules Verne", "Arthur Conan Doyle", "Edgar Rice Burroughs"], n: "The Time Machine (1895). Wells had his Time Traveller go 800,000 years ahead."},
+    x: {f: "characters whose names became everyday words", w: ["Tarzan", "Uriah Heep", "Simon Legree"], odd: "leotard", n: "Leotard comes from a real man, the French trapeze artist Jules Léotard."},
+    m: [["triffid", "The Day of the Triffids"], ["droog", "A Clockwork Orange"], ["Munchkin", "The Wonderful Wizard of Oz"], ["superman", "Man and Superman"]],
+    q: {ask: "Oldest to newest name", i: [["Pamela", "1590"], ["Vanessa", "1726"], ["Lorna", "1869"], ["Thelma", "1887"]], n: "Pamela first appeared in Sidney's Arcadia. Samuel Richardson's novel Pamela (1740) made it popular."},
+    s: {t: "atomic bomb", c: "The World Set Free", o: ["The War of the Worlds", "The Invisible Man", "The Shape of Things to Come"], n: "H. G. Wells imagined atomic bombs in The World Set Free (1914), three decades before Hiroshima. The physicist Leo Szilard read it, and it stayed with him."}
+  },
+  /* Fri */ {
+    p: {t: "pantagruelian", h: "Enormous, especially of appetite; or hugely, coarsely funny.", c: "François Rabelais", o: ["Miguel de Cervantes", "Voltaire", "Jonathan Swift"], n: "From the giant Pantagruel in Rabelais's books (from 1532). His father Gargantua gave us gargantuan."},
+    x: {f: "words first used in poems", w: ["vorpal", "runcible", "tintinnabulation"], odd: "dystopia", n: "Dystopia was used in a real speech in Parliament, by John Stuart Mill in 1868."},
+    m: [["gruntled", "The Code of the Woosters"], ["Knickerbocker", "A History of New York"], ["Uriah Heep", "David Copperfield"], ["Simon Legree", "Uncle Tom's Cabin"]],
+    q: {ask: "Oldest to newest coinage", i: [["Munchkin", "1900"], ["Wendy house", "1904"], ["heffalump", "1926"], ["Pooh-sticks", "1928"]], n: "Pooh-sticks comes from The House at Pooh Corner (1928): drop sticks off one side of a bridge and see whose comes out first."},
+    s: {t: "pander", c: "Troilus and Criseyde", o: ["The Canterbury Tales", "The Book of the Duchess", "The House of Fame"], n: "Pandarus helps Troilus win Criseyde in Chaucer's poem (c. 1385), a story he borrowed from Boccaccio."}
+  },
+  /* Sat */ {
+    p: {t: "triffid", h: "A tall, walking, stinging plant; now any plant that grows out of control.", c: "John Wyndham", o: ["H. G. Wells", "Arthur C. Clarke", "John Christopher"], n: "The Day of the Triffids (1951): the triffids take over when most people are blinded by a strange meteor shower."},
+    x: {f: "words coined in fiction", w: ["time machine", "atomic bomb", "droog"], odd: "gobbledygook", n: "Gobbledygook was coined in 1944 by a real Texas congressman, Maury Maverick, fed up with officials' jargon."},
+    m: [["Pooh-sticks", "The House at Pooh Corner"], ["heffalump", "Winnie-the-Pooh"], ["Wendy house", "Peter Pan"], ["Munchkin", "The Wonderful Wizard of Oz"]],
+    q: {ask: "Oldest to newest coinage", i: [["Goody Two-Shoes", "1765"], ["Uriah Heep", "1850"], ["Dorian Gray", "1890"], ["Jeeves", "1915"]], n: "A Dorian Gray is someone who never seems to age, after Oscar Wilde's hero and his ageing portrait."},
+    s: {t: "superman", c: "Man and Superman", o: ["Pygmalion", "Major Barbara", "Saint Joan"], n: "George Bernard Shaw's 1903 play gave English superman, his translation of Nietzsche's <i>Übermensch</i>. The comic-book hero followed in 1938."}
+  },
+  /* Sun */ {
+    p: {t: "gruntled", h: "Pleased, satisfied: the opposite of disgruntled.", c: "P. G. Wodehouse", o: ["Evelyn Waugh", "Jerome K. Jerome", "Saki"], n: "In The Code of the Woosters (1938) Bertie Wooster notes that someone, ‘if not actually disgruntled’, was ‘far from being gruntled’."},
+    x: {f: "names from fiction for types of people", w: ["Romeo", "Little Lord Fauntleroy", "Lady Bountiful"], odd: "shrapnel", n: "Shrapnel is named after a real man, Henry Shrapnel, the British army officer who invented the exploding shell."},
+    m: [["Jessica", "The Merchant of Venice"], ["Vanessa", "Cadenus and Vanessa"], ["Pamela", "Arcadia"], ["mentor", "The Odyssey"]],
+    q: {ask: "Oldest to newest coinage", i: [["tintinnabulation", "1849"], ["Gilded Age", "1873"], ["trilby", "1894"], ["triffid", "1951"]], n: "The trilby hat is named after the heroine of George du Maurier's novel Trilby (1894), who wore one on stage."},
+    s: {t: "Knickerbocker", c: "A History of New York", o: ["The Legend of Sleepy Hollow", "Rip Van Winkle", "The Last of the Mohicans"], n: "Washington Irving published his comic history (1809) as the work of an imaginary old Dutchman, Diedrich Knickerbocker. New Yorkers became Knickerbockers, and so did baggy Dutch-style breeches."}
   }
 ];

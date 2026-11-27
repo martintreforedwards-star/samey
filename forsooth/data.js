@@ -157,5 +157,55 @@ const DAYS = [
     p: {t: "pardee", h: "Found throughout Chaucer", c: "By God! (a mild oath)", o: ["Excuse me", "Goodbye", "Pardon"], n: "From French par Dieu."},
     m: [["Full fathom five thy father lies", "The Tempest"], ["The fool doth think he is wise", "As You Like It"], ["Cry 'God for Harry, England, and Saint George!'", "Henry V"], ["Now is the winter of our discontent", "Richard III"]],
     q: {ask: "Earliest to latest written", i: [["The Faerie Queene (first part)", "1590"], ["Hamlet", "c. 1600"], ["Volpone", "1606"], ["Paradise Lost", "1667"]], n: "The first three books of The Faerie Queene came out in 1590, dedicated to Elizabeth I."}
+  },
+  /* ---------- Week 4 ---------- */
+  /* Mon */ {
+    s: {t: "Sweet Thames, run softly, till I end my song", c: "Edmund Spenser", o: ["Philip Sidney", "Michael Drayton", "Samuel Daniel"], n: "The refrain of Spenser's Prothalamion (1596), a poem for a double wedding. T. S. Eliot borrowed it for The Waste Land."},
+    x: {f: "lines exactly as Shakespeare wrote them", w: ["The quality of mercy is not strained", "Is this a dagger which I see before me", "I am a man more sinned against than sinning"], odd: "Fools rush in where angels fear to tread", n: "That's Alexander Pope, An Essay on Criticism (1711), a century after Shakespeare."},
+    p: {t: "harlot", h: "Chaucer calls the Summoner “a gentil harlot and a kynde”", c: "A rascal (often a man)", o: ["A dancer", "A beggar woman", "A juggler"], n: "In Chaucer a harlot could be any low-living rogue. The modern meaning took over later."},
+    m: [["Cry ‘God for Harry, England, and Saint George!’", "Henry V"], ["To sleep: perchance to dream: ay, there's the rub", "Hamlet"], ["What's in a name?", "Romeo and Juliet"], ["Lord, what fools these mortals be!", "A Midsummer Night's Dream"]],
+    q: {ask: "Earliest to latest written", i: [["Gammer Gurton's Needle", "c. 1553"], ["Tamburlaine", "c. 1587"], ["Hamlet", "c. 1600"], ["The White Devil", "1612"]], n: "Gammer Gurton's Needle is one of the first English comedies: a whole village in uproar over a lost needle."}
+  },
+  /* Tue */ {
+    s: {t: "Go and catch a falling star", c: "John Donne", o: ["Ben Jonson", "Andrew Marvell", "Robert Herrick"], n: "Donne's Song lists impossible tasks, and finding a woman both true and fair is the last of them."},
+    x: {f: "lines by Christopher Marlowe", w: ["Come live with me and be my love", "Who ever loved that loved not at first sight?", "Why, this is hell, nor are we out of it"], odd: "Shall I compare thee to a summer's day?", n: "That's Shakespeare, Sonnet 18. Marlowe's Mephistopheles says “Why, this is hell, nor are we out of it” in Doctor Faustus."},
+    p: {t: "gentil", h: "The Knight is “a verray, parfit gentil knyght”", c: "Noble, well-bred", o: ["Soft and kind", "Timid", "Elderly"], n: "Gentil meant noble in birth and in behaviour. Gentle, genteel and gentleman all grew from it."},
+    m: [["O brave new world, that has such people in't!", "The Tempest"], ["I come to bury Caesar, not to praise him", "Julius Caesar"], ["Get thee to a nunnery", "Hamlet"], ["Some Cupid kills with arrows, some with traps", "Much Ado About Nothing"]],
+    q: {ask: "Earliest to latest written", i: [["Doctor Faustus", "c. 1592"], ["Every Man in His Humour", "1598"], ["The Knight of the Burning Pestle", "1607"], ["'Tis Pity She's a Whore", "c. 1630"]], n: "Every Man in His Humour (1598) had Shakespeare himself in the first cast."}
+  },
+  /* Wed */ {
+    s: {t: "Th' expense of spirit in a waste of shame", c: "William Shakespeare", o: ["John Donne", "Philip Sidney", "Michael Drayton"], n: "The opening of Sonnet 129, a furious sonnet about lust."},
+    x: {f: "lines by John Donne", w: ["No man is an island", "Death, be not proud", "Batter my heart, three-person'd God"], odd: "The proper study of mankind is man", n: "That's Alexander Pope again, An Essay on Man (1734)."},
+    p: {t: "nones", h: "From “for the nones”, in The Canterbury Tales", c: "The occasion, the purpose", o: ["Nuns", "Nine o'clock prayers", "Nothing at all"], n: "Middle English <i>for then anes</i>, for the once, got misdivided as for the nones. Nonce comes from the same slip."},
+    m: [["The game's afoot", "Henry V"], ["I am constant as the northern star", "Julius Caesar"], ["Parting is such sweet sorrow", "Romeo and Juliet"], ["If music be the food of love, play on", "Twelfth Night"]],
+    q: {ask: "Earliest to latest written", i: [["The Comedy of Errors", "c. 1594"], ["Much Ado About Nothing", "c. 1598"], ["Macbeth", "c. 1606"], ["The Tempest", "c. 1611"]], n: "The Comedy of Errors is Shakespeare's shortest play: two sets of twins and a great deal of mistaken identity."}
+  },
+  /* Thu */ {
+    s: {t: "Since there's no help, come let us kiss and part", c: "Michael Drayton", o: ["William Shakespeare", "Philip Sidney", "Samuel Daniel"], n: "The opening of sonnet 61 in Drayton's Idea. Plenty of readers guess Shakespeare."},
+    x: {f: "lines exactly as Shakespeare wrote them", w: ["Frailty, thy name is woman!", "Exit, pursued by a bear", "Love all, trust a few, do wrong to none"], odd: "Cleanliness is next to godliness", n: "A saying made famous by John Wesley's sermons in the 1700s. Not Shakespeare."},
+    p: {t: "ywis", h: "A filler word Chaucer uses again and again", c: "Certainly", o: ["Wisely", "I wish", "Unknowingly"], n: "From Old English <i>gewis</i>, sure. Later readers misread it as I wis, I know."},
+    m: [["We few, we happy few, we band of brothers", "Henry V"], ["Beware the ides of March", "Julius Caesar"], ["The play's the thing", "Hamlet"], ["If you prick us, do we not bleed?", "The Merchant of Venice"]],
+    q: {ask: "Earliest to latest", i: [["Sir Gawain and the Green Knight", "late 1300s"], ["The Book of Margery Kempe", "1430s"], ["Tottel's Miscellany", "1557"], ["Gorboduc", "1561"]], n: "Tottel's Miscellany (1557) first printed the sonnets of Wyatt and Surrey, who brought the form into English."}
+  },
+  /* Fri */ {
+    s: {t: "Hark, hark! the lark at heaven's gate sings", c: "William Shakespeare", o: ["Ben Jonson", "Thomas Campion", "John Lyly"], n: "A song from Cymbeline, later set to music by Schubert."},
+    x: {f: "lines by Ben Jonson", w: ["Drink to me only with thine eyes", "He was not of an age, but for all time!", "Come, my Celia, let us prove"], odd: "Gather ye rosebuds while ye may", n: "That's Robert Herrick, one of the ‘Sons of Ben’ who idolised Jonson."},
+    p: {t: "ferthyng", h: "No “ferthyng” of grease is seen in the Prioress's cup", c: "A tiny speck", o: ["A farthing coin", "A feather", "A fourth helping"], n: "Literally a fourth part, like the coin. The Prioress wipes her lip so well that not the smallest trace is left."},
+    m: [["O, that this too too solid flesh would melt", "Hamlet"], ["This was the noblest Roman of them all", "Julius Caesar"], ["Is love a tender thing?", "Romeo and Juliet"], ["The miserable have no other medicine but only hope", "Measure for Measure"]],
+    q: {ask: "Earliest to latest published", i: [["The Book of Common Prayer", "1549"], ["Foxe's Book of Martyrs", "1563"], ["Holinshed's Chronicles", "1577"], ["Bacon's Essays", "1597"]], n: "Shakespeare mined Holinshed's Chronicles for Macbeth, King Lear and his history plays."}
+  },
+  /* Sat */ {
+    s: {t: "Pacience is an heigh vertu, certeyn", c: "Geoffrey Chaucer", o: ["John Gower", "John Lydgate", "Thomas Hoccleve"], n: "From the Franklin's Tale, a story about keeping promises."},
+    x: {f: "lines by Chaucer", w: ["And smale foweles maken melodye", "Thanne longen folk to goon on pilgrimages", "So hadde I spoken with hem everichon"], odd: "Ich am of Irlaunde", n: "That's an anonymous medieval lyric: “Ich am of Irlaunde, / And of the holy londe / Of Irlande.”"},
+    p: {t: "lief", h: "As in “I had as lief”", c: "Dear, gladly", o: ["A leaf", "A thief", "A lie"], n: "Lief meant dear or willingly. “I'd as lief” (I'd as gladly) was still heard in the 1900s."},
+    m: [["anon", "at once"], ["hight", "was called"], ["wenche", "girl, servant"], ["solas", "comfort, pleasure"]],
+    q: {ask: "In the order they appear in the General Prologue", i: [["The Squire", "portrait 2"], ["The Monk", "portrait 5"], ["The Clerk", "portrait 8"], ["The Miller", "portrait 18"]], n: "The Miller leads the pilgrims out of London, playing the bagpipes."}
+  },
+  /* Sun */ {
+    s: {t: "The man that hath no music in himself", c: "William Shakespeare", o: ["Ben Jonson", "Thomas Campion", "John Dowland"], n: "Lorenzo in The Merchant of Venice says such a man “Is fit for treasons, stratagems and spoils”."},
+    x: {f: "lines from The Tempest", w: ["Our revels now are ended", "Misery acquaints a man with strange bedfellows", "Hell is empty, and all the devils are here"], odd: "All the world's a stage", n: "That's Jaques in As You Like It: “And all the men and women merely players.”"},
+    p: {t: "hostelrye", h: "The pilgrims meet at the Tabard, a “hostelrye” in Southwark", c: "An inn", o: ["A hospital", "A stable", "A chapel"], n: "Hostel, hotel and hospital are all relatives, from Latin <i>hospes</i>, a guest."},
+    m: [["The lunatic, the lover and the poet", "A Midsummer Night's Dream"], ["Pride, pomp and circumstance of glorious war", "Othello"], ["The wheel is come full circle", "King Lear"], ["Neither rhyme nor reason", "As You Like It"]],
+    q: {ask: "Earliest to latest written", i: [["Richard III", "c. 1593"], ["Romeo and Juliet", "c. 1595"], ["Hamlet", "c. 1600"], ["The Tempest", "c. 1611"]], n: "The Tempest is often read as Shakespeare's farewell to the stage: Prospero gives up his magic."}
   }
 ];
