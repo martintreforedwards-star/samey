@@ -67,5 +67,89 @@ const DAYS = [
   [ {t:"boss", q:"“Life's but a walking shadow, a poor player / That struts and frets his hour upon the stage”", o:["life","an actor","a ghost","a king"], why:"Macbeth, near the end. The poor player is the metaphor: life is a bad actor, gone after his hour."},
     {t:"boss", q:"“Hope is the thing with feathers / That perches in the soul”. What is hope being turned into?", o:["a bird","an angel","a pillow","an arrow"], why:"Emily Dickinson: feathers, perches, and later in the poem it sings. Hope is a small bird."},
     {t:"boss", q:"He arrives in December with cold breath, paints the windows white overnight, and leaves ferns drawn on the glass.", o:["frost","snow","Father Christmas","fog"], why:"Fern patterns on the glass are frost's signature. Father Christmas comes in December too, but leaves presents, not ferns."},
-    {t:"boss", q:"Every morning it swallows the town at eight, and every evening at six it spits it out again, a little more tired.", o:["the commuter train","the sea","the night","the school"], why:"Swallowed at eight, out at six, more tired: the commuter train. School finishes well before six."} ]
+    {t:"boss", q:"Every morning it swallows the town at eight, and every evening at six it spits it out again, a little more tired.", o:["the commuter train","the sea","the night","the school"], why:"Swallowed at eight, out at six, more tired: the commuter train. School finishes well before six."} ],
+  [
+    {t:"sim",q:"as bold as ___",o:["brass","bronze","iron","copper"],why:"Brass has meant cheek since the 1500s, hence a brass neck. A story links the phrase to Brass Crosby, an 18th-century Lord Mayor of London, but it's probably older."},
+    {t:"cls",q:"My brother is a couch potato.",a:"Metaphor",why:"He isn't like a potato, he simply is one: a metaphor. Couch potato is American slang from the 1970s."},
+    {t:"mix",q:"We'll cross that bridge when it comes home to roost.",o:["Cross that bridge when you come to it","Chickens come home to roost","Burn your bridges","Rule the roost"],a:["Cross that bridge when you come to it","Chickens come home to roost"],why:"Deal with it later meets your mistakes will catch up with you. Not a reassuring combination."},
+    {t:"hid",q:"Which plant's name is secretly a metaphor?",o:["dandelion","oak","ivy","fern"],why:"Dandelion is French <i>dent de lion</i>, lion's tooth, from its jagged leaves."}
+  ],
+  [
+    {t:"sim",q:"as bright as a ___",o:["button","penny","star","pin"],why:"Polished brass buttons on uniforms shone. Bright also means clever, so a bright button is a sharp child."},
+    {t:"cls",q:"The ice cream was like a cold kiss.",a:"Simile",why:"Like is the giveaway: the ice cream is compared to a kiss, not turned into one."},
+    {t:"mix",q:"It's a piece of cake in the park.",o:["A piece of cake","A walk in the park","Have your cake and eat it","Take a hike"],a:["A piece of cake","A walk in the park"],why:"Two ways of saying easy, rolled into one picnic."},
+    {t:"hid",q:"Which money phrase is secretly a metaphor?",o:["cash flow","coin","pound","penny"],why:"Money doesn't really flow, but businesses talk about it as if it were water moving in and out."}
+  ],
+  [
+    {t:"sim",q:"as flat as a ___",o:["pancake","plate","board","floor"],why:"Pancakes have been the standard of flatness since the 1500s."},
+    {t:"poet",q:"“My heart is like a singing bird”",o:["Christina Rossetti","Elizabeth Barrett Browning","Emily Brontë","Emily Dickinson"],why:"Christina Rossetti, A Birthday (1862). A run of similes builds to the reason: ‘my love is come to me’."},
+    {t:"mix",q:"That ship has sailed under the bridge.",o:["That ship has sailed","Water under the bridge","Abandon ship","Cross that bridge when you come to it"],a:["That ship has sailed","Water under the bridge"],why:"Too late meets it's in the past. Both are about moving on, which is how they got tangled."},
+    {t:"hid",q:"Which weather word is secretly a metaphor?",o:["heatwave","drizzle","sleet","hail"],why:"Hot air doesn't come in waves; the heat rolls in like the sea."}
+  ],
+  [
+    {t:"sim",q:"as quiet as a ___",o:["mouse","cat","shadow","snail"],why:"Mice creep about without a sound. The phrase goes back at least to the 1500s."},
+    {t:"cls",q:"The car coughed and spluttered up the hill.",a:"Neither",why:"A trap: no like or as, and the car isn't called something else. It's personification, giving a machine a cold."},
+    {t:"mix",q:"Let sleeping dogs lie in the bed you've made.",o:["Let sleeping dogs lie","You've made your bed, now lie in it","Every dog has its day","Get out of bed on the wrong side"],a:["Let sleeping dogs lie","You've made your bed, now lie in it"],why:"Leave it alone meets live with the consequences. The dog now has your bed."},
+    {t:"hid",q:"Which part of a book is secretly a metaphor?",o:["spine","page","paragraph","title"],why:"A book's spine holds it together like a backbone."}
+  ],
+  [
+    {t:"sim",q:"as clean as a ___",o:["whistle","plate","pin","window"],why:"A clean whistle gives a clear note. The phrase also meant completely, as in cut clean as a whistle."},
+    {t:"poet",q:"“Shall I compare thee to a summer's day?”",o:["William Shakespeare","Christopher Marlowe","Ben Jonson","John Donne"],why:"Shakespeare, Sonnet 18. He asks the question and then decides the summer's day doesn't measure up."},
+    {t:"mix",q:"You're barking up the wrong end of the stick.",o:["Barking up the wrong tree","Get the wrong end of the stick","His bark is worse than his bite","Carrot and stick"],a:["Barking up the wrong tree","Get the wrong end of the stick"],why:"Both mean you've misunderstood. Together they give the dog a stick to chew on."},
+    {t:"hid",q:"Which vegetable name is secretly a metaphor?",o:["lady's finger","carrot","pea","leek"],why:"Lady's finger is another name for okra, from its long slim shape."}
+  ],
+  [
+    {t:"sim",q:"as thin as a ___",o:["rake","stick","pin","pole"],why:"Chaucer's poor student in The Canterbury Tales rides a horse ‘as lene… as is a rake’."},
+    {t:"cls",q:"Her words were daggers.",a:"Metaphor",why:"The words simply are daggers, sharp and wounding: a metaphor. Hamlet says ‘I will speak daggers to her, but use none’."},
+    {t:"mix",q:"Strike while the iron is in the fire.",o:["Strike while the iron is hot","Too many irons in the fire","Fight fire with fire","Rule with an iron fist"],a:["Strike while the iron is hot","Too many irons in the fire"],why:"Act now meets doing too much at once. The blacksmith is very busy."},
+    {t:"sim",q:"as nutty as a ___",o:["fruitcake","walnut","squirrel","sponge"],why:"Nutty means mad, and a fruitcake is full of nuts. The phrase took off in 1930s America."}
+  ],
+  [
+    {t:"boss",q:"It has a face but cannot see, two hands but cannot clap, and it has something new to tell you every minute.",o:["a clock","a mirror","a newspaper","a robot"],why:"Face and hands are old metaphors for a clock. A mirror has no hands."},
+    {t:"boss",q:"A silver coin is tossed into the night sky and nobody ever catches it. Each night a little more of it is spent, until it's minted fresh again.",o:["the moon","a star","a comet","a streetlamp"],why:"Spent a little each night: the moon wanes, then comes back new."},
+    {t:"boss",q:"“Now is the winter of our discontent / Made glorious summer by this sun of York”",o:["hard times","bad weather","old age","the night"],why:"Shakespeare, Richard III. The winter is the gloomy years now over; the sun of York is a pun on Edward IV, son of York."},
+    {t:"boss",q:"Every morning, mouths open in the pavement and swallow the people of the city. Every evening they spit them out again.",o:["Tube stations","caves","factories","graves"],why:"Mouths in the pavement swallowing commuters: the Underground entrances at rush hour."}
+  ],
+  [
+    {t:"sim",q:"as pleased as ___",o:["Punch","Judy","a king","a dog"],why:"Mr Punch of Punch and Judy, forever delighted with his own wickedness."},
+    {t:"cls",q:"He ran as fast as he could.",a:"Neither",why:"A trap: as... as is here, but he's only compared with himself. A simile compares two different things."},
+    {t:"mix",q:"Put that in your pipe and stew in it.",o:["Put that in your pipe and smoke it","Stew in your own juice","Pipe dream","In a stew"],a:["Put that in your pipe and smoke it","Stew in your own juice"],why:"Take that! meets suffer the consequences. Two ways of being told off at once."},
+    {t:"hid",q:"Which hill word is secretly a metaphor?",o:["brow","mound","slope","incline"],why:"The brow of a hill is its forehead, the part that juts out at the top."}
+  ],
+  [
+    {t:"sim",q:"as snug as a bug in a ___",o:["rug","mug","jug","rag"],why:"Benjamin Franklin used it in a 1772 letter, though it's older. The rhyme does the work."},
+    {t:"cls",q:"The stars were diamonds scattered on black velvet.",a:"Metaphor",why:"The stars are diamonds here, not like them: a metaphor."},
+    {t:"mix",q:"You can't have your cake and beat it.",o:["Have your cake and eat it","If you can't beat them, join them","A piece of cake","Beat around the bush"],a:["Have your cake and eat it","If you can't beat them, join them"],why:"You can't have it both ways meets give in and join the winners."},
+    {t:"hid",q:"Which word for having ideas is secretly a metaphor?",o:["brainstorm","plan","notion","thought"],why:"A storm in the brain. It once meant a fit of madness, before office meetings took it over."}
+  ],
+  [
+    {t:"sim",q:"as mad as a ___",o:["hatter","hare","hornet","hen"],why:"Hat-makers used mercury to treat felt, and many were poisoned by it. The phrase was around before Alice met the Hatter."},
+    {t:"poet",q:"“Life, like a dome of many-coloured glass, / Stains the white radiance of Eternity”",o:["Percy Bysshe Shelley","John Keats","Lord Byron","William Blake"],why:"Shelley, Adonais (1821), his elegy for Keats. Life is like stained glass, colouring the pure white light beyond."},
+    {t:"mix",q:"It's six of one and two in the bush.",o:["Six of one and half a dozen of the other","A bird in the hand is worth two in the bush","At sixes and sevens","Beat about the bush"],a:["Six of one and half a dozen of the other","A bird in the hand is worth two in the bush"],why:"No difference meets keep what you've got. The arithmetic doesn't add up."},
+    {t:"hid",q:"Which sewing phrase is secretly a metaphor?",o:["the eye of a needle","thread","thimble","stitch"],why:"A needle can't see: the hole is called an eye for its shape."}
+  ],
+  [
+    {t:"sim",q:"as sound as a ___",o:["bell","drum","pound","horn"],why:"A cracked bell sounds wrong, so a bell that rings true is sound all through."},
+    {t:"cls",q:"She sings like an angel.",a:"Simile",why:"Like makes it a simile."},
+    {t:"mix",q:"It's raining cats and dogs on my parade.",o:["Raining cats and dogs","Rain on my parade","Fight like cat and dog","Right as rain"],a:["Raining cats and dogs","Rain on my parade"],why:"Pouring down meets spoiling the fun. A very soggy parade."},
+    {t:"hid",q:"Which car part is secretly a metaphor?",o:["bonnet","wheel","engine","brake"],why:"The bonnet covers the engine like a hat. Americans call it the hood, another hat."}
+  ],
+  [
+    {t:"sim",q:"as proud as a ___",o:["peacock","lion","king","swan"],why:"The peacock's spread tail has stood for pride since the Middle Ages."},
+    {t:"poet",q:"“The Assyrian came down like the wolf on the fold”",o:["Lord Byron","Walter Scott","Robert Southey","Thomas Moore"],why:"Byron, The Destruction of Sennacherib (1815). The army falls on the city like a wolf on a sheepfold."},
+    {t:"mix",q:"That's the last nail in the camel's back.",o:["The final nail in the coffin","The straw that broke the camel's back","Hit the nail on the head","Get the hump"],a:["The final nail in the coffin","The straw that broke the camel's back"],why:"Two ways of saying the end has come. The camel has a very bad day."},
+    {t:"hid",q:"Which word for news is secretly a metaphor?",o:["grapevine","report","bulletin","update"],why:"Heard it on the grapevine: rumours spread along twisting, hidden lines, like a vine."}
+  ],
+  [
+    {t:"sim",q:"as stubborn as a ___",o:["mule","goat","donkey","ox"],why:"Mules are famous for refusing to budge, though owners say they're just being careful."},
+    {t:"cls",q:"This cake is as big as that one.",a:"Neither",why:"A plain comparison of two cakes, not a figure of speech. A simile compares things that are different in kind."},
+    {t:"mix",q:"There's no use crying over spilt beans.",o:["Don't cry over spilt milk","Spill the beans","Cry wolf","Full of beans"],a:["Don't cry over spilt milk","Spill the beans"],why:"Don't fret about it meets give away the secret."},
+    {t:"sim",q:"as fresh as a ___",o:["daisy","rose","tulip","fern"],why:"The daisy opens fresh every morning: its name means day's eye."}
+  ],
+  [
+    {t:"boss",q:"“That time of year thou mayst in me behold / When yellow leaves, or none, or few, do hang”",o:["old age","autumn","a forest","winter"],why:"Shakespeare, Sonnet 73. The autumn is a metaphor: the speaker is growing old."},
+    {t:"boss",q:"It runs but never walks, has a mouth but never talks, and has a bed but never sleeps.",o:["a river","a road","a clock","a train"],why:"An old riddle. A river runs, has a mouth at the sea, and lies in its bed."},
+    {t:"boss",q:"Overnight a white sheet is laid over the whole county, deep enough to swallow your boots. By noon the sun has started folding it away.",o:["snow","frost","fog","a cloud"],why:"Deep enough to swallow boots: frost is only a thin coat."},
+    {t:"boss",q:"Every December a green guest comes in from the cold. It is dressed in lights and jewels, admired for a fortnight, then put out bare in January.",o:["a Christmas tree","a snowman","a robin","holly"],why:"Comes indoors, dressed in lights and baubles, out in January: the Christmas tree."}
+  ]
 ];
