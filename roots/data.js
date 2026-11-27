@@ -46,7 +46,25 @@ const FROM = [
  {w:"taboo",a:"Tongan",f:["Māori","Hawaiian","Malay"],o:"Captain Cook heard <i>tabu</i>, ‘forbidden’, in Tonga in 1777."},
  {w:"muesli",a:"Swiss German",f:["Swedish","Dutch","Danish"],o:"Swiss German, a little <i>Mus</i> (mush). Created by the doctor Maximilian Bircher-Benner around 1900."},
  {w:"jaguar",a:"Tupi",f:["Nahuatl","Quechua","Taíno"],o:"From Tupi, a language of Brazil, by way of Portuguese."},
- {w:"ski",a:"Norwegian",f:["Swedish","Finnish","Danish"],o:"Norwegian <i>ski</i>, from Old Norse <i>skíð</i>, a split length of wood."}
+ {w:"ski",a:"Norwegian",f:["Swedish","Finnish","Danish"],o:"Norwegian <i>ski</i>, from Old Norse <i>skíð</i>, a split length of wood."},
+ {w:"pundit",a:"Hindi",f:["Arabic","Malay","Turkish"],o:"Hindi <i>paṇḍit</i>, a learned man, from Sanskrit. It meant a Hindu scholar before it meant a TV expert."},
+ {w:"kayak",a:"Inuit",f:["Norwegian","Russian","Finnish"],o:"From Inuit <i>qajaq</i>, a one-person hunting boat covered in sealskin."},
+ {w:"bagel",a:"Yiddish",f:["Hungarian","Dutch","Greek"],o:"Yiddish <i>beygl</i>, a ring-shaped roll. It came to Britain and America with Jewish families from Eastern Europe."},
+ {w:"karaoke",a:"Japanese",f:["Korean","Chinese","Thai"],o:"Japanese <i>kara</i>, empty, and <i>oke</i>, short for <i>ōkesutora</i>, orchestra: a band with no singer."},
+ {w:"paprika",a:"Hungarian",f:["Spanish","Polish","Greek"],o:"Hungarian, from Serbian <i>papar</i>, pepper. It's the spice in goulash."},
+ {w:"gung-ho",a:"Chinese",f:["Japanese","Korean","Vietnamese"],o:"From Chinese <i>gōnghé</i>, work together. US Marines took it up as a motto in the Second World War."},
+ {w:"smorgasbord",a:"Swedish",f:["Danish","Norwegian","Dutch"],o:"Swedish <i>smörgås</i>, open sandwich, and <i>bord</i>, table."},
+ {w:"waltz",a:"German",f:["French","Italian","Polish"],o:"German <i>Walzer</i>, from <i>walzen</i>, to turn or roll."},
+ {w:"cot",a:"Hindi",f:["Malay","Persian","Tamil"],o:"Hindi <i>khāṭ</i>, a light bedstead. British soldiers in India brought it home."},
+ {w:"vodka",a:"Russian",f:["Finnish","Swedish","Hungarian"],o:"Russian, ‘little water’, from <i>voda</i>, water."},
+ {w:"fjord",a:"Norwegian",f:["Swedish","Danish","Dutch"],o:"Norwegian, from Old Norse <i>fjǫrðr</i>. English <i>firth</i> and <i>ford</i> are distant cousins."},
+ {w:"cruise",a:"Dutch",f:["German","Danish","French"],o:"Dutch <i>kruisen</i>, to cross: ships crossing back and forth."},
+ {w:"koala",a:"Dharug",f:["Maori","Malay","Hawaiian"],o:"From Dharug, a language of the Sydney area. The animal is not a bear, whatever its nickname says."},
+ {w:"croissant",a:"French",f:["Italian","German","Spanish"],o:"French for crescent, from its shape."},
+ {w:"galore",a:"Irish",f:["Welsh","Cornish","Old Norse"],o:"Irish <i>go leor</i>, enough. It always comes after its noun: whisky galore."},
+ {w:"corgi",a:"Welsh",f:["Cornish","Irish","Breton"],o:"Welsh <i>cor</i>, dwarf, and <i>ci</i>, dog."},
+ {w:"patio",a:"Spanish",f:["Italian","Portuguese","French"],o:"Spanish for an inner courtyard open to the sky."},
+ {w:"kiwi",a:"Maori",f:["Hawaiian","Malay","Samoan"],o:"Maori, probably imitating the bird's call. The fruit was renamed after it in the 1950s for export."}
 ];
 
 // Round 2 · Then and now. m = three meanings, oldest first (the game shuffles them), o = the story.
@@ -88,7 +106,25 @@ const THEN = [
  {w:"decimate",m:["to kill one in every ten","to destroy a large part of","to badly weaken"],o:"Roman armies punished mutinies by killing every tenth soldier, from Latin <i>decimus</i>, ‘tenth’."},
  {w:"fathom",m:["the span of outstretched arms","a depth of six feet","to understand"],o:"Old English <i>fæþm</i>, ‘embrace’. Sailors measured rope between their hands; getting to the bottom of something became understanding it."},
  {w:"hearse",m:["a frame for candles over a coffin","the platform a coffin rests on","the car that carries a coffin"],o:"From Latin <i>hirpex</i>, a harrow: the spiky candle frame looked like one."},
- {w:"lady",m:["loaf-kneader","mistress of a household","a well-mannered woman"],o:"Old English <i>hlǣfdīge</i>: <i>hlāf</i>, ‘loaf’, and a word for kneading. Lord was the ‘loaf-ward’."}
+ {w:"lady",m:["loaf-kneader","mistress of a household","a well-mannered woman"],o:"Old English <i>hlǣfdīge</i>: <i>hlāf</i>, ‘loaf’, and a word for kneading. Lord was the ‘loaf-ward’."},
+ {w:"manufacture",m:["making by hand","making goods in a workshop","making goods by machine"],o:"Latin <i>manu factum</i>, made by hand. The machines took over the word as well as the work."},
+ {w:"deer",m:["any animal","a wild beast","a stag or hind"],o:"Old English <i>dēor</i> meant any animal. Shakespeare's ‘mice and rats and such small deer’ keeps the old sense."},
+ {w:"bimbo",m:["a baby (in Italian)","a foolish man","an empty-headed woman"],o:"Italian for a little child. 1910s American slang used it of a dim or thuggish man, before it switched to women."},
+ {w:"cute",m:["clever, sharp","shrewd, crafty","sweetly attractive"],o:"Short for <i>acute</i>. ‘Too cute by half’ keeps the old sense of being too clever."},
+ {w:"mouse",m:["a small rodent","a timid person","a pointing device"],o:"The computer mouse got its name in the 1960s because of its cord, like a tail."},
+ {w:"harlot",m:["a vagabond, a rogue (usually a man)","a jester or entertainer","a prostitute"],o:"Old French <i>herlot</i>, a vagabond. Chaucer used it of men."},
+ {w:"knight",m:["a boy or servant","a mounted soldier","a man given an honour"],o:"Old English <i>cniht</i>, a boy or lad. German <i>Knecht</i>, a servant, kept the humble sense."},
+ {w:"corn",m:["a grain of anything","a cereal crop","maize (in America)"],o:"Peppercorn and barleycorn keep the old sense of a single grain. In America, corn came to mean the main crop, maize."},
+ {w:"nausea",m:["seasickness","sickness in the stomach","disgust"],o:"Greek <i>naus</i>, ship, as in nautical."},
+ {w:"sly",m:["skilful, wise","crafty","sneaky"],o:"From Old Norse <i>slœgr</i>, clever. It drifted from clever to too clever."},
+ {w:"tabloid",m:["a tablet of medicine","anything squashed small","a popular newspaper"],o:"A trade name for compressed tablets from 1884. Newspapers that boiled the news down were soon called tabloids."},
+ {w:"cloud",m:["a rock or hill","a mass of vapour in the sky","online data storage"],o:"Old English <i>clūd</i> meant a rock. Heaped clouds looked like hills of rock."},
+ {w:"garble",m:["to sift, removing the rubbish","to pick out bits unfairly","to mix up and distort"],o:"Spice dealers garbled their spices to clean them. Picking out the best bits slid into twisting a story."},
+ {w:"enthusiasm",m:["being possessed by a god","religious fanaticism","eager interest"],o:"Greek <i>enthousiasmos</i>, having a god within. In the 1700s it was an insult."},
+ {w:"pedagogue",m:["a slave who walked children to school","a teacher","a fussy, pedantic teacher"],o:"Greek <i>paidagōgos</i>, child-leader."},
+ {w:"blackguard",m:["the kitchen servants of a great house","a gang of idlers","a scoundrel"],o:"The scullions and pot-boys who travelled with the pots and pans were the ‘black guard’. Say it BLAG-ard."},
+ {w:"cheap",m:["trade, bargaining","low in price","poor in quality"],o:"Old English <i>cēap</i>, trade, which survives in Cheapside and Chipping Norton: market places."},
+ {w:"quarantine",m:["forty days","a ship's period of isolation","any isolation to stop disease"],o:"Venetian <i>quaranta giorni</i>, forty days: how long ships from plague ports had to wait."}
 ];
 
 // Round 3 · Root family. r = the root, g = what it means and where from, y = three words that come from it,
@@ -134,7 +170,25 @@ const FAMILY = [
  {r:"jur",g:"law (Latin <i>ius, iuris</i>)",y:["jury","justice","injury"],n:"juice",o:"A sneaky one: <i>juice</i> is from a different Latin <i>ius</i>, meaning ‘broth’."},
  {r:"vid",g:"to see (Latin <i>videre</i>)",y:["video","evidence","provide"],n:"vixen",o:"<i>Vixen</i> is Old English <i>fyxen</i>, a female fox."},
  {r:"pend",g:"to hang (Latin <i>pendere</i>)",y:["pendant","suspend","pendulum"],n:"penguin",o:"<i>Penguin</i> is of uncertain origin, possibly Welsh <i>pen gwyn</i>, ‘white head’. It doesn't hang anywhere."},
- {r:"bene",g:"well (Latin <i>bene</i>)",y:["benefit","benevolent","benign"],n:"bench",o:"<i>Bench</i> is Old English <i>benc</i>, related to bank."}
+ {r:"bene",g:"well (Latin <i>bene</i>)",y:["benefit","benevolent","benign"],n:"bench",o:"<i>Bench</i> is Old English <i>benc</i>, related to bank."},
+ {r:"frag",g:"break (Latin <i>frangere</i>)",y:["fragment","fragile","fraction"],n:"fragrant",o:"<i>Fragrant</i> comes from Latin <i>fragrare</i>, to smell sweet."},
+ {r:"matr",g:"mother (Latin <i>mater</i>)",y:["maternal","matriarch","matron"],n:"mattress",o:"<i>Mattress</i> comes from Arabic <i>maṭraḥ</i>, a cushion, by way of Italian."},
+ {r:"astr",g:"star (Greek <i>astron</i>)",y:["astronomy","asterisk","disaster"],n:"astringent",o:"<i>Astringent</i> is Latin <i>ad</i> + <i>stringere</i>, to bind tight. A disaster was being born under an evil star."},
+ {r:"amb",g:"walk (Latin <i>ambulare</i>)",y:["ambulance","amble","perambulator"],n:"ambush",o:"<i>Ambush</i> comes from Old French <i>embuschier</i>, to hide in a wood (<i>bush</i>)."},
+ {r:"pos",g:"put, place (Latin <i>ponere</i>)",y:["position","deposit","component"],n:"posh",o:"Nobody knows where <i>posh</i> came from. ‘Port out, starboard home’ is a later invention."},
+ {r:"cis",g:"cut (Latin <i>caedere</i>)",y:["incision","precise","decide"],n:"acid",o:"<i>Acid</i> comes from Latin <i>acidus</i>, sour. To decide was to cut off the argument."},
+ {r:"sec",g:"follow (Latin <i>sequi</i>)",y:["sequel","consequence","second"],n:"secret",o:"<i>Secret</i> comes from Latin <i>secernere</i>, to set apart. A second is the one that follows the first."},
+ {r:"loc",g:"place (Latin <i>locus</i>)",y:["location","local","locomotive"],n:"locust",o:"<i>Locust</i> is Latin <i>locusta</i>, a locust or lobster."},
+ {r:"cord",g:"heart (Latin <i>cor</i>)",y:["cordial","accord","record"],n:"cordon",o:"<i>Cordon</i> comes from French <i>corde</i>, rope. To record was to call back to heart."},
+ {r:"cur",g:"run (Latin <i>currere</i>)",y:["current","courier","excursion"],n:"curry",o:"<i>Curry</i> comes from Tamil <i>kari</i>, a sauce."},
+ {r:"mem",g:"remember (Latin <i>memor</i>)",y:["memory","memorial","commemorate"],n:"member",o:"<i>Member</i> comes from Latin <i>membrum</i>, a limb."},
+ {r:"nov",g:"new (Latin <i>novus</i>)",y:["novel","innovate","renovate"],n:"November",o:"<i>November</i> comes from <i>novem</i>, nine: it was the ninth month of the old Roman year."},
+ {r:"lib",g:"book (Latin <i>liber</i>)",y:["library","libretto","libel"],n:"liberty",o:"Latin had two words <i>liber</i>: one meant book, the other free. <i>Liberty</i> comes from the second. A libel was a little book, then a damaging one."},
+ {r:"cand",g:"shine white (Latin <i>candere</i>)",y:["candle","candid","incandescent"],n:"candy",o:"<i>Candy</i> comes from Arabic <i>qandī</i>, sugar. Roman candidates wore shining white togas."},
+ {r:"vac",g:"empty (Latin <i>vacuus</i>)",y:["vacuum","vacant","evacuate"],n:"vaccine",o:"<i>Vaccine</i> comes from Latin <i>vacca</i>, cow: the first vaccine used cowpox."},
+ {r:"mon",g:"warn, remind (Latin <i>monere</i>)",y:["monitor","admonish","monument"],n:"monk",o:"<i>Monk</i> comes from Greek <i>monos</i>, alone. A monument reminds you of someone."},
+ {r:"sal",g:"salt (Latin <i>sal</i>)",y:["salary","saline","salad"],n:"salute",o:"<i>Salute</i> comes from Latin <i>salus</i>, health. A salad was salted greens."},
+ {r:"bell",g:"war (Latin <i>bellum</i>)",y:["belligerent","rebel","bellicose"],n:"belly",o:"<i>Belly</i> comes from Old English <i>belg</i>, a bag. A rebel made war again."}
 ];
 
 // Round 4 · Long-lost twins. w = the word, a = its twin (same ancestor, different route), f = three unrelated words, o = the story.
@@ -179,5 +233,23 @@ const TWINS = [
  {w:"species",a:"spice",f:["spike","spade","spine"],o:"Latin <i>species</i>, ‘kind’. Medieval merchants used it for ‘goods of a particular kind’, which became spices."},
  {w:"abbreviate",a:"abridge",f:["abroad","abrupt","bridge"],o:"Both from Late Latin <i>abbreviare</i>, ‘to shorten’. <i>Abridge</i> came via Old French."},
  {w:"poor",a:"pauper",f:["pour","power","pepper"],o:"Both from Latin <i>pauper</i>. <i>Poor</i> came through French; <i>pauper</i> is the Latin borrowed straight."},
- {w:"reason",a:"ration",f:["raisin","region","reckon"],o:"Both from Latin <i>ratio</i>, ‘reckoning’. <i>Reason</i> came through French."}
+ {w:"reason",a:"ration",f:["raisin","region","reckon"],o:"Both from Latin <i>ratio</i>, ‘reckoning’. <i>Reason</i> came through French."},
+ {w:"sexton",a:"sacristan",f:["sextant","sixty","Saxon"],o:"Both from Latin <i>sacristanus</i>, the keeper of the sacred things. Sexton is the worn-down version."},
+ {w:"priest",a:"presbyter",f:["prior","press","prism"],o:"Both from Greek <i>presbyteros</i>, elder. Priest was squashed by centuries of use."},
+ {w:"bishop",a:"episcopal",f:["biscuit","shop","bespoke"],o:"Both from Greek <i>episkopos</i>, overseer. Old English shortened it to <i>biscop</i>."},
+ {w:"flower",a:"flour",f:["floor","flow","fluorine"],o:"Once the same word: flour was the ‘flower’, the finest part, of the meal. The spellings split in the 1800s."},
+ {w:"person",a:"parson",f:["prison","poison","reason"],o:"Both from Latin <i>persona</i>. The parish parson was its ‘person’ in law."},
+ {w:"card",a:"chart",f:["cart","cord","guard"],o:"Both from Latin <i>charta</i>, a sheet of paper. Card came through French, chart more directly."},
+ {w:"chamber",a:"camera",f:["chimera","cambric","camber"],o:"Both from Latin <i>camera</i>, a vaulted room. The camera was first a <i>camera obscura</i>, a dark room."},
+ {w:"cavalry",a:"chivalry",f:["Calvary","carvery","caviar"],o:"Both from Latin <i>caballus</i>, a horse. Chivalry was the code of knights on horseback."},
+ {w:"naive",a:"native",f:["nave","navy","knave"],o:"Both from Latin <i>nativus</i>, born. Naive came through French: natural, as you were born."},
+ {w:"strait",a:"strict",f:["straight","street","stray"],o:"Both from Latin <i>strictus</i>, drawn tight. A strait is a narrow, tight sea passage."},
+ {w:"sample",a:"example",f:["simple","ample","amble"],o:"Both from Latin <i>exemplum</i>. Sample is example with the front worn off."},
+ {w:"pursue",a:"prosecute",f:["purse","persuade","peruse"],o:"Both from Latin <i>prosequi</i>, to follow after."},
+ {w:"travel",a:"travail",f:["trawl","gravel","trowel"],o:"The same French word, <i>travailler</i>, to toil. A medieval journey was hard work."},
+ {w:"gaol",a:"cage",f:["goal","gale","gall"],o:"Both from Latin <i>cavea</i>, a cage or enclosure. Gaol and jail came through two French dialects."},
+ {w:"dauphin",a:"dolphin",f:["duffel","dolmen","dolly"],o:"The French king's heir was the <i>dauphin</i>, from a family whose badge was a dolphin."},
+ {w:"onion",a:"union",f:["opinion","minion","bunion"],o:"Both from Latin <i>unio</i>, oneness: an onion grows as a single bulb."},
+ {w:"mint",a:"money",f:["mind","minute","mince"],o:"Both from Latin <i>moneta</i>. Rome's mint was in the temple of Juno Moneta."},
+ {w:"frenzy",a:"frantic",f:["French","fringe","friend"],o:"Both from Greek <i>phrenitis</i>, inflammation of the brain."}
 ];
