@@ -98,7 +98,8 @@ const N=Number.isInteger(td)&&td>=1?td-1:TODAY;
 const EPOCHDAY=Math.round(dayDate(N)/864e5);
 const WD=(EPOCHDAY+3)%7; // Monday = 0 (1 Jan 1970 was a Thursday)
 const WEEK=Math.floor((EPOCHDAY+3)/7); // counts Monday-to-Sunday weeks
-const T=THEMES[(WEEK%2?WEEK_B:WEEK_A)[WD]], DOT=DOTS[WD];
+const STEP=WEEK-Math.floor((Math.round(START/864e5)+3)/7); // weeks since launch week
+const T=THEMES[SLOTS[WD][STEP%SLOTS[WD].length]], DOT=DOTS[WD];
 const dots='●'.repeat(DOT)+'○'.repeat(5-DOT);
 const SKEY='mither-'+keyOf(N);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
