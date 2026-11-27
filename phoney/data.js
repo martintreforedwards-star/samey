@@ -43,7 +43,27 @@ const SILENT=[
   {w:'rhubarb',s:1,o:'The h is a Greek touch: <i>rha</i> was the Greek name for the River Volga, where rhubarb grew.'},
   {w:'hymn',s:3,o:'The n is silent at the end, but you hear it in hymnal and hymnody.'},
   {w:'wreck',s:0,o:'Wr- once had a sounded w. Wreck, write and wrong all lost it.'},
-  {w:'reign',s:3,o:'From French <i>regne</i> and Latin <i>regnum</i>. The g is heard in regnal.'}
+  {w:'reign',s:3,o:'From French <i>regne</i> and Latin <i>regnum</i>. The g is heard in regnal.'},
+  {w:'knit',s:0,o:'The k was spoken in Old English <i>cnyttan</i>. Like knee and knot, it fell silent around the 1600s.'},
+  {w:'wren',s:0,o:'Old English <i>wrenna</i>, with a spoken w. Wr- words lost the sound but kept the letter.'},
+  {w:'calm',s:2,o:'The l went quiet centuries ago, as in palm, psalm and half.'},
+  {w:'chalk',s:3,o:'Like talk and walk, the l in -alk stopped being said long ago, though it still changes the vowel.'},
+  {w:'scissors',s:1,o:'Middle English had <i>sisoures</i>. The c was added to make it look like Latin <i>scindere</i>, to cut.'},
+  {w:'ballet',s:5,o:'Borrowed from French with its silent final t, like buffet and bouquet.'},
+  {w:'depot',s:4,o:'Another French t, silent at the end: DEP-oh.'},
+  {w:'heir',s:0,o:'From French, where the h was already silent. Its cousin heritage kept its h.'},
+  {w:'ghastly',s:1,o:'The h has no sound of its own here; it was added to match ghost.'},
+  {w:'gherkin',s:1,o:'The h is there to keep the g hard before e, as in Italian spelling.'},
+  {w:'gnarled',s:0,o:'The g is silent, as in gnaw and gnome. Gnarled is an old variant of knurled, which has a silent k instead.'},
+  {w:'knob',s:0,o:'The k was spoken until around the 1600s. Knock, knee and knuckle followed the same path.'},
+  {w:'condemn',s:6,o:'The n comes back in <i>condemnation</i>, where a vowel follows it.'},
+  {w:'numb',s:3,o:'Middle English had <i>nome</i>, with no b at all. The b was added later, to match thumb and dumb.'},
+  {w:'crumb',s:4,o:'Old English <i>cruma</i>. The b crept in during the 1500s, by analogy with words like dumb.'},
+  {w:'indict',s:4,o:'Said in-DITE. Middle English spelt it <i>endite</i>; the c was added to echo Latin <i>indictare</i>.'},
+  {w:'viscount',s:2,o:'From Old French <i>visconte</i>, where the s had already gone quiet: VY-count.'},
+  {w:'mnemonic',s:0,o:'From Greek <i>mnēmonikos</i>, to do with memory. English can\'t start a word with mn, so the m goes quiet.'},
+  {w:'pseudonym',s:0,o:'Greek <i>pseudo-</i>, false. English drops the p at the start, as in psychology.'},
+  {w:'soften',s:3,o:'The t is heard in soft, but drops out before -en, as in fasten and listen.'}
 ];
 
 // Say the place. a = how locals say it, f = three wrong versions. Capitals mark the stressed syllable.
@@ -84,7 +104,27 @@ const PLACE=[
   {p:'Derby',c:'Derbyshire',a:'DAR-bee',f:['DUR-bee','DER-bee','DAIR-bee'],o:'The er turns to ar, as in clerk and Berkshire. Americans say DUR-bee for the horse race.'},
   {p:'Woolfardisworthy',c:'Devon',a:'WOOL-zee',f:['WOOL-far-dis-wur-thee','WOOL-fards-worthy','WOOLS-worthy'],o:'Fifteen letters, two syllables. The signposts often give both.'},
   {p:'Barnoldswick',c:'Lancashire',a:'BAR-lick',f:['bar-NOLDS-wick','BAR-nolds-wick','BAR-nick'],o:'Locals call it Barlick, and so does almost everyone in the area.'},
-  {p:'Llanelli',c:'Carmarthenshire',a:'thla-NETH-lee',f:['lan-EL-ee','LAN-el-ee','lan-NELL-ee'],o:'The Welsh ll is a breathy sound, a bit like thl. English speakers often settle for lan-ETH-lee.'}
+  {p:'Llanelli',c:'Carmarthenshire',a:'thla-NETH-lee',f:['lan-EL-ee','LAN-el-ee','lan-NELL-ee'],o:'The Welsh ll is a breathy sound, a bit like thl. English speakers often settle for lan-ETH-lee.'},
+  {p:'Marylebone',c:'London',a:'MAR-luh-bun',f:['MARRY-luh-bone','MAR-ee-lee-bone','MARL-bone'],o:'Named after the church of St Mary by the bourne (a stream). Londoners squash it to three short syllables.'},
+  {p:'Bury',c:'Greater Manchester',a:'BERRY',f:['BYOO-ree','BURR-ee','BOO-ree'],o:'Said just like the verb to bury. Bury St Edmunds in Suffolk is the same.'},
+  {p:'Berwick-upon-Tweed',c:'Northumberland',a:'BERR-ik',f:['BER-wick','BUR-wick','BEER-ick'],o:'The w is silent, as in Alnwick and Warwick.'},
+  {p:'Magdalen College',c:'Oxford',a:'MAWD-lin',f:['MAG-da-len','mag-DAY-len','MAG-lin'],o:'From Mary Magdalene, whose name gave English <i>maudlin</i> (tearful), after paintings of her weeping.'},
+  {p:'Launceston',c:'Cornwall',a:'LAN-sun',f:['LAWN-ses-ton','LAWN-stun','LANCE-ton'],o:'Locals say LAN-sun, echoing its old Cornish name, Lannstefan. Launceston in Tasmania goes its own way.'},
+  {p:'Puncknowle',c:'Dorset',a:'PUN-ul',f:['PUNK-noll','PUNK-now-el','PUN-know'],o:'A famous Dorset puzzle: ten letters, two syllables.'},
+  {p:'Brough',c:'East Yorkshire',a:'BRUFF',f:['BROW','BRAW','BRO'],o:'The -ough says uff, as in rough and tough.'},
+  {p:'Ruthin',c:'Denbighshire',a:'RITH-in',f:['ROOTH-in','RUTH-in','ROO-tin'],o:'In Welsh, Rhuthun. The Welsh u sounds close to an English i.'},
+  {p:'Altrincham',c:'Greater Manchester',a:'ALL-tring-um',f:['ALL-trin-cham','al-TRIN-shum','ALL-trin-kum'],o:'The -ch- is silent: the -ingham ending is said -ing-um, as in Birmingham.'},
+  {p:'Beaconsfield',c:'Buckinghamshire',a:'BEK-unz-feeld',f:['BEE-kunz-feeld','BEE-kon-feeld','BAY-kunz-feeld'],o:'The town says BEK-. Benjamin Disraeli took his title from it, and Earl of Beaconsfield is usually said BEE-.'},
+  {p:'Hautbois',c:'Norfolk',a:'HOB-iss',f:['OH-bwah','HOWT-boys','HOH-boy'],o:'It looks French (and the oboe was once a <i>hautbois</i>), but Norfolk says HOB-iss.'},
+  {p:'Romsey',c:'Hampshire',a:'RUM-zee',f:['ROM-zee','ROAM-zee','ROM-see'],o:'The o says u, as in come and money.'},
+  {p:'Culzean',c:'Ayrshire',a:'kul-LANE',f:['kul-ZEEN','KUL-zee-an','kul-ZAYN'],o:'The z stands for an old Scots letter, yogh, which here sounds like a y or is barely said at all.'},
+  {p:'Strachan',c:'Aberdeenshire',a:'STRAWN',f:['STRACK-an','STRAY-han','STRAKH-an'],o:'The village and the surname are both usually said STRAWN.'},
+  {p:'Glamis',c:'Angus',a:'GLAHMZ',f:['GLAM-iss','GLAY-miss','GLAM-ee'],o:'One syllable. Glamis Castle was the childhood home of the late Queen Mother.'},
+  {p:'Kirkcaldy',c:'Fife',a:'kur-KAW-dee',f:['KIRK-call-dee','kirk-CAL-dee','KIRK-awl-dee'],o:'The l is silent and the stress falls in the middle.'},
+  {p:'Alcester',c:'Warwickshire',a:'AWL-ster',f:['AL-ses-ter','AL-chester','AL-ster'],o:'Another -cester that shrinks to -ster, like Leicester and Bicester.'},
+  {p:'Haworth',c:'West Yorkshire',a:'HOW-uth',f:['HAY-worth','HAW-worth','HAR-worth'],o:'The Brontës\' village. The first syllable rhymes with how.'},
+  {p:'Deptford',c:'London',a:'DET-fud',f:['DEPT-ford','DEP-ford','DEFT-ford'],o:'The p is lost in everyday speech: DET-fud.'},
+  {p:'Streatham',c:'London',a:'STRET-um',f:['STREET-ham','STREET-um','STRAY-tham'],o:'Streat- says stret, and -ham shrinks to -um, as in Clapham and Fulham.'}
 ];
 
 // Stress test. s = sentence with the word in [brackets], a = the right stress, f = the other. Capitals = stressed.
@@ -118,7 +158,28 @@ const STRESS=[
   {s:'Two officers will [escort] the prisoner.',a:'esCORT',f:'EScort',o:'A verb, stressed on the second syllable. The guard is an EScort.'},
   {s:'You can [transfer] the money online.',a:'transFER',f:'TRANSfer',o:'A verb. A footballer\'s move is a TRANSfer.'},
   {s:'There\'s a huge [contrast] between the twins.',a:'CONtrast',f:'conTRAST',o:'A noun, stressed first. Colours conTRAST.'},
-  {s:'Britain [imports] a lot of cheese.',a:'imPORTS',f:'IMports',o:'A verb. The cheese itself is one of our IMports.'}
+  {s:'Britain [imports] a lot of cheese.',a:'imPORTS',f:'IMports',o:'A verb. The cheese itself is one of our IMports.'},
+  {s:'Delays will [compound] the problem.',a:'comPOUND',f:'COMpound',o:'A verb here: to make worse. A chemical COMpound is the noun.'},
+  {s:'He was a [conscript] in the war.',a:'CONscript',f:'conSCRIPT',o:'A noun, so the stress is at the front. To conSCRIPT is to call someone up.'},
+  {s:'Friends tried to [console] her.',a:'conSOLE',f:'CONsole',o:'A verb: to comfort. A games CONsole is the noun.'},
+  {s:'In fact, the [converse] is true.',a:'CONverse',f:'conVERSE',o:'A noun meaning the opposite. To conVERSE is to talk.'},
+  {s:'Solar panels [convert] sunlight into power.',a:'conVERT',f:'CONvert',o:'A verb. Someone who has changed faith is a CONvert.'},
+  {s:'There was a sharp [decrease] in sales.',a:'DEcrease',f:'deCREASE',o:'A noun, so stress the front. Sales deCREASE when they go down.'},
+  {s:'The spy planned to [defect] to the West.',a:'deFECT',f:'DEfect',o:'A verb: to switch sides. A flaw is a DEfect.'},
+  {s:'Add a drop of vanilla [extract].',a:'EXtract',f:'exTRACT',o:'A noun. Dentists exTRACT teeth.'},
+  {s:'The path climbs a steep [incline].',a:'INcline',f:'inCLINE',o:'A noun: a slope. To be inCLINED to do something is the verb.'},
+  {s:'[Insert] your card here.',a:'inSERT',f:'INsert',o:'A verb. The leaflet that falls out of a magazine is an INsert.'},
+  {s:'She worked as an [intern] at the bank.',a:'INtern',f:'inTERN',o:'A noun. To inTERN someone is to hold them prisoner, usually in wartime.'},
+  {s:'This one is a factory [reject].',a:'REject',f:'reJECT',o:'A noun. You reJECT an offer.'},
+  {s:'They will [survey] the whole site.',a:'surVEY',f:'SURvey',o:'A verb. Filling in a SURvey is the noun.'},
+  {s:'The wait was pure [torment].',a:'TORment',f:'torMENT',o:'A noun. Bullies torMENT people.'},
+  {s:'Spurs caused a huge [upset] at Anfield.',a:'UPset',f:'upSET',o:'A noun: a surprise result. Don\'t upSET your mother.'},
+  {s:'Only a [minute] amount was left.',a:'myNUTE',f:'MINute',o:'An adjective meaning tiny: my-NEWT. Sixty seconds make a MINute.'},
+  {s:'They met in an [august] hall in Whitehall.',a:'auGUST',f:'AUgust',o:'An adjective meaning grand and dignified. AUgust is the month.'},
+  {s:'Experts [attribute] the painting to Turner.',a:'atTRIBute',f:'ATtribute',o:'A verb. Kindness is a fine ATtribute.'},
+  {s:'Pigeons [frequent] the station roof.',a:'freQUENT',f:'FREquent',o:'A verb: to visit often. Trains are FREquent.'},
+  {s:'She paints in an [abstract] style.',a:'ABstract',f:'abSTRACT',o:'An adjective, stressed at the front. To abSTRACT is to take something out.'},
+  {s:'He plans to [contest] the result.',a:'conTEST',f:'CONtest',o:'A verb: to challenge. A CONtest is a competition.'}
 ];
 
 // Odd sound out. w[0] is the odd one; the other three share a sound. [Brackets] mark the letters to listen to.
@@ -155,7 +216,28 @@ const ODD=[
   {t:'c',w:['[c]ello','[c]ellar','[c]elery','[c]entre'],o:'Cellar, celery and centre start with an s sound. Cello keeps its Italian <i>ch</i>.'},
   {t:'qu',w:['[qu]ay','[qu]een','[qu]ick','[qu]iet'],o:'Queen, quick and quiet start with <i>kw</i>. Quay is said just like key.'},
   {t:'ow',w:['b[ow]l','h[ow]l','f[ow]l','gr[ow]l'],o:'Howl, fowl and growl rhyme with owl. Bowl rhymes with hole.'},
-  {t:'th',w:['[Th]omas','[th]ink','[th]ree','[th]umb'],o:'Think, three and thumb start with <i>th</i>. Thomas starts with a plain t, as do Thames and thyme.'}
+  {t:'th',w:['[Th]omas','[th]ink','[th]ree','[th]umb'],o:'Think, three and thumb start with <i>th</i>. Thomas starts with a plain t, as do Thames and thyme.'},
+  {t:'ou',w:['c[ou]ntry','h[ou]se','m[ou]se','cl[ou]d'],o:'House, mouse and cloud have <i>ow</i>. Country has the short <i>u</i> of cup.'},
+  {t:'s',w:['bu[s]','i[s]','ha[s]','wa[s]'],o:'Is, has and was end with a <i>z</i> sound. Bus has a true <i>s</i>.'},
+  {t:'g',w:['[g]et','[g]ym','[g]entle','[g]iant'],o:'Gym, gentle and giant have a soft <i>j</i> sound. Get has a hard g, an exception to the "g before e or i" rule.'},
+  {t:'ea',w:['gr[ea]t','m[ea]t','s[ea]t','b[ea]t'],o:'Meat, seat and beat have <i>ee</i>. Great says <i>ay</i>, like steak and break.'},
+  {t:'ch',w:['[ch]aos','[ch]urch','[ch]air','[ch]ild'],o:'Chaos came from Greek, so its ch says <i>k</i>, as in chorus and character.'},
+  {t:'gh',w:['hi[gh]','lau[gh]','tou[gh]','enou[gh]'],o:'Laugh, tough and enough say <i>f</i>. In high the gh is silent.'},
+  {t:'ow',w:['cr[ow]n','kn[ow]','gr[ow]','sh[ow]'],o:'Know, grow and show rhyme with go. Crown has the <i>ow</i> of cow.'},
+  {t:'a',w:['f[a]ther','c[a]t','m[a]n','s[a]d'],o:'Cat, man and sad have a short <i>a</i>. Father has the long <i>ah</i> in every British accent.'},
+  {t:'o',w:['d[o]','g[o]','n[o]','s[o]'],o:'Go, no and so say <i>oh</i>. Do says <i>oo</i>, like to and who.'},
+  {t:'i',w:['p[i]zza','p[i]n','t[i]n','w[i]n'],o:'Pin, tin and win have a short <i>i</i>. Pizza kept its Italian <i>ee</i>.'},
+  {t:'x',w:['ta[x]i','e[x]ample','e[x]act','e[x]ist'],o:'In example, exact and exist the x says <i>gz</i>. In taxi it says <i>ks</i>.'},
+  {t:'ss',w:['sci[ss]ors','dre[ss]','gla[ss]','bo[ss]'],o:'Dress, glass and boss end with <i>s</i>. The ss in scissors says <i>z</i>.'},
+  {t:'wh',w:['[wh]o','[wh]at','[wh]en','[wh]ere'],o:'What, when and where start with <i>w</i>. Who starts with <i>h</i>, as do whole and whom.'},
+  {t:'ear',w:['l[ear]n','f[ear]','n[ear]','d[ear]'],o:'Fear, near and dear rhyme. Learn has the vowel of fern.'},
+  {t:'ui',w:['b[ui]ld','fr[ui]t','j[ui]ce','s[ui]t'],o:'Fruit, juice and suit have <i>oo</i>. Build has a short <i>i</i>, as does guilt.'},
+  {t:'ey',w:['k[ey]','th[ey]','gr[ey]','ob[ey]'],o:'They, grey and obey say <i>ay</i>. Key says <i>ee</i>.'},
+  {t:'ar',w:['w[ar]','c[ar]','f[ar]','st[ar]'],o:'Car, far and star rhyme. The w in war pulls the vowel round to <i>or</i>, as in warm and ward.'},
+  {t:'y',w:['g[y]m','m[y]','b[y]','fl[y]'],o:'My, by and fly say <i>eye</i>. Gym has a short <i>i</i>, as in myth and hymn.'},
+  {t:'ei',w:['h[ei]ght','w[ei]ght','[ei]ght','fr[ei]ght'],o:'Weight, eight and freight say <i>ay</i>. Height says <i>eye</i>.'},
+  {t:'c',w:['musi[c]ian','[c]ar','[c]old','[c]up'],o:'Car, cold and cup have a hard <i>k</i>. In musician the c says <i>sh</i>, as in magician and optician.'},
+  {t:'t',w:['ac[t]ion','[t]op','[t]en','[t]ime'],o:'Top, ten and time have a plain <i>t</i>. In action, -tion says <i>shun</i>.'}
 ];
 
 // Spot the stop: tap every t that a London accent swaps for a glottal stop.
@@ -193,7 +275,25 @@ const STOP=[
   {p:'I\'m wri#ing a le##er',o:'Writing and letter both have their t before an unstressed syllable.'},
   {p:'Sa# on a sea#',o:'Sat and seat both end in t.'},
   {p:'Le#\'s ea# ou#',o:'Let\'s, eat and out: every t is at the end of a word.'},
-  {p:'A bi# la#er',o:'Bit ends in t; the t in later comes before an unstressed syllable.'}
+  {p:'A bi# la#er',o:'Bit ends in t; the t in later comes before an unstressed syllable.'},
+  {p:'Ge# the ki##en ou#',o:'Get and out end in t. In kitten the tt comes before an unstressed syllable, so it goes too.'},
+  {p:'I bough# a ha#',o:'Two t\'s, both at the end of a word.'},
+  {p:'The bu##on fell ou#',o:'Button\'s tt sits before an unstressed syllable; out ends in t.'},
+  {p:'Si# by the hea#er',o:'Sit ends in t. In heater the t comes before an unstressed -er.'},
+  {p:'Tell Pe#er to wai#',o:'Tell and to start with t, so they stay. Peter and wait lose theirs.'},
+  {p:'Ou# of da#e',o:'Out ends in t, and so does the sound of date (the e is silent).'},
+  {p:'Shu# the ga#e',o:'Shut and gate both end with a t sound.'},
+  {p:'Wri#e i# down',o:'Write ends in a t sound (the e is silent), and so does it.'},
+  {p:'Tomorrow a# ten',o:'Tomorrow and ten start with t, so they keep it, even though the to- in tomorrow isn\'t stressed. Only at loses its t.'},
+  {p:'A swea#er for Tom',o:'Sweater\'s t comes before an unstressed -er. Tom starts with t, so it stays.'},
+  {p:'Abou# time',o:'About ends in t. Time starts with one, so it stays.'},
+  {p:'Pa# the ca#',o:'Pat and cat: both end in t.'},
+  {p:'A la#e nigh#',o:'Late (silent e) and night both end with a t sound.'},
+  {p:'Ge##ing be##er',o:'In getting and better the tt comes before an unstressed syllable.'},
+  {p:'Fi##ed shee#',o:'Fitted\'s tt comes before an unstressed -ed. Sheet ends in t.'},
+  {p:'Sor# i# ou#',o:'In a London accent the r in sort isn\'t said, so its t comes straight after a vowel at the end of the word. It and out go too.'},
+  {p:'A fla# ba##ery',o:'Flat ends in t. In battery the tt comes after the stressed BAT, before an unstressed syllable.'},
+  {p:'Take a sea#',o:'Take starts with t, so it stays. Seat ends in t, so it goes.'}
 ];
 
 // Sunday special: Sound it out. i = the word in phonetic script (IPA, British), a = the word, f = three decoys.
