@@ -735,7 +735,7 @@ function finish(){
   const tag = state.daily ? dayNumber() : state.archive ? `No. ${state.n+1}` : '#'+(state.i+1);
   $("flagNote").innerHTML = `Think the answer's wrong, or know a better one? <a href="/feedback/?game=samey&type=puzzle&puzzle=${encodeURIComponent(tag+' · '+p.clue+' → '+p.answer)}" style="color:var(--ink);font-weight:700">Tell us</a>.`;
   $("result").hidden = false;
-  if(state.daily){ recordResult(state.won); showStats(); (window.SameySetQ=window.SameySetQ||[]).push(["samey", score]); }
+  if(state.daily){ recordHistory(todayDays()+1, state.won, state.used); recordResult(state.won); showStats(); (window.SameySetQ=window.SameySetQ||[]).push(["samey", score]); }
   $("copyBtn").textContent = "Share result";
   $("nextBtn").hidden = state.daily || state.archive;
   if(state.archive) saveArch();
@@ -842,6 +842,17 @@ function openArchive(){
 }
 function dayKey(d){ return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`; }
 function yesterdayKey(){ const d=new Date(); d.setDate(d.getDate()-1); return dayKey(d); }
+// Per-day history of daily results, so streaks and stats can be rebuilt or merged later (e.g. across devices).
+// Keyed by local date (YYYY-MM-DD). The first result for a day is kept; replays never overwrite it.
+const HIST_KEY = "samey-history";
+function isoDay(d=new Date()){ const p=x=>String(x).padStart(2,"0"); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`; }
+function recordHistory(n, won, used){
+  let h=null; try{ h=JSON.parse(localStorage.getItem(HIST_KEY)); }catch(e){}
+  if(!h || typeof h!=="object") h={};
+  const day=isoDay(); if(h[day]) return;
+  h[day]={n, won:!!won, used};
+  try{ localStorage.setItem(HIST_KEY, JSON.stringify(h)); }catch(e){}
+}
 const STATS_KEY = "samey-stats";
 function loadStats(){
   let st=null; try{ st=JSON.parse(localStorage.getItem(STATS_KEY)); }catch(e){}
