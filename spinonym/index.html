@@ -686,7 +686,7 @@ function finish(fresh){
   $("bonusBtn").hidden = !state.won || main.archive;
   $("bonusBtn").textContent = bonus.done ? `Bonus round: ${bonusScore()}/3` : "Play the bonus round →";
   $("bonusBtn").classList.toggle("done", bonus.done);
-  if(state.daily && !state.replaying){ recordResult(state.won); }
+  if(state.daily && !state.replaying){ recordHistory(main.n+1, state.won, main.used); recordResult(state.won); }
   if(state.daily && !isGold) (window.SameySetQ=window.SameySetQ||[]).push(["spinonym", main.won?`${main.used}/${MAX}`:`X/${MAX}`]);
   if(main.archive) saveArchive();
   archNote();
@@ -842,6 +842,17 @@ function renderBonusEnd(){
 }
 
 // ---- Saving: one puzzle a day, stored in this browser ----
+// Per-day history of daily results, so streaks and stats can be rebuilt or merged later (e.g. across devices).
+// Keyed by local date (YYYY-MM-DD). The first result for a day is kept; replays never overwrite it.
+const HIST_KEY = "spinonym-history";
+function isoDay(d=new Date()){ const p=x=>String(x).padStart(2,"0"); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`; }
+function recordHistory(n, won, used){
+  let h=null; try{ h=JSON.parse(localStorage.getItem(HIST_KEY)); }catch(e){}
+  if(!h || typeof h!=="object") h={};
+  const day=isoDay(); if(h[day]) return;
+  h[day]={n, won:!!won, used};
+  try{ localStorage.setItem(HIST_KEY, JSON.stringify(h)); }catch(e){}
+}
 const SAVE_KEY="spinonym-today", STATS_KEY="spinonym-stats";
 function persist(){
   if(main.archive){ saveArchive(); return; }
