@@ -225,5 +225,77 @@ const DAYS = [
       {l: "To dwellers in a wood almost every species of tree has its voice as well as its feature.", t: "Under the Greenwood Tree", a: "Thomas Hardy", y: 1872, o: ["The Woodlanders", "Far from the Madding Crowd", "A Pair of Blue Eyes"]}
     ],
     f: {s: "This is the saddest story", e: "I have ever heard.", x: ["ever told in Paris.", "that never really happened."], t: "The Good Soldier", a: "Ford Madox Ford", y: 1915}
+  },
+  {
+    q: [
+      {l: "Sherlock Holmes took his bottle from the corner of the mantel-piece and his hypodermic syringe from its neat morocco case.", t: "The Sign of Four", a: "Arthur Conan Doyle", y: 1890, o: ["A Study in Scarlet", "The Valley of Fear", "The Lost World"]},
+      {l: "In the ancient city of London, on a certain autumn day in the second quarter of the sixteenth century, a boy was born to a poor family of the name of Canty, who did not want him.", t: "The Prince and the Pauper", a: "Mark Twain", y: 1881, o: ["A Connecticut Yankee in King Arthur's Court", "Oliver Twist", "Kidnapped"]},
+      {l: "In the latter days of July in the year 185‑, a most important question was for ten days hourly asked in the cathedral city of {Barchester}…", t: "Barchester Towers", a: "Anthony Trollope", y: 1857, o: ["The Warden", "Middlemarch", "Cranford"]},
+      {l: "Ours is essentially a tragic age, so we refuse to take it tragically.", t: "Lady Chatterley's Lover", a: "D. H. Lawrence", y: 1928, o: ["Sons and Lovers", "Mrs Dalloway", "The Good Soldier"]}
+    ],
+    f: {s: "In the sea, once upon a time, O my Best Beloved,", e: "there was a Whale, and he ate fishes.", x: ["there lived a very curious Crab.", "there was an Island with no name."], t: "Just So Stories", a: "Rudyard Kipling", y: 1902}
+  },
+  {
+    q: [
+      {l: "Late in the afternoon of a chilly day in February, two gentlemen were sitting alone over their wine, in a well-furnished dining parlor, in the town of P——, in Kentucky.", t: "Uncle Tom's Cabin", a: "Harriet Beecher Stowe", y: 1852, o: ["Little Women", "The Last of the Mohicans", "The Scarlet Letter"]},
+      {l: "Mr. Hungerton, her father, really was the most tactless person upon earth,—a fluffy, feathery, untidy cockatoo of a man, perfectly good-natured, but absolutely centred upon his own silly self.", t: "The Lost World", a: "Arthur Conan Doyle", y: 1912, o: ["The Hound of the Baskervilles", "King Solomon's Mines", "The Time Machine"]},
+      {l: "The {Browns} have become illustrious by the pen of Thackeray and the pencil of Doyle, within the memory of the young gentlemen who are now matriculating at the universities.", t: "Tom Brown's School Days", a: "Thomas Hughes", y: 1857, o: ["Stalky & Co.", "Vanity Fair", "Eric, or, Little by Little"]},
+      {l: "A girl came out of lawyer Royall's house, at the end of the one street of North Dormer, and stood on the doorstep.", t: "Summer", a: "Edith Wharton", y: 1917, o: ["Ethan Frome", "Main Street", "O Pioneers!"]}
+    ],
+    f: {s: "This is a Tale about a tail—", e: "a tail that belonged to a little red squirrel, and his name was Nutkin.", x: ["a tail that was far too bushy for its own good.", "a tail that went missing one autumn morning."], t: "The Tale of Squirrel Nutkin", a: "Beatrix Potter", y: 1903}
+  },
+  {
+    q: [
+      {l: "The first ray of light which illumines the gloom, and converts into a dazzling brilliancy that obscurity in which the earlier history of the public career of the immortal {Pickwick} would appear to be involved…", t: "The Pickwick Papers", a: "Charles Dickens", y: 1837, o: ["Nicholas Nickleby", "Oliver Twist", "Sketches by Boz"]},
+      {l: "When Mr. Hiram B. Otis, the American Minister, bought {Canterville} Chase, every one told him he was doing a very foolish thing, as there was no doubt at all that the place was haunted.", t: "The Canterville Ghost", a: "Oscar Wilde", y: 1887, o: ["The Picture of Dorian Gray", "The Turn of the Screw", "The Woman in White"]},
+      {l: "Ursula and Gudrun Brangwen sat one morning in the window-bay of their father's house in Beldover, working and talking.", t: "Women in Love", a: "D. H. Lawrence", y: 1920, o: ["Sons and Lovers", "Lady Chatterley's Lover", "Howards End"]},
+      {l: "Those two girls, Constance and Sophia Baines, paid no heed to the manifold interest of their situation, of which, indeed, they had never been conscious.", t: "The Old Wives' Tale", a: "Arnold Bennett", y: 1908, o: ["Anna of the Five Towns", "Little Women", "Middlemarch"]}
+    ],
+    f: {s: "To Sherlock Holmes", e: "she is always the woman.", x: ["the game was always afoot.", "the truth was always elementary."], t: "The Adventures of Sherlock Holmes", a: "Arthur Conan Doyle", y: 1892}
+  },
+  {
+    q: [
+      {l: "Whoever has made a voyage up the Hudson must remember the Kaatskill mountains.", t: "Rip Van Winkle", a: "Washington Irving", y: 1819, o: ["The Legend of Sleepy Hollow", "The Last of the Mohicans", "Moby-Dick"]},
+      {l: "This is the story of the different ways we looked for {treasure}, and I think when you have read it you will see that we were not lazy about the looking.", t: "The Story of the Treasure Seekers", a: "E. Nesbit", y: 1899, o: ["The Railway Children", "Five Children and It", "Treasure Island"]},
+      {l: "The Brangwens had lived for generations on the Marsh Farm, in the meadows where the Erewash twisted sluggishly through alder trees, separating Derbyshire from Nottinghamshire.", t: "The Rainbow", a: "D. H. Lawrence", y: 1915, o: ["Women in Love", "Sons and Lovers", "Adam Bede"]},
+      {l: "Let the reader be introduced to Lady Carbury, upon whose character and doings much will depend of whatever interest these pages may have, as she sits at her writing-table in her own room in her own house in Welbeck Street.", t: "The Way We Live Now", a: "Anthony Trollope", y: 1875, o: ["Vanity Fair", "The Warden", "Can You Forgive Her?"]}
+    ],
+    f: {s: "To begin with", e: "the old rigmarole of childhood.", x: ["the day the doctor came to call.", "a word about the weather."], t: "Wives and Daughters", a: "Elizabeth Gaskell", y: 1866}
+  },
+  {
+    q: [
+      {l: "An ancient English Cathedral Town?", t: "The Mystery of Edwin Drood", a: "Charles Dickens", y: 1870, o: ["Barchester Towers", "Great Expectations", "The Moonstone"]},
+      {l: "It began with the day when it was almost the Fifth of November, and a doubt arose in some breast—Robert's, I fancy—as to the quality of the fireworks laid in for the Guy Fawkes celebration.", t: "The Phoenix and the Carpet", a: "E. Nesbit", y: 1904, o: ["Five Children and It", "The Railway Children", "The Enchanted Castle"]},
+      {l: "The weather door of the smoking-room had been left open to the North Atlantic fog, as the big liner rolled and lifted, whistling to warn the fishing-fleet.", t: "Captains Courageous", a: "Rudyard Kipling", y: 1897, o: ["Moby-Dick", "Treasure Island", "Kim"]},
+      {l: "Amory Blaine inherited from his mother every trait, except the stray inexpressible few, that made him worth while.", t: "This Side of Paradise", a: "F. Scott Fitzgerald", y: 1920, o: ["The Great Gatsby", "Babbitt", "The Age of Innocence"]}
+    ],
+    f: {s: "The suburb of Saffron Park lay on the sunset side of London,", e: "as red and ragged as a cloud of sunset.", x: ["as quiet and grey as a sleeping cat.", "where the trains ran late and the gardens ran wild."], t: "The Man Who Was Thursday", a: "G. K. Chesterton", y: 1908}
+  },
+  {
+    q: [
+      {l: "‘I am inclined to think—’ said I. ‘I should do so,’ Sherlock Holmes remarked impatiently.", t: "The Valley of Fear", a: "Arthur Conan Doyle", y: 1915, o: ["A Study in Scarlet", "The Hound of the Baskervilles", "The Moonstone"]},
+      {l: "Half-way down a by-street of one of our New England towns stands a rusty wooden house, with {seven} acutely peaked {gables}, facing towards various points of the compass, and a huge, clustered chimney in the midst.", t: "The House of the Seven Gables", a: "Nathaniel Hawthorne", y: 1851, o: ["The Scarlet Letter", "Little Women", "Uncle Tom's Cabin"]},
+      {l: "It was a Sunday evening in October, and in common with many other young ladies of her class, Katharine Hilbery was pouring out tea.", t: "Night and Day", a: "Virginia Woolf", y: 1919, o: ["Mrs Dalloway", "Howards End", "The Age of Innocence"]},
+      {l: "An author ought to consider himself, not as a gentleman who gives a private or eleemosynary treat, but rather as one who keeps a public ordinary, at which all persons are welcome for their money.", t: "Tom Jones", a: "Henry Fielding", y: 1749, o: ["Joseph Andrews", "Clarissa", "Moll Flanders"]}
+    ],
+    f: {s: "I wish either my father or my mother, or indeed both of them, as they were in duty both equally bound to it,", e: "had minded what they were about when they begot me;", x: ["had told me the truth about the family fortune;", "had stayed in Yorkshire where they belonged;"], t: "Tristram Shandy", a: "Laurence Sterne", y: 1759}
+  },
+  {
+    q: [
+      {l: "It was four o'clock when the ceremony was over and the carriages began to arrive.", t: "The Jungle", a: "Upton Sinclair", y: 1906, o: ["Sister Carrie", "The Call of the Wild", "Main Street"]},
+      {l: "In the year 1775, there stood upon the borders of Epping Forest, at a distance of about twelve miles from London…", t: "Barnaby Rudge", a: "Charles Dickens", y: 1841, o: ["A Tale of Two Cities", "Oliver Twist", "Lorna Doone"]},
+      {l: "As the streets that lead from the Strand to the Embankment are very narrow, it is better not to walk down them arm-in-arm.", t: "The Voyage Out", a: "Virginia Woolf", y: 1915, o: ["To the Lighthouse", "A Room with a View", "Mrs Dalloway"]},
+      {l: "Captain MacWhirr, of the steamer Nan-Shan, had a physiognomy that, in the order of material appearances, was the exact counterpart of his mind…", t: "Typhoon", a: "Joseph Conrad", y: 1902, o: ["Lord Jim", "Heart of Darkness", "Captains Courageous"]}
+    ],
+    f: {s: "Of late years", e: "an abundant shower of curates has fallen upon the north of England:", x: ["a great many mills have been built in the West Riding:", "the price of wool has troubled every family in Yorkshire:"], t: "Shirley", a: "Charlotte Brontë", y: 1849}
+  },
+  {
+    q: [
+      {l: "I scarcely know where to begin, though I sometimes facetiously place the cause of it all to Charley Furuseth's credit.", t: "The Sea-Wolf", a: "Jack London", y: 1904, o: ["The Call of the Wild", "White Fang", "Moby-Dick"]},
+      {l: "Robert Bunting and Ellen his wife sat before their dully burning, carefully-banked-up fire.", t: "The Lodger", a: "Marie Belloc Lowndes", y: 1913, o: ["The Secret Agent", "The Thirty-Nine Steps", "The Moonstone"]},
+      {l: "As no lady or gentleman, with any claims to polite breeding, can possibly sympathize with the {Chuzzlewit} Family without being first assured of the extreme antiquity of the race…", t: "Martin Chuzzlewit", a: "Charles Dickens", y: 1844, o: ["Dombey and Son", "Little Dorrit", "Our Mutual Friend"]},
+      {l: "In 1913, when Anthony Patch was twenty-five, two years were already gone since irony, the Holy Ghost of this later day, had, theoretically at least, descended upon him.", t: "The Beautiful and Damned", a: "F. Scott Fitzgerald", y: 1922, o: ["The Great Gatsby", "Babbitt", "The House of Mirth"]}
+    ],
+    f: {s: "A green and yellow parrot, which hung in a cage outside the door,", e: "kept repeating over and over:", x: ["watched the ladies come and go:", "was the only one who knew the secret:"], t: "The Awakening", a: "Kate Chopin", y: 1899}
   }
 ];
